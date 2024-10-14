@@ -1,7 +1,7 @@
 import os
 import asyncio
-from functions import welcome, goodbye
-from client import client
+from src.functions import welcome, goodbye
+from src.client import client
 
 async def main():
 
