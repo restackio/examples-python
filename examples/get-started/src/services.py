@@ -1,4 +1,5 @@
 import os
+import asyncio
 from functions import welcome, goodbye
 from client import client
 
@@ -10,3 +11,6 @@ async def main():
         "workflows_path": workflows_path,
         "functions": [welcome, goodbye]
     })
+
+if __name__ == "__main__":
+    asyncio.run(main())
