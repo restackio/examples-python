@@ -1,0 +1,25 @@
+# Project metadata
+[tool.poetry]
+name = "get-started"
+version = "0.0.1"
+description = "A simple example to get started with the restack-ai SDK"
+authors = ["leawn <leonrubner2809@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+# TODO: remove this once the SDK is published to PyPI
+
+# Development dependencies
+restack-ai = {path = "/Users/leawn/Code/github.com/restack/sdk/engine/sdk/python"}
+[tool.poetry.dev-dependencies]
+pytest = "^6.2"  # Optional: Add if you want to include tests in your example
+
+# Build system configuration
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# CLI command configuration
+[tool.poetry.scripts]
+start = "get_started.main:main"  # Optional: Add this if you want to create a CLI command
