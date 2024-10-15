@@ -1,16 +1,18 @@
-import os
 import asyncio
-from src.functions import welcome, goodbye
+from src.functions.function import welcome, goodbye
 from src.client import client
+from src.workflows.workflow import GreetingWorkflow
 
 async def main():
 
-    workflows_path = os.path.join(os.path.dirname(__file__), "workflows")
-
-    client.start_service({
-        "workflows_path": workflows_path,
+    message =await client.start_service({
+        "workflows": [GreetingWorkflow],
         "functions": [welcome, goodbye]
     })
+    print(message)
+
+def run_service():
+    asyncio.run(main())
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    run_service()
