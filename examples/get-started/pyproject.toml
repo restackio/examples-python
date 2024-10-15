@@ -23,5 +23,5 @@ build-backend = "poetry.core.masonry.api"
 
 # CLI command configuration
 [tool.poetry.scripts]
-service = "src.services:main"
-schedule = "src.schedule_workflow:main"
+service = "src.services:run_service"
+schedule = "schedule_workflow:run_schedule_workflow"
