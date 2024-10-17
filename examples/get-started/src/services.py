@@ -10,8 +10,8 @@ async def main():
         "functions": [welcome, goodbye]
     })
 
-def run_service():
+def run_services():
     asyncio.run(main())
 
 if __name__ == "__main__":
-    run_service()
+    run_services()
