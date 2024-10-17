@@ -1,3 +1,2 @@
-# TODO: remove this once the SDK is published to PyPI
-/Users/leawn/Code/github.com/restack/sdk/engine/sdk/python/dist/restack_ai-0.0.1.tar.gz
+restack_ai==0.0.1
 pytest==6.2.5

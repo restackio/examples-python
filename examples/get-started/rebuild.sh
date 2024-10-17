@@ -6,4 +6,4 @@ set -e
 poetry remove restack_ai
 
 # Readd the restack_ai package from the local path
-poetry add /Users/leawn/Code/github.com/restack/sdk/engine/sdk/python
+poetry add restack_ai
