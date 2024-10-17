@@ -4,18 +4,14 @@ name = "get-started"
 version = "0.0.1"
 description = "A simple example to get started with the restack-ai SDK"
 authors = [
-    "Leon Rubner <leon@restack.io>",
-    "Philippe Brule <philippe@restack.io>",
+    "Restack Team <service@restack.io>",
 ]
 readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-# TODO: remove this once the SDK is published to PyPI
 
-# Development dependencies
-restack-ai = {path = "/Users/leawn/Code/github.com/restack/sdk/engine/sdk/python"}
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"  # Optional: Add if you want to include tests in your example
 
