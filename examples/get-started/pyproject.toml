@@ -3,7 +3,10 @@
 name = "get-started"
 version = "0.0.1"
 description = "A simple example to get started with the restack-ai SDK"
-authors = ["leawn <leonrubner2809@gmail.com>"]
+authors = [
+    "Leon Rubner <leon@restack.io>",
+    "Philippe Brule <philippe@restack.io>",
+]
 readme = "README.md"
 packages = [{include = "src"}]
 
