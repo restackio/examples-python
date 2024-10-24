@@ -2,15 +2,15 @@ import asyncio
 import time
 from restack_ai import Restack
 
-async def main():
+async def schedule_workflow(workflow_name):
 
     client = Restack()
 
     print(client)
 
-    workflow_id = f"{int(time.time() * 1000)}-GreetingWorkflow"
+    workflow_id = f"{int(time.time() * 1000)}-{workflow_name}"
     runId = await client.schedule_workflow(
-        workflow_name="GreetingWorkflow",
+        workflow_name=workflow_name,
         workflow_id=workflow_id
     )
 
@@ -23,7 +23,10 @@ async def main():
     exit(0)
 
 def run_schedule_workflow():
-    asyncio.run(main())
+    asyncio.run(schedule_workflow("GreetingWorkflow"))
+
+def run_schedule_query_workflow():
+    asyncio.run(schedule_workflow("QueryWorkflow"))
 
 if __name__ == "__main__":
     run_schedule_workflow()

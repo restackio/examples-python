@@ -1,6 +1,9 @@
 from datetime import timedelta
 from restack_ai.workflow import workflow
-from src.functions.function import welcome, goodbye, InputParams
+from temporalio import workflow as temporal_workflow
+
+with temporal_workflow.unsafe.imports_passed_through():
+    from src.functions.function import welcome, goodbye, InputParams
 
 
 @workflow.defn(name="GreetingWorkflow")

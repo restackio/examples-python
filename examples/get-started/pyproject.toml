@@ -10,8 +10,10 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 restack-ai = "^0.0.2"
+requests = "^2.32.3"
+weaviate-client = "^4.9.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"  # Optional: Add if you want to include tests in your example
@@ -25,3 +27,4 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 services = "src.services:run_services"
 schedule = "schedule_workflow:run_schedule_workflow"
+schedule-query = "schedule_workflow:run_schedule_query_workflow"
