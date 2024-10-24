@@ -11,16 +11,13 @@ from dataclasses import dataclass
 class InputParams:
     name: str
 
-@function.defn(name="goodbye")
-async def goodbye(input: InputParams) -> str:
-    return f"Goodbye, {input.name}!"
-
 @function.defn(name="welcome")
 async def welcome(input: InputParams) -> str:
     # import os
     # weaviate_url = os.environ["WEAVIATE_URL"]
     # weaviate_api_key = os.environ["WEAVIATE_API_KEY"]
-
+    weaviate_url = 'https://bclr329rkmhoxvaqg7msg.c0.europe-west3.gcp.weaviate.cloud'
+    weaviate_api_key = 'hJiKnEy7s9B48SH26Gqmo0aamuL0gMHmrGmI'
 
     # Connect to Weaviate Cloud
     client = weaviate.connect_to_weaviate_cloud(
@@ -58,7 +55,4 @@ async def welcome(input: InputParams) -> str:
     questions = client.collections.get("Question")
     questions.data.insert_many(question_objs)    # This uses batching under the hood
 
-
-
-
-    return f"client.is_ready(), {client.is_ready()}"
+    return f"data inserted, {questions.aggregate().total_count}"

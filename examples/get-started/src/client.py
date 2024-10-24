@@ -1,3 +1,3 @@
 from restack_ai import Restack
 
-client = Restack()
+restack_client = Restack()

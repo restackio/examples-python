@@ -1,13 +1,14 @@
 import asyncio
-from src.functions.function import welcome, goodbye
-from src.client import client
-from src.workflows.workflow import GreetingWorkflow
+from src.functions.function import welcome
+from src.functions.query import query
+from src.client import restack_client
+from src.workflows.workflow import GreetingWorkflow, QueryWorkflow
 
 async def main():
 
-    await client.start_service({
-        "workflows": [GreetingWorkflow],
-        "functions": [welcome, goodbye]
+    await restack_client.start_service({
+        "workflows": [GreetingWorkflow, QueryWorkflow],
+        "functions": [welcome, query]
     })
 
 def run_services():
