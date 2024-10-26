@@ -8,8 +8,8 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-restack-ai = {path = "/Users/leawn/Code/github.com/restack/sdk/engine/libraries/python"}
 pydantic = "^2.9.2"
+integrations-python-openai = {path = ""}
 
 
 [build-system]
