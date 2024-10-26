@@ -26,7 +26,6 @@ class OpenaiGreetWorkflow:
             "parameters": message_schema.model_json_schema()
         }
 
-        openai_output = await workflow.step(openai_greet, FunctionInputParams(user_content=user_content, message_schema=json_schema), start_to_close_timeout=timedelta(seconds=10))
-        print(openai_output)
-        greet_message = openai_output.choices[0].message.content
+        greet_message = await workflow.step(openai_greet, FunctionInputParams(user_content=user_content, message_schema=json_schema), start_to_close_timeout=timedelta(seconds=10))
+        print(greet_message)
         return greet_message

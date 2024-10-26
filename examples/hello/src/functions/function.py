@@ -1,21 +1,20 @@
 from restack_ai.function import function
 from pydantic import BaseModel
-from openai import OpenAI
+from integrations_python_openai import openai_chat_completion_base, OpenAIChatInput
 import os
 
 class FunctionInputParams(BaseModel):
     user_content: str
     message_schema: dict
 
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-
 @function.defn(name="OpenaiGreet")
 async def openai_greet(input: FunctionInputParams) -> str:
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": input.user_content}],
-        response_format={"type": "json_schema"},
-        functions=[input.message_schema],
-        function_call={"name": input.message_schema["name"]}
+    response = openai_chat_completion_base(
+        OpenAIChatInput(
+            user_content=input.user_content,
+            model="gpt-4o-mini",
+            json_schema=input.message_schema,
+            api_key=os.environ.get("OPENAI_API_KEY"),
+        )
     )
-    return response
+    return response.result.choices[0].message.content
