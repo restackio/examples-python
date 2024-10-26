@@ -15,7 +15,7 @@ async def main():
     runId = await client.schedule_workflow(
         workflow_name="OpenaiGreetWorkflow",
         workflow_id=workflow_id,
-        input=InputParams(name="Leawn")
+        input=InputParams(name="Restack AI SDK User")
     )
 
     result = await client.get_workflow_result(

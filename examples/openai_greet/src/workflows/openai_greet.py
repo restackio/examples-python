@@ -11,7 +11,6 @@ class WorkflowInputParams(BaseModel):
 class MessageSchema(BaseModel):
     message: str = Field(..., description="The message to greet the person")
 
-# This workflow uses the OpenAI function to greet a person
 @workflow.defn(name="OpenaiGreetWorkflow")
 class OpenaiGreetWorkflow:
     @workflow.run
