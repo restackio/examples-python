@@ -1,8 +1,10 @@
 [tool.poetry]
-name = "hello"
+name = "openai_greet"
 version = "0.0.1"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "A simple example to greet a person using OpenAI"
+authors = [
+    "Restack Team <service@restack.io>",
+]
 readme = "README.md"
 packages = [{include = "src"}]
 
