@@ -5,6 +5,8 @@ This repository contains various examples demonstrating how to use the Restack A
 ## Examples
 
 1. [Get Started](examples/get-started/README.md) - A simple example to help you get started with the Restack AI SDK.
+2. [OpenAI Greet](examples/openai_greet/README.md) - A simple example to greet a person using OpenAI.
+3. [Gemini Generate Content](examples/gemini_generate_content/README.md) - A simple example to generate content using Gemini.
 
 ## Prerequisites
 
@@ -23,7 +25,7 @@ This repository contains various examples demonstrating how to use the Restack A
 2. Navigate to the example you want to explore:
 
    ```bash
-   cd examples/get-started
+   cd examples-python/examples/<example-name>
    ```
 
 3. Install dependencies using Poetry:
