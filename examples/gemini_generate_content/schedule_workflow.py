@@ -9,9 +9,9 @@ class InputParams(BaseModel):
 async def main():
     client = Restack()
 
-    workflow_id = f"{int(time.time() * 1000)}-GeminiGenerateContentWorkflow"
+    workflow_id = f"{int(time.time() * 1000)}-GeminiGenerateOppositeWorkflow"
     runId = await client.schedule_workflow(
-        workflow_name="GeminiGenerateContentWorkflow",
+        workflow_name="GeminiGenerateOppositeWorkflow",
         workflow_id=workflow_id,
         input=InputParams(user_content="The opposite of hot is")
     )
