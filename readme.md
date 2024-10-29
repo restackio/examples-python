@@ -25,7 +25,7 @@ This repository contains various examples demonstrating how to use the Restack A
 2. Navigate to the example you want to explore:
 
    ```bash
-   cd examples/get-started
+   cd examples-python/examples/<example-name>
    ```
 
 3. Install dependencies using Poetry:
