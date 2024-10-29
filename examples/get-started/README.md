@@ -10,23 +10,29 @@ This repository contains a simple example project to help you get started with t
 
 ## Usage
 
-1. Run Restack services with Docker:
+1. Run Restack local engine with Docker:
    ```bash
    docker run -d --pull always --name studio -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/engine:main
    ```
 
-2. Clone this repository:
+2. Open the web UI to see the workflows:
+
    ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python
+   http://localhost:5233
    ```
 
-3. Install dependencies using Poetry:
+3. Clone this repository:
+   ```bash
+   git clone https://github.com/restackio/examples-python
+   cd examples-python/examples/get-started
+   ```
+
+4. Install dependencies using Poetry:
    ```bash
    poetry install
    ```
 
-4. Run the services:
+5. Run the services:
 
    ```bash
    poetry run services
@@ -34,7 +40,7 @@ This repository contains a simple example project to help you get started with t
 
    This will start the Restack service with the defined workflows and functions.
 
-5. In a new terminal, schedule the workflow:
+6. In a new terminal, schedule the workflow:
 
    ```bash
    poetry run schedule
