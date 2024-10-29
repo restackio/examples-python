@@ -11,7 +11,7 @@
 1. Clone this repository:
    ```bash
    git clone https://github.com/restackio/examples-python
-   cd gemini_generate_content
+   cd examples_python/examples/gemini_generate_content
    ```
 
 2. Install dependencies using Poetry:
