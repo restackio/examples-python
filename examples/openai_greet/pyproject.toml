@@ -9,10 +9,10 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 pydantic = "^2.9.2"
-restack-openai = "^0.0.9"
-restack-ai = "^0.0.17"
+restack-openai = "^0.0.11"
+restack-ai = "^0.0.19"
 
 
 [build-system]
