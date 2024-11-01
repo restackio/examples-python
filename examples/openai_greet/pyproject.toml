@@ -11,8 +11,8 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 pydantic = "^2.9.2"
-restack-openai = "^0.0.12"
-restack-ai = "^0.0.20"
+restack-openai = "^0.0.13"
+restack-ai = "^0.0.21"
 
 
 [build-system]
