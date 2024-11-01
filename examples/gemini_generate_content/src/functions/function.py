@@ -1,6 +1,6 @@
 from restack_ai.function import function
 from pydantic import BaseModel
-from restack_integrations_gemini import gemini_generate_content, GeminiGenerateContentInput
+from restack_google_gemini import gemini_generate_content, GeminiGenerateContentInput
 import os
 
 class FunctionInputParams(BaseModel):

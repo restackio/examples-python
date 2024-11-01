@@ -5,10 +5,10 @@ from src.workflows.workflow import GreetingWorkflow
 
 async def main():
 
-    await client.start_service({
-        "workflows": [GreetingWorkflow],
-        "functions": [welcome, goodbye]
-    })
+    await client.start_service(
+        workflows= [GreetingWorkflow],
+        functions= [welcome, goodbye]
+    )
 
 def run_services():
     asyncio.run(main())

@@ -1,6 +1,6 @@
 from restack_ai.function import function
 from pydantic import BaseModel
-from restack_integrations_openai import openai_chat_completion_base, OpenAIChatInput
+from restack_openai import openai_chat_completion_base, OpenAIChatInput
 import os
 
 class FunctionInputParams(BaseModel):
