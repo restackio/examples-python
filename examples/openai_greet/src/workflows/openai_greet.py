@@ -4,6 +4,7 @@ from datetime import timedelta
 
 with workflow_import():
     from src.functions.function import openai_greet, FunctionInputParams
+    from restack_openai.task_queue import openai_task_queue
 
 class WorkflowInputParams(BaseModel):
     name: str

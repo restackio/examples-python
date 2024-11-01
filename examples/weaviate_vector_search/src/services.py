@@ -7,10 +7,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 async def main():
-    await restack_client.start_service({
-        "workflows": [seed_workflow, search_workflow],
-        "functions": [seed_database, vector_search]
-    })
+    await restack_client.start_service(
+        workflows= [seed_workflow, search_workflow],
+        functions= [seed_database, vector_search]
+    )
 
 def run_services():
     asyncio.run(main())
