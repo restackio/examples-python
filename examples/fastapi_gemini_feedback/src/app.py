@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from restack_ai import Restack
 import time
 
+import uvicorn
+
 app = FastAPI()
 
 
@@ -60,3 +62,9 @@ async def send_event_end():
         event_name="end"
     )
     return
+
+def run_app():
+    uvicorn.run("src.app:app", host="0.0.0.0", port=5000, reload=True)
+
+if __name__ == '__main__':
+    run_app()
