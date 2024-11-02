@@ -51,10 +51,10 @@
 7. In a new terminal, run flask app:
 
    ```bash
-   poetry run app
+   poetry run flask
    ```
 
-8. POST to `http://localhost:5000/api/schedule` with the following JSON body:
+8. POST to `http://127.0.0.1:5000/api/schedule` with the following JSON body:
 
    ```json
    {
