@@ -13,7 +13,8 @@ python = "^3.9"
 pydantic = "^2.9.2"
 restack-ai = "^0.0.21"
 restack-google-gemini = "^0.0.23"
-flask = "^3.0.3"
+flask = { version = "^3.0.3", extras = ["async"] }
+flask-cors = "^5.0.0"
 
 [build-system]
 requires = ["poetry-core"]
