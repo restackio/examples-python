@@ -1,0 +1,4 @@
+.scanignore
+*.lock
+*.pyc
+__pycache__/*

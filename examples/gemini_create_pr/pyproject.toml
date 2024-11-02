@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "gemini_create_pr"
+version = "0.0.1"
+description = "A simple example to create a PR using Google Gemini"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.9.7 || >3.9.7,<4.0"
+gitpython = "^3.1.43"
+streamlit = "^1.39.0"
+restack-ai = "^0.0.21"
+restack-google-gemini = "^0.0.23"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+services = "src.services:run_services"
+schedule = "schedule_workflow:run_schedule_workflow"
