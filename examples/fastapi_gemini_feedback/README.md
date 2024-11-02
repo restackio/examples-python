@@ -25,7 +25,7 @@
 
    ```bash
    git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/flask_gemini
+   cd examples-python/examples/fastapi_gemini_feedback
    ```
 
 4. Install dependencies using Poetry:
@@ -51,7 +51,7 @@
 7. In a new terminal, run flask app:
 
    ```bash
-   poetry run flask
+   poetry run app
    ```
 
 8. POST to `http://127.0.0.1:5000/api/schedule` with the following JSON body:
@@ -63,6 +63,18 @@
    ```
 
    This will schedule the `GeminiGenerateWorkflow` and print the result.
+
+9. POST to `http://127.0.0.1:5000/api/event/feedback` with the following JSON body:
+
+   ```json
+   {
+     "feedback": "The story is too long"
+   }
+   ```
+
+   This will send an event to the `GeminiGenerateWorkflow` to update the workflow state with the feedback.
+
+10. POST to `http://127.0.0.1:5000/api/event/end` to end the workflow.
 
 ## Project Structure
 
