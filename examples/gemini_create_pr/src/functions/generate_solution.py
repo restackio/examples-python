@@ -1,5 +1,3 @@
-from typing import Any
-from dataclasses import dataclass
 from restack_ai.function import function
 from restack_google_gemini import (
     gemini_get_history,
@@ -9,8 +7,12 @@ from restack_google_gemini import (
     gemini_send_message,
     GeminiSendMessageInput
 )
+from typing import Any
+from dataclasses import dataclass
 import os
 import json
+
+from src.functions.util import read_repostitory_scan
 
 @dataclass
 class FunctionInputParams:
@@ -28,29 +30,25 @@ class GeminiGenerateContentResponse:
     files_to_create_or_update: list[FilesToCreateOrUpdate]
 
 @dataclass
-class GeminiGenerateSolutionResponse:
+class FunctionOutputParams:
     files_to_create_or_update: list[FilesToCreateOrUpdate]
     chat_history: list[Any]
 
-def read_repostitory_scan(file_path: str):
-    """
-    Reads the repository scan file and returns its contents as a string.
-    
-    Args:
-        file_path (str): Path to the scan file (default: repository_contents.txt)
-    
-    Returns:
-        str: The contents of the scan file
-    """
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            return f.read()
-    except Exception as e:
-        print(f"Error reading scan file: {str(e)}")
-        return ""
 
 @function.defn(name="GenerateSolution")
-async def generate_solution(input: FunctionInputParams) -> GeminiGenerateSolutionResponse:
+async def generate_solution(input: FunctionInputParams) -> FunctionOutputParams:
+    """Generates solution files based on user input and repository context.
+
+    Uses Gemini AI to analyze the repository contents and user requirements,
+    then generates or updates necessary files with complete content.
+
+    Args:
+        input (FunctionInputParams): Contains user_content, chat_history, and optional repo_contents_file_path
+
+    Returns:
+        FunctionOutputParams: Contains list of files to create/update and updated chat history
+    """
+
     chat_rule = """
         Generate a solution following these specific guidelines:
 
@@ -92,86 +90,40 @@ async def generate_solution(input: FunctionInputParams) -> GeminiGenerateSolutio
         - Preserve existing code structure when updating files
     """
 
-    generation_config = {
-        "response_mime_type": "application/json",
-        "response_schema": GeminiGenerateContentResponse
-    }
-
     if len(input.chat_history) == 0:
         content = read_repostitory_scan(input.repo_contents_file_path)
+        prompt = f"This is my code repository:\n{content}\n\nThis is my new current task:\n{input.user_content}\n\n{chat_rule}"
+    else:
+        prompt = f"This is my feedback:\n{input.user_content}\n\n{chat_rule}"
 
-        prompt = f"""
-        This is my code repository:
-        {content}
-
-        This is my new current task:
-        {input.user_content}
-
-        {chat_rule}
-        """
-
-        gemini_chat = gemini_start_chat(
-            GeminiStartChatInput(
-                model="gemini-1.5-flash",
-                api_key=os.environ.get("GEMINI_API_KEY"),
-                generation_config=generation_config,
-                history=input.chat_history
-            )
+    
+    gemini_chat = gemini_start_chat(
+        GeminiStartChatInput(
+            model="gemini-1.5-flash",
+            api_key=os.environ.get("GEMINI_API_KEY"),
+            generation_config={
+                "response_mime_type": "application/json",
+                "response_schema": GeminiGenerateContentResponse
+            },
+            history=input.chat_history
         )
+    )
 
-        gemini_send_message_response = gemini_send_message(
-            GeminiSendMessageInput(
-                user_content=prompt,
-                chat=gemini_chat
-            )
+    gemini_send_message_response = gemini_send_message(
+        GeminiSendMessageInput(
+            user_content=prompt,
+            chat=gemini_chat
         )
+    )
 
-        gemini_get_history_response = gemini_get_history(
-            GeminiGetHistoryInput(
-                chat=gemini_chat
-            )
+    gemini_get_history_response = gemini_get_history(
+        GeminiGetHistoryInput(
+            chat=gemini_chat
         )
-
-        response = json.loads(gemini_send_message_response.text)
+    )
         
-        return GeminiGenerateSolutionResponse(
-            files_to_create_or_update=response['files_to_create_or_update'],
-            chat_history=gemini_get_history_response
-        )
-
-    elif len(input.chat_history) > 0:
-        prompt = f"""
-        This is my feedback:
-        {input.user_content}
-
-        {chat_rule}
-        """
-
-        gemini_chat = gemini_start_chat(
-            GeminiStartChatInput(
-                model="gemini-1.5-flash",
-                api_key=os.environ.get("GEMINI_API_KEY"),
-                generation_config=generation_config,
-                history=input.chat_history
-            )
-        )
-
-        gemini_send_message_response = gemini_send_message(
-            GeminiSendMessageInput(
-                user_content=prompt,
-                chat=gemini_chat
-            )
-        )
-
-        gemini_get_history_response = gemini_get_history(
-            GeminiGetHistoryInput(
-                chat=gemini_chat
-            )
-        )
-
-        response = json.loads(gemini_send_message_response.text)
-        return GeminiGenerateSolutionResponse(
-            files_to_create_or_update=response['files_to_create_or_update'],
-            chat_history=gemini_get_history_response
-        )
+    return FunctionOutputParams(
+        files_to_create_or_update=json.loads(gemini_send_message_response.text)['files_to_create_or_update'],
+        chat_history=gemini_get_history_response
+    )
 

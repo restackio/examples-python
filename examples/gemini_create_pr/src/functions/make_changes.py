@@ -13,14 +13,19 @@ class FunctionInputParams:
 
 @function.defn(name="MakeChanges")
 async def make_changes(input: FunctionInputParams):
-    """
-    Creates or updates files based on the generated solution.
-    
+    """Creates or updates files in the repository with provided content.
+
+    This function:
+    1. Creates any necessary directories in the file path
+    2. Writes or overwrites files with the provided content
+    3. Uses UTF-8 encoding for file operations
+
     Args:
-        input: FunctionInputParams containing files to create/update and repository path
-    
+        input (FunctionInputParams): Contains list of files to create/update, 
+            where each file has a file_path and content
+
     Returns:
-        list[str]: List of paths to files that were created or updated
+        list[str]: List of paths to all modified files
     """
     modified_files = []
 
@@ -31,9 +36,6 @@ async def make_changes(input: FunctionInputParams):
                 f.write(file.content)
             
             modified_files.append(file.file_path)
-            print(f"Created/Updated file: {file.file_path}")
-        
-        print(f"Modified files: {modified_files}")
         return modified_files
         
     except Exception as e:

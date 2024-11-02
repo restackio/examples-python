@@ -1,6 +1,4 @@
 from restack_ai.function import function
-from typing import Any
-from dataclasses import dataclass
 from restack_google_gemini import (
     gemini_get_history,
     GeminiGetHistoryInput,
@@ -9,14 +7,10 @@ from restack_google_gemini import (
     gemini_send_message,
     GeminiSendMessageInput
 )
+from typing import Any
+from dataclasses import dataclass
 import os
 import json
-
-@dataclass
-class FunctionInputParams:
-    repo_path: str
-    chat_history: list[Any]
-    user_content: str | None = None
 
 @dataclass
 class PrInfo:
@@ -27,6 +21,12 @@ class PrInfo:
 @dataclass
 class GeminiGenerateContentResponse:
     pr_info: PrInfo
+
+@dataclass
+class FunctionInputParams:
+    repo_path: str
+    chat_history: list[Any]
+    user_content: str | None = None
 
 @dataclass
 class FunctionOutputParams:
@@ -65,29 +65,16 @@ async def generate_pr_info(input: FunctionInputParams):
         - Ensure each field is properly formatted as a valid JSON string
     """
 
-    prompt = ""
-    if input.user_content is None:
-        prompt = f"""
-        {chat_rule}
-        """
-    else:
-        prompt = f"""
-        This is my feedback:
-        {input.user_content}
-
-        {chat_rule}
-        """
-
-    generation_config = {
-        "response_mime_type": "application/json",
-        "response_schema": GeminiGenerateContentResponse
-    }
+    prompt = f"This is my feedback:\n{input.user_content}\n\n{chat_rule}" if input.user_content else chat_rule
 
     gemini_chat = gemini_start_chat(
         GeminiStartChatInput(
             model="gemini-1.5-flash",
             api_key=os.environ.get("GEMINI_API_KEY"),
-            generation_config=generation_config,
+            generation_config={
+                "response_mime_type": "application/json",
+                "response_schema": GeminiGenerateContentResponse
+            },
             history=input.chat_history
         )
     )
@@ -105,8 +92,7 @@ async def generate_pr_info(input: FunctionInputParams):
         )
     )
 
-    response = json.loads(gemini_send_message_response.text)
     return FunctionOutputParams(
-        pr_info=response['pr_info'],
+        pr_info=json.loads(gemini_send_message_response.text)['pr_info'], 
         chat_history=gemini_get_history_response
     )
