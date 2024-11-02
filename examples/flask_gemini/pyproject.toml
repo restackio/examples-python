@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "flask_gemini"
+version = "0.0.1"
+description = "A simple example to generate content using Google Gemini"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^2.9.2"
+restack-ai = "^0.0.21"
+restack-google-gemini = "^0.0.23"
+flask = "^3.0.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+services = "src.services:run_services"
+schedule = "schedule_workflow:run_schedule_workflow"
+flask = "src.app:run_flask"
