@@ -2,12 +2,19 @@ import time
 from flask import Flask, jsonify, request
 from pydantic import BaseModel
 from restack_ai import Restack
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app)
 
 # Example route for the home page
 @app.route('/')
 def home():
     return "Welcome to the Flask App!"
+
+@app.route('/test', methods=['GET', 'POST'])
+def test_route():
+    return 'This is a test route', 200
 
 class InputParams(BaseModel):
     user_content: str
@@ -17,6 +24,8 @@ class InputParams(BaseModel):
 async def schedule_workflow():
     if request.is_json:
         data = request.get_json()
+
+        print('data', data)
         
         client = Restack()
 
@@ -26,6 +35,8 @@ async def schedule_workflow():
             workflow_id=workflow_id,
             input=InputParams(user_content=data.user_content)
         )
+
+        print(f"Scheduled workflow with ID: {workflow_id}")
 
         result = await client.get_workflow_result(
             workflow_id=workflow_id,
@@ -37,5 +48,8 @@ async def schedule_workflow():
         return jsonify({'error': 'Request must be JSON'}), 400
 
 
-if __name__ == '__main__':
+def run_flask():
     app.run(debug=True) 
+
+if __name__ == '__main__':
+    run_flask()
