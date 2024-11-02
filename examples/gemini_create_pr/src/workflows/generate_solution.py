@@ -17,30 +17,23 @@ class WorkflowInputParams:
 class GenerateSolutionWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams):
-        generate_solution_response = None
-
-        print(f"Input history: {input.chat_history}")
-
+        repo_contents_file = None
         if len(input.chat_history) == 0:
-            scan_repository_response = await workflow.step(
+            scan_result = await workflow.step(
                 scan_repository, 
                 ScanRepositoryFunctionInputParams(repo_path=input.repo_path), 
                 start_to_close_timeout=timedelta(seconds=10)
             )
+            repo_contents_file = scan_result.output_file
 
-            generate_solution_response = await workflow.step(
-                generate_solution, 
-                GenerateSolutionFunctionInputParams(repo_contents_file_path=scan_repository_response.output_file, user_content=input.user_content, chat_history=input.chat_history), 
-                start_to_close_timeout=timedelta(seconds=10)
-            )
+        solution = await workflow.step(
+            generate_solution, 
+            GenerateSolutionFunctionInputParams(
+                repo_contents_file_path=repo_contents_file,
+                user_content=input.user_content,
+                chat_history=input.chat_history
+            ), 
+            start_to_close_timeout=timedelta(seconds=10)
+        )
 
-        if len(input.chat_history) > 0:
-            generate_solution_response = await workflow.step(
-                generate_solution, 
-                GenerateSolutionFunctionInputParams(repo_contents_file_path=None, user_content=input.user_content, chat_history=input.chat_history), 
-                start_to_close_timeout=timedelta(seconds=10)
-            )
-
-        print(f"Generate solution response: {generate_solution_response.chat_history}")
-
-        return generate_solution_response
+        return solution
