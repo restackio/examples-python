@@ -13,4 +13,4 @@ class GeminiGenerateWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams):
         log.info(input)
-        return await workflow.step(gemini_generate, FunctionInputParams(user_content=input.user_content), start_to_close_timeout=timedelta(seconds=10))
+        return await workflow.step(gemini_generate, FunctionInputParams(user_content=input.user_content), start_to_close_timeout=timedelta(seconds=120))
