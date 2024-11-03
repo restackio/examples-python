@@ -11,10 +11,10 @@ with temporal_workflow.unsafe.imports_passed_through():
 class seed_workflow:
     @workflow.run
     async def run(self):
-        return await workflow.step(seed_database, start_to_close_timeout=timedelta(seconds=10))
+        return await workflow.step(seed_database, start_to_close_timeout=timedelta(seconds=120))
 
 @workflow.defn(name="search_workflow")
 class search_workflow:
     @workflow.run
     async def run(self):
-        return await workflow.step(vector_search, start_to_close_timeout=timedelta(seconds=10))
+        return await workflow.step(vector_search, start_to_close_timeout=timedelta(seconds=120))
