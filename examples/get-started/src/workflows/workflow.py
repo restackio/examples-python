@@ -7,8 +7,8 @@ from src.functions.function import welcome, goodbye, InputParams
 class GreetingWorkflow:
     @workflow.run
     async def run(self):
-        return await workflow.step(welcome, InputParams("world"), start_to_close_timeout=timedelta(seconds=10))
+        return await workflow.step(welcome, InputParams("world"), start_to_close_timeout=timedelta(seconds=120))
     async def goodbye(self):
-        return await workflow.step(goodbye, InputParams("world"), start_to_close_timeout=timedelta(seconds=10))
+        return await workflow.step(goodbye, InputParams("world"), start_to_close_timeout=timedelta(seconds=120))
 
 
