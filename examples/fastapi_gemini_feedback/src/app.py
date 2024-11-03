@@ -38,7 +38,7 @@ async def schedule_workflow(data: InputParams):
 
     return {
         "workflow_id": workflow_id,
-        "runId": run_id
+        "run_id": run_id
     }
 
 class FeedbackParams(BaseModel):
@@ -50,23 +50,28 @@ class FeedbackParams(BaseModel):
 async def send_event_feedback(data: FeedbackParams):
     client = Restack()
 
-    print(data)
+    print(f"event feedback: {data}")
 
     await client.send_workflow_event(
         workflow_id=data.workflow_id,
         run_id=data.run_id,
-        event_name="feedback",
+        event_name="event_feedback",
         event_input={"feedback": data.feedback}
     )
     return
 
+class EndParams(BaseModel):
+    workflow_id: str
+    run_id: str
+
 @app.post("/api/event/end")
-async def send_event_end():
+async def send_event_end(data: EndParams):
     client = Restack()
 
     await client.send_workflow_event(
-        workflow_name="GeminiGenerateWorkflow",
-        event_name="end"
+        workflow_id=data.workflow_id,
+        run_id=data.run_id,
+        event_name="event_end"
     )
     return
 
