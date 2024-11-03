@@ -15,6 +15,7 @@ restack-ai = "^0.0.21"
 restack-google-gemini = "^0.0.23"
 fastapi = "^0.115.4"
 click = "^8.1.7"
+anyio = "^4.6.2.post1"
 
 [build-system]
 requires = ["poetry-core"]
@@ -22,5 +23,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 services = "src.services:run_services"
-schedule = "schedule_workflow:run_schedule_workflow"
 app = "src.app:run_app"
