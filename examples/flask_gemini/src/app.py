@@ -26,6 +26,8 @@ async def schedule_workflow():
         data = request.get_json()
 
         print('data', data)
+
+        user_content = data.get('user_content', 'this is a story')
         
         client = Restack()
 
@@ -33,7 +35,7 @@ async def schedule_workflow():
         runId = await client.schedule_workflow(
             workflow_name="GeminiGenerateWorkflow",
             workflow_id=workflow_id,
-            input=InputParams(user_content=data.user_content)
+            input=InputParams(user_content=user_content)
         )
 
         print(f"Scheduled workflow with ID: {workflow_id}")
