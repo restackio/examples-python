@@ -1,4 +1,4 @@
-# Restack AI SDK - Flask + Gemini Generate Content Example
+# Restack AI SDK - FastAPI + Gemini Generate Content Example
 
 ## Prerequisites
 

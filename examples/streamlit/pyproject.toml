@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.12"
 restack-ai = "^0.0.21"
 streamlit = "^1.39.0"
+blinker = "^1.8.2"
 
 [build-system]
 requires = ["poetry-core"]
