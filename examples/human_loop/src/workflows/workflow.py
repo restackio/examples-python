@@ -19,7 +19,7 @@ class HumanLoopWorkflow:
     @workflow.event
     async def event_feedback(self, feedback: Feedback) -> Feedback:
         log.info(f"Received feedback: {feedback.feedback}")
-        return await workflow.step(feedback_function, InputFeedback(feedback.feedback), start_to_close_timeout=timedelta(seconds=10))
+        return await workflow.step(feedback_function, InputFeedback(feedback.feedback), start_to_close_timeout=timedelta(seconds=120))
     
     @workflow.event
     async def event_end(self, end: End) -> End:
@@ -32,6 +32,6 @@ class HumanLoopWorkflow:
         await workflow.condition(
             lambda: self.end_workflow
         )
-        return await workflow.step(goodbye, start_to_close_timeout=timedelta(seconds=10))
+        return await workflow.step(goodbye, start_to_close_timeout=timedelta(seconds=120))
 
 

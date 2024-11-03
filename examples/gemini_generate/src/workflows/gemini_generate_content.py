@@ -13,4 +13,4 @@ class WorkflowInputParams(BaseModel):
 class GeminiGenerateOppositeWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams):
-        return await workflow.step(gemini_generate_opposite, FunctionInputParams(user_content=input.user_content), task_queue=gemini_task_queue, start_to_close_timeout=timedelta(seconds=10))
+        return await workflow.step(gemini_generate_opposite, FunctionInputParams(user_content=input.user_content), task_queue=gemini_task_queue, start_to_close_timeout=timedelta(seconds=120))
