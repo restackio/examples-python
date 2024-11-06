@@ -1,68 +1,69 @@
-# Restack AI SDK with Weaviate - Get Started Example
-
-This repository contains a simple example project to help you get started with the Restack AI SDK and Weaviate. It demonstrates how to set up a basic workflow and functions using the Restack AI SDK to interact with a Weaviate vector database.
-
-The example is a follow along of <https://weaviate.io/developers/weaviate/starter-guides/custom-vectors> and includes:
-
-- Setting up a Weaviate client
-- Seeding a Weaviate database with Jeopardy questions
-- Performing vector searches using Restack AI functions
+# Restack AI SDK - Flask + TogetherAI with LlamaIndex Example
 
 ## Prerequisites
 
 - Python 3.9 or higher
 - Poetry (for dependency management)
-
-## Installation
-
-2. Install dependencies using Poetry:
-
-   ```bash
-   poetry install
-   ```
-
-To use this project, you need to have access to Weaviate Cloud. Follow these steps to obtain your `WEAVIATE_URL` and `WEAVIATE_API_KEY`:
-
-1. **Sign up for Weaviate Cloud**: If you haven't already, create an account on [Weaviate Cloud](https://console.weaviate.cloud).
-2. **Create a Weaviate Instance**: Once logged in, create a new Weaviate instance.
-3. **Retrieve Credentials**: After your instance is set up, navigate to the instance details page to find your `WEAVIATE_URL` and `WEAVIATE_API_KEY`.
-
-Add these credentials to your `.env` file.
+- Docker (for running the Restack services)
+- Active [Together AI](https://together.ai) account with API key
 
 ## Usage
 
-### Start Restack Engine
-
-Using `docker run`:
+1. Run Restack local engine with Docker:
 
    ```bash
    docker run -d --pull always --name studio -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/engine:main
    ```
 
-### Running the Services
+2. Open the Web UI to see the workflows:
 
-To start the Restack services, run:
+   ```bash
+   http://localhost:5233
+   ```
 
-```bash
-poetry run services
-```
+3. Clone this repository:
 
-This will start the Restack service with the defined workflows and functions.
+   ```bash
+   git clone https://github.com/restackio/examples-python
+   cd examples-python/examples/flask_togetherai_llamaindex
+   ```
 
-### Scheduling Workflows
+4. Install dependencies using Poetry:
 
-To schedule and run the example workflows, use:
+   ```bash
+   poetry install
+   ```
 
-```bash
-poetry run schedule-seed-workflow
-```
+5. Set up your environment variables:
 
-This will schedule the "seed_workflow" and print the result.
+   Copy `.env.example` to `.env` and add your Together AI API key:
 
-To run the search workflow, use:
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your TOGETHER_API_KEY
+   ```
 
-```bash
-poetry run schedule-search-workflow
-```
+6. Run the services:
 
-This will schedule and execute the search workflow, allowing you to perform searches on your Weaviate instance.
+   ```bash
+   poetry run services
+   ```
+
+   This will start the Restack service with the defined workflows and functions.
+
+7. In a new terminal, run flask app:
+
+   ```bash
+   poetry run flask
+   ```
+
+8. Test your Api a POST request using curl:
+
+   ```bash
+   curl -X POST \
+     http://localhost:5000/api/schedule \
+     -H "Content-Type: application/json" \
+     -d '{"prompt": "Whats a cow?"}'
+   ```
+
+   This will schedule the Llamaindex workflow with simple prompt and return the result.

@@ -2,7 +2,7 @@
 [tool.poetry]
 name = "flask_togetherai_llamaindex"
 version = "0.0.1"
-description = "A simple example to get started with the restack-ai SDK"
+description = "A simple example to demonstrate usage TogetherAI and LlamaIndex"
 authors = [
     "Restack Team <service@restack.io>",
 ]
@@ -15,6 +15,8 @@ restack-ai = "^0.0.21"
 python-dotenv = "0.19.2"
 llama-index = "^0.11.22"
 llama-index-llms-together = "^0.2.0"
+flask = { version = "^3.0.3", extras = ["async"] }
+flask-cors = "^5.0.0"
 
 # Build system configuration
 [build-system]
@@ -24,4 +26,4 @@ build-backend = "poetry.core.masonry.api"
 # CLI command configuration
 [tool.poetry.scripts]
 services = "src.services:run_services"
-schedule-llm-complete-workflow = "schedule_workflow:run_schedule_llm_complete_workflow"
+flask = "src.app:run_flask"

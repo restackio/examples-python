@@ -8,6 +8,5 @@ with workflow_import():
 @workflow.defn(name="llm_complete_workflow")
 class llm_complete_workflow:
     @workflow.run
-    async def run(self):
-        log.info("Completing prompt")
-        return await workflow.step(llm_complete, start_to_close_timeout=timedelta(seconds=120))
+    async def run(self, input: str):
+        return await workflow.step(llm_complete, input, start_to_close_timeout=timedelta(seconds=120))

@@ -11,7 +11,8 @@ async def schedule_workflow(workflow_name):
     workflow_id = f"{int(time.time() * 1000)}-{workflow_name}"
     runId = await client.schedule_workflow(
         workflow_name=workflow_name,
-        workflow_id=workflow_id
+        workflow_id=workflow_id,
+        input='test'
     )
     print("Scheduled workflow", runId)
 
