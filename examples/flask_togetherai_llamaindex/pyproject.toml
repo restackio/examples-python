@@ -1,0 +1,29 @@
+# Project metadata
+[tool.poetry]
+name = "flask_togetherai_llamaindex"
+version = "0.0.1"
+description = "A simple example to demonstrate usage TogetherAI and LlamaIndex"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+restack-ai = "^0.0.21"
+python-dotenv = "0.19.2"
+llama-index = "^0.11.22"
+llama-index-llms-together = "^0.2.0"
+flask = { version = "^3.0.3", extras = ["async"] }
+flask-cors = "^5.0.0"
+
+# Build system configuration
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# CLI command configuration
+[tool.poetry.scripts]
+services = "src.services:run_services"
+flask = "src.app:run_flask"
