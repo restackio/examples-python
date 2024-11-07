@@ -8,7 +8,7 @@ st.title("Restack AI with TogetherAi + LlamaIndex")
 if "user_input" not in st.session_state:
     st.session_state.user_input = ""
 
-user_prompt = st.text_area("Put your prompt here", height=150, key="user_input")
+user_prompt = st.text_area("Ask the pirate any question", height=150, key="user_input")
 
 # Initialize response history in session state
 if "response_history" not in st.session_state:
