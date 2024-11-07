@@ -1,7 +1,8 @@
 import asyncio
 from src.client import client
 from src.functions.function import llm_complete
-from examples.fastapi_togetherai_llama.src.workflows.workflow import llm_complete_workflow
+from src.workflows.workflow import llm_complete_workflow
+
 async def main():
     await client.start_service(
         workflows= [llm_complete_workflow],
