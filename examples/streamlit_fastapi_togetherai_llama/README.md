@@ -59,7 +59,7 @@ The model will act as a pirate and you can send it prompts from the streamlit ui
    poetry run app
    ```
 
-8. Run the streamlit frontend
+8. In a new terminal, run the streamlit frontend
 
    ```bash
    poetry run streamlit run main.py
