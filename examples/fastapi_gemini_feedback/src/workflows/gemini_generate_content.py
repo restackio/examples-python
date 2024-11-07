@@ -3,6 +3,9 @@ from pydantic import BaseModel
 from datetime import timedelta
 from dataclasses import dataclass
 
+with import_functions():
+    from src.functions.function import gemini_generate, FunctionInputParams
+
 @dataclass
 class Feedback:
     feedback: str
@@ -10,9 +13,6 @@ class Feedback:
 @dataclass
 class End:
     end: bool
-
-with import_functions():
-    from src.functions.function import gemini_generate, FunctionInputParams
 
 class WorkflowInputParams(BaseModel):
     user_content: str
