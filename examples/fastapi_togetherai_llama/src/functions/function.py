@@ -18,6 +18,7 @@ async def llm_complete(input: FunctionInputParams):
         )
         messages = [
             ChatMessage(
+                # This is a system prompt that is used to set the behavior of the LLM. You can update this llm_complete function to also accept a system prompt as an input parameter.
                 role=MessageRole.SYSTEM, content="You are a pirate with a colorful personality"
             ),
             ChatMessage(role=MessageRole.USER, content=input.prompt),
