@@ -62,7 +62,7 @@ The model will act as a pirate and you can send it prompts from the streamlit ui
 8. In a new terminal, run the streamlit frontend
 
    ```bash
-   poetry run streamlit run main.py
+   poetry run streamlit run frontend.py
    ```
 
 9. You can test api endpoint without the streamlit UI with:
