@@ -63,7 +63,7 @@
    curl -X POST \
      http://localhost:8000/api/schedule \
      -H "Content-Type: application/json" \
-     -d '{"prompt": "What is heavier a cow or a sheep?"}'
+     -d '{"prompt": "Tell me a short joke"}'
    ```
 
    This will schedule the Llamaindex workflow with simple prompt and return the result.
