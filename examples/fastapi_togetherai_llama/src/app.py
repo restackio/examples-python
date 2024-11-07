@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import time
 from restack_ai import Restack
+import uvicorn
 
 # Define request model
 class PromptRequest(BaseModel):
@@ -46,3 +47,8 @@ async def schedule_workflow(request: PromptRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 # Remove Flask-specific run code since FastAPI uses uvicorn
+def run_app():
+    uvicorn.run("src.app:app", host="0.0.0.0", port=8000, reload=True)
+
+if __name__ == '__main__':
+    run_app()
