@@ -2482,13 +2482,13 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "restack-ai"
-version = "0.0.21"
+version = "0.0.25"
 description = "Restack AI library"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "restack_ai-0.0.21-py3-none-any.whl", hash = "sha256:d50c8fa3d7bb7ce40d1fdf54a3c43d0d2bcb7b339794281d763442e96dc341cc"},
-    {file = "restack_ai-0.0.21.tar.gz", hash = "sha256:a1dc8b0a7fc1ca8ea850af6fe0d2bede9e9d3fd7e549a7252b7e478a5a8171af"},
+    {file = "restack_ai-0.0.25-py3-none-any.whl", hash = "sha256:43893c00ba49915b0e609471dd0a0aacabdf82571034a34b0aa20f711f65c551"},
+    {file = "restack_ai-0.0.25.tar.gz", hash = "sha256:fa532e591e314a786f336a7c26870bf4c4a51810bf99978b80d4c2ae63d16329"},
 ]
 
 [package.dependencies]
@@ -3586,4 +3586,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "953ff955632d0ad2f3b23ffc0e10ff2ddde32102998eaa071dc30898474beb4d"
+content-hash = "f738b2a56a604586023fff6b4cf46ab20811472e0d55c43892ddd770d476f855"
