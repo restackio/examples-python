@@ -1,4 +1,6 @@
-# Restack AI SDK - FastApi + TogetherAI with LlamaIndex Example
+# Restack AI SDK - Streamlit + FastApi + TogetherAI with LlamaIndex Example
+
+The model will act as a pirate and you can send it prompts from the streamlit ui and get responses. This will showcase how a streamlit app can easily communicate to models using a fastapi server with Restack ai library.
 
 ## Prerequisites
 
