@@ -26,11 +26,12 @@ class GeminiGenerateWorkflow:
     @workflow.event
     async def event_feedback(self, feedback: Feedback) -> Feedback:
         log.info(f"Received feedback: {feedback.feedback}")
-        return await workflow.step(gemini_generate, FunctionInputParams(user_content=f"{self.user_content}. Take into account all feedbacks: {feedback.feedback}"), start_to_close_timeout=timedelta(seconds=120))
+        self.feedbacks.append(feedback.feedback)
+        return await workflow.step(gemini_generate, FunctionInputParams(user_content=f"{self.user_content}. Take into account all feedbacks: {self.feedbacks}"), start_to_close_timeout=timedelta(seconds=120))
     
     @workflow.event
     async def event_end(self, end: End) -> End:
-        log.info(f"Received end: {end.end}")
+        log.info(f"Received end")
         self.end_workflow = end.end
         return end
     @workflow.run
