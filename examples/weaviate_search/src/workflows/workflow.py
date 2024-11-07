@@ -1,10 +1,7 @@
 from datetime import timedelta
-from restack_ai.workflow import workflow
-from temporalio import workflow as temporal_workflow
-
-with temporal_workflow.unsafe.imports_passed_through():
+from restack_ai.workflow import workflow, import_functions
+with import_functions():
     from src.functions.seed_database import seed_database
-with temporal_workflow.unsafe.imports_passed_through():
     from src.functions.vector_search import vector_search
 
 @workflow.defn(name="seed_workflow")

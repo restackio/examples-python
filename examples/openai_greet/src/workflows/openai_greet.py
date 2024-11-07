@@ -1,8 +1,8 @@
-from restack_ai.workflow import workflow, workflow_import
+from restack_ai.workflow import workflow, import_functions
 from pydantic import BaseModel, Field
 from datetime import timedelta
 
-with workflow_import():
+with import_functions():
     from src.functions.function import openai_greet, FunctionInputParams
     from restack_openai.task_queue import openai_task_queue
 

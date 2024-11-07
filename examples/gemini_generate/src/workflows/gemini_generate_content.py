@@ -1,8 +1,8 @@
-from restack_ai.workflow import workflow, workflow_import
+from restack_ai.workflow import workflow, import_functions
 from pydantic import BaseModel
 from datetime import timedelta
 
-with workflow_import():
+with import_functions():
     from src.functions.function import gemini_generate_opposite, FunctionInputParams
     from restack_google_gemini.task_queue import gemini_task_queue
 

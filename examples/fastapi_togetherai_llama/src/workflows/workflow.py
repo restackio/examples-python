@@ -1,7 +1,7 @@
 from datetime import timedelta
-from restack_ai.workflow import workflow, workflow_import
+from restack_ai.workflow import workflow, import_functions
 
-with workflow_import():
+with import_functions():
     from src.functions.function import llm_complete, FunctionInputParams
 
 @workflow.defn(name="llm_complete_workflow")
