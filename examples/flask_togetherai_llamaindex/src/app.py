@@ -18,14 +18,12 @@ async def schedule_workflow():
         prompt = request.json.get('prompt')
         client = Restack()
 
-        print(client)
         workflow_id = f"{int(time.time() * 1000)}-llm_complete_workflow"
         runId = await client.schedule_workflow(
             workflow_name="llm_complete_workflow",
             workflow_id=workflow_id,
             input=prompt
         )
-        print("Scheduled workflow", runId)
 
         result = await client.get_workflow_result(
             workflow_id=workflow_id,

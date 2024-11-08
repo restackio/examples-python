@@ -26,8 +26,6 @@ async def schedule_workflow():
     if request.is_json:
         data = request.get_json()
 
-        print('data', data)
-
         user_content = data.get('user_content', 'this is a story')
         
         client = Restack()
@@ -38,8 +36,6 @@ async def schedule_workflow():
             workflow_id=workflow_id,
             input=InputParams(user_content=user_content)
         )
-
-        print(f"Scheduled workflow with ID: {workflow_id}")
 
         result = await client.get_workflow_result(
             workflow_id=workflow_id,

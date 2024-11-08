@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-restack-ai = "^0.0.26"
+restack-ai = "^0.0.27"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"  # Optional: Add if you want to include tests in your example

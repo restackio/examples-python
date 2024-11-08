@@ -1,6 +1,6 @@
 import json
 import requests
-from restack_ai.function import function
+from restack_ai.function import function, log
 import weaviate.classes as wvc
 from src.functions.weaviate_client import get_weaviate_client
 
@@ -37,6 +37,8 @@ async def seed_database() -> str:
 
         questions = client.collections.get("Question")
         questions.data.insert_many(question_objs)    # This uses batching under the hood
+
+        log.info("seed_database function completed")
 
         return "Data has been seeded"
     finally:

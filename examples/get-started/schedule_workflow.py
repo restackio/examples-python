@@ -1,6 +1,6 @@
 import asyncio
 import time
-from restack_ai import Restack, log
+from restack_ai import Restack
 
 async def main():
 
@@ -12,12 +12,10 @@ async def main():
         workflow_id=workflow_id
     )
 
-    result = await client.get_workflow_result(
+    await client.get_workflow_result(
         workflow_id=workflow_id,
         run_id=runId
     )
-
-    log.info("Workflow result", result=result)
 
     exit(0)
 

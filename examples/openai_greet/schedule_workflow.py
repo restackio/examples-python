@@ -17,11 +17,10 @@ async def main():
         input=InputParams(name="Restack AI SDK User")
     )
 
-    result = await client.get_workflow_result(
+    await client.get_workflow_result(
         workflow_id=workflow_id,
         run_id=runId
     )
-    print(result)
 
     exit(0)
 

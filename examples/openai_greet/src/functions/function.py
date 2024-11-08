@@ -1,8 +1,6 @@
-from restack_ai.function import function
-from restack_ai import log
+from restack_ai.function import function, log
 from openai import OpenAI
 from dataclasses import dataclass
-from pydantic import BaseModel
 import os
 
 @dataclass
@@ -19,6 +17,7 @@ class FunctionInputParams:
 
 @function.defn(name="OpenaiGreet")
 async def openai_greet(input: FunctionInputParams) -> str:
+    log.info("openai_greet function started", input=input)
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
     messages = []
@@ -44,5 +43,5 @@ async def openai_greet(input: FunctionInputParams) -> str:
             "type": "json_schema",
         },
     )
-    log.info("Response", response=response)
+    log.info("openai_greet function completed", response=response)
     return response.choices[0].message.content

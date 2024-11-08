@@ -9,8 +9,10 @@ class FunctionInputParams:
 
 @function.defn(name="GeminiGenerate")
 async def gemini_generate(input: FunctionInputParams) -> str:
+    log.info("gemini_generate function started", input=input)
     genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
     model = genai.GenerativeModel("gemini-1.5-flash")
 
     response = model.generate_content(input.user_content)
+    log.info("gemini_generate function completed", response=response.text)
     return response.text

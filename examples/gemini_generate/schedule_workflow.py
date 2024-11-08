@@ -1,6 +1,6 @@
 import asyncio
 import time
-from restack_ai import Restack, log
+from restack_ai import Restack
 from dataclasses import dataclass
 
 @dataclass
@@ -17,12 +17,10 @@ async def main():
         input=InputParams(user_content="The opposite of hot is")
     )
 
-    result = await client.get_workflow_result(
+    await client.get_workflow_result(
         workflow_id=workflow_id,
         run_id=runId
     )
-
-    log.info("Workflow result", result=result)
 
     exit(0)
 
