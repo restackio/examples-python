@@ -1,9 +1,10 @@
 import asyncio
 import time
 from restack_ai import Restack
-from pydantic import BaseModel
+from dataclasses import dataclass
 
-class InputParams(BaseModel):
+@dataclass
+class InputParams:
     name: str
 
 async def main():
