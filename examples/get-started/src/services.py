@@ -1,5 +1,5 @@
 import asyncio
-from src.functions.function import welcome, goodbye
+from src.functions.function import welcome
 from src.client import client
 from src.workflows.workflow import GreetingWorkflow
 
@@ -7,7 +7,7 @@ async def main():
 
     await client.start_service(
         workflows= [GreetingWorkflow],
-        functions= [welcome, goodbye]
+        functions= [welcome]
     )
 
 def run_services():
