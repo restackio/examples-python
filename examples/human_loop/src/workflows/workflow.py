@@ -1,5 +1,6 @@
 from datetime import timedelta
-from restack_ai.workflow import workflow, log, import_functions
+from restack_ai.workflow import workflow, import_functions
+from restack_ai import log
 from dataclasses import dataclass
 
 with import_functions():
@@ -20,12 +21,13 @@ class HumanLoopWorkflow:
         self.feedbacks = []
     @workflow.event
     async def event_feedback(self, feedback: Feedback) -> Feedback:
-        log.info(f"Received feedback: {feedback.feedback}")
-        return await workflow.step(feedback_function, InputFeedback(feedback.feedback), start_to_close_timeout=timedelta(seconds=120))
+        result = await workflow.step(feedback_function, InputFeedback(feedback.feedback), start_to_close_timeout=timedelta(seconds=120))
+        log.info("Received feedback", result=result)
+        return result
     
     @workflow.event
     async def event_end(self, end: End) -> End:
-        log.info(f"Received end: {end.end}")
+        log.info("Received end", end=end)
         self.end_workflow = end.end
         return end
 
@@ -34,6 +36,8 @@ class HumanLoopWorkflow:
         await workflow.condition(
             lambda: self.end_workflow
         )
-        return await workflow.step(goodbye, start_to_close_timeout=timedelta(seconds=120))
+        result = await workflow.step(goodbye, start_to_close_timeout=timedelta(seconds=120))
+        log.info("Workflow ended", result=result)
+        return result
 
 
