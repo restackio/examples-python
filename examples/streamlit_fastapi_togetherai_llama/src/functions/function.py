@@ -20,7 +20,7 @@ async def llm_complete(input: FunctionInputParams):
             raise ValueError("TOGETHER_API_KEY environment variable is required.")
     
         llm = TogetherLLM(
-            model="mistralai/Mixtral-8x7B-Instruct-v0.1", api_key=api_key
+            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo", api_key=api_key
         )
         messages = [
             ChatMessage(

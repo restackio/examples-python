@@ -6,7 +6,7 @@ from llama_index.llms.together import TogetherLLM
 async def llm_complete(prompt) -> str:
     try:
         llm = TogetherLLM(
-            model="mistralai/Mixtral-8x7B-Instruct-v0.1", api_key=os.environ["TOGETHER_API_KEY"]
+            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo", api_key=os.environ["TOGETHER_API_KEY"]
         )
 
         resp = llm.complete(prompt)
