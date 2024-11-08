@@ -13,8 +13,13 @@ class FunctionInputParams(BaseModel):
 @function.defn(name="llm_complete")
 async def llm_complete(input: FunctionInputParams):
     try:
+        api_key = os.getenv("TOGETHER_API_KEY")
+        if not api_key:
+            log.error("TOGETHER_API_KEY environment variable is not set.")
+            raise ValueError("TOGETHER_API_KEY environment variable is required.")
+    
         llm = TogetherLLM(
-            model="mistralai/Mixtral-8x7B-Instruct-v0.1", api_key=os.getenv("TOGETHER_API_KEY")
+            model="mistralai/Mixtral-8x7B-Instruct-v0.1", api_key=api_key
         )
         messages = [
             ChatMessage(

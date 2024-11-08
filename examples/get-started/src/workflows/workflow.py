@@ -1,7 +1,8 @@
 from datetime import timedelta
-from restack_ai.workflow import workflow
+from restack_ai.workflow import workflow, import_functions
 from restack_ai import log
-from src.functions.function import welcome
+with import_functions():
+    from src.functions.function import welcome
 
 @workflow.defn(name="GreetingWorkflow")
 class GreetingWorkflow:

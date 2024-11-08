@@ -1,7 +1,9 @@
 from datetime import timedelta
-from restack_ai.workflow import workflow, log
-from src.functions.function import feedback as feedback_function, goodbye, InputFeedback
+from restack_ai.workflow import workflow, log, import_functions
 from dataclasses import dataclass
+
+with import_functions():
+    from src.functions.function import feedback as feedback_function, goodbye, InputFeedback
 
 @dataclass
 class Feedback:
