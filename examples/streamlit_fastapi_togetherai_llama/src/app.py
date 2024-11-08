@@ -1,12 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from dataclasses import dataclass
 import time
 from restack_ai import Restack
 import uvicorn
 
 # Define request model
-class PromptRequest(BaseModel):
+@dataclass
+class PromptRequest:
     prompt: str
 
 app = FastAPI()

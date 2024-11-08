@@ -10,8 +10,6 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-pydantic = "^2.9.2"
-restack-ai = "^0.0.25"
 fastapi = "^0.115.4"
 llama-index = "^0.11.22"
 llama-index-llms-together = "^0.2.0"
@@ -19,6 +17,7 @@ uvicorn = "^0.32.0"
 python-dotenv = "0.19"
 streamlit = "^1.40.0"
 requests = "^2.32.3"
+restack-ai = "^0.0.26"
 
 [build-system]
 requires = ["poetry-core"]

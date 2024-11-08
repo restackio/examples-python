@@ -1,12 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from restack_ai import log
+from dataclasses import dataclass
 import time
 from restack_ai import Restack
 import uvicorn
 
 # Define request model
-class PromptRequest(BaseModel):
+@dataclass
+class PromptRequest:
     prompt: str
 
 app = FastAPI()
@@ -35,7 +37,7 @@ async def schedule_workflow(request: PromptRequest):
             workflow_id=workflow_id,
             input={"prompt": request.prompt}
         )
-        print("Scheduled workflow", runId)
+        log.info("Scheduled workflow", run_id=runId)
         
         result = await client.get_workflow_result(
             workflow_id=workflow_id,

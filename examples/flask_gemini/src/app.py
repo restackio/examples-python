@@ -1,6 +1,6 @@
 import time
 from flask import Flask, jsonify, request
-from pydantic import BaseModel
+from dataclasses import dataclass
 from restack_ai import Restack
 from flask_cors import CORS
 
@@ -16,7 +16,8 @@ def home():
 def test_route():
     return 'This is a test route', 200
 
-class InputParams(BaseModel):
+@dataclass
+class InputParams:
     user_content: str
     
 # New endpoint to schedule workflow and get back result

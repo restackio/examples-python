@@ -1,18 +1,17 @@
 from restack_ai.function import function
-from pydantic import BaseModel
-from restack_google_gemini import gemini_generate_content, GeminiGenerateContentInput
+from dataclasses import dataclass
+import google.generativeai as genai
+
 import os
 
-class FunctionInputParams(BaseModel):
+@dataclass
+class FunctionInputParams:
     user_content: str
 
 @function.defn(name="GeminiGenerateOpposite")
 async def gemini_generate_opposite(input: FunctionInputParams) -> str:
-    response = gemini_generate_content(
-        GeminiGenerateContentInput(
-            user_content=input.user_content,
-            model="gemini-1.5-flash",
-            api_key=os.environ.get("GEMINI_API_KEY"),
-        )
-    )
-    return response
+    genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+    model = genai.GenerativeModel("gemini-1.5-flash")
+
+    response = model.generate_content(input.user_content)
+    return response.text

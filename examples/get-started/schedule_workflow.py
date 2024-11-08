@@ -1,12 +1,10 @@
 import asyncio
 import time
-from restack_ai import Restack
+from restack_ai import Restack, log
 
 async def main():
 
     client = Restack()
-
-    print(client)
 
     workflow_id = f"{int(time.time() * 1000)}-GreetingWorkflow"
     runId = await client.schedule_workflow(
@@ -18,7 +16,8 @@ async def main():
         workflow_id=workflow_id,
         run_id=runId
     )
-    print(result)
+
+    log.info("Workflow result", result=result)
 
     exit(0)
 
