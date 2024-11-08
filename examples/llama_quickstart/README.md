@@ -8,10 +8,14 @@ The AI workflow will search hacker news based on a query, crawl each project's w
 
 ## Prerequisites
 
-- Python 3.9 or higher
+- Python 3.12 or higher
 - Poetry (for dependency management)
 - Docker (for running the Restack services)
 - Active [Together AI](https://together.ai) account with API key
+
+## YouTube walkthrough
+
+[![Hackathon Walkthrough](https://img.youtube.com/vi/EgiYVXmnalU/0.jpg)](https://www.youtube.com/watch?v=EgiYVXmnalU)
 
 ## Usage
 
@@ -49,7 +53,18 @@ The AI workflow will search hacker news based on a query, crawl each project's w
    # Edit .env and add your TOGETHER_API_KEY
    ```
 
-6. Run the services:
+6. Open poetry shell:
+
+   ```bash
+   poetry shell
+   ```
+
+It will display an interpreter path like
+...caches/pypoetry/virtualenvs/get-started-ORuVhULK-py3.12
+
+When you open a python file in VSCode or other IDEs like Cursor, you can select the interpreter path to use the poetry environment.
+
+7. Run the services:
 
    ```bash
    poetry run services
@@ -57,25 +72,25 @@ The AI workflow will search hacker news based on a query, crawl each project's w
 
    This will start the Restack service with the defined workflows and functions.
 
-7. In a new terminal, run FastAPI app:
+8. In a new terminal, run FastAPI app:
 
    ```bash
    poetry run app
    ```
 
-8. In a new terminal, run the Streamlit frontend
+9. In a new terminal, run the Streamlit frontend
 
    ```bash
    poetry run streamlit run frontend.py
    ```
 
-9. You can test the API endpoint without the Streamlit UI with:
+10. You can test the API endpoint without the Streamlit UI with:
 
-   ```bash
-   curl -X POST \
-     http://localhost:8000/api/schedule \
-     -H "Content-Type: application/json" \
-     -d '{"query": "AI", "count": 5}'
-   ```
+```bash
+curl -X POST \
+  http://localhost:8000/api/schedule \
+  -H "Content-Type: application/json" \
+  -d '{"query": "AI", "count": 5}'
+```
 
-   This will schedule the workflow and return the result.
+This will schedule the workflow and return the result.
