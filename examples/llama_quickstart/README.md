@@ -1,5 +1,7 @@
 # Quickstart Llama Hackathon
 
+[Visit our Docs for more examples and Python/TypeScript documentation](https://docs.restack.io/community/hackathons/08-11-2024-llama-impact)
+
 Restack AI - Streamlit + FastApi + TogetherAI with LlamaIndex Example
 
 The AI workflow will search hacker news based on a query, crawl each project's website, and make summaries for the user.
