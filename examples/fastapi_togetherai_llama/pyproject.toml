@@ -10,13 +10,12 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pydantic = "^2.9.2"
-restack-ai = "^0.0.25"
 fastapi = "^0.115.4"
 llama-index = "^0.11.22"
 llama-index-llms-together = "^0.2.0"
 uvicorn = "^0.32.0"
 python-dotenv = "0.19"
+restack-ai = {path = "/Users/leawn/Code/github.com/restack/sdk/engine/libraries/python"}
 
 [build-system]
 requires = ["poetry-core"]

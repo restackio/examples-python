@@ -2,12 +2,13 @@ from llama_index.llms.together import TogetherLLM
 from restack_ai.function import function, log, FunctionFailure
 from llama_index.core.llms import ChatMessage, MessageRole
 import os
-from pydantic import BaseModel
+from dataclasses import dataclass
 from dotenv import load_dotenv
 
 load_dotenv()
 
-class FunctionInputParams(BaseModel):
+@dataclass
+class FunctionInputParams:
     prompt: str
 
 @function.defn(name="llm_complete")
