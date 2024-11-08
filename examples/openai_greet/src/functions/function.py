@@ -1,8 +1,6 @@
-from restack_ai.function import function
-from restack_ai import log
+from restack_ai.function import function, log
 from openai import OpenAI
 from dataclasses import dataclass
-from pydantic import BaseModel
 import os
 
 @dataclass
@@ -19,30 +17,35 @@ class FunctionInputParams:
 
 @function.defn(name="OpenaiGreet")
 async def openai_greet(input: FunctionInputParams) -> str:
-    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    try:
+        log.info("openai_greet function started", input=input)
+        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-    messages = []
-    if input.system_content:
-        messages.append({"role": "system", "content": input.system_content})
-    messages.append({"role": "user", "content": input.user_content})
+        messages = []
+        if input.system_content:
+            messages.append({"role": "system", "content": input.system_content})
+        messages.append({"role": "user", "content": input.user_content})
 
-    response = client.chat.completions.create(
-        model=input.model or "gpt-4o-mini",
-        messages=messages,
-        response_format={
-            "json_schema": {
-                "name": "greet",
-                "description": "Greet a person",
-                "schema": {
-                    "type": "object",
-                    "properties": {
-                        "message": {"type": "string"}
-                    },
-                    "required": ["message"]
-                }
+        response = client.chat.completions.create(
+            model=input.model or "gpt-4o-mini",
+            messages=messages,
+            response_format={
+                "json_schema": {
+                    "name": "greet",
+                    "description": "Greet a person",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "message": {"type": "string"}
+                        },
+                        "required": ["message"]
+                    }
+                },
+                "type": "json_schema",
             },
-            "type": "json_schema",
-        },
-    )
-    log.info("Response", response=response)
-    return response.choices[0].message.content
+        )
+        log.info("openai_greet function completed", response=response)
+        return response.choices[0].message.content
+    except Exception as e:
+        log.error("openai_greet function failed", error=e)
+        raise e

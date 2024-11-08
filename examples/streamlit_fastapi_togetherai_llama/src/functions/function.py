@@ -1,5 +1,5 @@
 from llama_index.llms.together import TogetherLLM
-from restack_ai.function import function, log, FunctionFailure
+from restack_ai.function import function, log, FunctionFailure, log
 from llama_index.core.llms import ChatMessage, MessageRole
 import os
 from dataclasses import dataclass
@@ -14,6 +14,7 @@ class FunctionInputParams:
 @function.defn(name="llm_complete")
 async def llm_complete(input: FunctionInputParams):
     try:
+        log.info("llm_complete function started", input=input)
         api_key = os.getenv("TOGETHER_API_KEY")
         if not api_key:
             log.error("TOGETHER_API_KEY environment variable is not set.")
@@ -30,8 +31,9 @@ async def llm_complete(input: FunctionInputParams):
             ChatMessage(role=MessageRole.USER, content=input.prompt),
         ]
         resp = llm.chat(messages)
+        log.info("llm_complete function completed", response=resp.message.content)
         return resp.message.content
     except Exception as e:
-        log.error(f"Error interacting with llm: {e}")
-        raise FunctionFailure(f"Error interacting with llm: {e}", non_retryable=True)
+        log.error("llm_complete function failed", error=e)
+        raise e
   

@@ -14,13 +14,11 @@ async def schedule_workflow(workflow_name):
         workflow_id=workflow_id,
         input='test'
     )
-    print("Scheduled workflow", runId)
 
-    result = await client.get_workflow_result(
+    await client.get_workflow_result(
         workflow_id=workflow_id,
         run_id=runId
     )
-    print(result)
 
     exit(0)
 

@@ -1,5 +1,4 @@
-from restack_ai.workflow import workflow, import_functions
-from restack_ai import log
+from restack_ai.workflow import workflow, import_functions, log
 from dataclasses import dataclass
 from datetime import timedelta
 
@@ -14,6 +13,7 @@ class WorkflowInputParams:
 class OpenaiGreetWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams):
+        log.info("OpenaiGreetWorkflow started", input=input)
         user_content = f"Greet this person {input.name}"
 
 
@@ -24,5 +24,5 @@ class OpenaiGreetWorkflow:
             ),
             start_to_close_timeout=timedelta(seconds=120)
         )
-        log.info("Greet message", greet_message=greet_message)
+        log.info("OpenaiGreetWorkflow completed", greet_message=greet_message)
         return greet_message

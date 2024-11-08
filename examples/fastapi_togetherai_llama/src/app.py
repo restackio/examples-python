@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from restack_ai import log
 from dataclasses import dataclass
 import time
 from restack_ai import Restack
@@ -37,7 +36,6 @@ async def schedule_workflow(request: PromptRequest):
             workflow_id=workflow_id,
             input={"prompt": request.prompt}
         )
-        log.info("Scheduled workflow", run_id=runId)
         
         result = await client.get_workflow_result(
             workflow_id=workflow_id,

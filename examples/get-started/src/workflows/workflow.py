@@ -1,6 +1,5 @@
 from datetime import timedelta
-from restack_ai.workflow import workflow, import_functions
-from restack_ai import log
+from restack_ai.workflow import workflow, import_functions, log
 with import_functions():
     from src.functions.function import welcome
 
@@ -8,8 +7,9 @@ with import_functions():
 class GreetingWorkflow:
     @workflow.run
     async def run(self):
+        log.info("GreetingWorkflow started")
         result = await workflow.step(welcome, input="world", start_to_close_timeout=timedelta(seconds=120))
-        log.info("GreetingWorkflow result", result=result)
+        log.info("GreetingWorkflow completed", result=result)
         return result
 
 

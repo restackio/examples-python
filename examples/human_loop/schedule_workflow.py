@@ -1,6 +1,6 @@
 import asyncio
 import time
-from restack_ai import Restack, log
+from restack_ai import Restack
 
 async def main():
 
@@ -12,7 +12,7 @@ async def main():
         workflow_id=workflow_id
     )
 
-    feedback = await client.send_workflow_event(
+    await client.send_workflow_event(
         event_name="event_feedback",
         event_input={
             "feedback": "This is a human feedback"
@@ -20,8 +20,6 @@ async def main():
         workflow_id=workflow_id,
         run_id=runId,
     )
-
-    log.info("Feedback sent", feedback=feedback)
 
     end = await client.send_workflow_event(
         event_name="event_end",
@@ -31,8 +29,6 @@ async def main():
         workflow_id=workflow_id,
         run_id=runId,
     )
-
-    log.info("Workflow ended", end=end)
 
     exit(0)
 

@@ -1,5 +1,4 @@
-from restack_ai.workflow import workflow, import_functions
-from restack_ai import log
+from restack_ai.workflow import workflow, import_functions, log
 from dataclasses import dataclass
 from datetime import timedelta
 
@@ -14,7 +13,7 @@ class WorkflowInputParams:
 class GeminiGenerateWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams):
-        log.info("Workflow input", input=input)
+        log.info("GeminiGenerateWorkflow started", input=input)
         result = await workflow.step(gemini_generate, FunctionInputParams(user_content=input.user_content), start_to_close_timeout=timedelta(seconds=120))
-        log.info("Workflow result", result=result)
+        log.info("GeminiGenerateWorkflow completed", result=result)
         return result

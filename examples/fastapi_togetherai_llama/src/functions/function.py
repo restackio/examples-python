@@ -14,6 +14,7 @@ class FunctionInputParams:
 @function.defn(name="llm_complete")
 async def llm_complete(input: FunctionInputParams):
     try:
+        log.info("llm_complete function started", input=input)
         llm = TogetherLLM(
             model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo", api_key=os.getenv("TOGETHER_API_KEY")
         )
@@ -25,6 +26,7 @@ async def llm_complete(input: FunctionInputParams):
             ChatMessage(role=MessageRole.USER, content=input.prompt),
         ]
         resp = llm.chat(messages)
+        log.info("llm_complete function completed", response=resp.message.content)
         return resp.message.content
     except Exception as e:
         log.error(f"Error interacting with llm: {e}")

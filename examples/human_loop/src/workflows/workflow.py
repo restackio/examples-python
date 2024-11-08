@@ -1,6 +1,5 @@
 from datetime import timedelta
-from restack_ai.workflow import workflow, import_functions
-from restack_ai import log
+from restack_ai.workflow import workflow, import_functions, log
 from dataclasses import dataclass
 
 with import_functions():
