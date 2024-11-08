@@ -1,9 +1,10 @@
 import asyncio
 import time
-from restack_ai import Restack
-from pydantic import BaseModel
+from restack_ai import Restack, log
+from dataclasses import dataclass
 
-class InputParams(BaseModel):
+@dataclass
+class InputParams:
     user_content: str
 
 async def main():
@@ -20,7 +21,8 @@ async def main():
         workflow_id=workflow_id,
         run_id=runId
     )
-    print(result)
+
+    log.info("Workflow result", result=result)
 
     exit(0)
 
