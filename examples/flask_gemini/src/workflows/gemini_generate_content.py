@@ -1,8 +1,8 @@
-from restack_ai.workflow import workflow, workflow_import, log
+from restack_ai.workflow import workflow, import_functions, log
 from pydantic import BaseModel
 from datetime import timedelta
 
-with workflow_import():
+with import_functions():
     from src.functions.function import gemini_generate, FunctionInputParams
 
 class WorkflowInputParams(BaseModel):

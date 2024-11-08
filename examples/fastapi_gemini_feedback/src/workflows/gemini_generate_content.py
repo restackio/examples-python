@@ -1,7 +1,10 @@
-from restack_ai.workflow import workflow, workflow_import, log
+from restack_ai.workflow import workflow, import_functions, log
 from pydantic import BaseModel
 from datetime import timedelta
 from dataclasses import dataclass
+
+with import_functions():
+    from src.functions.function import gemini_generate, FunctionInputParams
 
 @dataclass
 class Feedback:
@@ -10,9 +13,6 @@ class Feedback:
 @dataclass
 class End:
     end: bool
-
-with workflow_import():
-    from src.functions.function import gemini_generate, FunctionInputParams
 
 class WorkflowInputParams(BaseModel):
     user_content: str
