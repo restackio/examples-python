@@ -13,6 +13,10 @@ The AI workflow will search hacker news based on a query, crawl each project's w
 - Docker (for running the Restack services)
 - Active [Together AI](https://together.ai) account with API key
 
+## YouTube walkthrough
+
+[![Hackathon Walkthrough](https://img.youtube.com/vi/EgiYVXmnalU/0.jpg)](https://www.youtube.com/watch?v=EgiYVXmnalU)
+
 ## Usage
 
 1. Run Restack local engine with Docker:
