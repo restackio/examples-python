@@ -16,6 +16,6 @@ async def llm_complete(prompt) -> str:
 
         return resp.text
     except Exception as e:
-        log.error(f"Error seeding database: {e}")
+        log.error("llm_complete function failed", error=e)
         raise e
     

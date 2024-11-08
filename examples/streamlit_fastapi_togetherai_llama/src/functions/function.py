@@ -34,6 +34,6 @@ async def llm_complete(input: FunctionInputParams):
         log.info("llm_complete function completed", response=resp.message.content)
         return resp.message.content
     except Exception as e:
-        log.error(f"Error interacting with llm: {e}")
-        raise FunctionFailure(f"Error interacting with llm: {e}", non_retryable=True)
+        log.error("llm_complete function failed", error=e)
+        raise e
   
