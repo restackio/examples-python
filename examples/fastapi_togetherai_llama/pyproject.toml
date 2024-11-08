@@ -15,7 +15,7 @@ llama-index = "^0.11.22"
 llama-index-llms-together = "^0.2.0"
 uvicorn = "^0.32.0"
 python-dotenv = "0.19"
-restack-ai = {path = "/Users/leawn/Code/github.com/restack/sdk/engine/libraries/python"}
+restack-ai = "^0.0.26"
 
 [build-system]
 requires = ["poetry-core"]
