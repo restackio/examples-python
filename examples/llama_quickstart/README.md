@@ -1,8 +1,8 @@
-# Quiuckstart Llama Hackathon
+# Quickstart Llama Hackathon
 
 Restack AI - Streamlit + FastApi + TogetherAI with LlamaIndex Example
 
-The AI workflow will search hacker news based on a query, crawl each project website, make summaries for the user
+The AI workflow will search hacker news based on a query, crawl each project's website, and make summaries for the user.
 
 ## Prerequisites
 
@@ -55,19 +55,19 @@ The AI workflow will search hacker news based on a query, crawl each project web
 
    This will start the Restack service with the defined workflows and functions.
 
-7. In a new terminal, run fastapi app:
+7. In a new terminal, run FastAPI app:
 
    ```bash
    poetry run app
    ```
 
-8. In a new terminal, run the streamlit frontend
+8. In a new terminal, run the Streamlit frontend
 
    ```bash
    poetry run streamlit run frontend.py
    ```
 
-9. You can test api endpoint without the streamlit UI with:
+9. You can test the API endpoint without the Streamlit UI with:
 
    ```bash
    curl -X POST \
