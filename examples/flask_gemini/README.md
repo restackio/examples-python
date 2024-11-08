@@ -54,12 +54,13 @@
    poetry run flask
    ```
 
-8. POST to `http://127.0.0.1:5000/api/schedule` with the following JSON body:
+8. Test your API with a POST request using curl:
 
-   ```json
-   {
-     "user_content": "Tell me a story"
-   }
+   ```bash
+   curl -X POST \
+     http://127.0.0.1:5000/api/schedule \
+     -H "Content-Type: application/json" \
+     -d '{"user_content": "Tell me a story"}'
    ```
 
    This will schedule the `GeminiGenerateWorkflow` and print the result.
