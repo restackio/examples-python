@@ -15,7 +15,7 @@ class FunctionInputParams:
 async def llm_complete(input: FunctionInputParams):
     try:
         llm = TogetherLLM(
-            model="mistralai/Mixtral-8x7B-Instruct-v0.1", api_key=os.getenv("TOGETHER_API_KEY")
+            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo", api_key=os.getenv("TOGETHER_API_KEY")
         )
         messages = [
             ChatMessage(

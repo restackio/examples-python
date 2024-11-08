@@ -1,4 +1,4 @@
-# Quiuckstart Llama Hackathon
+# Quickstart Llama Hackathon
 
 Restack AI - Streamlit + FastApi + TogetherAI with LlamaIndex Example
 
