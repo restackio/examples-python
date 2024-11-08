@@ -21,5 +21,5 @@ async def crawl_website(url):
 
     except requests.exceptions.RequestException as e:
         # Handle any exceptions that occur during the request
-        print(f"An error occurred: {e}")
-        return None
+        log.error("crawl_website function failed", error=e)
+        raise e

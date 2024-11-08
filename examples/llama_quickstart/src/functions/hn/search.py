@@ -14,5 +14,5 @@ async def hn_search(input: HnSearchInput):
         log.info("hnSearch", extra={"data": data})
         return data
     except Exception as error:
-        log.error("Error fetching Hacker News posts:", exc_info=True)
-        return []
+        log.error("hn_search function failed", error=error)
+        raise error
