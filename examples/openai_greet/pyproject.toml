@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 openai = "^1.52.0"
-restack-ai = "^0.0.27"
+restack-ai = "^0.0.28"
 
 [build-system]
 requires = ["poetry-core"]
