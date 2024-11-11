@@ -10,7 +10,6 @@ COPY pyproject.toml poetry.lock* ./
 
 # Copy application code
 COPY src/ ./src/
-COPY .env ./.env
 
 # Configure poetry to not create virtual environment
 RUN poetry config virtualenvs.create false
