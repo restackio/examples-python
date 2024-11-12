@@ -3,7 +3,7 @@ from restack_ai.workflow import workflow, import_functions, log
 with import_functions():
     from src.functions.function import welcome
 
-@workflow.defn(name="greeting")
+@workflow.defn()
 class GreetingWorkflow:
     @workflow.run
     async def run(self):
