@@ -11,7 +11,7 @@ class FunctionInputParams(BaseModel):
     system_prompt: str
     user_prompt: str
 
-@function.defn(name="llm_chat")
+@function.defn()
 async def llm_chat(input: FunctionInputParams):
     try:
         api_key = os.getenv("TOGETHER_API_KEY")
