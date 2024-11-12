@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from src.client import client
 import time
-from restack_ai import Restack
 import uvicorn
+
 
 # Define request model
 class QueryRequest(BaseModel):
@@ -28,11 +29,11 @@ async def home():
 @app.post("/api/schedule")
 async def schedule_workflow(request: QueryRequest):
     try:
-        client = Restack()
+
         workflow_id = f"{int(time.time() * 1000)}-llm_complete_workflow"
         
         runId = await client.schedule_workflow(
-            workflow_name="hn_workflow",
+            workflow_name="HnWorkflow",
             workflow_id=workflow_id,
             input={"query": request.query, "count": request.count}
         )

@@ -6,10 +6,9 @@ with import_functions():
     from src.functions.hn.schema import HnSearchInput
     from src.functions.crawl.website import crawl_website
     from src.functions.llm.chat import llm_chat, FunctionInputParams
-    
 
-@workflow.defn(name="hn_workflow")
-class hn_workflow:
+@workflow.defn()
+class HnWorkflow:
     @workflow.run
     async def run(self, input: dict):
 
