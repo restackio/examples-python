@@ -10,7 +10,7 @@ async def main():
     # Define the application configuration
     app = {
         'name': 'llama_quickstart',
-        'dockerFilePath': 'Dockerfile',
+        'dockerFilePath': '/examples/llama_quickstart/Dockerfile',
         'dockerBuildContext': '.',
         'environmentVariables': [
             {
