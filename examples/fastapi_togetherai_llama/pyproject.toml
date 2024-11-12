@@ -15,7 +15,7 @@ llama-index = "^0.11.22"
 llama-index-llms-together = "^0.2.0"
 uvicorn = "^0.32.0"
 python-dotenv = "0.19"
-restack-ai = "^0.0.30"
+restack-ai = "^0.0.29"
 restack-sdk-cloud = "^1.0.11"
 
 [build-system]
