@@ -1,5 +1,7 @@
 import os
 from restack_sdk_cloud import RestackCloud
+from dotenv import load_dotenv  
+load_dotenv()
 
 async def main():
     # Initialize the RestackCloud client with the SDK token from environment variables
