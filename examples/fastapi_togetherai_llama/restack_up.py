@@ -10,12 +10,24 @@ async def main():
         'name': 'backend-fastapi-togetherai-llama',
         'dockerFilePath': 'examples/fastapi_togetherai_llama/Dockerfile',
         'dockerBuildContext': 'examples/fastapi_togetherai_llama',
-        'environmentVariables': {
-            'RESTACK_ENGINE_ID': os.getenv('RESTACK_ENGINE_ID'),
-            'RESTACK_ENGINE_ADDRESS': os.getenv('RESTACK_ENGINE_ADDRESS'),
-            'RESTACK_ENGINE_API_KEY': os.getenv('RESTACK_ENGINE_API_KEY'),
-            'TOGETHERAI_API_KEY': os.getenv('TOGETHERAI_API_KEY'),
-        },
+        'environmentVariables': [
+            {
+                'name': 'RESTACK_ENGINE_ID',
+                'value': os.getenv('RESTACK_ENGINE_ID'),
+            },
+            {
+                'name': 'RESTACK_ENGINE_ADDRESS',
+                'value': os.getenv('RESTACK_ENGINE_ADDRESS'),
+            },
+            {
+                'name': 'RESTACK_ENGINE_API_KEY',
+                'value': os.getenv('RESTACK_ENGINE_API_KEY'),
+            },
+            {
+                'name': 'TOGETHER_API_KEY',
+                'value': os.getenv('TOGETHER_API_KEY'),
+            },
+        ],
     }
 
     # Configure the stack with the applications

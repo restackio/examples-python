@@ -1,15 +1,14 @@
-FROM python:3.9-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install poetry
+RUN apt-get update && apt-get install -y nginx
+
 RUN pip install poetry
 
-# Copy poetry files
 COPY pyproject.toml poetry.lock* ./
 
-# Copy application code
-COPY src/ ./src/
+COPY . .
 
 # Configure poetry to not create virtual environment
 RUN poetry config virtualenvs.create false
@@ -17,29 +16,13 @@ RUN poetry config virtualenvs.create false
 # Install dependencies
 RUN poetry install --no-dev --no-interaction --no-ansi
 
-# Install supervisor
-RUN apt-get update && apt-get install -y supervisor
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Create supervisor configuration
-RUN echo "[supervisord]\n\
-nodaemon=true\n\
-\n\
-[program:services]\n\
-command=poetry run services\n\
-stdout_logfile=/dev/stdout\n\
-stdout_logfile_maxbytes=0\n\
-stderr_logfile=/dev/stderr\n\
-stderr_logfile_maxbytes=0\n\
-\n\
-[program:fastapi]\n\
-command=poetry run app\n\
-stdout_logfile=/dev/stdout\n\
-stdout_logfile_maxbytes=0\n\
-stderr_logfile=/dev/stderr\n\
-stderr_logfile_maxbytes=0" > /etc/supervisor/conf.d/supervisord.conf
+# Expose port 80
+EXPOSE 80
 
-# Expose the port the app runs on
-EXPOSE 8000
-
-# Command to run supervisor which will manage both processes
-CMD ["/usr/bin/supervisord"]
+# Start Nginx, FastAPI, and services using Poetry
+CMD service nginx start && \
+    poetry run uvicorn src.app:app --host 0.0.0.0 --port 8000 & \
+    poetry run services
