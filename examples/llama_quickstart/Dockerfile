@@ -1,0 +1,27 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install poetry
+
+COPY pyproject.toml poetry.lock* ./
+
+COPY . .
+
+# Configure poetry to not create virtual environment
+RUN poetry config virtualenvs.create false
+
+# Install dependencies
+RUN poetry install --no-dev --no-interaction --no-ansi
+
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx, FastAPI, and Streamlit using Poetry
+CMD service nginx start && \
+  poetry run uvicorn main:app --host 0.0.0.0 --port 8000 & \
+  poetry run streamlit run frontend.py --server.port=8501 --server.address=0.0.0.0  & \
+  poetry run services

@@ -2,7 +2,7 @@ from restack_ai.function import function, log
 import requests
 from bs4 import BeautifulSoup
 
-@function.defn(name="crawl_website")
+@function.defn()
 async def crawl_website(url):
     try:
         # Send a GET request to the URL

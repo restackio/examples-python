@@ -2,14 +2,14 @@ import asyncio
 from src.client import client
 from src.functions.llm.chat import llm_chat
 from src.functions.hn.search import hn_search
-from src.workflows.workflow import hn_workflow
+from src.workflows.workflow import HnWorkflow
 from src.functions.crawl.website import crawl_website
 from restack_ai.restack import ServiceOptions
 
 async def main():
     await asyncio.gather(
         client.start_service(
-            workflows=[hn_workflow],
+            workflows=[HnWorkflow],
             functions=[hn_search, crawl_website]
         ),
         client.start_service(
