@@ -24,6 +24,6 @@ EXPOSE 80
 
 # Start Nginx, FastAPI, and Streamlit using Poetry
 CMD service nginx start && \
-  poetry run uvicorn main:app --host 0.0.0.0 --port 8000 & \
-  poetry run streamlit run frontend.py --server.port=8501 --server.address=0.0.0.0  & \
+  poetry run uvicorn src.app:app --host 0.0.0.0 --port 8000 & \
+  poetry run streamlit run frontend.py --server.port=8501 & \
   poetry run services
