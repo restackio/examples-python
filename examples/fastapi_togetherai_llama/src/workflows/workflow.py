@@ -4,7 +4,7 @@ from restack_ai.workflow import workflow, import_functions, log
 with import_functions():
     from src.functions.function import llm_complete, FunctionInputParams
 
-@workflow.defn(name="llm_complete_workflow")
+@workflow.defn()
 class llm_complete_workflow:
     @workflow.run
     async def run(self, input: dict):
