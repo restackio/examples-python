@@ -10,8 +10,8 @@ async def main():
     # Define the application configuration
     app = {
         'name': 'llama_quickstart',
-        'dockerFilePath': 'Dockerfile',
-        'dockerBuildContext': '.',
+        'dockerFilePath': '/examples/llama_quickstart/Dockerfile',
+        'dockerBuildContext': './examples/llama_quickstart/',
         'environmentVariables': [
             {
                 'name': 'RESTACK_ENGINE_ID',
