@@ -25,6 +25,10 @@ async def main():
                 'name': 'RESTACK_ENGINE_API_KEY',
                 'value': os.getenv('RESTACK_ENGINE_API_KEY'),
             },
+            {
+                'name': 'TOGETHER_API_KEY',
+                'value': os.getenv('TOGETHER_API_KEY'),
+            },
         ],
     }
 
