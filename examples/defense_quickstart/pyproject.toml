@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "llama_quickstart"
+version = "0.0.1"
+description = "A quickstart example showcasing streamlit, fastapi, togetherai and llamaindex"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^2.9.2"
+restack-ai = "^0.0.31"
+fastapi = "^0.115.4"
+llama-index = "^0.11.22"
+llama-index-llms-together = "^0.2.0"
+uvicorn = "^0.32.0"
+python-dotenv = "0.19"
+streamlit = "^1.40.0"
+requests = "^2.32.3"
+restack-sdk-cloud = "^1.0.12"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+services = "src.services:run_services"
+app = "src.app:run_app"
