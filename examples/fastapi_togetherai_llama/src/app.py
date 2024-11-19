@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from dataclasses import dataclass
 import time
-from restack_ai import Restack
+from src.client import client
 import uvicorn
 
 # Define request model
@@ -28,7 +28,6 @@ async def home():
 @app.post("/api/schedule")
 async def schedule_workflow(request: PromptRequest):
     try:
-        client = Restack()
         workflow_id = f"{int(time.time() * 1000)}-llm_complete_workflow"
         
         runId = await client.schedule_workflow(
@@ -46,7 +45,6 @@ async def schedule_workflow(request: PromptRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# Remove Flask-specific run code since FastAPI uses uvicorn
 def run_app():
     uvicorn.run("src.app:app", host="0.0.0.0", port=8000, reload=True)
 

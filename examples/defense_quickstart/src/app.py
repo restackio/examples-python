@@ -8,7 +8,7 @@ import uvicorn
 
 # Define request model
 class QueryRequest(BaseModel):
-    query: str
+    url: str
     count: int
 
 app = FastAPI()
@@ -30,12 +30,12 @@ async def home():
 async def schedule_workflow(request: QueryRequest):
     try:
 
-        workflow_id = f"{int(time.time() * 1000)}-llm_complete_workflow"
+        workflow_id = f"{int(time.time() * 1000)}-rss_workflow"
         
         runId = await client.schedule_workflow(
-            workflow_name="HnWorkflow",
+            workflow_name="RssWorkflow",
             workflow_id=workflow_id,
-            input={"query": request.query, "count": request.count}
+            input={"url": request.url, "count": request.count}
         )
         print("Scheduled workflow", runId)
         
