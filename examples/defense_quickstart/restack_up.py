@@ -9,7 +9,7 @@ async def main():
 
     engine = {
         'name': 'restack_engine',
-        'image': 'restack/restack-engine:main',
+        'image': 'restack/restack:main',
         'environmentVariables': [
           {
               'name': 'RESTACK_ENGINE_ID',
