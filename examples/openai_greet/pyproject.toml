@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 openai = "^1.52.0"
-restack-ai = "^0.0.34"
+restack-ai = "^0.0.35"
 python-dotenv = ">=0.19.0,<0.20.0"
 
 [build-system]
