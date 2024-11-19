@@ -9,7 +9,14 @@ async def main():
 
     engine = {
         'name': 'restack_engine',
-        'image': 'restack/restack-engine:main',
+        'image': 'ghcr.io/restackio/restack:main',
+        'portMapping': [
+            {
+                'port': 5233,
+                'path': '/',
+                'name': 'restack_engine',
+            }
+        ],
         'environmentVariables': [
           {
               'name': 'RESTACK_ENGINE_ID',
@@ -44,10 +51,10 @@ async def main():
                 'name': 'RESTACK_ENGINE_API_KEY',
                 'value': os.getenv('RESTACK_ENGINE_API_KEY'),
             },
-            {
-                'name': 'TOGETHER_API_KEY',
-                'value': os.getenv('TOGETHER_API_KEY'),
-            },
+            # {
+            #     'name': 'TOGETHER_API_KEY',
+            #     'value': os.getenv('TOGETHER_API_KEY'),
+            # },
         ],
     }
 
