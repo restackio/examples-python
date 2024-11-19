@@ -30,8 +30,8 @@ async def llm_chat(input: FunctionInputParams) -> str:
             model="orpo-mistral-v0.3-ua-tokV2-focus-10B-low-lr-1epoch-aux-merged-1ep",
             messages=messages,
         )
-        log.info("openai_greet function completed", response=response)
+        log.info("llm_chat function completed", response=response)
         return response.choices[0].message.content
     except Exception as e:
-        log.error("openai_greet function failed", error=e)
+        log.error("llm_chat function failed", error=e)
         raise e
