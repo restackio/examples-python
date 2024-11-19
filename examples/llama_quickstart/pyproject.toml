@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = "^3.12"
 pydantic = "^2.9.2"
-restack-ai = "^0.0.31"
+restack-ai = "^0.0.32"
 fastapi = "^0.115.4"
 llama-index = "^0.11.22"
 llama-index-llms-together = "^0.2.0"
