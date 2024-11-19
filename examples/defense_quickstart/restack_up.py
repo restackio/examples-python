@@ -9,7 +9,14 @@ async def main():
 
     engine = {
         'name': 'restack_engine',
-        'image': 'restack/restack:main',
+        'image': 'ghcr.io/restackio/restack:main',
+        'portMapping': [
+            {
+                'port': 5233,
+                'path': '/',
+                'name': 'restack-engine2',
+            }
+        ],
         'environmentVariables': [
           {
               'name': 'RESTACK_ENGINE_ID',
