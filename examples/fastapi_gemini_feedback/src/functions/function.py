@@ -6,7 +6,7 @@ import os
 class FunctionInputParams(BaseModel):
     user_content: str
 
-@function.defn(name="GeminiGenerate")
+@function.defn()
 async def gemini_generate(input: FunctionInputParams) -> str:
     log.info(input)
     api_key = os.getenv("GEMINI_API_KEY")

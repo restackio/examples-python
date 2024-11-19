@@ -1,6 +1,6 @@
 from restack_ai.function import function, log
 
-@function.defn(name="welcome")
+@function.defn()
 async def welcome(input: str) -> str:
     try:
         log.info("welcome function started", input=input)

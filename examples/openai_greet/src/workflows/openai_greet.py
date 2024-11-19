@@ -9,7 +9,7 @@ with import_functions():
 class WorkflowInputParams:
     name: str
 
-@workflow.defn(name="OpenaiGreetWorkflow")
+@workflow.defn()
 class OpenaiGreetWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams):

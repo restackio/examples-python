@@ -5,7 +5,7 @@ import weaviate.classes as wvc
 from src.functions.weaviate_client import get_weaviate_client
 
 
-@function.defn(name="seed_database")
+@function.defn()
 async def seed_database() -> str:
     client = get_weaviate_client()
 

@@ -1,13 +1,13 @@
 import asyncio
 from src.functions.llm_complete import llm_complete
 from src.client import restack_client
-from src.workflows.workflow import llm_complete_workflow
+from src.workflows.workflow import LlmCompleteWorkflow
 from dotenv import load_dotenv
 load_dotenv()
 
 async def main():
     await restack_client.start_service(
-        workflows= [llm_complete_workflow],
+        workflows= [LlmCompleteWorkflow],
         functions= [llm_complete]
     )
 

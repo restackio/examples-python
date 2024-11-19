@@ -57,7 +57,7 @@ To schedule and run the example workflows, use:
 poetry run schedule-seed-workflow
 ```
 
-This will schedule the "seed_workflow" and print the result.
+This will schedule the "SeedWorkflow" and print the result.
 
 To run the search workflow, use:
 

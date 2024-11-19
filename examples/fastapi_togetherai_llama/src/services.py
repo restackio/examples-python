@@ -1,13 +1,13 @@
 import asyncio
 from src.client import client
 from src.functions.function import llm_complete
-from src.workflows.workflow import llm_complete_workflow
+from src.workflows.workflow import LlmCompleteWorkflow
 from restack_ai.restack import ServiceOptions
 
 async def main():
     await asyncio.gather(
         client.start_service(
-            workflows=[llm_complete_workflow],
+            workflows=[LlmCompleteWorkflow],
             functions=[llm_complete],
             options=ServiceOptions(
                 rate_limit=1,
