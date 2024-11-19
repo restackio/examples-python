@@ -14,7 +14,7 @@ The model will act as a pirate and you can send it prompts from the streamlit ui
 1. Run Restack local engine with Docker:
 
    ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/engine:main
+   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
    ```
 
 2. Open the Web UI to see the workflows:
