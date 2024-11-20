@@ -17,7 +17,7 @@ class End:
 class WorkflowInputParams(BaseModel):
     user_content: str
 
-@workflow.defn(name="GeminiGenerateWorkflow")
+@workflow.defn()
 class GeminiGenerateWorkflow:
     def __init__(self) -> None:
         self.end_workflow = False

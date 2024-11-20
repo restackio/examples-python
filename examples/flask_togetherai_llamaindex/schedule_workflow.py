@@ -23,7 +23,7 @@ async def schedule_workflow(workflow_name):
     exit(0)
 
 def run_schedule_llm_complete_workflow():
-    asyncio.run(schedule_workflow("llm_complete_workflow"))
+    asyncio.run(schedule_workflow("LlmCompleteWorkflow"))
 
 if __name__ == "__main__":
     run_schedule_llm_complete_workflow()

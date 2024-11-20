@@ -13,7 +13,7 @@ class Feedback:
 class End:
     end: bool
 
-@workflow.defn(name="HumanLoopWorkflow")
+@workflow.defn()
 class HumanLoopWorkflow:
     def __init__(self) -> None:
         self.end_workflow = False

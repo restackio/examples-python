@@ -11,7 +11,7 @@ load_dotenv()
 class FunctionInputParams:
     prompt: str
 
-@function.defn(name="llm_complete")
+@function.defn()
 async def llm_complete(input: FunctionInputParams):
     try:
         log.info("llm_complete function started", input=input)

@@ -1,6 +1,6 @@
 # Project metadata
 [tool.poetry]
-name = "get-started"
+name = "weaviate-search"
 version = "0.0.1"
 description = "A simple example to get started with the restack-ai SDK"
 authors = [
@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-restack-ai = "^0.0.28"
+restack-ai = "^0.0.38"
 requests = "^2.32.3"
 weaviate-client = "^4.9.0"
 python-dotenv = "0.19.2"

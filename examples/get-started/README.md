@@ -11,8 +11,9 @@ This repository contains a simple example project to help you get started with t
 ## Usage
 
 1. Run Restack local engine with Docker:
+
    ```bash
-   docker run -d --pull always --name studio -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/engine:main
+   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
    ```
 
 2. Open the web UI to see the workflows:
@@ -22,12 +23,14 @@ This repository contains a simple example project to help you get started with t
    ```
 
 3. Clone this repository:
+
    ```bash
    git clone https://github.com/restackio/examples-python
    cd examples-python/examples/get-started
    ```
 
 4. Install dependencies using Poetry:
+
    ```bash
    poetry install
    ```
@@ -47,6 +50,16 @@ This repository contains a simple example project to help you get started with t
    ```
 
    This will schedule the `GreetingWorkflow` and print the result.
+
+7. Optionally, schedule the workflow to run on a specific calendar or interval:
+
+   ```bash
+   poetry run calendar
+   ```
+
+   ```bash
+   poetry run interval
+   ```
 
 ## Project Structure
 

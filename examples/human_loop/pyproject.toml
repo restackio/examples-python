@@ -1,8 +1,8 @@
 # Project metadata
 [tool.poetry]
-name = "get-started"
+name = "human-loop"
 version = "0.0.1"
-description = "A simple example to get started with the restack-ai SDK"
+description = "A simple example to get started with human-in-the-loop using the restack-ai python library"
 authors = [
     "Restack Team <service@restack.io>",
 ]
@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-restack-ai = "^0.0.28"
+restack-ai = "^0.0.38"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"  # Optional: Add if you want to include tests in your example

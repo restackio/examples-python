@@ -9,7 +9,7 @@ async def goodbye() -> str:
     log.info("goodbye function started")
     return f"Goodbye!"
 
-@function.defn(name="feedback")
+@function.defn()
 async def feedback(input: InputFeedback) -> str:
     log.info("feedback function started", input=input)
     return f"Received feedback: {input.feedback}"

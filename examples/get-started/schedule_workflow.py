@@ -7,14 +7,14 @@ async def main():
     client = Restack()
 
     workflow_id = f"{int(time.time() * 1000)}-GreetingWorkflow"
-    runId = await client.schedule_workflow(
+    run_id = await client.schedule_workflow(
         workflow_name="GreetingWorkflow",
         workflow_id=workflow_id
     )
 
     await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=runId
+        run_id=run_id
     )
 
     exit(0)

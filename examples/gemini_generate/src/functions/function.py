@@ -8,7 +8,7 @@ import os
 class FunctionInputParams:
     user_content: str
 
-@function.defn(name="GeminiGenerateOpposite")
+@function.defn()
 async def gemini_generate_opposite(input: FunctionInputParams) -> str:
     try:
         log.info("gemini_generate_opposite function started", input=input)

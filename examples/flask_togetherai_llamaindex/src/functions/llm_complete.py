@@ -2,7 +2,7 @@ import os
 from restack_ai.function import function, log
 from llama_index.llms.together import TogetherLLM
 
-@function.defn(name="llm_complete")
+@function.defn()
 async def llm_complete(prompt) -> str:
     try:
         log.info("llm_complete function started", prompt=prompt)

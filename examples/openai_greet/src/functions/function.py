@@ -2,12 +2,9 @@ from restack_ai.function import function, log
 from openai import OpenAI
 from dataclasses import dataclass
 import os
+from dotenv import load_dotenv
 
-@dataclass
-class ResponseFormat:
-    name: str
-    description: str
-    schema: dict
+load_dotenv()
 
 @dataclass
 class FunctionInputParams:
@@ -15,7 +12,7 @@ class FunctionInputParams:
     system_content: str | None = None
     model: str | None = None
 
-@function.defn(name="OpenaiGreet")
+@function.defn()
 async def openai_greet(input: FunctionInputParams) -> str:
     try:
         log.info("openai_greet function started", input=input)

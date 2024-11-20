@@ -28,10 +28,10 @@ async def home():
 @app.post("/api/schedule")
 async def schedule_workflow(request: PromptRequest):
     try:
-        workflow_id = f"{int(time.time() * 1000)}-llm_complete_workflow"
+        workflow_id = f"{int(time.time() * 1000)}-LlmCompleteWorkflow"
         
         runId = await client.schedule_workflow(
-            workflow_name="llm_complete_workflow",
+            workflow_name="LlmCompleteWorkflow",
             workflow_id=workflow_id,
             input={"prompt": request.prompt}
         )

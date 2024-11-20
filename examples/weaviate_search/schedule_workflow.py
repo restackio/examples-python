@@ -20,10 +20,10 @@ async def schedule_workflow(workflow_name):
     exit(0)
 
 def run_schedule_seed_workflow():
-    asyncio.run(schedule_workflow("seed_workflow"))
+    asyncio.run(schedule_workflow("SeedWorkflow"))
 
 def run_schedule_search_workflow():
-    asyncio.run(schedule_workflow("search_workflow"))
+    asyncio.run(schedule_workflow("SearchWorkflow"))
 
 if __name__ == "__main__":
     run_schedule_seed_workflow()
