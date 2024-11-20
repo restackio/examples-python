@@ -22,20 +22,18 @@ class RssWorkflow:
             log.info("rss_result", extra={"url": url})
             if url:
                 content = await workflow.step(crawl_website, url, start_to_close_timeout=timedelta(seconds=30))
+                
                 crawled_contents.append(content)
         
         summaries = []
         for content in crawled_contents:
-            system_prompt = f"Provide a translation of the news article"
-            user_prompt = f"Translate the following content: {content}"
-            translation = await workflow.step(llm_chat, FunctionInputParams(system_prompt=system_prompt, user_prompt=user_prompt), task_queue="llm_chat",start_to_close_timeout=timedelta(seconds=120))
+            user_prompt = f"Provide a translation of the news article. Translate the following content: {content}"
+            translation = await workflow.step(llm_chat, FunctionInputParams(user_prompt=user_prompt), task_queue="llm_chat",start_to_close_timeout=timedelta(seconds=120))
 
-            system_prompt = f"Provide a summary of the news found on rss feed"
-            user_prompt = f"Summarize the following content: {translation}"
-            summary = await workflow.step(llm_chat, FunctionInputParams(system_prompt=system_prompt, user_prompt=user_prompt), task_queue="llm_chat",start_to_close_timeout=timedelta(seconds=120))
+            user_prompt = f"Provide a summary of the news found on rss feed. Summarize the following content: {translation}"
+            summary = await workflow.step(llm_chat, FunctionInputParams(user_prompt=user_prompt), task_queue="llm_chat",start_to_close_timeout=timedelta(seconds=120))
             summaries.append(summary)
 
-        system_prompt = f"You are a personal assistant. Provide a summary of the latest news and the summaries of the websites. Structure your response with the title of the project, then a short description and a list of actionable bullet points."
-        user_prompt = f"Here is the latest rss data: {str(rss_results)} and summaries of the websites: {str(summaries)}"
+        user_prompt = f"You are a personal assistant. Provide a summary of the latest news and the summaries of the websites. Structure your response with the title of the project, then a short description and a list of actionable bullet points. Here is the latest rss data: {str(rss_results)} and summaries of the websites: {str(summaries)}"
 
-        return await workflow.step(llm_chat, FunctionInputParams(system_prompt=system_prompt,user_prompt=user_prompt), task_queue="llm_chat", start_to_close_timeout=timedelta(seconds=120))
+        return await workflow.step(llm_chat, FunctionInputParams(user_prompt=user_prompt), task_queue="llm_chat", start_to_close_timeout=timedelta(seconds=120))

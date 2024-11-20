@@ -13,7 +13,7 @@ async def crawl_website(url):
         soup = BeautifulSoup(response.content, 'html.parser')
 
         # Extract the text content from the page
-        content = soup.get_text()
+        content = soup.get_text(separator=' ', strip=True)
 
         log.info("crawl_website", extra={"content": content})
 
