@@ -14,19 +14,15 @@ async def main():
             {
                 'port': 5233,
                 'path': '/',
-                'name': 'restack-engine2',
+                'name': 'restack-engine-frontend',
             },
             {
                 'port': 6233,
                 'path': '/api',
-                'name': 'restack-engine3',
+                'name': 'restack-engine-api',
             }
         ],
         'environmentVariables': [
-            {
-                'name': 'APP_HOSTNAME',
-                'linkTo': 'restack_engine',
-         },
           {
               'name': 'RESTACK_ENGINE_ID',
               'value': os.getenv('RESTACK_ENGINE_ID'),
@@ -60,10 +56,10 @@ async def main():
                 'name': 'RESTACK_ENGINE_API_KEY',
                 'value': os.getenv('RESTACK_ENGINE_API_KEY'),
             },
-            # {
-            #     'name': 'TOGETHER_API_KEY',
-            #     'value': os.getenv('TOGETHER_API_KEY'),
-            # },
+            {
+                'name': 'TOGETHER_API_KEY',
+                'value': os.getenv('TOGETHER_API_KEY'),
+            },
         ],
     }
 
