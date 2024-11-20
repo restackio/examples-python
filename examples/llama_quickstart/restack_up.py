@@ -18,6 +18,10 @@ async def main():
             }
         ],
         'environmentVariables': [
+            {
+                'name': 'APP_HOSTNAME',
+                'linkTo': 'restack_engine',
+         },
           {
               'name': 'RESTACK_ENGINE_ID',
               'value': os.getenv('RESTACK_ENGINE_ID'),
