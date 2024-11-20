@@ -9,7 +9,7 @@ with import_functions():
 class WorkflowInputParams:
     user_content: str
 
-@workflow.defn(name="GeminiGenerateOppositeWorkflow")
+@workflow.defn()
 class GeminiGenerateOppositeWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams):

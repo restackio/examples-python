@@ -36,7 +36,7 @@ Add these credentials to your `.env` file.
 Using `docker run`:
 
    ```bash
-   docker run -d --pull always --name studio -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/engine:main
+   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
    ```
 
 ### Running the Services
@@ -57,7 +57,7 @@ To schedule and run the example workflows, use:
 poetry run schedule-seed-workflow
 ```
 
-This will schedule the "seed_workflow" and print the result.
+This will schedule the "SeedWorkflow" and print the result.
 
 To run the search workflow, use:
 

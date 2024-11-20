@@ -9,7 +9,14 @@ async def main():
 
     engine = {
         'name': 'restack_engine',
-        'image': 'restack/restack-engine:main',
+        'image': 'ghcr.io/restackio/restack:main',
+        'portMapping': [
+            {
+                'port': 5233,
+                'path': '/',
+                'name': 'restack-engine2',
+            }
+        ],
         'environmentVariables': [
           {
               'name': 'RESTACK_ENGINE_ID',
@@ -28,9 +35,9 @@ async def main():
 
     # Define the application configuration
     app = {
-        'name': 'llama_quickstart',
-        'dockerFilePath': '/examples/llama_quickstart/Dockerfile',
-        'dockerBuildContext': './examples/llama_quickstart/',
+        'name': 'defense_quickstart',
+        'dockerFilePath': '/examples/defense_quickstart/Dockerfile',
+        'dockerBuildContext': './examples/defense_quickstart/',
         'environmentVariables': [
             {
                 'name': 'RESTACK_ENGINE_ID',
@@ -45,8 +52,8 @@ async def main():
                 'value': os.getenv('RESTACK_ENGINE_API_KEY'),
             },
             {
-                'name': 'TOGETHER_API_KEY',
-                'value': os.getenv('TOGETHER_API_KEY'),
+                'name': 'OPENBABYLON_API_URL',
+                'value': os.getenv('OPENBABYLON_API_URL'),
             },
         ],
     }

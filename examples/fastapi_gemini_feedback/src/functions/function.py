@@ -1,25 +1,23 @@
 from restack_ai.function import function, log
-from pydantic import BaseModel
-from restack_google_gemini import gemini_generate_content, GeminiGenerateContentInput
+from dataclasses import dataclass
+import google.generativeai as genai
+
 import os
 
-class FunctionInputParams(BaseModel):
+@dataclass
+class FunctionInputParams:
     user_content: str
 
-@function.defn(name="GeminiGenerate")
+@function.defn()
 async def gemini_generate(input: FunctionInputParams) -> str:
-    log.info(input)
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        log.error("GEMINI_API_KEY environment variable is not set.")
-        raise ValueError("GEMINI_API_KEY environment variable is required.")
-    response = gemini_generate_content(
-        GeminiGenerateContentInput(
-            user_content=input.user_content,
-            model="gemini-1.5-flash",
-            api_key=os.getenv("GEMINI_API_KEY"),
-            generation_config={}
-        )
-    )
-    log.info(response)
-    return response
+    try:
+        log.info("gemini_generate function started", input=input)
+        genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+        model = genai.GenerativeModel("gemini-1.5-flash")
+
+        response = model.generate_content(input.user_content)
+        log.info("gemini_generate function completed", response=response.text)
+        return response.text
+    except Exception as e:
+        log.error("gemini_generate function failed", error=e)
+        raise e

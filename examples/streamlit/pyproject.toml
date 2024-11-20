@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-restack-ai = "^0.0.25"
+restack-ai = "^0.0.36"
 streamlit = "^1.39.0"
 blinker = "^1.8.2"
 

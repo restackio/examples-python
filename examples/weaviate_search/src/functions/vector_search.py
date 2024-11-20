@@ -2,7 +2,7 @@ from restack_ai.function import function, log
 import weaviate.classes as wvc
 from src.functions.weaviate_client import get_weaviate_client
 
-@function.defn(name="vector_search")
+@function.defn()
 async def vector_search() -> str:
     client = get_weaviate_client()
     try:

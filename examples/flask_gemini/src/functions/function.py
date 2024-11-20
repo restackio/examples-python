@@ -7,7 +7,7 @@ import os
 class FunctionInputParams:
     user_content: str
 
-@function.defn(name="GeminiGenerate")
+@function.defn()
 async def gemini_generate(input: FunctionInputParams) -> str:
     try:
         log.info("gemini_generate function started", input=input)

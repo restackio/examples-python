@@ -17,7 +17,7 @@ The AI workflow will get rss feed, crawl each article, translate it to english, 
 1. Run Restack local engine with Docker:
 
    ```bash
-   docker run -d --pull always --name studio -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/engine:main
+   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
    ```
 
 2. Open the Web UI to see the workflows:
@@ -29,8 +29,8 @@ The AI workflow will get rss feed, crawl each article, translate it to english, 
 3. Clone this repository:
 
    ```bash
-   git clone https://github.com/restackio/defense_quickstart
-   cd examples-python/examples/defense_quickstart
+   git clone https://github.com/restackio/examples-python
+   cd examples/defense_quickstart
    ```
 
 4. Install dependencies using Poetry:
