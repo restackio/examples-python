@@ -24,7 +24,7 @@ async def main():
         ],
         'environmentVariables': [
             {
-                'name': 'APP_HOSTNAME',
+                'name': 'NEXT_PUBLIC_APP_HOSTNAME',
                 'linkTo': 'restack_engine',
          },
           {
