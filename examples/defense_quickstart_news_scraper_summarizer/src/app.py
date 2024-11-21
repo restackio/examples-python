@@ -1,13 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from dataclasses import dataclass
 from src.client import client
 import time
 import uvicorn
 
 
 # Define request model
-class QueryRequest(BaseModel):
+@dataclass
+class QueryRequest:
     url: str
     count: int
 
@@ -24,7 +25,7 @@ app.add_middleware(
 
 @app.get("/")
 async def home():
-    return "Welcome to the TogetherAI LlamaIndex FastAPI App!"
+    return "Welcome to the Quickstart: War News Scraper & Summarizer example!"
 
 @app.post("/api/schedule")
 async def schedule_workflow(request: QueryRequest):

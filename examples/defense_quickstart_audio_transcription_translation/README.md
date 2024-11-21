@@ -32,7 +32,7 @@ The AI workflow will need an audio file as an input and will transcribe it & tra
 
    ```bash
    git clone https://github.com/restackio/examples-python.git
-   cd examples/defense_groq
+   cd examples/defense_quickstart_audio_transcription_translation
    ```
 
 4. Setup virtual environment with Poetry:

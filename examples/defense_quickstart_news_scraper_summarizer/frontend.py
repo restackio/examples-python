@@ -2,15 +2,14 @@ import streamlit as st
 import requests
 
 # Set page title and header
-st.title("Defense Hackathon Quickstart")
-st.text("Streamlit, FastAPI, Restack, OpenBabylon")
+st.title("Defense Hackathon Quickstart: War News Scraper & Summarizer")
 
 # Create text area for user input with session state
 if "user_input" not in st.session_state:
     st.session_state.user_input = ""
 
 url = st.text_input("Rss feed url", key="url", value="https://www.pravda.com.ua/rss/")
-count = st.number_input("Number of results", key="count", value=5)
+count = st.number_input("Number of results", key="count", value=2)
 # Initialize response history in session state
 if "response_history" not in st.session_state:
     st.session_state.response_history = []

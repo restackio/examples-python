@@ -23,7 +23,7 @@ app.add_middleware(
 
 @app.get("/")
 async def home():
-    return "Welcome to the Quickstart: War Audio Transcription & Translation example"
+    return "Welcome to the Quickstart: War Audio Transcription & Translation example!"
 
 @app.post("/api/process_audio")
 async def schedule_workflow(request: QueryRequest):
