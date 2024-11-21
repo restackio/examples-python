@@ -7,14 +7,14 @@ st.text("Streamlit, FastAPI, Restack, Groq")
 
 
 
-uploaded_file = st.file_uploader("Choose a file")
-if uploaded_file is not None:
+uploaded_files = st.file_uploader("Choose a files", accept_multiple_files=True)
 
-    audio_data = uploaded_file.read()
-    audio_base64 = base64.b64encode(audio_data).decode('utf-8')
-
-    file_data = (uploaded_file.name, audio_base64)
-
+if uploaded_files:
+    file_data_list = []
+    for uploaded_file in uploaded_files:
+        audio_data = uploaded_file.read()
+        audio_base64 = base64.b64encode(audio_data).decode('utf-8')
+        file_data_list.append((uploaded_file.name, audio_base64))
 
 if "response_history" not in st.session_state:
     st.session_state.response_history = []
@@ -25,15 +25,20 @@ if st.button("Transcribe"):
             with st.spinner('Transcribing...'):
                 response = requests.post(
                     "http://localhost:8000/api/transcribe",
-                    json={"file_data": file_data}
+                    json={"file_data": file_data_list}
                 )
 
                 if response.status_code == 200:
                     st.success("Transcription received!")
-                    st.session_state.response_history.append({
-                        "file_name": uploaded_file.name,
-                        "file_type": uploaded_file.type,
-                        "transcription": response.json()["result"]
+
+                    results = response.json()["result"]
+                    for idx, uploaded_file in enumerate(uploaded_files):
+                        st.session_state.response_history.append({
+                            "file_name": uploaded_file.name,
+                            "file_type": uploaded_file.type,
+                            "transcription": results[idx]['transcription'],
+                            "fixed_sentence": results[idx]['fixed_sentence'],
+                            "translation": results[idx]['translation']
                     })
                 else:
                     st.error(f"Error: {response.status_code}")
@@ -46,8 +51,11 @@ if st.button("Transcribe"):
 if st.session_state.response_history:
     st.subheader("Transcription History")
     for i, item in enumerate(st.session_state.response_history, 1):
-        st.markdown(f"**File Name {i}:** {item['file_name']}")
-        st.markdown(f"**File Type {i}:** {item['file_type']}")
-        st.markdown(f"**Transcription {i}:** {item['transcription']}")
+        st.markdown(f"**Run {i}:**")
+        st.markdown(f"**File Name:** {item['file_name']}")
+        st.markdown(f"**File Type:** {item['file_type']}")
+        st.markdown(f"**Transcription:** {item['transcription']}")
+        st.markdown(f"**Fixed Sentence:** {item['fixed_sentence']}")
+        st.markdown(f"**Translation:** {item['translation']}")
         st.markdown("---")
         

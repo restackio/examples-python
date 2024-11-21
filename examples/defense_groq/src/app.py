@@ -8,7 +8,7 @@ import uvicorn
 
 # Define request model
 class QueryRequest(BaseModel):
-    file_data: tuple[str, str]
+    file_data: list[tuple[str, str]]
 
 app = FastAPI()
 
@@ -28,10 +28,10 @@ async def home():
 @app.post("/api/transcribe")
 async def schedule_workflow(request: QueryRequest):
     try:
-        workflow_id = f"{int(time.time() * 1000)}-transcribe_workflow"
+        workflow_id = f"{int(time.time() * 1000)}-parent_workflow"
         
         runId = await client.schedule_workflow(
-            workflow_name="TranscribeWorkflow",
+            workflow_name="ParentWorkflow",
             workflow_id=workflow_id,
             input={"file_data": request.file_data}
         )

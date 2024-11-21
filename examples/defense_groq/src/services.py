@@ -1,22 +1,16 @@
 import asyncio
 from src.client import client
 from src.functions.transcribe import transcribe
-from src.workflows.transcribe import TranscribeWorkflow
-from restack_ai.restack import ServiceOptions
+from src.functions.translate import translate
+from src.functions.fix_sentence import fix_sentence
+from src.workflows.child import ChildWorkflow
+from src.workflows.parent import ParentWorkflow
 
 async def main():
     await asyncio.gather(
         client.start_service(
-            workflows=[TranscribeWorkflow],
-            functions=[transcribe]
-        ),
-        client.start_service(
-            functions=[transcribe],
-            task_queue="transcribe",
-            options=ServiceOptions(
-                rate_limit=1,
-                max_concurrent_function_runs=1
-            )
+            workflows=[ParentWorkflow, ChildWorkflow],
+            functions=[transcribe, translate, fix_sentence]
         )
     )
 

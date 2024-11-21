@@ -13,19 +13,21 @@ async def transcribe(input: FunctionInputParams):
         log.info("transcribe function started", input=input)
         client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
+
         filename, base64_content = input.file_data
         file_bytes = base64.b64decode(base64_content)
         transcription = client.audio.transcriptions.create(
             file=(filename, file_bytes), # Required audio file
             model="whisper-large-v3-turbo", # Required model to use for transcription
-            prompt="Specify context or spelling",  # Optional
+            # Best practice is to write the prompt in the language of the audio, use translate.google.com if needed
+            prompt=f"Опиши о чем речь в аудио",  # Translation: Describe what the audio is about
+            language="ru", # Original language of the audio
             response_format="json",  # Optional
-            language="ru",
             temperature=0.0  # Optional
         )
 
         log.info("transcribe function completed", transcription=transcription)
-        return transcription.text
+        return transcription
         
 
     except Exception as e:
