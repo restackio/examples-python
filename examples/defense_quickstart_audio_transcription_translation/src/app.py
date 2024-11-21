@@ -1,15 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from dataclasses import dataclass
 from src.client import client
 import time
 import uvicorn
 
 
-# Define request model
-class QueryRequest(BaseModel):
-    url: str
-    count: int
+@dataclass
+class QueryRequest:
+    file_data: list[tuple[str, str]]
 
 app = FastAPI()
 
@@ -24,18 +23,17 @@ app.add_middleware(
 
 @app.get("/")
 async def home():
-    return "Welcome to the TogetherAI LlamaIndex FastAPI App!"
+    return "Welcome to the Quickstart: War Audio Transcription & Translation example!"
 
-@app.post("/api/schedule")
+@app.post("/api/process_audio")
 async def schedule_workflow(request: QueryRequest):
     try:
-
-        workflow_id = f"{int(time.time() * 1000)}-rss_workflow"
+        workflow_id = f"{int(time.time() * 1000)}-parent_workflow"
         
         runId = await client.schedule_workflow(
-            workflow_name="RssWorkflow",
+            workflow_name="ParentWorkflow",
             workflow_id=workflow_id,
-            input={"url": request.url, "count": request.count}
+            input={"file_data": request.file_data}
         )
         print("Scheduled workflow", runId)
         

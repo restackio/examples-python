@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "defense_quickstart"
+name = "defense_quickstart_news_scraper_summarizer"
 version = "0.0.1"
-description = "A quickstart example showcasing streamlit, fastapi, togetherai and llamaindex"
+description = "Scrape Ukrainian news articles, translate them to English, and summarize key points in just a few steps with this example repository"
 authors = [
     "Restack Team <service@restack.io>",
 ]

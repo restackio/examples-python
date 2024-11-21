@@ -1,16 +1,17 @@
-# Quickstart USS Hornet Defense Tech Hackathon
+# USS Hornet Defense Tech Hackathon Quickstart: War News Scraper & Summarizer
 
 [Everything you need for the USS Hornet Defense Tech Hackathon](https://lu.ma/uss-hornet-hackathon?tk=DNbUwU)
 
-Restack AI - Streamlit + FastApi + OpenBabylon Example
+Tech stack used:
+- Restack AI + Streamlit + FastApi + OpenBabylon
 
-The AI workflow will get rss feed, crawl each article, translate it to english, summarize it and make a summary of the news found on rss feed.
+The AI workflow will get RSS feed, crawl each article, translate it to English, summarize it & make a summary of the news found on RSS feed.
 
 ## Prerequisites
 
 - Python 3.12 or higher
 - Poetry (for dependency management)
-- Docker (for running the Restack services)
+- Docker (for running Restack services)
 
 ## Usage
 
@@ -30,13 +31,16 @@ The AI workflow will get rss feed, crawl each article, translate it to english, 
 
    ```bash
    git clone https://github.com/restackio/examples-python
-   cd examples/defense_quickstart
+   cd examples/defense_quickstart_news_scraper_summarizer
    ```
 
 4. Install dependencies using Poetry:
 
    ```bash
+   poetry env use 3.12
+   poetry shell
    poetry install
+   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
    ```
 
 5. Set up your environment variables:
@@ -45,21 +49,12 @@ The AI workflow will get rss feed, crawl each article, translate it to english, 
 
    ```bash
    cp .env.example .env
-   # Edit .env and add your OPENBABYLON_API_URL
+   # Edit .env and add your:
+   # OPENBABYLON_API_URL
+   # OPENAI_API_KEY - Set this to a random string as OpenBabylon uses OpenAI API
    ```
 
-6. Open poetry shell:
-
-   ```bash
-   poetry shell
-   ```
-
-It will display an interpreter path like
-...caches/pypoetry/virtualenvs/get-started-ORuVhULK-py3.12
-
-When you open a python file in VSCode or other IDEs like Cursor, you can select the interpreter path to use the poetry environment.
-
-7. Run the services:
+6. Run the services:
 
    ```bash
    poetry run services
@@ -76,7 +71,7 @@ When you open a python file in VSCode or other IDEs like Cursor, you can select 
 9. In a new terminal, run the Streamlit frontend
 
    ```bash
-   poetry run streamlit run frontend.py
+   streamlit run frontend.py
    ```
 
 10. You can test the API endpoint without the Streamlit UI with:

@@ -1,16 +1,17 @@
-# USS Hornet Defense Tech Hackathon
+# USS Hornet Defense Tech Hackathon Quickstart: War Audio Transcription & Translation
 
 [Everything you need for the USS Hornet Defense Tech Hackathon](https://lu.ma/uss-hornet-hackathon?tk=DNbUwU)
 
-Restack AI - Streamlit + FastApi + Groq + OpenBabylon Example
+Tech stack used:
+- Restack AI + Streamlit + FastApi + Groq + OpenBabylon
 
-The AI workflow will need an audio file as input and will transcribe it, translate it to English
+The AI workflow will need an audio file as an input and will transcribe it & translate it to English.
 
 ## Prerequisites
 
 - Python 3.12 or higher
 - Poetry (for dependency management)
-- Docker (for running the Restack services)
+- Docker (for running Restack services)
 
 ## Usage
 
@@ -31,7 +32,7 @@ The AI workflow will need an audio file as input and will transcribe it, transla
 
    ```bash
    git clone https://github.com/restackio/examples-python.git
-   cd examples/defense_groq
+   cd examples/defense_quickstart_audio_transcription_translation
    ```
 
 4. Setup virtual environment with Poetry:

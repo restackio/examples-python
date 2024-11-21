@@ -40,9 +40,9 @@ async def main():
 
     # Define the application configuration
     app = {
-        'name': 'defense_groq',
-        'dockerFilePath': '/examples/defense_groq/Dockerfile',
-        'dockerBuildContext': './examples/defense_groq/',
+        'name': 'defense_quickstart_audio_transcription_translation',
+        'dockerFilePath': '/examples/defense_quickstart_audio_transcription_translation/Dockerfile',
+        'dockerBuildContext': './examples/defense_quickstart_audio_transcription_translation/',
         'environmentVariables': [
             {
                 'name': 'RESTACK_ENGINE_ID',

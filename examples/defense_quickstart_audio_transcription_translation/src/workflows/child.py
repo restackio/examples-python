@@ -5,6 +5,7 @@ from restack_ai.workflow import workflow, import_functions, log
 with import_functions():
     from src.functions.transcribe import transcribe, FunctionInputParams as TranscribeFunctionInputParams
     from src.functions.translate import translate, FunctionInputParams as TranslationFunctionInputParams
+    
 @dataclass
 class WorkflowInputParams:
     file_data: tuple[str, str]
@@ -18,7 +19,7 @@ class WorkflowOutputParams:
 class ChildWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams):
-        log.info("TranscribeWorkflow started", input=input)
+        log.info("ChildWorkflow started", input=input)
 
         transcription = await workflow.step(
             transcribe,

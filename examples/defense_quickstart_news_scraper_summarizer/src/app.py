@@ -1,14 +1,16 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from dataclasses import dataclass
 from src.client import client
 import time
 import uvicorn
 
 
 # Define request model
-class QueryRequest(BaseModel):
-    file_data: list[tuple[str, str]]
+@dataclass
+class QueryRequest:
+    url: str
+    count: int
 
 app = FastAPI()
 
@@ -23,17 +25,18 @@ app.add_middleware(
 
 @app.get("/")
 async def home():
-    return "Welcome to the Defense Hackathon Groq Example"
+    return "Welcome to the Quickstart: War News Scraper & Summarizer example!"
 
-@app.post("/api/transcribe")
+@app.post("/api/schedule")
 async def schedule_workflow(request: QueryRequest):
     try:
-        workflow_id = f"{int(time.time() * 1000)}-parent_workflow"
+
+        workflow_id = f"{int(time.time() * 1000)}-rss_workflow"
         
         runId = await client.schedule_workflow(
-            workflow_name="ParentWorkflow",
+            workflow_name="RssWorkflow",
             workflow_id=workflow_id,
-            input={"file_data": request.file_data}
+            input={"url": request.url, "count": request.count}
         )
         print("Scheduled workflow", runId)
         

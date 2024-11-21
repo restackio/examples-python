@@ -2,8 +2,7 @@ import streamlit as st
 import requests
 import base64
 # Set page title and header
-st.title("Defense Hackathon Groq Example")
-st.text("Streamlit, FastAPI, Restack, Groq")
+st.title("Defense Hackathon Quickstart: War Audio Transcription & Translation")
 
 
 
@@ -19,17 +18,17 @@ if uploaded_files:
 if "response_history" not in st.session_state:
     st.session_state.response_history = []
 
-if st.button("Transcribe"):
+if st.button("Process Audio"):
     if uploaded_file:
         try:
-            with st.spinner('Transcribing...'):
+            with st.spinner('Processing audio...'):
                 response = requests.post(
-                    "http://localhost:8000/api/transcribe",
+                    "http://localhost:8000/api/process_audio",
                     json={"file_data": file_data_list}
                 )
 
                 if response.status_code == 200:
-                    st.success("Transcription received!")
+                    st.success("Processing audio was successful!")
 
                     results = response.json()["result"]
                     for idx, uploaded_file in enumerate(uploaded_files):
@@ -48,7 +47,7 @@ if st.button("Transcribe"):
         st.warning("Please upload a file before submitting.")
 
 if st.session_state.response_history:
-    st.subheader("Transcription History")
+    st.subheader("Audio Processing History")
     for i, item in enumerate(st.session_state.response_history, 1):
         st.markdown(f"**Run {i}:**")
         st.markdown(f"**File Name:** {item['file_name']}")
