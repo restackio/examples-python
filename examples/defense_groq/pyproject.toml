@@ -8,7 +8,6 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-pydantic = "^2.9.2"
 restack-ai = "^0.0.37"
 fastapi = "^0.115.4"
 uvicorn = "^0.32.0"
