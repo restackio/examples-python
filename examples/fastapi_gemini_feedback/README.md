@@ -34,10 +34,18 @@
    poetry install
    ```
 
-5. Set `GEMINI_API_KEY` as an environment variable from [Google AI Studio](https://aistudio.google.com)
+5. Configure your Gemini API key using one of these methods:
 
+   a. Set as environment variable:
    ```bash
    export GEMINI_API_KEY=<your-api-key>
+   ```
+
+   b. Create a `.env` file:
+   - Copy `.env.example` to `.env` in the `fastapi_gemini_feedback` folder
+   - Add your API key from [Google AI Studio](https://aistudio.google.com):
+   ```bash
+   GEMINI_API_KEY=<your-api-key>
    ```
 
 6. Run the services:
@@ -53,8 +61,9 @@
    ```bash
    poetry run app
    ```
+   The app will run at http://0.0.0.0:5001
 
-8. POST to `http://127.0.0.1:5000/api/schedule` with the following JSON body:
+8. POST to `http://0.0.0.0:5000/api/schedule` with the following JSON body:
 
    ```json
    {
@@ -62,19 +71,43 @@
    }
    ```
 
-   This will schedule the `GeminiGenerateWorkflow` and print the result.
+   Or using curl in a new terminal:
+   ```bash
+   curl -X POST http://0.0.0.0:5001/api/schedule -H "Content-Type: application/json" -d '{"user_content": "Tell me a story"}'
+   ```
 
-9. POST to `http://127.0.0.1:5000/api/event/feedback` with the following JSON body:
+   This will schedule the `GeminiGenerateWorkflow` and print the result. The workflow will continue running, waiting for feedback.
+
+9. POST to `http://0.0.0.0:5000/api/event/feedback` with the following JSON body:
 
    ```json
    {
-     "feedback": "The story is too long"
+     "feedback": "The story is too long",
+     "workflow_id":"<workflow_id>",
+     "run_id":"<run_id>""
    }
    ```
 
-   This will send an event to the `GeminiGenerateWorkflow` to update the workflow state with the feedback.
+   Or using curl:
+   ```bash
+   curl -X POST http://0.0.0.0:5001/api/event/feedback -H "Content-Type: application/json" -d '{"feedback": "The story is too long", "workflow_id": "<workflow_id>", "run_id": "<run_id>"}'
+   ```
+   Use the `workflow_id` and `run_id` returned from the previous schedule API call to send feedback to the workflow.
 
-10. POST to `http://127.0.0.1:5000/api/event/end` to end the workflow.
+10. POST to `http://0.0.0.0:5001/api/event/end` to end the workflow with the following JSON body:
+
+   ```json
+   {
+     "workflow_id":"<workflow_id>",
+     "run_id":"<run_id>""
+   }
+   ```
+
+   Or using curl:
+   ```bash
+   curl -X POST http://0.0.0.0:5001/api/event/end -H "Content-Type: application/json" -d '{"workflow_id": "<workflow_id>", "run_id": "<run_id>"}'
+     -H "Content-Type: application/json"
+   ```
 
 ## Project Structure
 
