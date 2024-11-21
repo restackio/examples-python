@@ -76,7 +76,7 @@ When you open a python file in VSCode or other IDEs like Cursor, you can select 
 9. In a new terminal, run the Streamlit frontend
 
    ```bash
-   poetry runstreamlit run frontend.py
+   poetry run streamlit run frontend.py
    ```
 
 10. You can test the API endpoint without the Streamlit UI with:
