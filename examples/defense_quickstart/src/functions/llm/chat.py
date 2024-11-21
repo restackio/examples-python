@@ -18,12 +18,11 @@ class FunctionInputParams:
 async def llm_chat(input: FunctionInputParams) -> str:
     try:
         log.info("llm_chat function started", input=input)
-        client = OpenAI(base_url=os.environ.get("OPENBABYLON_API_URL"))
+        client = OpenAI(api_key='placeholder',base_url=os.environ.get("OPENBABYLON_API_URL"))
 
         messages = []
         if input.user_prompt:
             messages.append({"role": "user", "content": input.user_prompt})
-        print(messages)
         response = client.chat.completions.create(
             model="orpo-mistral-v0.3-ua-tokV2-focus-10B-low-lr-1epoch-aux-merged-1ep",
             messages=messages,
