@@ -52,6 +52,7 @@ The AI workflow will need an audio file as input and will transcribe it, transla
    # Edit .env and add your:
    # OPENBABYLON_API_URL
    # GROQ_API_KEY
+   # OPENAI_API_KEY - Set this to a random string as OpenBabylon uses OpenAI API
    ```
 
 6. Run the services:
