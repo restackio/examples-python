@@ -37,7 +37,6 @@ if st.button("Transcribe"):
                             "file_name": uploaded_file.name,
                             "file_type": uploaded_file.type,
                             "transcription": results[idx]['transcription'],
-                            "fixed_sentence": results[idx]['fixed_sentence'],
                             "translation": results[idx]['translation']
                     })
                 else:
@@ -55,7 +54,6 @@ if st.session_state.response_history:
         st.markdown(f"**File Name:** {item['file_name']}")
         st.markdown(f"**File Type:** {item['file_type']}")
         st.markdown(f"**Transcription:** {item['transcription']}")
-        st.markdown(f"**Fixed Sentence:** {item['fixed_sentence']}")
         st.markdown(f"**Translation:** {item['translation']}")
         st.markdown("---")
         
