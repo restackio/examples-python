@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "defense-groq"
+name = "defense-quickstart-audio-transcription-translation"
 version = "0.0.1"
-description = "A quickstart example showcasing streamlit, fastapi and groq"
+description = "Transcribe war-related audio recordings and translate them into English with this example repository"
 authors = ["Restack Team <service@restack.io>"]
 readme = "README.md"
 packages = [{include = "src"}]

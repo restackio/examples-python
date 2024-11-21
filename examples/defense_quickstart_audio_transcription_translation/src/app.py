@@ -1,13 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from dataclasses import dataclass
 from src.client import client
 import time
 import uvicorn
 
 
-# Define request model
-class QueryRequest(BaseModel):
+@dataclass
+class QueryRequest:
     file_data: list[tuple[str, str]]
 
 app = FastAPI()
@@ -23,9 +23,9 @@ app.add_middleware(
 
 @app.get("/")
 async def home():
-    return "Welcome to the Defense Hackathon Groq Example"
+    return "Welcome to the Quickstart: War Audio Transcription & Translation example"
 
-@app.post("/api/transcribe")
+@app.post("/api/process_audio")
 async def schedule_workflow(request: QueryRequest):
     try:
         workflow_id = f"{int(time.time() * 1000)}-parent_workflow"
