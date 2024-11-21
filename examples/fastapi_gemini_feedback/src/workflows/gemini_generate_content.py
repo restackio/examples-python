@@ -32,7 +32,7 @@ class GeminiGenerateWorkflow:
     @workflow.event
     async def event_end(self, end: End) -> End:
         log.info(f"Received end")
-        self.end_workflow = end.end
+        self.end_workflow = True
         return end
     @workflow.run
     async def run(self, input: WorkflowInputParams):
