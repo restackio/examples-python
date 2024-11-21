@@ -14,7 +14,12 @@ async def main():
             {
                 'port': 5233,
                 'path': '/',
-                'name': 'restack-engine2',
+                'name': 'engine-frontend',
+            },
+            {
+                'port': 6233,
+                'path': '/api',
+                'name': 'engine-api',
             }
         ],
         'environmentVariables': [
