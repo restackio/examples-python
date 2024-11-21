@@ -12,7 +12,7 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 aiohttp = "^3.11.6"
-restack-ai = {path = "/Users/aboutphilippe/Documents/dev/local-operator/libraries/python"}
+restack-ai = "^0.0.39"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"  # Optional: Add if you want to include tests in your example
