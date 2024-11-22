@@ -10,7 +10,14 @@ The AI workflow will need an audio file as an input and will transcribe it & tra
 
 ## Datasets
 
-Find audio samples at https://drive.google.com/file/d/18O53Wavb154Qc8LjnJohd3D62V7HXgyI/view?usp=sharing
+Find audio samples at https://drive.google.com/drive/folders/1mbchTGfmhq2sc7sQEMfx-dQzd11kWIfO?usp=drive_link
+
+## OpenBabylon credentials
+
+During the hackathon, OpenBabylon provided a public url:
+
+OPENBABYLON_API_URL=64.139.222.109:80
+No api key is needed, although a dummy api_key="openbabylon" is necessary for openai sdk.
 
 ## Prerequisites
 
