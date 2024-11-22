@@ -17,4 +17,3 @@ class ChildWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams) -> WorkflowOutputParams:
         log.info("ChildWorkflow started", input=input)
-        return WorkflowOutputParams(cleaned_audio="cleaned_audio")
