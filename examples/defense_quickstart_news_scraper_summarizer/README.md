@@ -71,7 +71,7 @@ The AI workflow will get RSS feed, crawl each article, translate it to English, 
 9. In a new terminal, run the Streamlit frontend
 
    ```bash
-   poetry runstreamlit run frontend.py
+   poetry run streamlit run frontend.py
    ```
 
 10. You can test the API endpoint without the Streamlit UI with:
