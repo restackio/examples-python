@@ -2,15 +2,9 @@
 
 This repository contains various examples demonstrating how to use the Restack AI Python SDK. These examples are designed to help you get started with Restack AI and showcase different features and use cases.
 
-## Examples
-
-1. [Get Started](examples/get-started/README.md) - A simple example to help you get started with the Restack AI SDK.
-2. [OpenAI Greet](examples/openai_greet/README.md) - A simple example to greet a person using OpenAI.
-3. [Gemini Generate Content](examples/gemini_generate_content/README.md) - A simple example to generate content using Gemini.
-
 ## Prerequisites
 
-- Python 3.8 or higher
+- Python 3.12 or higher
 - Poetry (for dependency management)
 
 ## Getting Started

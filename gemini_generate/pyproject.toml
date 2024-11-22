@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "gemini_generate"
+version = "0.0.1"
+description = "A simple example to generate content using Google Gemini"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+restack-ai = "^0.0.38"
+google-generativeai = "^0.8.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+services = "src.services:run_services"
+schedule = "schedule_workflow:run_schedule_workflow"

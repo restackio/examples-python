@@ -1,0 +1,31 @@
+# Project metadata
+[tool.poetry]
+name = "weaviate_search"
+version = "0.0.1"
+description = "A simple example to get started with the restack-ai SDK"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+restack-ai = "^0.0.38"
+requests = "^2.32.3"
+weaviate-client = "^4.9.0"
+python-dotenv = "0.19.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2"  # Optional: Add if you want to include tests in your example
+
+# Build system configuration
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# CLI command configuration
+[tool.poetry.scripts]
+services = "src.services:run_services"
+schedule-seed-workflow = "schedule_workflow:run_schedule_seed_workflow"
+schedule-search-workflow = "schedule_workflow:run_schedule_search_workflow"
