@@ -65,7 +65,7 @@ async def main():
 
     # Configure the stack with the applications
     await restack_cloud_client.stack({
-        'name': 'development environment python',
+        'name': 'defense_quickstart_news_scraper_summarizer',
         'previewEnabled': False,
         'applications': [engine,app],
     })
