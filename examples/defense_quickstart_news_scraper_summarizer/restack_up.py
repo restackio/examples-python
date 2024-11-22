@@ -40,9 +40,9 @@ async def main():
 
     # Define the application configuration
     app = {
-        'name': 'defense_quickstart',
-        'dockerFilePath': '/examples/defense_quickstart/Dockerfile',
-        'dockerBuildContext': './examples/defense_quickstart/',
+        'name': 'defense_quickstart_news_scraper_summarizer',
+        'dockerFilePath': '/examples/defense_quickstart_news_scraper_summarizer/Dockerfile',
+        'dockerBuildContext': './examples/defense_quickstart_news_scraper_summarizer/',
         'environmentVariables': [
             {
                 'name': 'RESTACK_ENGINE_ID',
@@ -65,7 +65,7 @@ async def main():
 
     # Configure the stack with the applications
     await restack_cloud_client.stack({
-        'name': 'development environment python',
+        'name': 'defense_quickstart_news_scraper_summarizer',
         'previewEnabled': False,
         'applications': [engine,app],
     })
