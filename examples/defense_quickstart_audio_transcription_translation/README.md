@@ -73,5 +73,5 @@ The AI workflow will need an audio file as an input and will transcribe it & tra
 8. In a new terminal, run the Streamlit frontend
 
    ```bash
-   streamlit run frontend.py
+   poetry runstreamlit run frontend.py
    ```
