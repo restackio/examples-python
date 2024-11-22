@@ -4,8 +4,7 @@
 
 Restack AI - Streamlit + FastApi + OpenBabylon Example
 
-The AI workflow will get rss feed, crawl each article, translate it to english, summarize it and make a summary of the news found on rss feed.
-
+The AI workflow will get rss feed, crawl each article, translate it to English, summarize it and make a daily digest of the news found on rss feed.
 ## Prerequisites
 
 - Python 3.12 or higher

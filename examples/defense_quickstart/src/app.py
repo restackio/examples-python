@@ -24,7 +24,7 @@ app.add_middleware(
 
 @app.get("/")
 async def home():
-    return "Welcome to the TogetherAI LlamaIndex FastAPI App!"
+    return "Welcome to the Defense Hackathon App!"
 
 @app.post("/api/schedule")
 async def schedule_workflow(request: QueryRequest):
