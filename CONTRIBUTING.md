@@ -29,5 +29,3 @@ Copy Executable path in Virtualenv:
 On mac for ex:
 
 /Users/<USER>>/Library/Caches/pypoetry/virtualenvs/get-started-2rl79RZk-py3.12/bin/python
-
-So interpreter is auto-detected based on the opened file
