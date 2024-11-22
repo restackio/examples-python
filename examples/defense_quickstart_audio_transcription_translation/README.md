@@ -3,9 +3,21 @@
 [Everything you need for the USS Hornet Defense Tech Hackathon](https://lu.ma/uss-hornet-hackathon?tk=DNbUwU)
 
 Tech stack used:
+
 - Restack AI + Streamlit + FastApi + Groq + OpenBabylon
 
 The AI workflow will need an audio file as an input and will transcribe it & translate it to English.
+
+## Datasets
+
+Find audio samples at https://drive.google.com/drive/folders/1mbchTGfmhq2sc7sQEMfx-dQzd11kWIfO?usp=drive_link
+
+## OpenBabylon credentials
+
+During the hackathon, OpenBabylon provided a public url:
+
+OPENBABYLON_API_URL=64.139.222.109:80
+No api key is needed, although a dummy api_key="openbabylon" is necessary for openai sdk.
 
 ## Prerequisites
 
@@ -20,7 +32,6 @@ The AI workflow will need an audio file as an input and will transcribe it & tra
    ```bash
    docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
    ```
-
 
 2. Open the Web UI to see the workflows:
 

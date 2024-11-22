@@ -18,7 +18,7 @@ class FunctionInputParams:
 async def llm_chat(input: FunctionInputParams) -> str:
     try:
         log.info("llm_chat function started", input=input)
-        client = OpenAI(api_key='placeholder',base_url=os.environ.get("OPENBABYLON_API_URL"))
+        client = OpenAI(api_key='openbabylon',base_url=os.environ.get("OPENBABYLON_API_URL"))
 
         messages = []
         if input.user_prompt:
