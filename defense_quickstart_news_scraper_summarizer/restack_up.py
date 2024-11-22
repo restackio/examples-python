@@ -41,7 +41,7 @@ async def main():
     # Define the application configuration
     app = {
         'name': 'defense_quickstart_news_scraper_summarizer',
-        'dockerFilePath': '/examples/defense_quickstart_news_scraper_summarizer/Dockerfile',
+        'dockerFilePath': '/defense_quickstart_news_scraper_summarizer/Dockerfile',
         'dockerBuildContext': './examples/defense_quickstart_news_scraper_summarizer/',
         'environmentVariables': [
             {

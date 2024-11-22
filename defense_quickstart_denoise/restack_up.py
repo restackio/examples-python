@@ -41,7 +41,7 @@ async def main():
     # Define the application configuration
     app = {
         'name': 'defense_quickstart_denoise',
-        'dockerFilePath': '/examples/defense_quickstart_denoise/Dockerfile',
+        'dockerFilePath': '/defense_quickstart_denoise/Dockerfile',
         'dockerBuildContext': './examples/defense_quickstart_denoise/',
         'environmentVariables': [
             {
