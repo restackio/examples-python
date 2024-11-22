@@ -46,8 +46,17 @@ No api key is needed, although a dummy api_key="openbabylon" is necessary for op
 
    ```bash
    poetry env use 3.12
+   ```
+
+   ```bash
    poetry shell
+   ```
+
+   ```bash
    poetry install
+   ```
+
+   ```bash
    poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
    ```
 

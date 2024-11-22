@@ -10,12 +10,24 @@
 
 ### Poetry setup
 
+In each folder, to switch environment:
+
 ```bash
-poetry config virtualenvs.in-project true
+poetry env use 3.12
 ```
 
-so venv is created in-place a-la node_modules
+```bash
+poetry shell
+```
 
-Poetry Monorepo at https://marketplace.visualstudio.com/items?itemName=ameenahsanma.poetry-monorepo
+```bash
+poetry env info
+```
+
+Copy Executable path in Virtualenv:
+
+On mac for ex:
+
+/Users/<USER>>/Library/Caches/pypoetry/virtualenvs/get-started-2rl79RZk-py3.12/bin/python
 
 So interpreter is auto-detected based on the opened file
