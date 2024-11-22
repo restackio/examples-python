@@ -42,7 +42,7 @@ async def main():
     app = {
         'name': 'defense_quickstart_denoise',
         'dockerFilePath': '/defense_quickstart_denoise/Dockerfile',
-        'dockerBuildContext': './examples/defense_quickstart_denoise/',
+        'dockerBuildContext': './defense_quickstart_denoise/',
         'environmentVariables': [
             {
                 'name': 'RESTACK_ENGINE_ID',

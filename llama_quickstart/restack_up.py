@@ -30,7 +30,7 @@ async def main():
     app = {
         'name': 'llama_quickstart',
         'dockerFilePath': '/llama_quickstart/Dockerfile',
-        'dockerBuildContext': './examples/llama_quickstart/',
+        'dockerBuildContext': './llama_quickstart/',
         'environmentVariables': [
             {
                 'name': 'RESTACK_ENGINE_ID',

@@ -42,7 +42,7 @@ async def main():
     app = {
         'name': 'defense_quickstart_audio_transcription_translation',
         'dockerFilePath': '/defense_quickstart_audio_transcription_translation/Dockerfile',
-        'dockerBuildContext': './examples/defense_quickstart_audio_transcription_translation/',
+        'dockerBuildContext': './defense_quickstart_audio_transcription_translation/',
         'environmentVariables': [
             {
                 'name': 'RESTACK_ENGINE_ID',

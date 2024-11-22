@@ -42,7 +42,7 @@ async def main():
     app = {
         'name': 'defense_quickstart_news_scraper_summarizer',
         'dockerFilePath': '/defense_quickstart_news_scraper_summarizer/Dockerfile',
-        'dockerBuildContext': './examples/defense_quickstart_news_scraper_summarizer/',
+        'dockerBuildContext': './defense_quickstart_news_scraper_summarizer/',
         'environmentVariables': [
             {
                 'name': 'RESTACK_ENGINE_ID',
