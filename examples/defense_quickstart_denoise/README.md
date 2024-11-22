@@ -3,9 +3,14 @@
 [Everything you need for the USS Hornet Defense Tech Hackathon](https://lu.ma/uss-hornet-hackathon?tk=DNbUwU)
 
 Tech stack used:
+
 - Restack AI + Streamlit + FastAPI + SieveData
 
-The AI workflow will need an audio file as an input and will denoise it.
+The AI workflow will need an audio file as an input and will denoise it to improve the quality of the audio.
+
+## Datasets
+
+Find audio samples at https://drive.google.com/drive/folders/1mbchTGfmhq2sc7sQEMfx-dQzd11kWIfO?usp=drive_link
 
 ## Prerequisites
 
