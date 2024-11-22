@@ -32,7 +32,19 @@ This repository contains a simple example project to help you get started with c
 4. Install dependencies using Poetry:
 
    ```bash
+   poetry env use 3.12
+   ```
+
+   ```bash
+   poetry shell
+   ```
+
+   ```bash
    poetry install
+   ```
+
+   ```bash
+   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
    ```
 
 5. Run the services:
@@ -44,6 +56,10 @@ This repository contains a simple example project to help you get started with c
    This will start the Restack service with the defined workflows and functions.
 
 6. In a new terminal, schedule the workflow:
+
+   ```bash
+   poetry shell
+   ```
 
    ```bash
    poetry run schedule

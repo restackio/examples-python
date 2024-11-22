@@ -56,7 +56,19 @@ The AI workflow will search hacker news based on a query, crawl each project's w
 6. Open poetry shell:
 
    ```bash
+   poetry env use 3.12
+   ```
+
+   ```bash
    poetry shell
+   ```
+
+   ```bash
+   poetry install
+   ```
+
+   ```bash
+   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
    ```
 
 It will display an interpreter path like
@@ -73,6 +85,10 @@ When you open a python file in VSCode or other IDEs like Cursor, you can select 
    This will start the Restack service with the defined workflows and functions.
 
 8. In a new terminal, run FastAPI app:
+
+   ```bash
+   poetry shell
+   ```
 
    ```bash
    poetry run app

@@ -43,8 +43,17 @@ Find audio samples at https://drive.google.com/drive/folders/1mbchTGfmhq2sc7sQEM
 
    ```bash
    poetry env use 3.12
+   ```
+
+   ```bash
    poetry shell
+   ```
+
+   ```bash
    poetry install
+   ```
+
+   ```bash
    poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
    ```
 
@@ -62,6 +71,10 @@ Find audio samples at https://drive.google.com/drive/folders/1mbchTGfmhq2sc7sQEM
    ```
 
 7. In a new terminal, run FastAPI app:
+
+   ```bash
+   poetry shell
+   ```
 
    ```bash
    poetry run app

@@ -31,7 +31,19 @@
 4. Install dependencies using Poetry:
 
    ```bash
+   poetry env use 3.12
+   ```
+
+   ```bash
+   poetry shell
+   ```
+
+   ```bash
    poetry install
+   ```
+
+   ```bash
+   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
    ```
 
 5. Set `GEMINI_API_KEY` as an environment variable from [Google AI Studio](https://aistudio.google.com)
@@ -49,6 +61,10 @@
    This will start the Restack service with the defined workflows and functions.
 
 7. In a new terminal, run flask app:
+
+   ```bash
+   poetry shell
+   ```
 
    ```bash
    poetry run flask

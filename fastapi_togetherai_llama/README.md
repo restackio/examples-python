@@ -31,7 +31,19 @@
 4. Install dependencies using Poetry:
 
    ```bash
+   poetry env use 3.12
+   ```
+
+   ```bash
+   poetry shell
+   ```
+
+   ```bash
    poetry install
+   ```
+
+   ```bash
+   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
    ```
 
 5. Set up your environment variables:
@@ -52,6 +64,10 @@
    This will start the Restack service with the defined workflows and functions.
 
 7. In a new terminal, run fastapi app:
+
+   ```bash
+   poetry shell
+   ```
 
    ```bash
    poetry run app

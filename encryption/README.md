@@ -32,7 +32,19 @@ This repository contains a simple example project to help you get started with t
 4. Install dependencies using Poetry:
 
    ```bash
+   poetry env use 3.12
+   ```
+
+   ```bash
+   poetry shell
+   ```
+
+   ```bash
    poetry install
+   ```
+
+   ```bash
+   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
    ```
 
 5. Run the services:
@@ -50,6 +62,10 @@ This repository contains a simple example project to help you get started with t
    ```
 
 7. In an another terminal, run the workflow
+
+   ```bash
+   poetry shell
+   ```
 
    ```bash
    poetry run schedule

@@ -4,12 +4,20 @@ This example shows how to use Streamlit to trigger a workflow and display the re
 
 ## Running the example
 
+```bash
+poetry env use 3.12
 ```
+
+```bash
+poetry shell
+```
+
+```bash
 poetry install
 ```
 
-```
-poetry shell
+```bash
+poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
 ```
 
 ```

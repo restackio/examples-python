@@ -18,7 +18,19 @@ The example is a follow along of <https://weaviate.io/developers/weaviate/starte
 2. Install dependencies using Poetry:
 
    ```bash
+   poetry env use 3.9
+   ```
+
+   ```bash
+   poetry shell
+   ```
+
+   ```bash
    poetry install
+   ```
+
+   ```bash
+   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
    ```
 
 To use this project, you need to have access to Weaviate Cloud. Follow these steps to obtain your `WEAVIATE_URL` and `WEAVIATE_API_KEY`:
@@ -35,9 +47,9 @@ Add these credentials to your `.env` file.
 
 Using `docker run`:
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
 ### Running the Services
 
@@ -52,6 +64,10 @@ This will start the Restack service with the defined workflows and functions.
 ### Scheduling Workflows
 
 To schedule and run the example workflows, use:
+
+```bash
+poetry shell
+```
 
 ```bash
 poetry run schedule-seed-workflow

@@ -4,12 +4,20 @@ This Flask application provides a chat completion API that proxy the stream to G
 
 Useful for VAPI integration
 
+```bash
+poetry env use 3.12
 ```
+
+```bash
+poetry shell
+```
+
+```bash
 poetry install
 ```
 
-```
-poetry shell
+```bash
+poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
 ```
 
 ```

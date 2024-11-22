@@ -81,6 +81,10 @@ No api key is needed, although a dummy api_key="openbabylon" is necessary for op
 7. In a new terminal, run FastAPI app:
 
    ```bash
+   poetry shell
+   ```
+
+   ```bash
    poetry run app
    ```
 
