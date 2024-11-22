@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "example-streamlit"
+name = "streamlit"
 version = "0.0.1"
 description = ""
 authors = ["Your Name <you@example.com>"]

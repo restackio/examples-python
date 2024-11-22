@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fastapi_togetherai_llamaindex"
+name = "fastapi_togetherai_llama"
 version = "0.0.1"
 description = "A simple example showcasing fastapi, togetherai and llamaindex"
 authors = [

@@ -1,6 +1,6 @@
 # Project metadata
 [tool.poetry]
-name = "weaviate-search"
+name = "weaviate_search"
 version = "0.0.1"
 description = "A simple example to get started with the restack-ai SDK"
 authors = [

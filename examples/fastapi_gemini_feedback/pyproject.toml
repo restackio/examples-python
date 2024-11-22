@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "flask_gemini"
+name = "fastapi_gemini_feedback"
 version = "0.0.1"
 description = "A simple example to generate content using Google Gemini"
 authors = [

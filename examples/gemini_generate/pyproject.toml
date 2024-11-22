@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "gemini_generate_content"
+name = "gemini_generate"
 version = "0.0.1"
 description = "A simple example to generate content using Google Gemini"
 authors = [

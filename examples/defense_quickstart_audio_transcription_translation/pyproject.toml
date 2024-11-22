@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "defense-quickstart-audio-transcription-translation"
+name = "defense_quickstart_audio_transcription_translation"
 version = "0.0.1"
 description = "Transcribe war-related audio recordings and translate them into English with this example repository"
 authors = ["Restack Team <service@restack.io>"]
