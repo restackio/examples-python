@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "defense-quickstart-noise-removal"
+name = "defense-quickstart-denoise"
 version = "0.0.1"
 description = "Remove noise from audio recordings with this example repository"
 authors = ["Restack Team <service@restack.io>"]
