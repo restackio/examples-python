@@ -13,6 +13,10 @@ COPY . .
 # Configure poetry to not create virtual environment
 RUN poetry config virtualenvs.create false
 
+# Set a higher timeout and use a different PyPI mirror
+ENV PIP_DEFAULT_TIMEOUT=100
+ENV PIP_INDEX_URL=https://pypi.org/simple
+
 # Install dependencies
 RUN poetry install --no-dev --no-interaction --no-ansi
 

@@ -3,9 +3,17 @@
 [Everything you need for the USS Hornet Defense Tech Hackathon](https://lu.ma/uss-hornet-hackathon?tk=DNbUwU)
 
 Tech stack used:
+
 - Restack AI + Streamlit + FastApi + OpenBabylon
 
 The AI workflow will get RSS feed, crawl each article, translate it to English, summarize it & make a summary of the news found on RSS feed.
+
+## OpenBabylon credentials
+
+During the hackathon, OpenBabylon provided a public url:
+
+OPENBABYLON_API_URL=64.139.222.109:80
+No api key is needed, although a dummy api_key="openbabylon" is necessary for openai sdk.
 
 ## Prerequisites
 
@@ -51,7 +59,6 @@ The AI workflow will get RSS feed, crawl each article, translate it to English, 
    cp .env.example .env
    # Edit .env and add your:
    # OPENBABYLON_API_URL
-   # OPENAI_API_KEY - Set this to a random string as OpenBabylon uses OpenAI API
    ```
 
 6. Run the services:
@@ -62,19 +69,19 @@ The AI workflow will get RSS feed, crawl each article, translate it to English, 
 
    This will start the Restack service with the defined workflows and functions.
 
-8. In a new terminal, run FastAPI app:
+7. In a new terminal, run FastAPI app:
 
    ```bash
    poetry run app
    ```
 
-9. In a new terminal, run the Streamlit frontend
+8. In a new terminal, run the Streamlit frontend
 
    ```bash
-   streamlit run frontend.py
+   poetry run streamlit run frontend.py
    ```
 
-10. You can test the API endpoint without the Streamlit UI with:
+9. You can test the API endpoint without the Streamlit UI with:
 
 ```bash
 curl -X POST \
