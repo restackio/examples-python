@@ -11,6 +11,9 @@ class FunctionInputParams:
 async def transcribe(input: FunctionInputParams):
     try:
         log.info("transcribe function started", input=input)
+        if not os.environ.get("GROQ_API_KEY"):
+            raise Exception("GROQ_API_KEY is not set")
+        
         client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 

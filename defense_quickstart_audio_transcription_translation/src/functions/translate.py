@@ -11,6 +11,10 @@ class FunctionInputParams:
 async def translate(input: FunctionInputParams):
     try:
         log.info("translate function started", input=input)
+        if not os.environ.get("OPENBABYLON_API_URL"):
+            raise Exception("OPENBABYLON_API_URL is not set")
+        
+
         client = OpenAI(api_key='openbabylon',base_url=os.environ.get("OPENBABYLON_API_URL"))
 
         messages = []
