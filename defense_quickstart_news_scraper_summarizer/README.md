@@ -12,7 +12,7 @@ The AI workflow will get RSS feed, crawl each article, translate it to English, 
 
 During the hackathon, OpenBabylon provided a public url:
 
-OPENBABYLON_API_URL=64.139.222.109:80
+OPENBABYLON_API_URL=http://64.139.222.109:80
 No api key is needed, although a dummy api_key="openbabylon" is necessary for openai sdk.
 
 ## Prerequisites
