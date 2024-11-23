@@ -60,6 +60,10 @@ async def main():
                 'name': 'OPENBABYLON_API_URL',
                 'value': os.getenv('OPENBABYLON_API_URL'),
             },
+            {
+                'name': 'GROQ_API_KEY',
+                'value': os.getenv('GROQ_API_KEY'),
+            },
         ],
     }
 
