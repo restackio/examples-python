@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 async def main():
-    # Initialize the RestackCloud client with the SDK token from environment variables
-    restack_cloud_client = RestackCloud(os.getenv('RESTACK_SDK_TOKEN'))
+    # Initialize the RestackCloud client with the CLOUD token from environment variables
+    restack_cloud_client = RestackCloud(os.getenv('RESTACK_CLOUD_TOKEN'))
 
     # Define the backend application configuration
     backend_app = {
