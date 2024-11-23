@@ -17,7 +17,6 @@ Find audio samples at https://drive.google.com/drive/folders/1mbchTGfmhq2sc7sQEM
 During the hackathon, OpenBabylon provided a public url:
 
 OPENBABYLON_API_URL=http://64.139.222.109:80/v1
-No api key is needed, although a dummy api_key="openbabylon" is necessary for openai sdk.
 
 ## Prerequisites
 
@@ -73,7 +72,6 @@ No api key is needed, although a dummy api_key="openbabylon" is necessary for op
    # Edit .env and add your:
    # OPENBABYLON_API_URL
    # GROQ_API_KEY
-   # OPENAI_API_KEY - Set this to a random string as OpenBabylon uses OpenAI API
    ```
 
 6. Run the services:
