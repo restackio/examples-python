@@ -10,7 +10,7 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "3.9"
+python = "3.12.4"
 restack-ai = "0.0.40"
 bosdyn-client = "4.1.0"
 opencv-python = "4.10.0.84"
