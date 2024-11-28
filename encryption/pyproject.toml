@@ -10,9 +10,9 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "3.9"
+python = "3.12.4"
 aiohttp = "3.11.6"
-restack-ai = "0.0.39"
+restack-ai = "0.0.40"
 
 [tool.poetry.dev-dependencies]
 pytest = "6.2"  # Optional: Add if you want to include tests in your example
