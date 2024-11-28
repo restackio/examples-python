@@ -9,7 +9,7 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "3.9"
+python = "3.12.4"
 restack-ai = "0.0.40"
 google-generativeai = "0.8.3"
 
