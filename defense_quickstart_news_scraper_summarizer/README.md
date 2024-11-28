@@ -45,7 +45,7 @@ No api key is needed, although a dummy api_key="openbabylon" is necessary for op
 4. Install dependencies using Poetry:
 
    ```bash
-   poetry env use 3.12
+   poetry env use 3.12.4
    ```
 
    ```bash
