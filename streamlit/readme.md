@@ -5,7 +5,7 @@ This example shows how to use Streamlit to trigger a workflow and display the re
 ## Running the example
 
 ```bash
-poetry env use 3.12
+poetry env use 3.12.4
 ```
 
 ```bash
