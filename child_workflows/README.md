@@ -32,7 +32,7 @@ This repository contains a simple example project to help you get started with c
 4. Install dependencies using Poetry:
 
    ```bash
-   poetry env use 3.12
+   poetry env use 3.12.4
    ```
 
    ```bash
