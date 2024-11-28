@@ -9,7 +9,7 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "3.9"
+python = "3.12.4"
 fastapi = "0.115.4"
 llama-index = "0.11.22"
 llama-index-llms-together = "0.2.0"
