@@ -7,16 +7,16 @@ packages = [{include = "src"}]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
-flask = "^3.0.3"
-requests = "^2.32.3"
-aiohttp = "^3.10.10"
-python-dotenv = "^1.0.1"
-flask-cors = "^5.0.0"
-rich = "^13.9.2"
-pydantic = "^2.9.2"
-google-generativeai = "^0.8.3"
-h11 = "^0.14.0"
+python = "3.9"
+flask = "3.0.3"
+requests = "2.32.3"
+aiohttp = "3.10.10"
+python-dotenv = "1.0.1"
+flask-cors = "5.0.0"
+rich = "13.9.2"
+pydantic = "2.9.2"
+google-generativeai = "0.8.3"
+h11 = "0.14.0"
 
 [build-system]
 requires = ["poetry-core"]

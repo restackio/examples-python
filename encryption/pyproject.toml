@@ -10,12 +10,12 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-aiohttp = "^3.11.6"
-restack-ai = "^0.0.39"
+python = "3.9"
+aiohttp = "3.11.6"
+restack-ai = "0.0.39"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2"  # Optional: Add if you want to include tests in your example
+pytest = "6.2"  # Optional: Add if you want to include tests in your example
 
 # Build system configuration
 [build-system]

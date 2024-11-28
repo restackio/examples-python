@@ -7,16 +7,16 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.12"
-restack-ai = "^0.0.40"
-fastapi = "^0.115.4"
-uvicorn = "^0.32.0"
+python = "3.12"
+restack-ai = "0.0.40"
+fastapi = "0.115.4"
+uvicorn = "0.32.0"
 python-dotenv = "0.19"
-streamlit = "^1.40.0"
-requests = "^2.32.3"
-restack-sdk-cloud = "^1.0.13"
-groq = "^0.12.0"
-openai = "^1.55.0"
+streamlit = "1.40.0"
+requests = "2.32.3"
+restack-sdk-cloud = "1.0.14"
+groq = "0.12.0"
+openai = "1.55.0"
 
 
 [build-system]

@@ -10,14 +10,14 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-restack-ai = "^0.0.40"
-bosdyn-client = "^4.1.0"
-opencv-python = "^4.10.0.84"
-setuptools = "^75.6.0"
+python = "3.9"
+restack-ai = "0.0.40"
+bosdyn-client = "4.1.0"
+opencv-python = "4.10.0.84"
+setuptools = "75.6.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2"  # Optional: Add if you want to include tests in your example
+pytest = "6.2"  # Optional: Add if you want to include tests in your example
 
 # Build system configuration
 [build-system]

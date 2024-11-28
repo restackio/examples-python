@@ -9,17 +9,17 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.12"
-pydantic = "^2.9.2"
-restack-ai = "^0.0.40"
-fastapi = "^0.115.4"
-uvicorn = "^0.32.0"
+python = "3.12"
+pydantic = "2.9.2"
+restack-ai = "0.0.40"
+fastapi = "0.115.4"
+uvicorn = "0.32.0"
 python-dotenv = "0.19"
-streamlit = "^1.40.0"
-requests = "^2.32.3"
-restack-sdk-cloud = "^1.0.13"
-openai = "^1.54.5"
-bs4 = "^0.0.2"
+streamlit = "1.40.0"
+requests = "2.32.3"
+restack-sdk-cloud = "1.0.14"
+openai = "1.54.5"
+bs4 = "0.0.2"
 
 [build-system]
 requires = ["poetry-core"]

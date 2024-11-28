@@ -6,10 +6,10 @@ authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-restack-ai = "^0.0.40"
-streamlit = "^1.39.0"
-blinker = "^1.8.2"
+python = "3.12"
+restack-ai = "0.0.40"
+streamlit = "1.39.0"
+blinker = "1.8.2"
 
 [build-system]
 requires = ["poetry-core"]
