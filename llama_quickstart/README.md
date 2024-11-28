@@ -38,11 +38,26 @@ The AI workflow will search hacker news based on a query, crawl each project's w
    cd examples-python/examples/llama_quickstart
    ```
 
+4. 
+
 4. Install dependencies using Poetry:
+
+   ```bash
+   poetry env use 3.12.4
+   ```
+
+   ```bash
+   poetry shell
+   ```
 
    ```bash
    poetry install
    ```
+
+   ```bash
+   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
+   ```
+
 
 5. Set up your environment variables:
 
