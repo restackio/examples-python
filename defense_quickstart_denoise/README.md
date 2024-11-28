@@ -42,7 +42,7 @@ Find audio samples at https://drive.google.com/drive/folders/1mbchTGfmhq2sc7sQEM
 4. Setup virtual environment with Poetry:
 
    ```bash
-   poetry env use 3.12
+   poetry env use 3.12.4
    ```
 
    ```bash

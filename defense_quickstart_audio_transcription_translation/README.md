@@ -48,7 +48,7 @@ OPENBABYLON_API_URL=http://64.139.222.109:80/v1
 4. Setup virtual environment with Poetry:
 
    ```bash
-   poetry env use 3.12
+   poetry env use 3.12.4
    ```
 
    ```bash

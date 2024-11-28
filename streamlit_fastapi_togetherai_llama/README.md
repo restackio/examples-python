@@ -33,7 +33,7 @@ The model will act as a pirate and you can send it prompts from the streamlit ui
 4. Install dependencies using Poetry:
 
 ```bash
-poetry env use 3.12
+poetry env use 3.12.4
 ```
 
 ```bash
