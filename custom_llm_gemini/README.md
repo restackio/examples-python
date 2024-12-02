@@ -5,7 +5,7 @@ This Flask application provides a chat completion API that proxy the stream to G
 Useful for VAPI integration
 
 ```bash
-poetry env use 3.12.4
+poetry env use 3.12
 ```
 
 ```bash

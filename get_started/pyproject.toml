@@ -10,7 +10,7 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "3.12.4"
+python = ">=3.10,<4.0"
 restack-ai = "0.0.40"
 
 [tool.poetry.dev-dependencies]
