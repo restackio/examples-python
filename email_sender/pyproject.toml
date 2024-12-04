@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "email_sender"
+version = "0.0.1"
+description = "Send emails with sendgrid"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "3.12.7"
+pydantic = "2.9.2"
+python-dotenv = "1.0.1"
+openai = "1.54.5"
+sendgrid = "^6.11.0"
+restack-ai = {path = "/Users/osmanhernandez/Desktop/dev/restack/libraries/python"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+services = "src.services:run_services"
+app = "src.app:run_app"
