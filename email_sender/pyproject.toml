@@ -13,8 +13,8 @@ python = "3.12.7"
 pydantic = "2.9.2"
 python-dotenv = "1.0.1"
 sendgrid = "6.11.0"
-restack-ai = {path = "/Users/osmanhernandez/Desktop/dev/restack/libraries/python"}
 openai = "1.56.2"
+restack-ai = "0.0.42"
 
 [build-system]
 requires = ["poetry-core"]

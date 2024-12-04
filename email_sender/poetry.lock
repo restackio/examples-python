@@ -423,22 +423,20 @@ files = [
 
 [[package]]
 name = "restack-ai"
-version = "0.0.41"
+version = "0.0.42"
 description = "Restack AI library"
 optional = false
-python-versions = "^3.9"
-files = []
-develop = false
+python-versions = "<4.0,>=3.9"
+files = [
+    {file = "restack_ai-0.0.42-py3-none-any.whl", hash = "sha256:db279964eab580067ed5920a7314c19e97f21959fbaec9368451fc1c524c5308"},
+    {file = "restack_ai-0.0.42.tar.gz", hash = "sha256:35cbc8491fb747924e978d228a0595bd15d576dff3738b606c8e35444fbb6b91"},
+]
 
 [package.dependencies]
-asyncio = "^3.4.3"
-colorama = "^0.4.6"
-python-dotenv = "^1.0.1"
+asyncio = ">=3.4.3,<4.0.0"
+colorama = ">=0.4.6,<0.5.0"
+python-dotenv = ">=1.0.1,<2.0.0"
 temporalio = "1.8.0"
-
-[package.source]
-type = "directory"
-url = "../../restack/libraries/python"
 
 [[package]]
 name = "sendgrid"
@@ -546,4 +544,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "3.12.7"
-content-hash = "86849c9f7ed8b04a339b42f5472f0c2c5e976fde6e17f5ceae35ec1e77b8c2ea"
+content-hash = "c8b8de9f3702b99ccaf55dfc04c3bbf5e989923b530e0f51dbec92017d7523af"
