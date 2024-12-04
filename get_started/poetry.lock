@@ -145,6 +145,20 @@ toml = "*"
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xmlschema"]
 
 [[package]]
+name = "python-dateutil"
+version = "2.9.0.post0"
+description = "Extensions to the standard Python datetime module"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+files = [
+    {file = "python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"},
+    {file = "python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"},
+]
+
+[package.dependencies]
+six = ">=1.5"
+
+[[package]]
 name = "python-dotenv"
 version = "0.19.2"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -176,6 +190,17 @@ python-dotenv = ">=0.19.0,<0.20.0"
 temporalio = "1.8.0"
 
 [[package]]
+name = "six"
+version = "1.16.0"
+description = "Python 2 and 3 compatibility utilities"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+files = [
+    {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
+    {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+
+[[package]]
 name = "temporalio"
 version = "1.8.0"
 description = "Temporal.io Python SDK"
@@ -192,6 +217,7 @@ files = [
 
 [package.dependencies]
 protobuf = ">=3.20"
+python-dateutil = {version = ">=2.8.2,<3.0.0", markers = "python_version < \"3.11\""}
 types-protobuf = ">=3.20"
 typing-extensions = ">=4.2.0,<5.0.0"
 
@@ -212,13 +238,13 @@ files = [
 
 [[package]]
 name = "types-protobuf"
-version = "5.28.3.20241030"
+version = "5.28.3.20241203"
 description = "Typing stubs for protobuf"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-protobuf-5.28.3.20241030.tar.gz", hash = "sha256:f7e6b45845d75393fb41c0b3ce82c46d775f9771fae2097414a1dbfe5b51a988"},
-    {file = "types_protobuf-5.28.3.20241030-py3-none-any.whl", hash = "sha256:f3dae16adf342d4fb5bb3673cabb22549a6252e5dd66fc52d8310b1a39c64ba9"},
+    {file = "types_protobuf-5.28.3.20241203-py3-none-any.whl", hash = "sha256:5367632a4785394b0504e7c1e4d54a2dceeae9cd4f73a705d0f6499fc99cecb1"},
+    {file = "types_protobuf-5.28.3.20241203.tar.gz", hash = "sha256:2e1c962bdf76c576506b5fc0678d28efa6652a54c04ae46562a6209e777bd789"},
 ]
 
 [[package]]
@@ -234,5 +260,5 @@ files = [
 
 [metadata]
 lock-version = "2.0"
-python-versions = "3.12.4"
-content-hash = "379390189e1037278230a1ef6b48f0f623be1b682c92383a50e55bba91761f7e"
+python-versions = ">=3.10,<4.0"
+content-hash = "2040e7f9d1cffd96571bb7c4e7f8469b6b283c360c49c36ca14b300dd5ca598f"
