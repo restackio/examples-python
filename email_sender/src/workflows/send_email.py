@@ -8,10 +8,10 @@ with import_functions():
 
 @dataclass
 class WorkflowInputParams:
-    emailContext: str
+    email_context: str
     subject: str
     to: str
-    simulateFailure: bool = False
+    simulate_failure: bool = False
 
 @workflow.defn()
 class SendEmailWorkflow:
@@ -22,8 +22,8 @@ class SendEmailWorkflow:
         text = await workflow.step(
             generate_email_content,
             GenerateEmailInput(
-                email_context=input.emailContext,
-                simulate_failure=input.simulateFailure,
+                email_context=input.email_context,
+                simulate_failure=input.simulate_failure,
             ),
             retry_policy=RetryPolicy(
                 initial_interval=timedelta(seconds=10),
@@ -40,3 +40,5 @@ class SendEmailWorkflow:
             ),
             start_to_close_timeout=timedelta(seconds=120)
         )
+
+        return 'Email sent successfully'

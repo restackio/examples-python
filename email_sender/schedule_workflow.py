@@ -3,6 +3,9 @@ import time
 from restack_ai import Restack
 from dataclasses import dataclass
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 @dataclass
 class InputParams:
@@ -18,7 +21,7 @@ async def main():
     if not to_email:
         raise Exception("TO_EMAIL environment variable is not set")
 
-    runId = await client.schedule_workflow(
+    run_id = await client.schedule_workflow(
         workflow_name="SendEmailWorkflow",
         workflow_id=workflow_id,
         input={
@@ -30,7 +33,7 @@ async def main():
 
     await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=runId
+        run_id=run_id
     )
 
     exit(0)

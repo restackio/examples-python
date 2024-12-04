@@ -1,8 +1,10 @@
 from restack_ai.function import function, log, FunctionFailure
 from dataclasses import dataclass
 from openai import OpenAI
-
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 tries = 0
 
@@ -22,9 +24,6 @@ async def generate_email_content(input: GenerateEmailInput):
     if (os.environ.get("OPENAI_API_KEY") is None):
         raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
     
-    if (os.environ.get("SENDGRID_API_KEY") is None):
-        raise FunctionFailure("SENDGRID_API_KEY is not set", non_retryable=True)
-    
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
     response = client.chat.completions.create(
@@ -41,7 +40,6 @@ async def generate_email_content(input: GenerateEmailInput):
         ],
         max_tokens=150
     )
-
-    log.info("generate_email_content function completed", response=response)
     
     return response.choices[0].message.content
+

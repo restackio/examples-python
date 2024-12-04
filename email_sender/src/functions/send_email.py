@@ -3,6 +3,9 @@ from sendgrid.helpers.mail import Mail
 import os
 from restack_ai.function import function, FunctionFailure
 from dataclasses import dataclass
+from dotenv import load_dotenv
+
+load_dotenv()
 
 @dataclass
 class SendEmailInput:
