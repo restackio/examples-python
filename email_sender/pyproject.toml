@@ -23,3 +23,4 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 services = "src.services:run_services"
 schedule = "schedule_workflow:run_schedule_workflow"
+schedule_failure = "schedule_workflow_failure:run_schedule_workflow_failure"
