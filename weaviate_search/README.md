@@ -18,7 +18,7 @@ The example is a follow along of <https://weaviate.io/developers/weaviate/starte
 2. Install dependencies using Poetry:
 
    ```bash
-   poetry env use 3.12.4
+   poetry env use 3.12
    ```
 
    ```bash

@@ -43,7 +43,7 @@ The AI workflow will search hacker news based on a query, crawl each project's w
 4. Install dependencies using Poetry:
 
    ```bash
-   poetry env use 3.12.4
+   poetry env use 3.12
    ```
 
    ```bash

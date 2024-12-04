@@ -34,7 +34,7 @@ It demonstrates how to control Boston Dynamics Spot robot through a basic workfl
 4. Install dependencies using Poetry:
 
    ```bash
-   poetry env use 3.12.4
+   poetry env use 3.12
    ```
 
    ```bash
