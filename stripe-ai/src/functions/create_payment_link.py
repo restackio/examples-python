@@ -43,6 +43,8 @@ async def create_payment_link():
             ]))
     agent_executor = AgentExecutor(agent=agent, tools=stripe_agent_toolkit.get_tools())
 
-    agent_executor.invoke({
+    result = agent_executor.invoke({
         "input": "Create a payment link for a new product called \"Test\" with a price of $100."
-  })
+    })
+
+    return result
