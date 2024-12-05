@@ -31,7 +31,12 @@ async def create_payment_link():
         },
     )
 
-    model = ChatOpenAI()
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+
+    if openai_api_key is None:
+        raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
+
+    model = ChatOpenAI(api_key=openai_api_key)
 
     agent = create_structured_chat_agent(model, stripe_agent_toolkit.get_tools(),ChatPromptTemplate([
                 ("system", "You are a helpful AI bot that will create a payment link for a new product on stripe."),
