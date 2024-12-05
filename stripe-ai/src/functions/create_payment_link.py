@@ -13,8 +13,17 @@ load_dotenv()
 @function.defn()
 async def create_payment_link():
     stripe_secret_key = os.getenv("STRIPE_SECRET_KEY")
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    langchain_api_key = os.getenv("LANGCHAIN_API_KEY")
+
     if stripe_secret_key is None:
         raise FunctionFailure("STRIPE_SECRET_KEY is not set", non_retryable=True)
+    
+    if langchain_api_key is None:
+       raise FunctionFailure("LANGCHAIN_API_KEY is not set", non_retryable=True)
+    
+    if openai_api_key is None:
+        raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
     
     try:
         stripe_agent_toolkit = StripeAgentToolkit(
@@ -33,11 +42,6 @@ async def create_payment_link():
             }
             },
         )
-
-        openai_api_key = os.getenv("OPENAI_API_KEY")
-
-        if openai_api_key is None:
-            raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
 
         model = ChatOpenAI(api_key=SecretStr(openai_api_key))
         
