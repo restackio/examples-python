@@ -1,4 +1,4 @@
-# Restack AI SDK - Get Started Example
+# Restack AI - Stripe Ai example
 
 This repository contains a an example on how restack can use langchain and the stripe ai sdk to create a product with a price and also create a payment link for it.
 
