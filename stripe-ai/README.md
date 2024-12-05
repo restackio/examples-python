@@ -29,7 +29,7 @@ This repository contains a an example on how restack can use langchain and the s
    cd examples-python/examples/get-started
    ```
   
-4. Create .env file with: STRIPE_SECRET_KEY and OPENAI_API_KEY
+4. Create .env file with: STRIPE_SECRET_KEY, LANGCHAIN_API_KEY and OPENAI_API_KEY
 
 4. Install dependencies using Poetry:
 

@@ -15,10 +15,12 @@ async def main():
         workflow_id=workflow_id,
     )
 
-    await client.get_workflow_result(
+    result = await client.get_workflow_result(
         workflow_id=workflow_id,
         run_id=run_id
     )
+
+    print(result)
 
     exit(0)
 
