@@ -1,11 +1,6 @@
-# Restack AI - Email Sender example
+# Restack AI - Stripe Ai example
 
-This example showcases how to send emails with a Restack workflow using the sendgrid api. You can easily choose another email provider and update the code.
-You can schedule two scenarios of the workflow.
-
-1. It will be successfull and send an email.
-2. The email content generation step will fail once to showcase how Restack handles retries automatically. Once failure is caught, step will be retry automatically and rest of workflow will be executed as expected and email will be sent.
-
+This repository contains a an example on how restack can use langchain and the stripe ai sdk to create a product with a price and also create a payment link for it.
 
 ## Prerequisites
 
@@ -34,7 +29,7 @@ You can schedule two scenarios of the workflow.
    cd examples-python/examples/get-started
    ```
   
-4. Create .env file with: STRIPE_SECRET_KEY and OPENAI_API_KEY
+4. Create .env file with: STRIPE_SECRET_KEY, LANGCHAIN_API_KEY and OPENAI_API_KEY
 
 4. Install dependencies using Poetry:
 
@@ -72,9 +67,4 @@ You can schedule two scenarios of the workflow.
    poetry run schedule
    ```
 
-   This will schedule the `SendEmailWorkflow` and print the result.
-
-7. To simulate a flow where the step for sending email fails and the retry is automatically handled by Restack AI use run:
-   ```bash
-   poetry run schedule_failure
-   ```
+   This will schedule the `CreatePaymentLinkWorkflow` and print the result.
