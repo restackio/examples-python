@@ -20,14 +20,14 @@ async def create_payment_link():
             "actions": {
                 "payment_links": {
                     "create": True,
-            },
-            "products": {
-                "create": True,
-            },
-            "prices": {
-                "create": True,
-            },
-        }
+                },
+                "products": {
+                    "create": True,
+                },
+                "prices": {
+                    "create": True,
+                },
+            }
         },
     )
 
