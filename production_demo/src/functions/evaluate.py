@@ -1,0 +1,39 @@
+from restack_ai.function import function, FunctionFailure, log
+from openai import OpenAI
+
+@function.defn()
+async def llm_evaluate(generated_text: str) -> str:
+    try:
+        client = OpenAI(base_url="http://192.168.4.142:1234/v1/",api_key="llmstudio")
+    except Exception as e:
+        log.error(f"Failed to create LLM client {e}")
+        raise FunctionFailure(f"Failed to create OpenAI client {e}", non_retryable=True) from e
+
+    prompt = (
+        f"Evaluate the following joke for humor, creativity, and originality. "
+        f"Provide a score out of 10 for each category for your score.\n\n"
+        f"Joke: {generated_text}\n\n"
+        f"Response format:\n"
+        f"Humor: [score]/10"
+        f"Creativity: [score]/10"
+        f"Originality: [score]/10"
+        f"Average score: [score]/10"
+        f"Only answer with the scores"
+    )
+
+    try:
+        response = client.chat.completions.create(
+            model="mlx-community/Meta-Llama-3.1-8B-Instruct-4bit",
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.5,
+        )
+    
+    except Exception as e:
+        log.error(f"Failed to generate {e}")
+    
+    return response.choices[0].message.content

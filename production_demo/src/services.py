@@ -1,11 +1,18 @@
 import asyncio
 import os
-from src.functions.function import example_function
-from src.functions.openai import openai_joke
-from src.client import client
-from src.workflows.workflow import ExampleWorkflow, ChildWorkflow
 from watchfiles import run_process
+
+from src.client import client
 from restack_ai.restack import ServiceOptions
+
+from src.functions.function import example_function
+from src.functions.generate import llm_generate
+from src.functions.evaluate import llm_evaluate
+
+from src.workflows.workflow import ExampleWorkflow, ChildWorkflow
+
+
+
 async def main():
 
     await asyncio.gather(
@@ -18,8 +25,8 @@ async def main():
 
         ),
         client.start_service(
-            task_queue="openai",
-            functions=[openai_joke],
+            task_queue="llm",
+            functions=[llm_generate, llm_evaluate],
             options=ServiceOptions(
                 rate_limit=1,
                 max_concurrent_function_runs=1

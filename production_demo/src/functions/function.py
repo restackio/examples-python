@@ -9,7 +9,7 @@ async def example_function(input: str) -> str:
 
         if tries == 0:
             tries += 1
-            raise FunctionFailure("Simulated failure", retryable=True)
+            raise FunctionFailure(message="Simulated failure", non_retryable=False)
       
         log.info("example function started", input=input)
         return f"Hello, {input}!"

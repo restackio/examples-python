@@ -1,7 +1,11 @@
-from restack_ai.workflow import workflow, log, workflow_info
 import asyncio
+from datetime import timedelta
 
+from restack_ai.workflow import workflow, log, workflow_info, import_functions
 from .child import ChildWorkflow
+
+with import_functions():
+    from src.functions.generate import llm_generate
 
 @workflow.defn()
 class ExampleWorkflow:
@@ -25,5 +29,15 @@ class ExampleWorkflow:
         for i, result in enumerate(results, start=1):
             log.info(f"ChildWorkflow {i} completed", result=result)
 
-        return results
+        generated_text = await workflow.step(
+            llm_generate,
+            f"Give me the top 3 jokes according to the results. {results}",
+            task_queue="llm",
+            start_to_close_timeout=timedelta(seconds=120)
+        )
+
+        return {
+            "top_jokes": generated_text,
+            "results": results
+        }
 
