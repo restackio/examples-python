@@ -150,3 +150,27 @@ https://lmstudio.ai
 - `schedule_workflow.py`: Example script to schedule and run a workflow
 - `schedule_interval.py`: Example script to schedule and a workflow every second
 - `schedule_scale.py`: Example script to schedule and run 100 workflows at once
+
+# Deployment
+
+Create an account on [Restack Cloud](https://console.restack.io)
+
+Create an engine and get the engine id, address and api key.
+
+In .envs add the following:
+RESTACK_ENGINE_ID=<your-engine-id>
+RESTACK_ENGINE_API_KEY=<your-engine-api-key>
+RESTACK_ENGINE_ADDRESS=<your-engine-address>
+
+In Restack Cloud workspace settings, generate a cloud token.
+
+In .envs add the following:
+RESTACK_CLOUD_TOKEN=<your-cloud-token>
+
+Then execute restack up:
+
+```bash
+python restack_up.py
+```
+
+After you link your github to Restack Cloud, you will have a CI/CD pipeline to automatically deploy your changes.
