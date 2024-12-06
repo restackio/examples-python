@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y nginx
 
 RUN pip install poetry
 
-COPY pyproject.toml poetry.lock* ./
+COPY pyproject.toml ./
 
 COPY . .
 
@@ -24,5 +24,5 @@ EXPOSE 80
 
 # Start Nginx, FastAPI, and services using Poetry
 CMD service nginx start && \
-    poetry run uvicorn src.app:app --host 0.0.0.0 --port 8000 & \
-    poetry run services
+  poetry run uvicorn src.app:app --host 0.0.0.0 --port 8000 & \
+  poetry run services

@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-restack-ai = "0.0.45"
+restack-ai = "0.0.47"
 watchfiles = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
@@ -27,3 +27,5 @@ build-backend = "poetry.core.masonry.api"
 dev = "src.services:watch_services"
 services = "src.services:run_services"
 schedule = "schedule_workflow:run_schedule_workflow"
+interval = "schedule_interval:run_schedule_interval"
+calendar = "schedule_calendar:run_schedule_calendar"

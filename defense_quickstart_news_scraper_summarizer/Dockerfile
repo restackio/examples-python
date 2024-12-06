@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y nginx
 
 RUN pip install poetry
 
-COPY pyproject.toml poetry.lock* ./
+COPY pyproject.toml ./
 
 COPY . .
 
