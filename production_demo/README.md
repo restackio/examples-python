@@ -3,6 +3,10 @@
 This repository contains a simple example project to help you scale with the Restack AI.
 It demonstrates how to scale reliably to millions of workflows on a local machine with a local LLM provider.
 
+## Walkthrough video
+
+https://www.youtube.com/watch?v=Bdugs5kaYls
+
 ## Motivation
 
 When scaling AI workflows, you want to make sure that you can handle failures and retries gracefully.
