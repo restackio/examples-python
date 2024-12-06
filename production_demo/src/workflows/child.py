@@ -12,7 +12,7 @@ class ChildWorkflow:
     @workflow.run
     async def run(self):
         log.info("ChildWorkflow started")
-        await workflow.step(example_function, input="first", start_to_close_timeout=timedelta(seconds=120))
+        await workflow.step(example_function, input="first", start_to_close_timeout=timedelta(minutes=2))
 
         await workflow.sleep(1)
 
@@ -20,14 +20,14 @@ class ChildWorkflow:
             llm_generate,
             "Generate a random joke in max 20 words.",
             task_queue="llm",
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(minutes=2)
         )
 
         evaluation = await workflow.step(
             llm_evaluate,
             generated_text,
             task_queue="llm",
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(minutes=2)
         )
 
         return {

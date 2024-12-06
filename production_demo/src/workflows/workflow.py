@@ -15,7 +15,7 @@ class ExampleWorkflow:
         parent_workflow_id = workflow_info().workflow_id
 
         tasks = []
-        for i in range(100):
+        for i in range(50):
             log.info(f"Queue ChildWorkflow {i+1} for execution")
             task = workflow.child_execute(
                 ChildWorkflow, 
@@ -31,9 +31,9 @@ class ExampleWorkflow:
 
         generated_text = await workflow.step(
             llm_generate,
-            f"Give me the top 3 jokes according to the results. {results}",
+            f"Give me the top 3 unique jokes according to the results. {results}",
             task_queue="llm",
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(minutes=2)
         )
 
         return {
