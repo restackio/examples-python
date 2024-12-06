@@ -130,7 +130,7 @@ https://lmstudio.ai
    poetry run interval
    ```
 
-8. Optionally, schedule a parent workflow to run 100 child workflows all at once:
+8. Optionally, schedule a parent workflow to run 50 child workflows all at once:
 
    ```bash
    poetry run scale
