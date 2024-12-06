@@ -12,7 +12,7 @@ async def llm_generate(prompt: str) -> str:
 
     try:
         response = client.chat.completions.create(
-            model="mlx-community/Meta-Llama-3.1-8B-Instruct-4bit",
+            model="llama-3.2-3b-instruct",
             messages=[
                 {
                     "role": "user",
