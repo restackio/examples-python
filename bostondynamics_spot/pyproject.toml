@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-restack-ai = "0.0.44"
+restack-ai = "0.0.45"
 bosdyn-client = "4.1.0"
 opencv-python = "4.10.0.84"
 setuptools = "75.6.0"

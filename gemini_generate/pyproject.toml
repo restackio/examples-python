@@ -10,7 +10,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-restack-ai = "0.0.44"
+restack-ai = "0.0.45"
 google-generativeai = "0.8.3"
 
 [build-system]
