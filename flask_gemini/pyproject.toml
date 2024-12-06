@@ -13,7 +13,7 @@ python = ">=3.10,<4.0"
 flask = { version = "3.0.3", extras = ["async"] }
 flask-cors = "5.0.0"
 google-generativeai = "0.8.3"
-restack-ai = "0.0.40"
+restack-ai = "0.0.45"
 
 [build-system]
 requires = ["poetry-core"]

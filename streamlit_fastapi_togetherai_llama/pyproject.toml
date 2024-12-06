@@ -17,7 +17,7 @@ uvicorn = "0.32.0"
 python-dotenv = "0.19"
 streamlit = "1.40.0"
 requests = "2.32.3"
-restack-ai = "0.0.40"
+restack-ai = "0.0.45"
 
 [build-system]
 requires = ["poetry-core"]

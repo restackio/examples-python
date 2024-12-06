@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 pydantic = "2.9.2"
-restack-ai = "0.0.40"
+restack-ai = "0.0.45"
 google-generativeai = "0.8.3"
 fastapi = "0.115.4"
 click = "8.1.7"
