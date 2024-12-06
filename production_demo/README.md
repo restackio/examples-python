@@ -5,7 +5,7 @@ It demonstrates how to scale reliably to millions of workflows on a local machin
 
 ## Walkthrough video
 
-https://www.youtube.com/watch?v=Bdugs5kaYls
+https://www.youtube.com/watch?v=WsUtQYC74og
 
 ## Motivation
 
