@@ -3,6 +3,57 @@
 This repository contains a simple example project to help you scale with the Restack AI.
 It demonstrates how to scale reliably to millions of workflows on a local machine with a local LLM provider.
 
+## Motivation
+
+When scaling AI workflows, you want to make sure that you can handle failures and retries gracefully.
+This example demonstrates how to do this with Restack AI.
+
+### Workflow Steps
+
+The table below shows the execution of 50 workflows in parallel, each with three steps.
+Steps 2 and 3 are LLM functions that must adhere to a rate limit of 1 concurrent call per second.
+
+| Step | Workflow 1 | Workflow 2 | ... | Workflow 50 |
+| ---- | ---------- | ---------- | --- | ----------- |
+| 1    | Basic      | Basic      | ... | Basic       |
+| 2    | LLM        | LLM        | ... | LLM         |
+| 3    | LLM        | LLM        | ... | LLM         |
+
+### Traditional Rate Limit Management
+
+When running multiple workflows in parallel, managing the rate limit for LLM functions is crucial. Here are common strategies:
+
+1. **Task Queue**: Use a task queue (e.g., Celery, RabbitMQ) to schedule LLM calls, ensuring only one is processed at a time.
+2. **Rate Limiting Middleware**: Implement middleware to queue requests and process them at the allowed rate.
+3. **Semaphore or Locking**: Use a semaphore or lock to control access, ensuring only one LLM function runs per second.
+
+### With Restack
+
+Restack automates rate limit management, eliminating the need for manual strategies. Define the rate limit in the service options, and Restack handles queuing and execution:
+
+```python
+client.start_service(
+    task_queue="llm",
+    functions=[llm_generate, llm_evaluate],
+    options=ServiceOptions(
+        rate_limit=1,
+        max_concurrent_function_runs=1
+    )
+)
+```
+
+Focus on building your logics while Restack ensures efficient and resilient workflow execution.
+
+### On Restack UI
+
+You can see from the parent workflow how long each child workflow stayed in queue and how long was the execution time.
+
+![Parent Workflow](./ui-parent.png)
+
+And for each child workflow, for each step you can see how long the function stayed in queue, how long the function took to execute and how many retries happened.
+
+![Child Workflow](./ui-child.png)
+
 ## Prerequisites
 
 - Python 3.8 or higher
