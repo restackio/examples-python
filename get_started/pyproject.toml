@@ -12,6 +12,7 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 restack-ai = "0.0.47"
+watchfiles = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "6.2"  # Optional: Add if you want to include tests in your example
@@ -23,6 +24,7 @@ build-backend = "poetry.core.masonry.api"
 
 # CLI command configuration
 [tool.poetry.scripts]
+dev = "src.services:watch_services"
 services = "src.services:run_services"
 schedule = "schedule_workflow:run_schedule_workflow"
 interval = "schedule_interval:run_schedule_interval"

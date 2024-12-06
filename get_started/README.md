@@ -50,7 +50,7 @@ This repository contains a simple example project to help you get started with t
 5. Run the services:
 
    ```bash
-   poetry run services
+   poetry run dev
    ```
 
    This will start the Restack service with the defined workflows and functions.
