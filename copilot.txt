@@ -1,3 +1,26 @@
+
+# Repository structure
+
+A Restack backend application should be structured as follows:
+
+- src/
+    - client.py
+    - functions/
+        - __init__.py
+        - function.py
+    - workflows/
+        - __init__.py
+        - workflow.py
+    - services.py
+    - schedule_workflow.py
+    - pyproject.toml
+    - env.example
+    - README.md
+    - Dockerfile
+    - restack_up.py
+
+All these files are mandatory.
+
 ### File: ./openai_greet/schedule_workflow.py ###
 import asyncio
 import time
