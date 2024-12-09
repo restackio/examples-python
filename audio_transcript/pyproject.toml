@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "audio_transcript"
+version = "0.0.1"
+description = "Send emails with sendgrid"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+pydantic = "2.9.2"
+python-dotenv = "1.0.1"
+openai = "1.56.2"
+restack-ai = "0.0.42"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+services = "src.services:run_services"
+schedule = "schedule_workflow:run_schedule_workflow"
+schedule_failure = "schedule_workflow_failure:run_schedule_workflow_failure"
