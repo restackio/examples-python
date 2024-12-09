@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "stripe-ai"
+name = "stripe_ai"
 version = "0.0.1"
 description = "Send emails with sendgrid"
 authors = [
