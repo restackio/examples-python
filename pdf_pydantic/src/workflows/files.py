@@ -1,12 +1,9 @@
-from restack_ai.workflow import workflow, log, workflow_info, import_functions
+from restack_ai.workflow import workflow, log, workflow_info
 from typing import List
-
-
+from pydantic import BaseModel
+import asyncio
 from .pdf import PdfWorkflow, PdfWorkflowInput
 
-with import_functions():
-    import asyncio
-    from pydantic import BaseModel
 
 class FilesWorkflowInput(BaseModel):
     files: List[PdfWorkflowInput]

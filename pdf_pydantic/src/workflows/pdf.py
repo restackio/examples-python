@@ -1,10 +1,10 @@
 from restack_ai.workflow import workflow, import_functions, log
 from datetime import timedelta
+from pydantic import BaseModel
 
 with import_functions():
-    from pydantic import BaseModel
-    from src.functions.ocr import ocr, FunctionInput
-    from src.functions.another import another, FunctionInput as AnotherFunctionInput
+    from src.functions.torch_ocr import torch_ocr, OcrInput
+    from src.functions.openai_chat import openai_chat, OpenAiChatInput
 
 class PdfWorkflowInput(BaseModel):
     file_type: str
@@ -16,23 +16,23 @@ class PdfWorkflow:
     async def run(self, input: PdfWorkflowInput):
         log.info("PdfWorkflow started")
 
-        # ocr_result = await workflow.step(
-        #     ocr,
-        #     FunctionInput(
-        #         file_type=input.file_type,
-        #         file_binary=input.file_binary
-        #     ),
-        #     start_to_close_timeout=timedelta(seconds=120)
-        # )
-
         ocr_result = await workflow.step(
-            another,
-            AnotherFunctionInput(
+            torch_ocr,
+            OcrInput(
                 file_type=input.file_type,
                 file_binary=input.file_binary
             ),
             start_to_close_timeout=timedelta(seconds=120)
         )
 
+        llm_result = await workflow.step(
+            openai_chat,
+            OpenAiChatInput(
+                user_content=f"Make a summary of that PDF. Here is the OCR result: {ocr_result}",
+                model="gpt-4o-mini"
+            ),
+            start_to_close_timeout=timedelta(seconds=120)
+        )
+
         log.info("PdfWorkflow completed")
-        return ocr_result
+        return llm_result

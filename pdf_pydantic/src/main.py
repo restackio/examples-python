@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -12,12 +11,13 @@ import threading
 from fastapi import FastAPI, File, UploadFile
 import base64
 import asyncio
+import signal
 
 app = FastAPI(
-    title="PDF Pydantic FastAPI App",
-    description="An API for scheduling and managing workflows.",
+    title="PDF Pydantic Example",
+    description="An API for scheduling and managing workflows to OCR PDFs and get a summary with OpenaI.",
     version="1.0.0",
-    docs_url="/docs",
+    docs_url="/",
 )
 
 # Add CORS middleware
@@ -28,10 +28,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.get("/")
-async def home():
-    return "Welcome to the PDF Pydantic FastAPI App!"
 
 @app.post("/api/pdfs")
 async def schedule_workflow(files: list[UploadFile] = File(...)):
@@ -89,13 +85,26 @@ async def execute_files_workflow(files: list[UploadFile] = File(...)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
+stop_event = threading.Event()
+
 def start_services():
     run_services()
 
 def run_main():
     # Start run_services in a separate thread
-    # service_thread = threading.Thread(target=start_services)
-    # service_thread.start()
+    service_thread = threading.Thread(target=start_services)
+    service_thread.start()
+    
+    # Define a signal handler to stop the application
+    def signal_handler(sig, frame):
+        print("Signal received, stopping services...")
+        stop_event.set()
+        service_thread.join()  # Wait for the service thread to finish
+        print("Services stopped. Exiting application.")
+        exit(0)
+
+    # Register the signal handler for SIGINT (Ctrl+C)
+    signal.signal(signal.SIGINT, signal_handler)
     
     # Run the FastAPI application with hot reloading
     uvicorn.run("src.main:app", host="127.0.0.1", port=8000, reload=True)

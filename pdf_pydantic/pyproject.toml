@@ -10,8 +10,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-openai = "1.52.0"
-restack-ai = "0.0.47"
+openai = "1.57.2"
 python-dotenv = "1.0.1"
 fastapi = "^0.115.6"
 uvicorn = "^0.32.1"
@@ -20,6 +19,7 @@ numpy = "^2.2.0"
 pillow = "^11.0.0"
 pydantic = "^2.10.3"
 python-doctr = {extras = ["torch"], version = "^0.10.0"}
+restack-ai = "0.0.48"
 
 [build-system]
 requires = ["poetry-core"]

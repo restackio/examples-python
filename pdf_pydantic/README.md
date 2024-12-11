@@ -1,5 +1,14 @@
 # Restack AI - PDF Pydantic
 
+## Motivation
+
+Demonstrates how scale multi step workflows with pydantic models.
+Use pytorch to OCR and OpenAI to make a summary.
+Runs a FastAPI and Swagger for testing.
+
+![FastAPI UI](screenshot-fastapi.png)
+![Restack UI](screenshot-restack.png)
+
 ## Prerequisites
 
 - Python 3.11
@@ -59,9 +68,9 @@ http://127.0.0.1:8000/docs
 
 7. Schedule workflow
 
-Choose POST on /api/schedule and upload a pdf
+Choose POST on /api/pdfs or /api/pdfs-parent and upload your pdfs
 
-This will schedule the `PdfWorkflow` and print the result of OCR.
+This will schedule the `PdfWorkflow` and print the result of summary after summary and openai call.
 
 ## Project Structure
 

@@ -16,12 +16,12 @@ class OCRPrediction(BaseModel):
         description="List of pages with OCR predictions"
     )
 
-class FunctionInput(BaseModel):
+class OcrInput(BaseModel):
     file_type: str
     file_binary:str
 
-@function.defn(name="ocr")
-async def ocr(input: FunctionInput) -> str:
+@function.defn()
+async def torch_ocr(input: OcrInput) -> str:
     try:
         service = DocumentExtractionService()
         content = base64.b64decode(input.file_binary)
