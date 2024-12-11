@@ -13,7 +13,7 @@ class WorkflowInput(BaseModel):
 class PdfWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInput):
-        log.info("PdfWorkflow started", input=input)
+        log.info("PdfWorkflow started")
 
         ocr_result = await workflow.step(
             ocr,
