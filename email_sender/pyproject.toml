@@ -13,7 +13,7 @@ python = ">=3.10,<4.0"
 pydantic = "2.9.2"
 python-dotenv = "1.0.1"
 sendgrid = "6.11.0"
-openai = "1.56.2"
+openai = "^1.57.2"
 restack-ai = "0.0.42"
 
 [build-system]

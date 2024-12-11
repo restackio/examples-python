@@ -16,7 +16,7 @@ streamlit = "1.40.0"
 requests = "2.32.3"
 restack-sdk-cloud = "1.0.14"
 groq = "0.12.0"
-openai = "1.55.0"
+openai = "^1.57.2"
 
 
 [build-system]
