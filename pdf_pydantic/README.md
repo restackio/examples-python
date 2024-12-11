@@ -64,7 +64,7 @@ Runs a FastAPI and Swagger for testing.
 
 6. Open FastAPI swagger UI :
 
-http://127.0.0.1:8000/docs
+http://127.0.0.1:8000
 
 7. Schedule workflow
 
