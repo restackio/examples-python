@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Python 3.8 or higher
+- Python 3.11
 - Poetry (for dependency management)
 - Docker (for running the Restack services)
 
@@ -30,7 +30,7 @@
 4. Install dependencies using Poetry:
 
    ```bash
-   poetry env use 3.12
+   poetry env use 3.11
    ```
 
    ```bash
