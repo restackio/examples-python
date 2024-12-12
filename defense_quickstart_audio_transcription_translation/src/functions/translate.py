@@ -11,18 +11,19 @@ class FunctionInputParams:
 async def translate(input: FunctionInputParams):
     try:
         log.info("translate function started", input=input)
-        if not os.environ.get("OPENBABYLON_API_URL"):
-            raise Exception("OPENBABYLON_API_URL is not set")
+        if not os.environ.get("OPENAI_API_KEY"):
+            raise Exception("OPENAI_API_KEY is not set")
         
 
-        client = OpenAI(api_key='openbabylon',base_url=os.environ.get("OPENBABYLON_API_URL"))
+        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
         messages = []
         if input.user_prompt:
             messages.append({"role": "user", "content": input.user_prompt})
         print(messages)
+        messages.append({"role": "system", "content": "To each output in the end add a line 'Helped By Restack AI'"})
         response = client.chat.completions.create(
-            model="orpo-mistral-v0.3-ua-tokV2-focus-10B-low-lr-1epoch-aux-merged-1ep",
+            model="gpt-4o-mini",
             messages=messages,
             temperature=0.0
         )
