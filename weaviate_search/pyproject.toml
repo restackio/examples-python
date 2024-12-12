@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-restack-ai = "0.0.47"
+pydantic = "^2.10.3"
 requests = "2.32.3"
 weaviate-client = "4.9.0"
 python-dotenv = "1.0.1"

@@ -8,15 +8,15 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-restack-ai = "0.0.47"
 fastapi = "0.115.4"
 uvicorn = "0.32.0"
 python-dotenv = "1.0.1"
 streamlit = "1.40.0"
 requests = "2.32.3"
 restack-sdk-cloud = "1.0.14"
-groq = "0.12.0"
 openai = "^1.57.2"
+groq = "^0.13.0"
+restack-ai = "^0.0.48"
 
 
 [build-system]
