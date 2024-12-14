@@ -1,5 +1,5 @@
 from restack_ai.workflow import workflow, import_functions, log
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import timedelta
 
 with import_functions():
@@ -7,7 +7,7 @@ with import_functions():
 
 @dataclass
 class WorkflowInput:
-    name: str
+    name: str = field(default="bob")
 
 @workflow.defn()
 class OpenaiGreetWorkflow:
