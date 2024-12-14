@@ -1,4 +1,6 @@
 import asyncio
+import os
+from watchfiles import run_process
 from src.functions.function import openai_greet
 from src.client import client
 from src.workflows.openai_greet import OpenaiGreetWorkflow
@@ -15,7 +17,12 @@ async def main():
     )
 
 def run_services():
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Service interrupted by user. Exiting gracefully.")
 
-if __name__ == "__main__":
-    run_services()
+def watch_services():
+    watch_path = os.getcwd()
+    print(f"Watching {watch_path} and its subdirectories for changes...")
+    run_process(watch_path, recursive=True, target=run_services)
