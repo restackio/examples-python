@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-restack-ai = "^0.0.49"
+restack-ai = "^0.0.50"
 watchfiles = "^1.0.3"
 pydantic = "^2.10.3"
 
