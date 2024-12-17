@@ -86,7 +86,7 @@ This will generate speech from the text and output the audio.
 ### 2. Test Voice Isolation
 
 To test the **Voice Isolation** function,
-First go to src/workflows/workflow.py and add your audio file path in audio_file_path and then use the following command:
+First go to example-elevenlabs/schedule_workflow_audio_isolation.py and add your audio file path in audio_file_path and then use the following command:
 
 ```bash
 poetry run voice_isolation

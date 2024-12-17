@@ -1,6 +1,6 @@
 # Project metadata
 [tool.poetry]
-name = "Elvenlabs"
+name = "elvenlabs"
 version = "0.0.1"
 description = "A simple example to get started with the restack-ai SDK with elevenlabs"
 authors = [

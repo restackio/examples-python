@@ -53,19 +53,27 @@ class TextToSpeechWorkflow:
 @workflow.defn()
 class AudioIsolationWorkflow:
     @workflow.run
-    async def run(self):
+    async def run(self, input: dict):
+        """
+        Workflow to isolate audio from a given file path.
+
+        :param input: A dictionary containing `api_key` and `audio_file_path`.
+        """
+        api_key = input.get("api_key")
+        audio_file_path = input.get("audio_file_path")
+
         log.info("AudioIsolationWorkflow started")
 
         # Define input parameters for the `isolate_audio` function
         input_data = {
             "api_key": api_key,
-            "audio_file_path": "/Users/sreedharpavushetty/Desktop/example-elevenlabs/suiii.mp3"
+            "audio_file_path": audio_file_path
         }
 
         # Call the `isolate_audio` function as a workflow step
         result = await workflow.step(
-            isolate_audio, 
-            input=input_data, 
+            isolate_audio,
+            input=input_data,
             start_to_close_timeout=timedelta(seconds=120)
         )
 
@@ -74,5 +82,3 @@ class AudioIsolationWorkflow:
 
         # Return the Base64-encoded audio directly
         return result
-
-
