@@ -1,25 +1,25 @@
 from restack_ai.workflow import workflow, import_functions, log
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import timedelta
 
 with import_functions():
-    from src.functions.function import openai_greet, FunctionInputParams
+    from src.functions.function import openai_greet, FunctionInput, FunctionOutput
 
 @dataclass
-class WorkflowInputParams:
-    name: str
+class WorkflowInput:
+    name: str = field(default="bob")
 
 @workflow.defn()
 class OpenaiGreetWorkflow:
     @workflow.run
-    async def run(self, input: WorkflowInputParams):
+    async def run(self, input: WorkflowInput) -> FunctionOutput:
         log.info("OpenaiGreetWorkflow started", input=input)
         user_content = f"Greet this person {input.name}"
 
 
         greet_message = await workflow.step(
             openai_greet,
-            FunctionInputParams(
+            FunctionInput(
                 user_content=user_content,
             ),
             start_to_close_timeout=timedelta(seconds=120)

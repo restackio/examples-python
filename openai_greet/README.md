@@ -55,7 +55,7 @@
 6. Run the services:
 
    ```bash
-   poetry run services
+   poetry run dev
    ```
 
    This will start the Restack service with the defined workflows and functions.
