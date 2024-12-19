@@ -16,7 +16,6 @@ llama-index-llms-together = "0.2.0"
 uvicorn = "0.32.0"
 python-dotenv = "1.0.1"
 restack-ai = "^0.0.48"
-restack-sdk-cloud = "1.0.14"
 
 [build-system]
 requires = ["poetry-core"]
