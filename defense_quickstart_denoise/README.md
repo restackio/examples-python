@@ -85,3 +85,7 @@ Find audio samples at https://drive.google.com/drive/folders/1mbchTGfmhq2sc7sQEM
    ```bash
    poetry run streamlit run frontend.py
    ```
+
+# Deployment
+
+Create an account on [Restack Cloud](https://console.restack.io) and follow instructions on site to create a stack and deploy your application on Restack Cloud.

@@ -97,3 +97,7 @@ OPENBABYLON_API_URL=http://64.139.222.109:80/v1
    ```bash
    poetry run streamlit run frontend.py
    ```
+
+# Deployment
+
+Create an account on [Restack Cloud](https://console.restack.io) and follow instructions on site to create a stack and deploy your application on Restack Cloud.
