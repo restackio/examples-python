@@ -153,24 +153,4 @@ https://lmstudio.ai
 
 # Deployment
 
-Create an account on [Restack Cloud](https://console.restack.io)
-
-Create an engine and get the engine id, address and api key.
-
-In .envs add the following:
-RESTACK_ENGINE_ID=<your-engine-id>
-RESTACK_ENGINE_API_KEY=<your-engine-api-key>
-RESTACK_ENGINE_ADDRESS=<your-engine-address>
-
-In Restack Cloud workspace settings, generate a cloud token.
-
-In .envs add the following:
-RESTACK_CLOUD_TOKEN=<your-cloud-token>
-
-Then execute restack up:
-
-```bash
-python restack_up.py
-```
-
-After you link your github to Restack Cloud, you will have a CI/CD pipeline to automatically deploy your changes.
+Create an account on [Restack Cloud](https://console.restack.io) and follow instructions on site to create a stack and deploy your application on Restack Cloud.

@@ -104,3 +104,7 @@ curl -X POST \
 ```
 
 This will schedule the workflow and return the result.
+
+# Deployment
+
+Create an account on [Restack Cloud](https://console.restack.io) and follow instructions on site to create a stack and deploy your application on Restack Cloud.
