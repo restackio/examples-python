@@ -47,10 +47,10 @@ This repository contains a simple example project to help you get started with c
    poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
    ```
 
-5. Run the services:
+5. Run the restack services:
 
    ```bash
-   poetry run services
+   poetry run dev
    ```
 
    This will start the Restack service with the defined workflows and functions.
