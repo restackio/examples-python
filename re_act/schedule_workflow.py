@@ -11,8 +11,8 @@ async def main():
         workflow_name="ParentWorkflow",
         workflow_id=workflow_id,
         input={
-            "email": "john.doe@example.com",
-            "current_accepted_applicants_count": 9
+            "email": "admin@example.com",
+            "current_accepted_applicants_count": 10
         }
     )
 

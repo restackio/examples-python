@@ -28,16 +28,16 @@ class ParentWorkflow:
             start_to_close_timeout=timedelta(seconds=120)
         )
 
-        decision = json.loads(decide_result)["accepted"]
+        decision = decide_result[0]['function']['name']
 
         child_workflow_result = None
-        if decision:
+        if decision == "accept_applicant":
             child_workflow_result = await workflow.child_execute(
                 ChildWorkflowA,
                 workflow_id=f"{parent_workflow_id}-child-a",
                 input=input.email
             )
-        elif not decision:
+        elif decision == "reject_applicant":
             child_workflow_result = await workflow.child_execute(
                 ChildWorkflowB,
                 workflow_id=f"{parent_workflow_id}-child-b",
