@@ -19,6 +19,25 @@ async def decide(input: DecideInput):
             
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
+        tools = [
+            {
+                "type": "function",
+                "function": {
+                    "name": "accept_applicant",
+                    "description": "Accept the applicant",
+                    "parameters": {}
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "reject_applicant",
+                    "description": "Reject the applicant",
+                    "parameters": {}
+                }
+            }
+        ]
+
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -38,17 +57,13 @@ async def decide(input: DecideInput):
                     The maximum number of accepted applicants is: 10
 
                     Decide if the applicant should be accepted or rejected.
-                    Return only a JSON object with these exact fields:
-                    {{
-                        "accepted": boolean
-                    }}
                     """,
                 }
             ],
-            response_format={"type": "json_object"},
+            tools=tools
         )
         
-        return response.choices[0].message.content
+        return response.choices[0].message.tool_calls
     except Exception as e:
         log.error("Failed to decide", error=e)
         raise FunctionFailure("Failed to decide", non_retryable=True)
