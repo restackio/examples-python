@@ -36,4 +36,4 @@ async def send_email(input: SendEmailInput):
         sg.send(message)
     except Exception as e:
         log.error("Failed to send email", error=e)
-        raise e
+        raise FunctionFailure("Failed to send email", non_retryable=True)

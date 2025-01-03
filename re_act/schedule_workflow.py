@@ -9,7 +9,11 @@ async def main():
     workflow_id = f"{int(time.time() * 1000)}-ParentWorkflow"
     runId = await client.schedule_workflow(
         workflow_name="ParentWorkflow",
-        workflow_id=workflow_id
+        workflow_id=workflow_id,
+        input={
+            "email": "john.doe@example.com",
+            "current_accepted_applicants_count": 9
+        }
     )
 
     await client.get_workflow_result(

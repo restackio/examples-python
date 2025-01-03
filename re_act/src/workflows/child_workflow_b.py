@@ -9,8 +9,8 @@ with import_functions():
 @workflow.defn()
 class ChildWorkflowB:
     @workflow.run
-    async def run(self):
-        log.info(f"Sending email to john.doe@example.com")
+    async def run(self, email: str):
+        log.info(f"Sending email to {email}")
 
         text = await workflow.step(
             generate_email_content,
