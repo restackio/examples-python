@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "re_act_example"
+version = "0.0.1"
+description = "ReAct Example"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+openai = "^1.57.2"
+python-dotenv = "1.0.1"
+restack-ai = "0.0.51"
+sendgrid = "^6.11.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+services = "src.services:run_services"
+schedule_workflow = "schedule_workflow:run_schedule_workflow"
