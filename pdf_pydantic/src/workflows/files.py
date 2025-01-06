@@ -1,12 +1,12 @@
 from restack_ai.workflow import workflow, log, workflow_info
 from typing import List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 import asyncio
 from .pdf import PdfWorkflow, PdfWorkflowInput
 
 
 class FilesWorkflowInput(BaseModel):
-    files: List[PdfWorkflowInput] = Field(None, file=True, description="Upload file")
+    files: List[PdfWorkflowInput]
 
 @workflow.defn()
 class FilesWorkflow:
