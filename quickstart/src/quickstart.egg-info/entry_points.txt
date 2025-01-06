@@ -1,6 +1,0 @@
-[console_scripts]
-calendar = schedule_calendar:run_schedule_calendar
-dev = src.services:watch_services
-interval = schedule_interval:run_schedule_interval
-schedule = schedule_workflow:run_schedule_workflow
-services = src.services:run_services
