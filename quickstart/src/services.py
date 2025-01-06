@@ -3,12 +3,16 @@ import os
 from src.functions.function import welcome
 from src.client import client
 from src.workflows.workflow import GreetingWorkflow
+from restack_ai.restack import ServiceOptions
 from watchfiles import run_process
 async def main():
 
     await client.start_service(
         workflows=[GreetingWorkflow],
-        functions=[welcome]
+        functions=[welcome],
+        options=ServiceOptions(
+            endpoints=True
+        )
     )
 
 def run_services():
