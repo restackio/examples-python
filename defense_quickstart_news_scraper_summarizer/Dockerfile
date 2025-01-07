@@ -18,7 +18,7 @@ ENV PIP_DEFAULT_TIMEOUT=100
 ENV PIP_INDEX_URL=https://pypi.org/simple
 
 # Install dependencies
-RUN poetry install --no-dev --no-interaction --no-ansi
+RUN poetry install --no-interaction --no-ansi
 
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf

@@ -14,7 +14,7 @@ COPY . .
 RUN poetry config virtualenvs.create false
 
 # Install dependencies
-RUN poetry install --no-dev --no-interaction --no-ansi
+RUN poetry install --no-interaction --no-ansi
 
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
