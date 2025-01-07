@@ -22,3 +22,5 @@ def watch_services():
     print(f"Watching {watch_path} and its subdirectories for changes...")
     run_process(watch_path, recursive=True, target=run_services)
 
+if __name__ == "__main__":
+       run_services()
