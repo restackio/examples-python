@@ -1,8 +1,8 @@
 # Project metadata
 [tool.poetry]
-name = "get_started"
+name = "quickstart"
 version = "0.0.1"
-description = "A simple example to get started with the restack-ai SDK"
+description = "A quickstart for Restack"
 authors = [
     "Restack Team <service@restack.io>",
 ]
@@ -11,13 +11,11 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-restack-ai = "^0.0.48"
 watchfiles = "^1.0.0"
-
-[tool.poetry.dev-dependencies]
-pytest = "6.2"  # Optional: Add if you want to include tests in your example
+pydantic = "^2.10.4"
 
 # Build system configuration
+restack-ai = "^0.0.52"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
