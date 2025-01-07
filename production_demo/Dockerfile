@@ -19,4 +19,4 @@ RUN poetry install --no-interaction --no-ansi
 # Expose port 80
 EXPOSE 80
 
-CMD poetry run services
+CMD poetry run python -m src.services
