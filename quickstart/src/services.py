@@ -4,7 +4,6 @@ from src.functions.function import welcome
 from src.client import client
 from src.workflows.workflow import GreetingWorkflow
 from watchfiles import run_process
-from restack_ai.restack import ServiceOptions
 import webbrowser
 
 async def main():

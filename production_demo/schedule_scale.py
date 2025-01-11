@@ -2,6 +2,8 @@ import asyncio
 import time
 from restack_ai import Restack
 
+from src.workflows.workflow import ExampleWorkflowInput
+
 async def main():
 
     client = Restack()
@@ -10,6 +12,7 @@ async def main():
     await client.schedule_workflow(
         workflow_name="ExampleWorkflow",
         workflow_id=workflow_id,
+        input=ExampleWorkflowInput(amount=50)
     )
 
     exit(0)

@@ -1,5 +1,5 @@
 from datetime import timedelta
-
+from pydantic import BaseModel, Field
 from restack_ai.workflow import workflow, import_functions, log
 
 with import_functions():
@@ -7,12 +7,15 @@ with import_functions():
     from src.functions.generate import llm_generate
     from src.functions.evaluate import llm_evaluate
 
+class ChildWorkflowInput(BaseModel):
+    name: str = Field(default='John Doe')
+
 @workflow.defn()
 class ChildWorkflow:
     @workflow.run
-    async def run(self):
+    async def run(self, input: ChildWorkflowInput):
         log.info("ChildWorkflow started")
-        await workflow.step(example_function, input="first", start_to_close_timeout=timedelta(minutes=2))
+        await workflow.step(example_function, input=input, start_to_close_timeout=timedelta(minutes=2))
 
         await workflow.sleep(1)
 
