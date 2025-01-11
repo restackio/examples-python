@@ -1,8 +1,12 @@
 from restack_ai.function import function, FunctionFailure, log
 from openai import OpenAI
+from pydantic import BaseModel
+
+class EvaluateInput(BaseModel):
+    generated_text: str
 
 @function.defn()
-async def llm_evaluate(generated_text: str) -> str:
+async def llm_evaluate(input: EvaluateInput) -> str:
     try:
         client = OpenAI(base_url="http://192.168.4.142:1234/v1/",api_key="llmstudio")
     except Exception as e:
@@ -12,7 +16,7 @@ async def llm_evaluate(generated_text: str) -> str:
     prompt = (
         f"Evaluate the following joke for humor, creativity, and originality. "
         f"Provide a score out of 10 for each category for your score.\n\n"
-        f"Joke: {generated_text}\n\n"
+        f"Joke: {input.generated_text}\n\n"
         f"Response format:\n"
         f"Humor: [score]/10"
         f"Creativity: [score]/10"

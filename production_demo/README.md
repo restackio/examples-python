@@ -1,6 +1,6 @@
 # Restack AI - Production Example
 
-This repository contains a simple example project to help you scale with the Restack AI.
+This repository contains a simple example project to help you scale with Restack AI.
 It demonstrates how to scale reliably to millions of workflows on a local machine with a local LLM provider.
 
 ## Walkthrough video
@@ -60,85 +60,93 @@ And for each child workflow, for each step you can see how long the function sta
 
 ## Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher
 - Poetry (for dependency management)
 - Docker (for running the Restack services)
 - Local LLM provider (we use LMStudio and a Meta Llama 3.1 8B Instruct 4bit model in this example)
 
-## Usage
+## Start LM stduio for local LLM provider
 
-0. Start LM Studio and start local server with Meta Llama 3.1 8B Instruct 4bit model
+Start local server with Meta Llama 3.1 8B Instruct 4bit model
 
 https://lmstudio.ai
 
-1. Run Restack local engine with Docker:
+## Prerequisites
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+- Docker (for running Restack)
+- Python 3.10 or higher
 
-2. Open the web UI to see the workflows:
+## Start Restack
 
-   ```bash
-   http://localhost:5233
-   ```
+To start the Restack, use the following Docker command:
 
-3. Clone this repository:
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/production_demo
-   ```
+## Start python shell
 
-4. Install dependencies using Poetry:
+```bash
+poetry env use 3.10 && poetry shell
+```
 
-   ```bash
-   poetry env use 3.12
-   ```
+## Install dependencies
 
-   ```bash
-   poetry shell
-   ```
+```bash
+poetry install
+```
 
-   ```bash
-   poetry install
-   ```
+```bash
+poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
+```
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+```bash
+poetry run dev
+```
 
-5. Run the services:
+## Run workflows
 
-   ```bash
-   poetry run dev
-   ```
+### from UI
 
-   This will start the Restack service with the defined workflows and functions.
+You can run workflows from the UI by clicking the "Run" button.
 
-6. In a new terminal, schedule the workflow:
+![Run workflows from UI](./ui-endpoints.png)
 
-   ```bash
-   poetry shell
-   ```
+### from API
 
-   ```bash
-   poetry run workflow
-   ```
+You can run one workflow from the API by using the generated endpoint:
 
-   This will schedule the ExampleWorkflow` and print the result.
+`POST http://localhost:6233/api/workflows/ChildWorkflow`
 
-7. Optionally, schedule the workflow to run on a interval:
+or multiple workflows by using the generated endpoint:
 
-   ```bash
-   poetry run interval
-   ```
+`POST http://localhost:6233/api/workflows/ExampleWorkflow`
 
-8. Optionally, schedule a parent workflow to run 50 child workflows all at once:
+### from any client
 
-   ```bash
-   poetry run scale
-   ```
+You can run workflows with any client connected to Restack, for example:
+
+```bash
+poetry run schedule
+```
+
+executes `schedule_workflow.py` which will connect to Restack and execute the `ChildWorkflow` workflow.
+
+```bash
+poetry run scale
+```
+
+executes `schedule_scale.py` which will connect to Restack and execute the `ExampleWorkflow` workflow.
+
+```bash
+poetry run interval
+```
+
+executes `schedule_interval.py` which will connect to Restack and execute the `ChildWorkflow` workflow every second.
+
+## Deploy on Restack Cloud
+
+To deploy the application on Restack, you can create an account at [https://console.restack.io](https://console.restack.io)
 
 ## Project Structure
 
@@ -149,7 +157,7 @@ https://lmstudio.ai
   - `services.py`: Sets up and runs the Restack services
 - `schedule_workflow.py`: Example script to schedule and run a workflow
 - `schedule_interval.py`: Example script to schedule and a workflow every second
-- `schedule_scale.py`: Example script to schedule and run 100 workflows at once
+- `schedule_scale.py`: Example script to schedule and run 50 workflows at once
 
 # Deployment
 
