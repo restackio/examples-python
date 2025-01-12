@@ -46,3 +46,5 @@ def watch_services():
     webbrowser.open("http://localhost:5233")
     run_process(watch_path, recursive=True, target=run_services)
 
+if __name__ == "__main__":
+    run_services()
