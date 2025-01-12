@@ -8,7 +8,7 @@ class EvaluateInput(BaseModel):
 @function.defn()
 async def llm_evaluate(input: EvaluateInput) -> str:
     try:
-        client = OpenAI(base_url="http://192.168.4.142:1234/v1/",api_key="llmstudio")
+        client = OpenAI(base_url="http://192.168.205.1:1234/v1/",api_key="llmstudio")
     except Exception as e:
         log.error(f"Failed to create LLM client {e}")
         raise FunctionFailure(f"Failed to create OpenAI client {e}", non_retryable=True) from e
@@ -27,7 +27,7 @@ async def llm_evaluate(input: EvaluateInput) -> str:
 
     try:
         response = client.chat.completions.create(
-            model="llama-3.2-3b-instruct",
+            model="llama-3.3-70b-instruct",
             messages=[
                 {
                     "role": "user",

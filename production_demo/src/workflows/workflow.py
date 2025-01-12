@@ -5,7 +5,7 @@ from restack_ai.workflow import workflow, log, workflow_info, import_functions
 from .child import ChildWorkflow, ChildWorkflowInput
 
 with import_functions():
-    from src.functions.generate import llm_generate 
+    from src.functions.generate import llm_generate, GenerateInput
 
 class ExampleWorkflowInput(BaseModel):
     amount: int = Field(default=50)
@@ -35,7 +35,7 @@ class ExampleWorkflow:
 
         generated_text = await workflow.step(
             llm_generate,
-            f"Give me the top 3 unique jokes according to the results. {results}",
+            GenerateInput(prompt=f"Give me the top 3 unique jokes according to the results. {results}"),
             task_queue="llm",
             start_to_close_timeout=timedelta(minutes=2)
         )

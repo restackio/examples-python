@@ -67,7 +67,7 @@ And for each child workflow, for each step you can see how long the function sta
 
 ## Start LM stduio for local LLM provider
 
-Start local server with Meta Llama 3.1 8B Instruct 4bit model
+Start local server with an open source model like llama-3.3-70b-instruct.
 
 https://lmstudio.ai
 
