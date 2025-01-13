@@ -4,11 +4,11 @@ from restack_ai.workflow import workflow, import_functions, log
 
 with import_functions():
     from src.functions.function import example_function
-    from src.functions.generate import llm_generate
-    from src.functions.evaluate import llm_evaluate
+    from src.functions.generate import llm_generate, GenerateInput
+    from src.functions.evaluate import llm_evaluate, EvaluateInput
 
 class ChildWorkflowInput(BaseModel):
-    name: str = Field(default='John Doe')
+    prompt: str = Field(default="Generate a random joke in max 20 words.")
 
 @workflow.defn()
 class ChildWorkflow:
@@ -21,16 +21,16 @@ class ChildWorkflow:
 
         generated_text = await workflow.step(
             llm_generate,
-            "Generate a random joke in max 20 words.",
+            GenerateInput(prompt=input.prompt),
             task_queue="llm",
             start_to_close_timeout=timedelta(minutes=2)
         )
 
         evaluation = await workflow.step(
             llm_evaluate,
-            generated_text,
+            EvaluateInput(generated_text=generated_text),
             task_queue="llm",
-            start_to_close_timeout=timedelta(minutes=2)
+            start_to_close_timeout=timedelta(minutes=5)
         )
 
         return {
