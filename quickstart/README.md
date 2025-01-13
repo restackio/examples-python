@@ -16,15 +16,13 @@ To start the Restack, use the following Docker command:
 docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
 ```
 
-## Install dependencies and start services
+## Start python shell
 
 ```bash
-poetry env use 3.10
+poetry env use 3.10 && poetry shell
 ```
 
-```bash
-poetry shell
-```
+## Install dependencies
 
 ```bash
 poetry install
