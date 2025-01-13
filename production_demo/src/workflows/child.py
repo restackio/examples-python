@@ -8,7 +8,7 @@ with import_functions():
     from src.functions.evaluate import llm_evaluate, EvaluateInput
 
 class ChildWorkflowInput(BaseModel):
-    name: str = Field(default='John Doe')
+    prompt: str = Field(default="Generate a random joke in max 20 words.")
 
 @workflow.defn()
 class ChildWorkflow:
@@ -21,7 +21,7 @@ class ChildWorkflow:
 
         generated_text = await workflow.step(
             llm_generate,
-            GenerateInput(prompt="Generate a random joke in max 20 words."),
+            GenerateInput(prompt=input.prompt),
             task_queue="llm",
             start_to_close_timeout=timedelta(minutes=2)
         )
@@ -30,7 +30,7 @@ class ChildWorkflow:
             llm_evaluate,
             EvaluateInput(generated_text=generated_text),
             task_queue="llm",
-            start_to_close_timeout=timedelta(minutes=2)
+            start_to_close_timeout=timedelta(minutes=5)
         )
 
         return {

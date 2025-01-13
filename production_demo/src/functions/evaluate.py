@@ -27,7 +27,7 @@ async def llm_evaluate(input: EvaluateInput) -> str:
 
     try:
         response = client.chat.completions.create(
-            model="llama-3.3-70b-instruct",
+            model="llama-3.2-3b-instruct",
             messages=[
                 {
                     "role": "user",

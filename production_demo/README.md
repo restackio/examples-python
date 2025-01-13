@@ -63,11 +63,11 @@ And for each child workflow, for each step you can see how long the function sta
 - Python 3.10 or higher
 - Poetry (for dependency management)
 - Docker (for running the Restack services)
-- Local LLM provider (we use LMStudio and a Meta Llama 3.1 8B Instruct 4bit model in this example)
+- Local LLM provider (we use LMStudio and a Meta Llama 3.2 3B Instruct 4bit model in this example)
 
 ## Start LM stduio for local LLM provider
 
-Start local server with an open source model like llama-3.3-70b-instruct.
+Start local server with an open source model like llama-3.2-3b-instruct
 
 https://lmstudio.ai
 
