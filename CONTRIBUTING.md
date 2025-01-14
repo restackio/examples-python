@@ -1,6 +1,10 @@
 # Contributing
 
-## Development
+This is the place holder pending further discussion on a formal contributing process/guidelines.
+
+## Pull Request Process
+
+This is the place holder pending further discussion on a formal contributing process/guidelines.
 
 ### Prerequisites
 
