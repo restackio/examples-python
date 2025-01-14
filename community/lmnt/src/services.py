@@ -28,8 +28,8 @@ async def main():
             task_queue="lmnt",
             functions=[lmnt_synthesize, lmnt_list_voices],
             options=ServiceOptions(
-                rate_limit=1,
-                max_concurrent_function_runs=1
+                rate_limit=2,
+                max_concurrent_function_runs=4
             )
         )
     )

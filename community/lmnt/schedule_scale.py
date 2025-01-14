@@ -12,7 +12,7 @@ async def main():
     await client.schedule_workflow(
         workflow_name="ExampleWorkflow",
         workflow_id=workflow_id,
-        input=ExampleWorkflowInput(amount=50)
+        input=ExampleWorkflowInput(max_amount=50)
     )
 
     exit(0)

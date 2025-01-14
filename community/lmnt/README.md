@@ -1,35 +1,30 @@
 # Restack AI - LMNT Example
 
 This repository contains a simple example project to help you scale with Restack AI.
-It demonstrates how to scale reliably to millions of workflows on a local machine with a local LLM provider.
-
-## Walkthrough video
-
-https://www.youtube.com/watch?v=WsUtQYC74og
+It demonstrates how to scale reliably to millions of workflows on a local machine with LMNT voice generation.
 
 ## Motivation
 
 When scaling AI workflows, you want to make sure that you can handle failures and retries gracefully.
-This example demonstrates how to do this with Restack AI.
+This example demonstrates how to do this with Restack AI and LMNT's voice generation API.
 
 ### Workflow Steps
 
 The table below shows the execution of 50 workflows in parallel, each with three steps.
-Steps 2 and 3 are LLM functions that must adhere to a rate limit of 1 concurrent call per second.
+Steps 2 is LMNT voice generation functions that must adhere to a rate limit of 1 concurrent call per second.
 
 | Step | Workflow 1 | Workflow 2 | ... | Workflow 50 |
 | ---- | ---------- | ---------- | --- | ----------- |
 | 1    | Basic      | Basic      | ... | Basic       |
-| 2    | LLM        | LLM        | ... | LLM         |
-| 3    | LLM        | LLM        | ... | LLM         |
+| 2    | LMNT       | LMNT       | ... | LMNT        |
 
 ### Traditional Rate Limit Management
 
-When running multiple workflows in parallel, managing the rate limit for LLM functions is crucial. Here are common strategies:
+When running multiple workflows in parallel, managing the rate limit for LMNT functions is crucial. Here are common strategies:
 
-1. **Task Queue**: Use a task queue (e.g., Celery, RabbitMQ) to schedule LLM calls, ensuring only one is processed at a time.
+1. **Task Queue**: Use a task queue (e.g., Celery, RabbitMQ) to schedule LMNT calls, ensuring only one is processed at a time.
 2. **Rate Limiting Middleware**: Implement middleware to queue requests and process them at the allowed rate.
-3. **Semaphore or Locking**: Use a semaphore or lock to control access, ensuring only one LLM function runs per second.
+3. **Semaphore or Locking**: Use a semaphore or lock to control access, ensuring only one LMNT function runs per second.
 
 ### With Restack
 
@@ -37,8 +32,8 @@ Restack automates rate limit management, eliminating the need for manual strateg
 
 ```python
 client.start_service(
-    task_queue="llm",
-    functions=[llm_generate, llm_evaluate],
+    task_queue="lmnt",
+    functions=[lmnt_list_voices, lmnt_synthesize],
     options=ServiceOptions(
         rate_limit=1,
         max_concurrent_function_runs=1
@@ -63,13 +58,7 @@ And for each child workflow, for each step you can see how long the function sta
 - Python 3.10 or higher
 - Poetry (for dependency management)
 - Docker (for running the Restack services)
-- Local LLM provider (we use LMStudio and a Meta Llama 3.1 8B Instruct 4bit model in this example)
-
-## Start LM stduio for local LLM provider
-
-Start local server with Meta Llama 3.1 8B Instruct 4bit model
-
-https://lmstudio.ai
+- LMNT API key (sign up at https://www.lmnt.com)
 
 ## Prerequisites
 
