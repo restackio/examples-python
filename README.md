@@ -9,6 +9,8 @@ This repository contains various examples demonstrating how to use the Restack A
 
 ## Getting Started
 
+To run the examples, in general the process looks like the below, but reference the example README.md for example specific instructions.
+
 1. Clone this repository:
 
    ```bash
@@ -19,7 +21,7 @@ This repository contains various examples demonstrating how to use the Restack A
 2. Navigate to the example you want to explore:
 
    ```bash
-   cd examples-python/examples/<example-name>
+   cd examples-python/<example-name>
    ```
 
 3. Install dependencies using Poetry:
