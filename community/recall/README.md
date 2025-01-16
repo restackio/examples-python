@@ -1,39 +1,39 @@
-# Restack AI - Production Example
+# Restack AI - Recall Example
 
-This repository contains a simple example project to help you scale with Restack AI.
-It demonstrates how to scale reliably to millions of workflows on a local machine with a local LLM provider.
+This repository demonstrates how to build a production-ready AI backend using [Restack](https://docs.restack.io) and [Recall](https://docs.recall.ai). It combines Recall’s universal API for capturing meeting data in real-time with Restack’s framework to build resilient ai workflows to handle concurrency, retries, and scheduling at scale.
 
-## Walkthrough video
+## Overview
 
-https://www.youtube.com/watch?v=WsUtQYC74og
+This example shows how to reliably scale workflows on a local machine, capturing meeting audio, video, and metadata via Recall, then processing it using Restack. You can define concurrency limits, automatically retry failed steps, and focus on building robust logic without managing manual locks or queues.
+
+## Walkthrough Video
+
 
 ## Motivation
 
-When scaling AI workflows, you want to make sure that you can handle failures and retries gracefully.
-This example demonstrates how to do this with Restack AI.
+When building AI meeting-related workflows, you want to handle real-time data ingestion (Recall) along with safe, scalable processing (Restack). Restack ensures steps that call LLM APIs or other services adhere to concurrency constraints, automatically queueing and retrying operations to maintain reliability.
 
 ### Workflow Steps
 
-The table below shows the execution of 50 workflows in parallel, each with three steps.
-Steps 2 and 3 are LLM functions that must adhere to a rate limit of 1 concurrent call per second.
+Below is an example of 50 workflows in parallel, each using Recall data and calling LLM functions that are rate-limited to 1 concurrent call per second.
 
 | Step | Workflow 1 | Workflow 2 | ... | Workflow 50 |
 | ---- | ---------- | ---------- | --- | ----------- |
-| 1    | Basic      | Basic      | ... | Basic       |
-| 2    | LLM        | LLM        | ... | LLM         |
+| 1    | Recall     | Recall     | ... | Recall      |
+| 2    | Recall     | Recall     | ... | Recall      |
 | 3    | LLM        | LLM        | ... | LLM         |
 
-### Traditional Rate Limit Management
+### Rate Limit Management
 
-When running multiple workflows in parallel, managing the rate limit for LLM functions is crucial. Here are common strategies:
+When processing data from Recall in parallel, you might rely on LLM or other external services. Managing concurrency is crucial:
 
-1. **Task Queue**: Use a task queue (e.g., Celery, RabbitMQ) to schedule LLM calls, ensuring only one is processed at a time.
-2. **Rate Limiting Middleware**: Implement middleware to queue requests and process them at the allowed rate.
-3. **Semaphore or Locking**: Use a semaphore or lock to control access, ensuring only one LLM function runs per second.
+1. **Task Queue**: Traditional approach using Celery or RabbitMQ.  
+2. **Rate Limiting Middleware**: Custom logic to hold requests in a queue.  
+3. **Semaphore or Locking**: Single shared lock to ensure serial processing.
 
 ### With Restack
 
-Restack automates rate limit management, eliminating the need for manual strategies. Define the rate limit in the service options, and Restack handles queuing and execution:
+Restack automates rate-limit management and concurrency controls:
 
 ```python
 client.start_service(
@@ -46,15 +46,15 @@ client.start_service(
 )
 ```
 
-Focus on building your logics while Restack ensures efficient and resilient workflow execution.
+Combine your Recall steps (fetch meeting transcripts, metadata, etc.) with LLM calls, and Restack ensures each step is handled in order without manual synchronization.
 
-### On Restack UI
+## On Restack UI
 
-You can see from the parent workflow how long each child workflow stayed in queue and how long was the execution time.
+You can see how long each workflow or step stayed in the queue and the execution details:
 
 ![Parent Workflow](./ui-parent.png)
 
-And for each child workflow, for each step you can see how long the function stayed in queue, how long the function took to execute and how many retries happened.
+For each child workflow, you can see how many retries occurred and how long each function took to execute:
 
 ![Child Workflow](./ui-child.png)
 
@@ -62,103 +62,101 @@ And for each child workflow, for each step you can see how long the function sta
 
 - Python 3.10 or higher
 - Poetry (for dependency management)
-- Docker (for running the Restack services)
-- Local LLM provider (we use LMStudio and a Meta Llama 3.2 3B Instruct 4bit model in this example)
-
-## Start LM stduio for local LLM provider
-
-Start local server with an open source model like llama-3.2-3b-instruct
-
-https://lmstudio.ai
-
-## Prerequisites
-
 - Docker (for running Restack)
-- Python 3.10 or higher
+- Recall account and API key
+- (Optional) Gemini LLM API key
+
+## Prepare Environment
+
+Create a `.env` file from `.env.Example`:
+
+```
+RECALL_API_KEY=<your-recall-api-key>
+GEMINI_API_KEY=<your-gemini-api-key>
+...
+```
 
 ## Start Restack
-
-To start the Restack, use the following Docker command:
 
 ```bash
 docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
 ```
 
-## Start python shell
+## Start Python Shell
 
 ```bash
 poetry env use 3.10 && poetry shell
 ```
 
-## Install dependencies
+## Install Dependencies
 
 ```bash
 poetry install
+poetry env info
 ```
 
-```bash
-poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-```
+## Development
 
 ```bash
 poetry run dev
 ```
 
-## Run workflows
+This will start the Restack services locally, using your configured environment.
 
-### from UI
+## Run Workflows
 
-You can run workflows from the UI by clicking the "Run" button.
+### From UI
+
+Access http://localhost:5233 to see your workflows. Click “Run” to start them.
 
 ![Run workflows from UI](./ui-endpoints.png)
 
-### from API
+### From API
 
-You can run one workflow from the API by using the generated endpoint:
+Use the generated endpoints for your workflows:
 
 `POST http://localhost:6233/api/workflows/ChildWorkflow`
 
-or multiple workflows by using the generated endpoint:
+or
 
 `POST http://localhost:6233/api/workflows/ExampleWorkflow`
 
-### from any client
-
-You can run workflows with any client connected to Restack, for example:
+### From CLI
 
 ```bash
 poetry run schedule
 ```
 
-executes `schedule_workflow.py` which will connect to Restack and execute the `ChildWorkflow` workflow.
+Triggers `ChildWorkflow`.
 
 ```bash
 poetry run scale
 ```
 
-executes `schedule_scale.py` which will connect to Restack and execute the `ExampleWorkflow` workflow.
+Triggers `ExampleWorkflow` 50 times in parallel.
 
 ```bash
 poetry run interval
 ```
 
-executes `schedule_interval.py` which will connect to Restack and execute the `ChildWorkflow` workflow every second.
+Schedules `ChildWorkflow` every second.
 
 ## Deploy on Restack Cloud
 
-To deploy the application on Restack, you can create an account at [https://console.restack.io](https://console.restack.io)
+Create an account at [https://console.restack.io](https://console.restack.io). You can deploy your workflows to Restack Cloud for automated scaling and monitoring.
 
 ## Project Structure
 
-- `src/`: Main source code directory
-  - `client.py`: Initializes the Restack client
+- `src/`
+  - `client.py`: Initializes Restack client
   - `functions/`: Contains function definitions
-  - `workflows/`: Contains workflow definitions
-  - `services.py`: Sets up and runs the Restack services
-- `schedule_workflow.py`: Example script to schedule and run a workflow
-- `schedule_interval.py`: Example script to schedule and a workflow every second
-- `schedule_scale.py`: Example script to schedule and run 50 workflows at once
+  - `workflows/`: Contains workflow definitions (including steps that leverage Recall data)
+  - `services.py`: Sets up Restack services
+- `schedule_workflow.py`: Scheduling a single workflow
+- `schedule_interval.py`: Scheduling a workflow repeatedly
+- `schedule_scale.py`: Scheduling 50 workflows at once
+- `.env.Example`: Environment variable template for Recall and Gemini keys
 
-# Deployment
+# Conclusion
 
-Create an account on [Restack Cloud](https://console.restack.io) and follow instructions on site to create a stack and deploy your application on Restack Cloud.
+With Recall providing real-time meeting data and Restack handling durable, concurrent workflows, you can build a powerful AI-backed system for processing, summarizing, and analyzing meetings at scale. This setup dramatically reduces operational overhead, allowing you to focus on delivering meaningful product features without worrying about rate limits or concurrency.
