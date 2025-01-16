@@ -4,12 +4,12 @@ import webbrowser
 import os
 
 from src.client import client
-from src.functions.function import gemini_generate_opposite
-from src.workflows.gemini_generate_content import GeminiGenerateOppositeWorkflow
+from src.functions.function import gemini_generate_content
+from src.workflows.gemini_generate_content import GeminiGenerateContentWorkflow
 async def main():
     await client.start_service(
-        workflows= [GeminiGenerateOppositeWorkflow],
-        functions= [gemini_generate_opposite]
+        workflows= [GeminiGenerateContentWorkflow],
+        functions= [gemini_generate_content]
     )
 
 def run_services():

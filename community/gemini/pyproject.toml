@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "gemini_generate"
+name = "gemini"
 version = "0.0.1"
-description = "A simple example to generate content using Google Gemini"
+description = "A simple example to integrate Google Gemini into a Restack project"
 authors = [
     "Restack Team <service@restack.io>",
 ]
@@ -11,7 +11,7 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 restack-ai = "^0.0.52"
-google-generativeai = "0.8.3"
+google-genai = "0.5.0"
 watchfiles = "^1.0.0"
 
 [build-system]

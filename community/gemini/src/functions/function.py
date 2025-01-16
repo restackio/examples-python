@@ -9,15 +9,15 @@ class FunctionInputParams:
     user_content: str
 
 @function.defn()
-async def gemini_generate_opposite(input: FunctionInputParams) -> str:
+async def gemini_generate_content(input: FunctionInputParams) -> str:
     try:
-        log.info("gemini_generate_opposite function started", input=input)
+        log.info("gemini_generate_content function started", input=input)
         genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel("gemini-2.0-flash-exp")
 
         response = model.generate_content(input.user_content)
-        log.info("gemini_generate_opposite function completed", response=response.text)
+        log.info("gemini_generate_content function completed", response=response.text)
         return response.text
     except Exception as e:
-        log.error("gemini_generate_opposite function failed", error=e)
+        log.error("gemini_generate_content function failed", error=e)
         raise e
