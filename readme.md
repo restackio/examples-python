@@ -1,6 +1,10 @@
-# Restack AI Python SDK Examples
+# Restack AI Python Examples
 
 This repository contains various examples demonstrating how to use the Restack AI Python SDK. These examples are designed to help you get started with Restack AI and showcase different features and use cases.
+
+This repository is organized into two sections:
+- [Official examples](/): Actively maintained and tested by the Restack team
+- [Community](/community) examples: Contributed by the community and may not be regularly updated
 
 ## Prerequisites
 
@@ -19,16 +23,10 @@ This repository contains various examples demonstrating how to use the Restack A
 2. Navigate to the example you want to explore:
 
    ```bash
-   cd examples-python/examples/<example-name>
+   cd examples-python/<example-name>
    ```
 
-3. Install dependencies using Poetry:
-
-   ```bash
-   poetry install
-   ```
-
-4. Follow the specific instructions in each example's README file.
+3. Follow the specific instructions in each example's README file.
 
 ## Running Restack in Docker
 

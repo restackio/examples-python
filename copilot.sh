@@ -11,8 +11,8 @@ OUTPUT_FILE="copilot.txt"
 # Generate a list of ignored files using git
 IGNORED_FILES=$(git ls-files --others --ignored --exclude-standard)
 
-# Find all Python files, excluding those in .gitignore
-find . -name "*.py" ! -name "__init__.py" | grep -vFf <(echo "$IGNORED_FILES") | while read -r file; do
+# Find all Python files, excluding those in .gitignore and community folder
+find . -name "*.py" ! -name "__init__.py" ! -path "./community/*" | grep -vFf <(echo "$IGNORED_FILES") | while read -r file; do
     # Append the file name to the output file
     echo "### File: $file ###" >> "$OUTPUT_FILE"
     # Append the content of the file to the output file
