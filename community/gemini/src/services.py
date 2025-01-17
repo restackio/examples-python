@@ -15,12 +15,12 @@ from src.functions.multi_function_call import gemini_multi_function_call
 
 from src.workflows.multi_function_call_advanced import GeminiMultiFunctionCallAdvancedWorkflow
 from src.functions.multi_function_call_advanced import gemini_multi_function_call_advanced
-from src.functions.multi_function_call_advanced import get_current_weather, get_humidity, get_air_quality
+from src.functions.tools import get_current_temperature, get_humidity, get_air_quality
 
 async def main():
     await client.start_service(
         workflows= [GeminiGenerateContentWorkflow, GeminiFunctionCallWorkflow, GeminiMultiFunctionCallWorkflow, GeminiMultiFunctionCallAdvancedWorkflow],
-        functions= [gemini_generate_content, gemini_function_call, gemini_multi_function_call, gemini_multi_function_call_advanced, get_current_weather, get_humidity, get_air_quality]
+        functions= [gemini_generate_content, gemini_function_call, gemini_multi_function_call, gemini_multi_function_call_advanced, get_current_temperature, get_humidity, get_air_quality]
     )
 
 def run_services():

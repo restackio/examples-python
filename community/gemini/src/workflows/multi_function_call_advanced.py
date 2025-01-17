@@ -8,15 +8,13 @@ from google.genai.types import FunctionResponse, Part
 with import_functions():
     from src.functions.multi_function_call_advanced import (
         gemini_multi_function_call_advanced,
-        get_current_weather,
-        get_humidity,
-        get_air_quality,
         FunctionInputParams,
         ChatMessage
     )
+    from src.functions.tools import get_current_temperature, get_humidity, get_air_quality
 
 class WorkflowInputParams(BaseModel):
-    user_content: str = "what's the weather in San Francisco?"
+    user_content: str = "What's the weather in San Francisco?"
 
 @workflow.defn()
 class GeminiMultiFunctionCallAdvancedWorkflow:
@@ -56,7 +54,7 @@ class GeminiMultiFunctionCallAdvancedWorkflow:
                         func_call = part["functionCall"]
                         function_name = func_call["name"]
                         
-                        if function_name in {"get_current_weather", "get_humidity", "get_air_quality"}:
+                        if function_name in {"get_current_temperature", "get_humidity", "get_air_quality"}:
                             try:
                                 result = await workflow.step(
                                     globals()[function_name],
