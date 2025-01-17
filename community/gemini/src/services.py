@@ -4,12 +4,23 @@ import webbrowser
 import os
 
 from src.client import client
-from src.functions.function import gemini_generate_content
-from src.workflows.gemini_generate_content import GeminiGenerateContentWorkflow
+from src.functions.generate_content import gemini_generate_content
+from src.workflows.generate_content import GeminiGenerateContentWorkflow
+
+from src.workflows.function_call import GeminiFunctionCallWorkflow
+from src.functions.function_call import gemini_function_call
+
+from src.workflows.multi_function_call import GeminiMultiFunctionCallWorkflow
+from src.functions.multi_function_call import gemini_multi_function_call
+
+from src.workflows.multi_function_call_advanced import GeminiMultiFunctionCallAdvancedWorkflow
+from src.functions.multi_function_call_advanced import gemini_multi_function_call_advanced
+from src.functions.multi_function_call_advanced import get_current_weather, get_humidity, get_air_quality
+
 async def main():
     await client.start_service(
-        workflows= [GeminiGenerateContentWorkflow],
-        functions= [gemini_generate_content]
+        workflows= [GeminiGenerateContentWorkflow, GeminiFunctionCallWorkflow, GeminiMultiFunctionCallWorkflow, GeminiMultiFunctionCallAdvancedWorkflow],
+        functions= [gemini_generate_content, gemini_function_call, gemini_multi_function_call, gemini_multi_function_call_advanced, get_current_weather, get_humidity, get_air_quality]
     )
 
 def run_services():

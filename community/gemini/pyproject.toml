@@ -13,6 +13,7 @@ python = ">=3.10,<4.0"
 restack-ai = "^0.0.52"
 google-genai = "0.5.0"
 watchfiles = "^1.0.0"
+pydantic = "^2.10.5"
 
 [build-system]
 requires = ["poetry-core"]

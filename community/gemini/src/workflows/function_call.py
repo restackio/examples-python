@@ -1,26 +1,25 @@
 from restack_ai.workflow import workflow, import_functions, log, RetryPolicy
-from dataclasses import dataclass
+from pydantic import BaseModel
 from datetime import timedelta
 
 with import_functions():
-    from src.functions.function import gemini_generate_content, FunctionInputParams
+    from src.functions.function_call import gemini_function_call, FunctionInputParams
 
-@dataclass
-class WorkflowInputParams:
-    user_content: str
+class WorkflowInputParams(BaseModel):
+    user_content: str = "what's the weather in San Francisco?"
 
 @workflow.defn()
-class GeminiGenerateContentWorkflow:
+class GeminiFunctionCallWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams):
-        log.info("GeminiGenerateContentWorkflow started", input=input)
+        log.info("GeminiFunctionCallWorkflow started", input=input)
         result = await workflow.step(
-            gemini_generate_content,
+            gemini_function_call,
             FunctionInputParams(user_content=input.user_content),
             start_to_close_timeout=timedelta(seconds=120),
             retry_policy=RetryPolicy(
                 maximum_attempts=1
             )
         )
-        log.info("GeminiGenerateContentWorkflow completed", result=result)
+        log.info("GeminiFunctionCallWorkflow completed", result=result)
         return result
