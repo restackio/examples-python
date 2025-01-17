@@ -2,6 +2,7 @@ import asyncio
 from watchfiles import run_process
 import webbrowser
 import os
+from restack_ai.restack import ServiceOptions
 
 from src.client import client
 from src.functions.generate_content import gemini_generate_content
@@ -17,10 +18,33 @@ from src.workflows.multi_function_call_advanced import GeminiMultiFunctionCallAd
 from src.functions.multi_function_call_advanced import gemini_multi_function_call_advanced
 from src.functions.tools import get_current_temperature, get_humidity, get_air_quality
 
+from src.workflows.swarm import GeminiSwarmWorkflow
+
 async def main():
-    await client.start_service(
-        workflows= [GeminiGenerateContentWorkflow, GeminiFunctionCallWorkflow, GeminiMultiFunctionCallWorkflow, GeminiMultiFunctionCallAdvancedWorkflow],
-        functions= [gemini_generate_content, gemini_function_call, gemini_multi_function_call, gemini_multi_function_call_advanced, get_current_temperature, get_humidity, get_air_quality]
+    await asyncio.gather(
+        client.start_service(
+            workflows=[GeminiGenerateContentWorkflow, GeminiFunctionCallWorkflow, GeminiMultiFunctionCallWorkflow, GeminiMultiFunctionCallAdvancedWorkflow, GeminiSwarmWorkflow],
+            functions=[],
+            options=ServiceOptions(
+                max_concurrent_workflow_runs=1000
+            )
+        ),
+        client.start_service(
+            task_queue="tools",
+            functions=[get_current_temperature, get_humidity, get_air_quality],
+            options=ServiceOptions(
+                rate_limit=10,
+                max_concurrent_function_runs=10
+            )
+        ),
+        client.start_service(
+            task_queue="gemini",
+            functions=[gemini_generate_content, gemini_function_call, gemini_multi_function_call, gemini_multi_function_call_advanced],
+            options=ServiceOptions(
+                rate_limit=5,
+                max_concurrent_function_runs=3
+            )
+        )
     )
 
 def run_services():

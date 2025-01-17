@@ -19,7 +19,8 @@ class GeminiGenerateContentWorkflow:
             start_to_close_timeout=timedelta(seconds=120),
             retry_policy=RetryPolicy(
                 maximum_attempts=1
-            )
+            ),
+            task_queue="gemini"
         )
         log.info("GeminiGenerateContentWorkflow completed", result=result)
         return result

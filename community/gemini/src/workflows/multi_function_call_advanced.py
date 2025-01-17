@@ -13,7 +13,7 @@ with import_functions():
     )
     from src.functions.tools import get_current_temperature, get_humidity, get_air_quality
 
-class WorkflowInputParams(BaseModel):
+class MultiFunctionCallAdvancedInputParams(BaseModel):
     user_content: str = "What's the weather in San Francisco?"
 
 @workflow.defn()
@@ -22,7 +22,7 @@ class GeminiMultiFunctionCallAdvancedWorkflow:
         self.chat_history = []
 
     @workflow.run
-    async def run(self, input: WorkflowInputParams):
+    async def run(self, input: MultiFunctionCallAdvancedInputParams):
         log.info("GeminiMultiFunctionCallAdvancedWorkflow started", input=input)
         
         current_content = input.user_content
@@ -37,7 +37,8 @@ class GeminiMultiFunctionCallAdvancedWorkflow:
                     chat_history=self.chat_history
                 ),
                 start_to_close_timeout=timedelta(seconds=120),
-                retry_policy=RetryPolicy(maximum_attempts=1)
+                retry_policy=RetryPolicy(maximum_attempts=2),
+                task_queue="gemini"
             )
 
             if not result or not isinstance(result, dict):
@@ -59,6 +60,7 @@ class GeminiMultiFunctionCallAdvancedWorkflow:
                                 result = await workflow.step(
                                     globals()[function_name],
                                     func_call["args"],
+                                    task_queue="tools",
                                     retry_policy=RetryPolicy(maximum_attempts=1)
                                 )
                                 function_results.append(f"{function_name} result: {str(result)}")

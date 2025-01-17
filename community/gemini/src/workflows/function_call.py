@@ -19,7 +19,8 @@ class GeminiFunctionCallWorkflow:
             start_to_close_timeout=timedelta(seconds=120),
             retry_policy=RetryPolicy(
                 maximum_attempts=1
-            )
+            ),
+            task_queue="gemini"
         )
         log.info("GeminiFunctionCallWorkflow completed", result=result)
         return result
