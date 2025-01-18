@@ -1,19 +1,26 @@
-# Restack AI - Gemini Example
+# Restack AI - Gemini Example for Autonomous Agents
 
-This example demonstrates how to build reliable and scalable AI applications using Google's Gemini API with Restack. It shows how to handle rate limits, concurrent API calls, and workflow orchestration effectively.
+This example demonstrates how to build reliable and scalable autonomous AI agents using Google's Gemini API with Restack. It shows how to handle rate limits (10 requests per minute for free tier with 1500 requests per day limit, concurrency limit), concurrent API calls, and workflow orchestration effectively to create agents that can independently perform complex tasks.
 
-We build four example workflows: a basic content generation workflow, a function calling workflow, a multi-function calling workflow, and a swarm workflow that demonstrates parallel execution.
+Example workflows in `src/workflows/`:
+- [Content Generation](src/workflows/generate_content.py): Basic natural language understanding
+- [Function Calling](src/workflows/function_call.py): Toolexecution  
+- [Multi-Function Calling](src/workflows/multi_function_call.py): Complex decision making
+- [Multi-Function Calling](src/workflows/multi_function_call_advanced.py): Complex decision making with tools, executed as restack functions (e.g. third party APIs) 
+- [Swarm](src/workflows/swarm.py): Parallel execution of multiple coordinated agents
 
 
 ## Motivation
 
 When building AI applications with Gemini, you need to handle various production challenges:
 
-1. **API Rate Limits**: Gemini API has concurrent request limits (e.g., 3 concurrent calls)([1](https://googleapis.github.io/python-genai)) that need to be managed across multiple workflows.
+1. **API Rate Limits**: Gemini API has concurrent request limits that need to be managed across multiple workflows.
 
 2. **Reliability**: AI workflows need retry mechanisms and graceful failure handling for production use.
 
 3. **Scalability**: As your application grows to handle thousands of concurrent agents or requests, you need robust queue management and execution control.
+
+4. **Scheduling**: Coordinating and managing multiple workflows running at different frequencies requires robust scheduling capabilities.
 
 ### How Restack Helps
 
@@ -34,6 +41,8 @@ client.start_service(
 2. **Built-in Retries**: Restack automatically handles retries and failure scenarios.
 
 3. **Queue Management**: Efficiently manages thousands of concurrent workflows while respecting API limits.
+
+4. **Scheduling**: Run workflows on various schedules (minutely, hourly, daily) or with custom cron expressions.
 
 ## Prerequisites
 
@@ -95,6 +104,20 @@ client.start_service(
    This will start the Restack service with the defined workflows and functions.
 
 8. Schedule workflows via the UI 
+
+All workflows are auto-exposed with an RestAPI endpoint, ready to be run or scheduled via api request, or directly from the UI during development.
+
+![UI RestAPI Endpoints](ui-restapi-endpoints.png)
+
+Run or schedule individual workflows. 
+
+![UI Run workflow](ui-run-workflow.png)
+
+Run or schedule a workflow, triggering many agents as childworkflows.
+
+![UI Schedule swarm](ui-schedule-swarm.png)
+
+
 
 ## Project Structure
 
