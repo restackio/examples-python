@@ -41,7 +41,7 @@ async def main():
             task_queue="gemini",
             functions=[gemini_generate_content, gemini_function_call, gemini_multi_function_call, gemini_multi_function_call_advanced],
             options=ServiceOptions(
-                rate_limit=0.1,
+                rate_limit=0.16,
                 max_concurrent_function_runs=1
             )
         )
