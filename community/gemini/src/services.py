@@ -34,7 +34,8 @@ async def main():
             functions=[get_current_temperature, get_humidity, get_air_quality],
             options=ServiceOptions(
                 rate_limit=10,
-                max_concurrent_function_runs=10
+                max_concurrent_function_runs=10,
+                endpoints=False
             )
         ),
         client.start_service(
@@ -42,7 +43,8 @@ async def main():
             functions=[gemini_generate_content, gemini_function_call, gemini_multi_function_call, gemini_multi_function_call_advanced],
             options=ServiceOptions(
                 rate_limit=0.16,
-                max_concurrent_function_runs=1
+                max_concurrent_function_runs=1,
+                endpoints=False
             )
         )
     )
