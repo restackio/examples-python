@@ -1,4 +1,4 @@
-from restack_ai.function import function, FunctionFailure
+from restack_ai.function import function, FunctionFailure, log
 from dataclasses import dataclass
 from openai import OpenAI
 import os
@@ -17,10 +17,13 @@ async def transcribe_audio(input: TranscribeAudioInput):
     
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-    response = client.audio.transcriptions.create(
-        model="whisper-1",
-        file=open(input.file_path, "rb")
-    )
+    try:
+      response = client.audio.transcriptions.create(
+          model="whisper-1",
+          file=open(input.file_path, "rb")
+      )
+    except Exception as error:
+      log.error("An error occurred during transcription", error)
 
     return response.text
 

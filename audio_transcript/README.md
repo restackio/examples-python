@@ -1,71 +1,65 @@
-# Restack AI - Audio transcript and translation example
+# Restack AI - Audio translation example
 
-This example showcases how to transcribe an mp3 audio and then later translate the generated text to a target language, all done in a single workflow defined with Restack AI.
-
+This example showcases how to transcribe an mp3 audio and then translate the generated text to a target language, all done in a single workflow defined with Restack AI.
 
 ## Prerequisites
 
+- Docker (for running Restack)
 - Python 3.10 or higher
 - Poetry (for dependency management)
-- Docker (for running the Restack services)
 
-## Usage
+## Start Restack
 
-1. Run Restack local engine with Docker:
+To start the Restack, use the following Docker command:
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-2. Open the web UI to see the workflows:
+## Start python shell
 
-   ```bash
-   http://localhost:5233
-   ```
+```bash
+poetry env use 3.10 && poetry shell
+```
 
-3. Clone this repository:
+## Install dependencies
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/get-started
-   ```
-  
-4. Create .env file with: STRIPE_SECRET_KEY and OPENAI_API_KEY
+```bash
+poetry install
+```
 
-4. Install dependencies using Poetry:
+```bash
+poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
+```
 
-   ```bash
-   poetry env use 3.12
-   ```
+```bash
+poetry run dev
+```
 
-   ```bash
-   poetry shell
-   ```
+## Run workflows
 
-   ```bash
-   poetry install
-   ```
+### from UI
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+You can run workflows from the UI by clicking the "Run" button.
 
-5. Run the services:
+![Run workflows from UI](./ui-screenshot.png)
 
-   ```bash
-   poetry run services
-   ```
+### from API
 
-   This will start the Restack service with the defined workflows and functions.
+You can run workflows from the API by using the generated endpoint:
 
-6. In a new terminal, schedule the workflow:
+`POST http://localhost:6233/api/workflows/TranscribeTranslateWorkflow`
 
-   ```bash
-   poetry shell
-   ```
+### from any client
 
-   ```bash
-   poetry run schedule
-   ```
+You can run workflows with any client connected to Restack, for example:
 
-   This will schedule the `TranscribeTranslateWorkflow` and print the result.
+```bash
+poetry run schedule
+```
+
+executes `schedule_workflow.py` which will connect to Restack and execute the `TranscribeTranslateWorkflow` workflow.
+
+## Deploy on Restack Cloud
+
+To deploy the application on Restack, you can create an account at [https://console.restack.io](https://console.restack.io)

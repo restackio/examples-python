@@ -26,7 +26,6 @@ A Restack backend application should be structured as follows:
     - env.example
     - README.md
     - Dockerfile
-    - restack_up.py
 
 All these files are mandatory.
 
