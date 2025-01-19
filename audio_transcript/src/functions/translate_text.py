@@ -18,19 +18,22 @@ async def translate_text(input: TranslateTextInput):
     
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": "You are a helpful assistant that translates text from one language to another."
-            },
-            {
-                "role": "user",
-                "content": f"Translate the following text to {input.target_language}: {input.text}"
-            }
-        ]
-    )
+    try:
+      response = client.chat.completions.create(
+          model="gpt-4o-mini",
+          messages=[
+              {
+                  "role": "system",
+                  "content": "You are a helpful assistant that translates text from one language to another."
+              },
+              {
+                  "role": "user",
+                  "content": f"Translate the following text to {input.target_language}: {input.text}"
+              }
+          ]
+      )
+    except Exception as error:
+      log.error("An error occurred during translation", error)
 
     return response.choices[0].message.content
 
