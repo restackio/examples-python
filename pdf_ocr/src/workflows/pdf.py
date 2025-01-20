@@ -8,7 +8,7 @@ with import_functions():
     from src.functions.openai_chat import openai_chat, OpenAiChatInput
 
 class PdfWorkflowInput(BaseModel):
-    files_upload: List[dict] = Field(files=True)
+    file_upload: List[dict] = Field(files=True)
 
 @workflow.defn()
 class PdfWorkflow:
@@ -19,8 +19,8 @@ class PdfWorkflow:
         ocr_result = await workflow.step(
             torch_ocr,
             OcrInput(
-                file_type=input.files_upload[0]['type'],
-                file_path=input.files_upload[0]['path']
+                file_type=input.file_upload[0]['type'],
+                file_path=input.file_upload[0]['path']
             ),
             start_to_close_timeout=timedelta(seconds=120)
         )

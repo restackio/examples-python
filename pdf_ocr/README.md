@@ -1,4 +1,4 @@
-# Restack AI - PDF Pydantic
+# Restack AI - PDF OCR and LLM summary
 
 ## Motivation
 
