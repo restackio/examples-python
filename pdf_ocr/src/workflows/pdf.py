@@ -1,14 +1,14 @@
 from restack_ai.workflow import workflow, import_functions, log
 from datetime import timedelta
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
+from typing import List
 
 with import_functions():
     from src.functions.torch_ocr import torch_ocr, OcrInput
     from src.functions.openai_chat import openai_chat, OpenAiChatInput
 
 class PdfWorkflowInput(BaseModel):
-    file_type: str
-    file_binary:str
+    files_upload: List[dict] = Field(files=True)
 
 @workflow.defn()
 class PdfWorkflow:
@@ -19,8 +19,8 @@ class PdfWorkflow:
         ocr_result = await workflow.step(
             torch_ocr,
             OcrInput(
-                file_type=input.file_type,
-                file_binary=input.file_binary
+                file_type=input.files_upload[0]['type'],
+                file_path=input.files_upload[0]['path']
             ),
             start_to_close_timeout=timedelta(seconds=120)
         )
