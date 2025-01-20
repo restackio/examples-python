@@ -18,13 +18,14 @@ class OCRPrediction(BaseModel):
 
 class OcrInput(BaseModel):
     file_type: str
-    file_binary:str
+    file_path:str
 
 @function.defn()
 async def torch_ocr(input: OcrInput) -> str:
     try:
         service = DocumentExtractionService()
-        content = base64.b64decode(input.file_binary)
+        with open(input.file_path, "rb") as file:
+            content = file.read()
 
         if input.file_type == "application/pdf":
             doc = DocumentFile.from_pdf(content)
