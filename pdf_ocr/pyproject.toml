@@ -12,8 +12,6 @@ packages = [{include = "src"}]
 python = ">=3.10,<4.0"
 openai = "^1.57.2"
 python-dotenv = "1.0.1"
-fastapi = "^0.115.6"
-uvicorn = "^0.32.1"
 python-multipart = "^0.0.19"
 numpy = "^2.2.0"
 pillow = "^11.0.0"
