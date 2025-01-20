@@ -22,7 +22,7 @@ docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:723
 ## Start python shell
 
 ```bash
-poetry env use 3.10 && poetry shell
+poetry env use 3.12 && poetry shell
 ```
 
 ## Install dependencies
