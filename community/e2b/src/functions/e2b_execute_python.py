@@ -15,7 +15,8 @@ async def e2b_execute_python(input: ExecutePythonInput) -> str:
         # Create a new sandbox instance with a 60 second timeout
         sandbox = Sandbox(timeout=60)
         execution = sandbox.run_code(input.code)
-        return execution.logs
+        result = execution.text
+        return result
     except Exception as e:
         log.error("e2b_execute_python function failed", error=e)
         raise e

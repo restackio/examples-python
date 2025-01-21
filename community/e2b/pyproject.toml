@@ -1,8 +1,8 @@
 # Project metadata
 [tool.poetry]
-name = "quickstart"
+name = "e2b-restack"
 version = "0.0.1"
-description = "A quickstart for Restack"
+description = "A simple example for e2b with Restack"
 authors = [
     "Restack Team <service@restack.io>",
 ]
