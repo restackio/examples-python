@@ -1,6 +1,9 @@
-# Restack AI - Audio translation example
+# Restack AI - PDF OCR and LLM summary
 
-This example showcases how to transcribe an mp3 audio and then translate the generated text to a target language, all done in a single workflow defined with Restack AI.
+## Motivation
+
+Demonstrates how to scale multi step workflows.
+Use pytorch to OCR and OpenAI to make a summary.
 
 ## Prerequisites
 

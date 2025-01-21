@@ -16,7 +16,6 @@ A Restack backend application should be structured as follows:
     - env.example
     - README.md
     - Dockerfile
-    - restack_up.py
 
 All these files are mandatory.
 
@@ -24,18 +23,12 @@ All these files are mandatory.
 import asyncio
 import time
 from restack_ai import Restack
-from dataclasses import dataclass
-
 from dotenv import load_dotenv
+from src.workflows.transcribe_translate import WorkflowInputParams
 
 load_dotenv()
 
-@dataclass
-class InputParams:
-    file_path: str
-    target_language: str
-
-async def main(input: InputParams):
+async def main(input: WorkflowInputParams):
     client = Restack()
 
     workflow_id = f"{int(time.time() * 1000)}-TranscribeTranslateWorkflow"
@@ -43,10 +36,10 @@ async def main(input: InputParams):
     run_id = await client.schedule_workflow(
         workflow_name="TranscribeTranslateWorkflow",
         workflow_id=workflow_id,
-        input={
-            "file_path": input.file_path,
-            "target_language": input.target_language
-        }
+        input=WorkflowInputParams(
+            file_path=input.file_path,
+            target_language=input.target_language
+        )
     )
 
     await client.get_workflow_result(
@@ -57,7 +50,7 @@ async def main(input: InputParams):
     exit(0)
 
 def run_schedule_workflow():
-    asyncio.run(main(InputParams(file_path="./test.mp3", target_language="Spanish")))
+    asyncio.run(main(WorkflowInputParams(file_path="./test.mp3", target_language="Spanish")))
 
 if __name__ == "__main__":
     run_schedule_workflow()
@@ -86,7 +79,7 @@ client = Restack(connection_options)
 
 
 ### File: audio_transcript/src/functions/transcribe_audio.py ###
-from restack_ai.function import function, FunctionFailure
+from restack_ai.function import function, FunctionFailure, log
 from dataclasses import dataclass
 from openai import OpenAI
 import os
@@ -105,10 +98,13 @@ async def transcribe_audio(input: TranscribeAudioInput):
     
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-    response = client.audio.transcriptions.create(
-        model="whisper-1",
-        file=open(input.file_path, "rb")
-    )
+    try:
+      response = client.audio.transcriptions.create(
+          model="whisper-1",
+          file=open(input.file_path, "rb")
+      )
+    except Exception as error:
+      log.error("An error occurred during transcription", error)
 
     return response.text
 
@@ -135,19 +131,22 @@ async def translate_text(input: TranslateTextInput):
     
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": "You are a helpful assistant that translates text from one language to another."
-            },
-            {
-                "role": "user",
-                "content": f"Translate the following text to {input.target_language}: {input.text}"
-            }
-        ]
-    )
+    try:
+      response = client.chat.completions.create(
+          model="gpt-4o-mini",
+          messages=[
+              {
+                  "role": "system",
+                  "content": "You are a helpful assistant that translates text from one language to another."
+              },
+              {
+                  "role": "user",
+                  "content": f"Translate the following text to {input.target_language}: {input.text}"
+              }
+          ]
+      )
+    except Exception as error:
+      log.error("An error occurred during translation", error)
 
     return response.choices[0].message.content
 
@@ -159,6 +158,9 @@ from src.client import client
 from src.workflows.transcribe_translate import TranscribeTranslateWorkflow
 from src.functions.transcribe_audio import transcribe_audio
 from src.functions.translate_text import translate_text
+from watchfiles import run_process
+import webbrowser
+import os
 
 async def main():
     await asyncio.gather(
@@ -169,24 +171,31 @@ async def main():
     )
 
 def run_services():
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Service interrupted by user. Exiting gracefully.")
+
+def watch_services():
+    watch_path = os.getcwd()
+    print(f"Watching {watch_path} and its subdirectories for changes...")
+    webbrowser.open("http://localhost:5233")
+    run_process(watch_path, recursive=True, target=run_services)
 
 if __name__ == "__main__":
-    run_services()
+       run_services()
 
 
 ### File: audio_transcript/src/workflows/transcribe_translate.py ###
 from restack_ai.workflow import workflow, import_functions, log
-from dataclasses import dataclass
-
+from pydantic import BaseModel, Field
 with import_functions():
     from src.functions.transcribe_audio import transcribe_audio, TranscribeAudioInput
     from src.functions.translate_text import translate_text, TranslateTextInput
 
-@dataclass
-class WorkflowInputParams:
-    file_path: str
-    target_language: str
+class WorkflowInputParams(BaseModel):
+    file_path: str = Field(default="/test.mp3")
+    target_language: str = Field(default="fr")
 
 @workflow.defn()
 class TranscribeTranslateWorkflow:

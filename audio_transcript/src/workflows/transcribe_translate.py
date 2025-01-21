@@ -1,14 +1,12 @@
 from restack_ai.workflow import workflow, import_functions, log
-from dataclasses import dataclass
-
+from pydantic import BaseModel, Field
 with import_functions():
     from src.functions.transcribe_audio import transcribe_audio, TranscribeAudioInput
     from src.functions.translate_text import translate_text, TranslateTextInput
 
-@dataclass
-class WorkflowInputParams:
-    file_path: str
-    target_language: str
+class WorkflowInputParams(BaseModel):
+    file_path: str = Field(default="/test.mp3")
+    target_language: str = Field(default="fr")
 
 @workflow.defn()
 class TranscribeTranslateWorkflow:
