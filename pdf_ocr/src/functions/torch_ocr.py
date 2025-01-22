@@ -4,7 +4,6 @@ from typing import Any, List
 
 import numpy as np
 from doctr.io import DocumentFile
-from fastapi import UploadFile
 from numpy.typing import NDArray
 from PIL import Image
 from pydantic import BaseModel, Field
@@ -51,29 +50,6 @@ class DocumentExtractionService:
             pretrained=True,
             assume_straight_pages=False,
         )
-
-    async def extract(self, file: UploadFile) -> str:
-        try:
-            content: bytes = await file.read()
-
-            if file.content_type is None:
-                raise ValueError("File content type is not available")
-
-            if file.content_type == "application/pdf":
-                doc = DocumentFile.from_pdf(content)
-            elif file.content_type.startswith("image/"):
-                image: Image.Image = Image.open(io.BytesIO(content))
-                processed_img: NDArray[np.uint8] = self._preprocess_image(image)
-                doc = DocumentFile.from_images(processed_img)
-            else:
-                raise ValueError("Unsupported file type")
-
-            result = self.predictor(doc)
-            json_output = OCRPrediction.model_validate(result.export())
-            return self._process_predictions(json_output)
-
-        except Exception as e:
-            raise ValueError(f"Failed to process file: {str(e)}")
 
     def _preprocess_image(self, image: Image.Image) -> NDArray[np.uint8]:
         if image.mode != "RGB":
