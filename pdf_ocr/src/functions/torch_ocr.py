@@ -7,8 +7,11 @@ from doctr.io import DocumentFile
 from numpy.typing import NDArray
 from PIL import Image
 from pydantic import BaseModel, Field
-from restack_ai.function import function
+from restack_ai.function import function, log, FunctionFailure
+
 from doctr.models import ocr_predictor
+import requests
+from ..client import api_address
 
 class OCRPrediction(BaseModel):
     pages: List[dict[str, Any]] = Field(
@@ -17,14 +20,17 @@ class OCRPrediction(BaseModel):
 
 class OcrInput(BaseModel):
     file_type: str
-    file_path:str
+    file_name:str
 
 @function.defn()
 async def torch_ocr(input: OcrInput) -> str:
     try:
         service = DocumentExtractionService()
-        with open(input.file_path, "rb") as file:
-            content = file.read()
+
+        # Download the file from localhost
+        response = requests.get(f"{api_address or 'http://localhost:6233'}/api/download/{input.file_name}")
+        response.raise_for_status()  # Raise an error for bad responses
+        content = response.content
 
         if input.file_type == "application/pdf":
             doc = DocumentFile.from_pdf(content)
@@ -33,14 +39,14 @@ async def torch_ocr(input: OcrInput) -> str:
             processed_img: NDArray[np.uint8] = service._preprocess_image(image)
             doc = DocumentFile.from_images(processed_img)
         else:
-            raise ValueError("Unsupported file type")
+            raise FunctionFailure("Unsupported file type", non_retryable=True)
 
         result = service.predictor(doc)
         json_output = OCRPrediction.model_validate(result.export())
         return service._process_predictions(json_output)
-
     except Exception as e:
-        raise ValueError(f"Failed to process file: {str(e)}")
+        log.error(f"Failed to process file: {str(e)}")
+        raise FunctionFailure(f"Failed to process file: {str(e)}", non_retryable=True)
 
 class DocumentExtractionService:
     def __init__(self) -> None:

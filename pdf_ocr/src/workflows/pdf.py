@@ -20,7 +20,7 @@ class PdfWorkflow:
             torch_ocr,
             OcrInput(
                 file_type=input.file_upload[0]['type'],
-                file_path=input.file_upload[0]['path']
+                file_name=input.file_upload[0]['name']
             ),
             start_to_close_timeout=timedelta(seconds=120)
         )

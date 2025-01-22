@@ -19,6 +19,7 @@ pydantic = "^2.10.3"
 python-doctr = {extras = ["torch"], version = "^0.10.0"}
 restack-ai = "^0.0.53"
 watchfiles = "^1.0.4"
+requests = "^2.32.3"
 
 [build-system]
 requires = ["poetry-core"]
