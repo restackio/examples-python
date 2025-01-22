@@ -60,7 +60,7 @@ Access the Restack UI to run and monitor workflows:
 
 Execute workflows through the Restack API endpoint:
 
-`POST http://localhost:6233/api/workflows/GreetingWorkflow`
+`POST http://localhost:6233/api/workflows/CodeExecutionWorkflow`
 
 ### Via Client
 
@@ -70,7 +70,7 @@ Run workflows programmatically using the Python client:
 poetry run schedule
 ```
 
-This executes `schedule_workflow.py` which connects to Restack and runs the `GreetingWorkflow`.
+This executes `schedule_workflow.py` which connects to Restack and runs the `CodeExecutionWorkflow`.
 
 ## Cloud Deployment
 
