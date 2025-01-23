@@ -1,23 +1,41 @@
 #!/bin/bash
 
-# Define the directory containing the example files
-EXAMPLES_DIR="./"
 # Define the output file
 OUTPUT_FILE="copilot.txt"
 
 # Clear the output file if it exists
 > "$OUTPUT_FILE"
 
-# Generate a list of ignored files using git
-IGNORED_FILES=$(git ls-files --others --ignored --exclude-standard)
+# Add repository structure information at the beginning
+cat << 'EOF' > "$OUTPUT_FILE"
+# Repository structure
 
-# Find all Python files, excluding those in .gitignore
-find . -name "*.py" ! -name "__init__.py" | grep -vFf <(echo "$IGNORED_FILES") | while read -r file; do
-    # Append the file name to the output file
+A Restack backend application should be structured as follows:
+
+- src/
+    - client.py
+    - functions/
+        - __init__.py
+        - function.py
+    - workflows/
+        - __init__.py
+        - workflow.py
+    - services.py
+    - schedule_workflow.py
+    - pyproject.toml
+    - env.example
+    - README.md
+    - Dockerfile
+
+All these files are mandatory.
+
+EOF
+
+# Use git ls-files to get tracked files only, excluding .gitignore files
+git ls-files "*.py" | grep -v "__init__.py" | grep -v "community/" | while read -r file; do
+    echo "Processing: $file"  # Debug line
     echo "### File: $file ###" >> "$OUTPUT_FILE"
-    # Append the content of the file to the output file
     cat "$file" >> "$OUTPUT_FILE"
-    # Add a newline for separation
     echo -e "\n" >> "$OUTPUT_FILE"
 done
 

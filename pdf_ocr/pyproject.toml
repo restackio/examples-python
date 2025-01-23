@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "pdf_ocr"
+version = "0.0.1"
+description = "A simple example to OCR a pdf"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+openai = "^1.57.2"
+python-dotenv = "1.0.1"
+python-multipart = "^0.0.19"
+numpy = "^2.2.0"
+pillow = "^11.0.0"
+pydantic = "^2.10.3"
+python-doctr = {extras = ["torch"], version = "^0.10.0"}
+restack-ai = "^0.0.53"
+watchfiles = "^1.0.4"
+requests = "^2.32.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dev = "src.services:watch_services"
+services = "src.services:run_services"
+

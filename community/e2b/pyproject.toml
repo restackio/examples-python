@@ -1,0 +1,29 @@
+# Project metadata
+[tool.poetry]
+name = "e2b-restack"
+version = "0.0.1"
+description = "A simple example for e2b with Restack"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+watchfiles = "^1.0.0"
+pydantic = "^2.10.4"
+openai = "^1.57.2"
+e2b-code-interpreter = "^1.0.3"
+
+# Build system configuration
+restack-ai = "^0.0.52"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# CLI command configuration
+[tool.poetry.scripts]
+dev = "src.services:watch_services"
+services = "src.services:run_services"
+schedule = "schedule_workflow:run_schedule_workflow"

@@ -1,0 +1,29 @@
+# Project metadata
+[tool.poetry]
+name = "quickstart"
+version = "0.0.1"
+description = "A quickstart for Restack"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+watchfiles = "^1.0.0"
+pydantic = "^2.10.4"
+
+# Build system configuration
+restack-ai = "^0.0.52"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# CLI command configuration
+[tool.poetry.scripts]
+dev = "src.services:watch_services"
+services = "src.services:run_services"
+schedule = "schedule_workflow:run_schedule_workflow"
+interval = "schedule_interval:run_schedule_interval"
+calendar = "schedule_calendar:run_schedule_calendar"

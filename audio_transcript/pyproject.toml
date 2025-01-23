@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "audio_transcript"
 version = "0.0.1"
-description = "Send emails with sendgrid"
+description = "Transcribe audio with OpenAI Whisper and translate the text with OpenAI GPT-4o-mini"
 authors = [
     "Restack Team <service@restack.io>",
 ]
@@ -12,14 +12,16 @@ packages = [{include = "src"}]
 python = ">=3.10,<4.0"
 pydantic = "^2.10.3"
 python-dotenv = "1.0.1"
-openai = "^1.57.2"
-restack-ai = "^0.0.48"
+restack-ai = "^0.0.53"
+openai = "^1.59.8"
+watchfiles = "^1.0.4"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
+dev = "src.services:watch_services"
 services = "src.services:run_services"
 schedule = "schedule_workflow:run_schedule_workflow"
 schedule_failure = "schedule_workflow_failure:run_schedule_workflow_failure"

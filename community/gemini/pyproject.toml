@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "gemini"
+version = "0.0.1"
+description = "A simple example to integrate Google Gemini into a Restack project"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+restack-ai = "^0.0.53"
+google-genai = "0.5.0"
+watchfiles = "^1.0.0"
+pydantic = "^2.10.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dev = "src.services:watch_services"
+services = "src.services:run_services"
+schedule = "schedule_workflow:run_schedule_workflow"

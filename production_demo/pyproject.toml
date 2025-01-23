@@ -11,9 +11,10 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-restack-ai = "^0.0.48"
+restack-ai = "^0.0.52"
 watchfiles = "^1.0.0"
 openai = "^1.57.2"
+pydantic = "^2.10.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "6.2"  # Optional: Add if you want to include tests in your example
