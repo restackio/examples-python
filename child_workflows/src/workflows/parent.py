@@ -1,10 +1,9 @@
 from restack_ai.workflow import workflow, log, workflow_info
-from dataclasses import dataclass, field
+from pydantic import BaseModel
 from .child import ChildWorkflow, ChildInput
 
-@dataclass
-class ParentInput:
-    child: bool = field(default=True)
+class ParentInput(BaseModel):
+    child: bool = True
 
 @workflow.defn()
 class ParentWorkflow:
