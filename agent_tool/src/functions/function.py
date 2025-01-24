@@ -15,8 +15,11 @@ class SalesItem(BaseModel):
 class SalesInput(BaseModel):
     category: str
 
+class LookupSalesOutput(BaseModel):
+    sales: list[SalesItem]
+
 @function.defn()
-async def lookupSales(input: LookupSalesInput) -> str:
+async def lookupSales(input: LookupSalesInput) -> LookupSalesOutput:
     try:
         log.info("lookupSales function started", input=input)
         
@@ -39,7 +42,7 @@ async def lookupSales(input: LookupSalesInput) -> str:
         # Sort by largest discount first
         filtered_items.sort(key=lambda x: x.sale_discount_pct, reverse=True)
 
-        return {"sales": filtered_items}
+        return LookupSalesOutput(sales=filtered_items)
     except Exception as e:
         log.error("lookupSales function failed", error=e)
         raise e
