@@ -1,0 +1,26 @@
+# Project metadata
+[tool.poetry]
+name = "agent_tool"
+version = "0.0.1"
+description = "A tool for an AI agent"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+watchfiles = "^1.0.0"
+pydantic = "^2.10.4"
+
+# Build system configuration
+restack-ai = "^0.0.54"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# CLI command configuration
+[tool.poetry.scripts]
+dev = "src.services:watch_services"
+services = "src.services:run_services"
