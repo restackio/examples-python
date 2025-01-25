@@ -1,77 +1,65 @@
-# Restack AI SDK - Get Started Example
+# Restack AI - Human in the loop
 
-This repository contains a simple example project to help you get started with the Restack AI SDK. It demonstrates how to set up a basic workflow and functions using the SDK.
+This repository contains an example for Human in the loop with Restack.
+It demonstrates how to set up a basic workflow and functions.
 
 ## Prerequisites
 
-- Python 3.8 or higher
-- Poetry (for dependency management)
-- Docker (for running the Restack services)
+- Docker (for running Restack)
+- Python 3.10 or higher
 
-## Usage
+## Start Restack
 
-1. Run Restack local engine with Docker:
+To start the Restack, use the following Docker command:
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-2. Open the web UI to see the workflows:
+## Start python shell
 
-   ```bash
-   http://localhost:5233
-   ```
+```bash
+poetry env use 3.10 && poetry shell
+```
 
-3. Clone this repository:
+## Install dependencies
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/get-started
-   ```
+```bash
+poetry install
+```
 
-4. Install dependencies using Poetry:
+```bash
+poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
+```
 
-   ```bash
-   poetry env use 3.12
-   ```
+```bash
+poetry run dev
+```
 
-   ```bash
-   poetry shell
-   ```
+## Run workflows
 
-   ```bash
-   poetry install
-   ```
+### from UI
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+You can run workflows from the UI by clicking the "Run" button.
 
-5. Run the services:
+![Run workflows from UI](./screenshot-quickstart.png)
 
-   ```bash
-   poetry run services
-   ```
+### from API
 
-   This will start the Restack service with the defined workflows and functions.
+You can run workflows from the API by using the generated endpoint:
 
-6. In a new terminal, schedule the workflow:
+`POST http://localhost:6233/api/workflows/HumanLoopWorkflow`
 
-   ```bash
-   poetry shell
-   ```
+### from any client
 
-   ```bash
-   poetry run schedule
-   ```
+You can run workflows with any client connected to Restack, for example:
 
-   This will schedule the `GreetingWorkflow` and print the result.
+```bash
+poetry run schedule
+```
 
-## Project Structure
+executes `schedule_workflow.py` which will connect to Restack and execute the `HumanLoopWorkflow` workflow.
 
-- `src/`: Main source code directory
-  - `client.py`: Initializes the Restack client
-  - `functions/`: Contains function definitions
-  - `workflows/`: Contains workflow definitions
-  - `services.py`: Sets up and runs the Restack services
-- `schedule_workflow.py`: Example script to schedule and run a workflow
+## Deploy on Restack Cloud
+
+To deploy the application on Restack, you can create an account at [https://console.restack.io](https://console.restack.io)

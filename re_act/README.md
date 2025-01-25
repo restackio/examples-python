@@ -1,53 +1,65 @@
 # Restack AI - ReAct Example
 
+This repository contains a ReAct agent with Restack.
+It demonstrates how to set up a basic agentic workflow and functions.
+
 ## Prerequisites
 
-- Python 3.11
-- Poetry (for dependency management)
-- Docker (for running the Restack services)
+- Docker (for running Restack)
+- Python 3.10 or higher
 
-## Usage
+## Start Restack
 
-2. Open the web UI to see the workflows:
+To start the Restack, use the following Docker command:
 
-   ```bash
-   http://localhost:5233
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-3. Clone this repository:
+## Start python shell
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/re_act
-   ```
+```bash
+poetry env use 3.10 && poetry shell
+```
 
-4. Install dependencies using Poetry:
+## Install dependencies
 
-   ```bash
-   poetry env use 3.11
-   ```
+```bash
+poetry install
+```
 
-   ```bash
-   poetry shell
-   ```
+```bash
+poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
+```
 
-   ```bash
-   poetry install
-   ```
+```bash
+poetry run dev
+```
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+## Run workflows
 
-5. Run the services:
+### from UI
 
-   ```bash
-   poetry run services
-   ```
+You can run workflows from the UI by clicking the "Run" button.
 
-6. Schedule workflow
+![Run workflows from UI](./screenshot-quickstart.png)
 
-   ```bash
-   poetry run schedule_workflow
-   ```
+### from API
 
+You can run workflows from the API by using the generated endpoint:
+
+`POST http://localhost:6233/api/workflows/ParentWorkflow`
+
+### from any client
+
+You can run workflows with any client connected to Restack, for example:
+
+```bash
+poetry run schedule
+```
+
+executes `schedule_workflow.py` which will connect to Restack and execute the `ParentWorkflow` workflow.
+
+## Deploy on Restack Cloud
+
+To deploy the application on Restack, you can create an account at [https://console.restack.io](https://console.restack.io)
