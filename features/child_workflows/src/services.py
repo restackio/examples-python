@@ -5,8 +5,8 @@ from watchfiles import run_process
 from restack_ai.restack import ServiceOptions
 from src.functions.function import welcome
 from src.client import client
-from src.workflows.parent import ParentWorkflow
-from src.workflows.child import ChildWorkflow
+from src.workflows.parent import ParentWorkflow, ParentInput, ParentOutput
+from src.workflows.child import ChildWorkflow, ChildInput, ChildOutput
 
 async def main():
     await client.start_service(
