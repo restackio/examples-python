@@ -11,10 +11,7 @@ from src.workflows.child import ChildWorkflow
 async def main():
     await client.start_service(
         workflows= [ParentWorkflow, ChildWorkflow],
-        functions= [welcome],
-        options=ServiceOptions(
-            endpoints= True
-        ),
+        functions= [welcome]
     )
 
 def run_services():

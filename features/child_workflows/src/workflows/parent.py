@@ -5,10 +5,13 @@ from .child import ChildWorkflow, ChildInput
 class ParentInput(BaseModel):
     child: bool = True
 
+class ParentOutput(BaseModel):
+    result: str
+
 @workflow.defn()
 class ParentWorkflow:
     @workflow.run
-    async def run(self, input: ParentInput):
+    async def run(self, input: ParentInput) -> ParentOutput:
         if input.child:
             # use the parent run id to create child workflow ids
             parent_workflow_id = workflow_info().workflow_id
@@ -19,8 +22,8 @@ class ParentWorkflow:
             log.info("Start ChildWorkflow and wait for result")
             result = await workflow.child_execute(ChildWorkflow, input=ChildInput(name="world"), workflow_id=f"{parent_workflow_id}-child-execute")
             log.info("ChildWorkflow completed", result=result)
-            return "ParentWorkflow completed"
+            return ParentOutput(result="ParentWorkflow completed")
         
         else:
             log.info("ParentWorkflow without starting or executing child workflow")
-            return "ParentWorkflow completed"
+            return ParentOutput(result="ParentWorkflow completed")
