@@ -1,16 +1,16 @@
 import asyncio
 import os
-from src.functions.function import openai_greet
+from src.functions.openai_chat_completion import openai_chat_completion
 from src.client import client
-from src.workflows.openai_greet import OpenaiGreetWorkflow
+from src.workflows.chatbot import ChatbotWorkflow, WorkflowInputParams, WorkflowOutputParams
 from watchfiles import run_process
 import webbrowser
 
 async def main():
 
     await client.start_service(
-        workflows= [OpenaiGreetWorkflow],
-        functions= [openai_greet],
+        workflows= [ChatbotWorkflow],
+        functions= [openai_chat_completion],
     )
 
 def run_services():

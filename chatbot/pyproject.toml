@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "openai_greet"
+name = "chatbot"
 version = "0.0.1"
-description = "A simple example to greet a person using OpenAI"
+description = "A simple example to build a chatbot using Restack"
 authors = [
     "Restack Team <service@restack.io>",
 ]
@@ -12,8 +12,9 @@ packages = [{include = "src"}]
 python = ">=3.10,<4.0"
 openai = "^1.57.2"
 python-dotenv = "1.0.1"
-restack-ai = "^0.0.53"
+restack-ai = "^0.0.54"
 watchfiles = "^1.0.0"
+pydantic = "^2.10.4"
 
 [build-system]
 requires = ["poetry-core"]

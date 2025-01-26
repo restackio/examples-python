@@ -1,20 +1,20 @@
 import asyncio
 import time
 from restack_ai import Restack
-from dataclasses import dataclass
+from pydantic import BaseModel
 
-@dataclass
-class InputParams:
-    name: str
+class InputParams(BaseModel):
+    user_content: str
+    system_content: str
 
 async def main():
     client = Restack()
 
-    workflow_id = f"{int(time.time() * 1000)}-OpenaiGreetWorkflow"
+    workflow_id = f"{int(time.time() * 1000)}-ChatbotWorkflow"
     runId = await client.schedule_workflow(
-        workflow_name="OpenaiGreetWorkflow",
+        workflow_name="ChatbotWorkflow",
         workflow_id=workflow_id,
-        input=InputParams(name="Restack AI SDK User")
+        input=InputParams(user_content="Hey, what is restack?", system_content="You are a helpful assistant")
     )
 
     await client.get_workflow_result(
