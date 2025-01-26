@@ -2,15 +2,18 @@ import asyncio
 import os
 from src.functions.openai_chat_completion import openai_chat_completion
 from src.client import client
-from src.workflows.chatbot import ChatbotWorkflow, WorkflowInputParams, WorkflowOutputParams
+from src.workflows.chat_interaction import ChatInteraction, ChatInteractionInputParams, ChatInteractionOutputParams
+from src.workflows.chat_session import ChatSession, ChatSessionInputParams, ChatSessionOutputParams
+from src.functions.get_workflow_memory import get_workflow_memory
+
 from watchfiles import run_process
 import webbrowser
 
 async def main():
 
     await client.start_service(
-        workflows= [ChatbotWorkflow],
-        functions= [openai_chat_completion],
+    workflows= [ChatInteraction, ChatSession],
+        functions= [openai_chat_completion, get_workflow_memory],
     )
 
 def run_services():
