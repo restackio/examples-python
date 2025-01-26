@@ -1,7 +1,7 @@
-# Restack AI - ReAct Example
+# Restack AI - Agent Tool
 
-This repository contains a ReAct agent with Restack.
-It demonstrates how to set up a basic agentic workflow and functions.
+This repository contains a tool for an AI agent.
+It demonstrates how to set up a basic workflow and functions.
 
 ## Prerequisites
 
@@ -48,7 +48,7 @@ You can run workflows from the UI by clicking the "Run" button.
 
 You can run workflows from the API by using the generated endpoint:
 
-`POST http://localhost:6233/api/workflows/ParentWorkflow`
+`POST http://localhost:6233/api/workflows/SalesWorkflow`
 
 ### from any client
 
@@ -58,7 +58,7 @@ You can run workflows with any client connected to Restack, for example:
 poetry run schedule
 ```
 
-executes `schedule_workflow.py` which will connect to Restack and execute the `ParentWorkflow` workflow.
+executes `schedule_workflow.py` which will connect to Restack and execute the `SalesWorkflow` workflow.
 
 ## Deploy on Restack Cloud
 

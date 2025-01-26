@@ -12,12 +12,14 @@ packages = [{include = "src"}]
 python = ">=3.10,<4.0"
 openai = "^1.57.2"
 python-dotenv = "1.0.1"
-restack-ai = "^0.0.48"
+restack-ai = "^0.0.53"
+watchfiles = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
+dev = "src.services:watch_services"
 services = "src.services:run_services"
 schedule = "schedule_workflow:run_schedule_workflow"

@@ -1,16 +1,19 @@
 import asyncio
 import os
-from src.functions.function import openai_greet
+from src.functions.function import lookupSales
 from src.client import client
-from src.workflows.openai_greet import OpenaiGreetWorkflow
+from src.workflows.workflow import SalesWorkflow
 from watchfiles import run_process
 import webbrowser
-
+from restack_ai.restack import ServiceOptions
 async def main():
 
     await client.start_service(
-        workflows= [OpenaiGreetWorkflow],
-        functions= [openai_greet],
+        workflows=[SalesWorkflow],
+        functions=[lookupSales],
+        options=ServiceOptions(
+            endpoints=True
+        )
     )
 
 def run_services():
