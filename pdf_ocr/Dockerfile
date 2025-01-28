@@ -2,20 +2,19 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install necessary system packages
+# Combine apt installs to reduce layers
 RUN apt-get update && apt-get install -y \
   libglib2.0-0 \
   libgl1-mesa-glx \
-  && rm -rf /var/lib/apt/lists/*
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip install poetry
+# Install poetry in the same step to reuse the base layer
+RUN pip install poetry \
+  && poetry config virtualenvs.create false
 
 COPY pyproject.toml ./
 
 COPY . .
-
-# Configure poetry to not create virtual environment
-RUN poetry config virtualenvs.create false
 
 # Install dependencies
 RUN poetry install --no-interaction --no-ansi
