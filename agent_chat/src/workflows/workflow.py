@@ -1,13 +1,10 @@
 from datetime import timedelta
 from typing import List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from restack_ai.workflow import workflow, import_functions, log
 
 with import_functions():
     from src.functions.llm_chat import llm_chat, LlmChatInput, Message
-
-class AgentChatInput(BaseModel):
-    message: str = Field(default='Hello, can you tell me a joke?')
 
 class MessageEvent(BaseModel):
     content: str
@@ -26,18 +23,14 @@ class AgentChat:
         self.messages.append({"role": "user", "content": message.content})
         assistant_message = await workflow.step(llm_chat, LlmChatInput(messages=self.messages), start_to_close_timeout=timedelta(seconds=120))
         self.messages.append(assistant_message)
-        return assistant_message
+        return self.messages
     @workflow.event
     async def end(self, end: EndEvent) -> EndEvent:
         log.info(f"Received end")
         self.end = True
         return end
     @workflow.run
-    async def run(self, input: AgentChatInput):
-        log.info("AgentChat started")
-        self.messages.append({"role": "user", "content": input.message})
-        assistant_message = await workflow.step(llm_chat, LlmChatInput(messages=self.messages), start_to_close_timeout=timedelta(seconds=120))
-        self.messages.append(assistant_message)
+    async def run(self, input: dict):
         await workflow.condition(
             lambda: self.end
         )
