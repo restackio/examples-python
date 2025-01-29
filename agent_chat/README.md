@@ -66,7 +66,11 @@ executes `schedule_workflow.py` which will connect to Restack and execute the `A
 
 You can send events like message or end from the UI.
 
-![Run workflows from UI](./chat_put.png)
+![Send events from UI](./chat_put.png)
+
+And see the events in the run:
+
+![See events in UI](./chat_run.png)
 
 ### from API
 
