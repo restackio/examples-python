@@ -1,7 +1,7 @@
 # Restack AI - Agent Chat
 
 This repository contains a an agent chat for Restack.
-It demonstrates how to set up a workflow to have a conversation with AI agent.
+It demonstrates how to set up a workflow to have a conversation with an AI agent.
 
 ## Prerequisites
 
@@ -42,7 +42,7 @@ poetry run dev
 
 You can run workflows from the UI by clicking the "Run" button.
 
-![Run workflows from UI](./screenshot-quickstart.png)
+![Run workflows from UI](./chat_post.png)
 
 ### from API
 
@@ -60,7 +60,15 @@ poetry run schedule
 
 executes `schedule_workflow.py` which will connect to Restack and execute the `AgentWorkflow` workflow.
 
-## Send events to the agent
+## Send events to the Agent
+
+### from UI
+
+You can send events like message or end from the UI.
+
+![Run workflows from UI](./chat_put.png)
+
+### from API
 
 You can send events to the agent by using the following endpoint:
 
@@ -85,7 +93,19 @@ or
 }
 ```
 
-to end the conversation witht the agent.
+to end the conversation with the agent.
+
+### from any client
+
+You can send event to the agent workflows with any client connected to Restack, for example:
+
+Modify workflow_id and run_id in event_workflow.py and then run:
+
+```bash
+poetry run event
+```
+
+It will connect to Restack and send 2 events to the agent, one to generate another agent and another one to end the conversation.
 
 ## Deploy on Restack Cloud
 
