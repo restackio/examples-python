@@ -15,7 +15,7 @@ streamlit = "1.40.0"
 requests = "2.32.3"
 openai = "^1.57.2"
 groq = "^0.13.0"
-restack-ai = "^0.0.48"
+restack-ai = "^0.0.55"
 
 
 [build-system]

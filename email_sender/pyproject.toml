@@ -14,7 +14,7 @@ pydantic = "^2.10.3"
 python-dotenv = "1.0.1"
 sendgrid = "6.11.0"
 openai = "^1.57.2"
-restack-ai = "^0.0.48"
+restack-ai = "^0.0.55"
 
 [build-system]
 requires = ["poetry-core"]

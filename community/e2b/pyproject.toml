@@ -17,7 +17,7 @@ openai = "^1.57.2"
 e2b-code-interpreter = "^1.0.3"
 
 # Build system configuration
-restack-ai = "^0.0.52"
+restack-ai = "^0.0.55"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
