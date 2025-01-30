@@ -21,14 +21,3 @@ dependencies = [
 [project.scripts]
 dev = "src.services:watch_services"
 services = "src.services:run_services"
-
-[tool.hatch.build.targets.sdist]
-include = ["src"]
-
-[tool.hatch.build.targets.wheel]
-include = ["src"]
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-

@@ -21,13 +21,3 @@ scale = "schedule_scale:run_schedule_scale"
 
 [dependency-groups]
 dev = ["pytest==6.2"]
-
-[tool.hatch.build.targets.sdist]
-include = ["src"]
-
-[tool.hatch.build.targets.wheel]
-include = ["src"]
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"

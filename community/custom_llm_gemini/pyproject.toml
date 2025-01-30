@@ -19,13 +19,3 @@ dependencies = [
 
 [project.scripts]
 llm = "src.llm:run_llm"
-
-[tool.hatch.build.targets.sdist]
-include = ["src"]
-
-[tool.hatch.build.targets.wheel]
-include = ["src"]
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
