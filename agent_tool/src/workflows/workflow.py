@@ -2,10 +2,10 @@ from datetime import timedelta
 from pydantic import BaseModel, Field
 from restack_ai.workflow import workflow, import_functions, log
 with import_functions():
-    from src.functions.function import lookupSales, LookupSalesInput, LookupSalesOutput
+    from src.functions.lookup_sales import lookupSales, LookupSalesInput, LookupSalesOutput
 
 class SalesWorkflowInput(BaseModel):
-    category: str = Field(default='snowboard')
+    category: str
 
 @workflow.defn()
 class SalesWorkflow:
