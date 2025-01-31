@@ -36,29 +36,41 @@ poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. C
 poetry run dev
 ```
 
+## Configure Your Environment Variables
+
+Duplicate the `env.example` file and rename it to `.env`.
+
+Obtain a Restack API Key to interact with the 'restack-c1' model at no cost from [console.restack.io](https://console.restack.io)
+
 ## Run workflows
 
 ### from UI
 
 You can run workflows from the UI by clicking the "Run" button.
 
-![Run workflows from UI](./screenshot-quickstart.png)
+![Run workflows from UI](./screenshot-endpoints.png)
 
 ### from API
 
 You can run workflows from the API by using the generated endpoint:
 
-`POST http://localhost:6233/api/workflows/SalesWorkflow`
+`POST http://localhost:6233/api/workflows/AgentChatToolFunctions`
 
-### from any client
-
-You can run workflows with any client connected to Restack, for example:
-
-```bash
-poetry run schedule
+## Send an event to the 
+```
+{
+  "workflowId": "{workflow_id}",
+  "runId": "{run_id}",
+  "eventName": "message",
+  "eventInput": {
+    "content": "What clothes are currently on sales?"
+  }
+}
 ```
 
-executes `schedule_workflow.py` which will connect to Restack and execute the `SalesWorkflow` workflow.
+Now, you can simply trigger more events from the Developer UI by clicking in the timeline on 'Send again' for the event and change the payload.
+
+![Send another message from UI](./event-send-again.png)
 
 ## Deploy on Restack Cloud
 

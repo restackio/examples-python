@@ -1,17 +1,20 @@
 import asyncio
 import os
-from src.functions.lookup_sales import lookupSales
-from src.functions.llm_chat import llm_chat
-from src.client import client
-from src.workflows.workflow import SalesWorkflow
-from src.agents.chat_child_workflow import AgentChatChildWorkflow
-from src.agents.chat_tool_functions import AgentChatToolFunctions
 from watchfiles import run_process
 import webbrowser
+from src.client import client
+from src.functions.lookup_sales import lookupSales
+from src.functions.llm_chat import llm_chat
+
+from src.agents.chat_tool_functions import AgentChatToolFunctions
+## Step 4: Import a new function to tool calling here
+
+
 async def main():
 
     await client.start_service(
-        workflows=[AgentChatChildWorkflow, AgentChatToolFunctions,SalesWorkflow],
+        workflows=[AgentChatToolFunctions],
+        ## Step 5: Add your new function to the functions list
         functions=[lookupSales, llm_chat]
     )
 

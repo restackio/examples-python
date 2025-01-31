@@ -8,6 +8,8 @@ with import_functions():
     from openai import pydantic_function_tool
     from src.functions.llm_chat import llm_chat, LlmChatInput, Message
     from src.functions.lookup_sales import lookupSales, LookupSalesInput
+    ## Step 2: Import your new function to the agent
+    ## src.functions.new_function import new_function, FunctionInput, FunctionOutput
 
 class MessageEvent(BaseModel):
     content: str
@@ -25,11 +27,12 @@ class AgentChatToolFunctions:
     async def message(self, message: MessageEvent) -> List[Message]:
         log.info(f"Received message: {message.content}")
 
+        ## Step 3 Add your new function to the tools list
         tools = [pydantic_function_tool(
             model=LookupSalesInput,
             name=lookupSales.__name__,
             description="Lookup sales for a given category"
-        )]
+        ),]
 
         self.messages.append(Message(role="user", content=message.content or ""))
         completion = await workflow.step(llm_chat, LlmChatInput(messages=self.messages, tools=tools), start_to_close_timeout=timedelta(seconds=120))
@@ -58,6 +61,8 @@ class AgentChatToolFunctions:
 
                         completion_with_tool_call = await workflow.step(llm_chat, LlmChatInput(messages=self.messages), start_to_close_timeout=timedelta(seconds=120))
                         self.messages.append(Message(role="assistant", content=completion_with_tool_call.choices[0].message.content or ""))
+                    
+                    ## Step 4: Add your new function to the match case and append the result to the messages
 
         else:
             self.messages.append(Message(role="assistant", content=completion.choices[0].message.content or ""))
