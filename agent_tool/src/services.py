@@ -1,19 +1,18 @@
 import asyncio
 import os
-from src.functions.function import lookupSales
+from src.functions.lookup_sales import lookupSales
+from src.functions.llm_chat import llm_chat
 from src.client import client
 from src.workflows.workflow import SalesWorkflow
+from src.agents.chat_child_workflow import AgentChatChildWorkflow
+from src.agents.chat_tool_functions import AgentChatToolFunctions
 from watchfiles import run_process
 import webbrowser
-from restack_ai.restack import ServiceOptions
 async def main():
 
     await client.start_service(
-        workflows=[SalesWorkflow],
-        functions=[lookupSales],
-        options=ServiceOptions(
-            endpoints=True
-        )
+        workflows=[AgentChatChildWorkflow, AgentChatToolFunctions,SalesWorkflow],
+        functions=[lookupSales, llm_chat]
     )
 
 def run_services():

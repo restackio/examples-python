@@ -1,8 +1,6 @@
+from typing import Literal
 from restack_ai.function import function, log
 from pydantic import BaseModel
-
-class LookupSalesInput(BaseModel):
-    category: str
 
 class SalesItem(BaseModel):
     item_id: int
@@ -12,8 +10,8 @@ class SalesItem(BaseModel):
     sale_price_usd: float
     sale_discount_pct: int
 
-class SalesInput(BaseModel):
-    category: str
+class LookupSalesInput(BaseModel):
+    category: Literal["snowboard", "apparel", "boots", "accessories", "any"]
 
 class LookupSalesOutput(BaseModel):
     sales: list[SalesItem]

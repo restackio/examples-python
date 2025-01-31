@@ -15,6 +15,7 @@ watchfiles = "^1.0.0"
 pydantic = "^2.10.4"
 
 # Build system configuration
+openai = "^1.60.2"
 restack-ai = "^0.0.55"
 [build-system]
 requires = ["poetry-core"]
