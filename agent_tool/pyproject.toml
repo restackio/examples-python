@@ -13,6 +13,7 @@ packages = [{include = "src"}]
 python = ">=3.10,<4.0"
 watchfiles = "^1.0.0"
 pydantic = "^2.10.4"
+requests = "2.32.3"
 
 # Build system configuration
 openai = "^1.60.2"
