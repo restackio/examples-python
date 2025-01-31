@@ -16,7 +16,7 @@ async def new_function(input: FunctionInput) -> FunctionOutput:
     try:
         log.info("new_function started", input=input)
         
-        # TODO: Implement the logic for the function like talkign to a third party API or database
+        # TODO: Implement the logic for the function like talking to a third party API or database
         
         response_message = f"Received message: {input.message}"
         return FunctionOutput(response=response_message)
