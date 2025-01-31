@@ -4,13 +4,14 @@ from src.functions.lookup_sales import lookupSales
 from src.functions.llm_chat import llm_chat
 from src.client import client
 from src.workflows.workflow import SalesWorkflow
-from src.agents.chat import AgentChat
+from src.agents.chat_child_workflow import AgentChatChildWorkflow
+from src.agents.chat_tool_functions import AgentChatToolFunctions
 from watchfiles import run_process
 import webbrowser
 async def main():
 
     await client.start_service(
-        workflows=[AgentChat, SalesWorkflow],
+        workflows=[AgentChatChildWorkflow, AgentChatToolFunctions,SalesWorkflow],
         functions=[lookupSales, llm_chat]
     )
 

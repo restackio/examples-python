@@ -1,12 +1,12 @@
 from restack_ai.function import function, log
-from openai import OpenAI, pydantic_function_tool
+from openai import OpenAI
 from openai.types.chat.chat_completion import ChatCompletion
 from openai.types.chat.chat_completion_message_tool_call import ChatCompletionMessageToolCall
+from openai.types.chat.chat_completion_tool_param import ChatCompletionToolParam
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from typing import Literal, Optional, List
-from src.workflows.workflow import SalesWorkflow, SalesWorkflowInput
 
 load_dotenv()
 
@@ -20,6 +20,7 @@ class LlmChatInput(BaseModel):
     system_content: Optional[str] = None
     model: Optional[str] = None
     messages: Optional[List[Message]] = None
+    tools: Optional[List[ChatCompletionToolParam]] = None
 
 @function.defn()
 async def llm_chat(input: LlmChatInput) -> ChatCompletion:
@@ -28,13 +29,9 @@ async def llm_chat(input: LlmChatInput) -> ChatCompletion:
         client = OpenAI(base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY"))
 
 
-        tools = [pydantic_function_tool(
-            model=SalesWorkflowInput,
-            name=SalesWorkflow.__name__,
-            description="Lookup sales for a given category"
-        )]
+       
 
-        log.info("pydantic_function_tool", tools=tools)
+        log.info("pydantic_function_tool", tools=input.tools)
 
         if input.system_content:
             input.messages.append(Message(role="system", content=input.system_content or ""))
@@ -42,7 +39,7 @@ async def llm_chat(input: LlmChatInput) -> ChatCompletion:
         response = client.chat.completions.create(
             model=input.model or "restack-c1",
             messages=input.messages,
-            tools=tools,
+            tools=input.tools,
         )
         return response
     except Exception as e:
