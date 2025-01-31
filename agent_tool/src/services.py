@@ -7,15 +7,11 @@ from src.workflows.workflow import SalesWorkflow
 from src.agents.chat import AgentChat
 from watchfiles import run_process
 import webbrowser
-from restack_ai.restack import ServiceOptions
 async def main():
 
     await client.start_service(
         workflows=[AgentChat, SalesWorkflow],
-        functions=[lookupSales, llm_chat],
-        options=ServiceOptions(
-            endpoints=True
-        )
+        functions=[lookupSales, llm_chat]
     )
 
 def run_services():

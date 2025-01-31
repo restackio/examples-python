@@ -3,7 +3,7 @@ from restack_ai.function import function, log
 from pydantic import BaseModel
 
 class LookupSalesInput(BaseModel):
-    category: Literal["snowboard", "apparel", "boots", "accessories"]
+    category: Literal["snowboard", "apparel", "boots", "accessories", "any"]
 
 class SalesItem(BaseModel):
     item_id: int

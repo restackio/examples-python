@@ -1,6 +1,7 @@
 from datetime import timedelta
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from restack_ai.workflow import workflow, import_functions, log
+
 with import_functions():
     from src.functions.lookup_sales import lookupSales, LookupSalesInput, LookupSalesOutput
 

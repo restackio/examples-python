@@ -34,7 +34,7 @@ async def llm_chat(input: LlmChatInput) -> ChatCompletion:
             description="Lookup sales for a given category"
         )]
 
-        log.info("tools", tools=tools)
+        log.info("pydantic_function_tool", tools=tools)
 
         if input.system_content:
             input.messages.append(Message(role="system", content=input.system_content or ""))
