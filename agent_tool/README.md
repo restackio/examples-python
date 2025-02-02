@@ -3,6 +3,8 @@
 This repository contains a tool for an AI agent.
 It demonstrates how to set up a basic workflow and functions.
 
+Follow [the step-by-step tutorial](https://docs.restack.io/examples/projects/agent#tutorial) on how to customize the agent tool example/ 
+
 ## Prerequisites
 
 - Docker (for running Restack)
