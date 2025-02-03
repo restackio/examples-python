@@ -50,7 +50,7 @@ Obtain a Restack API Key to interact with the 'restack-c1' model at no cost from
 
 You can run agents from the UI by clicking the "Run" button.
 
-![Run agents from UI](./screenshot-endpoints.png)
+![Run agents from UI](./chat_post.png)
 
 ### from API
 
@@ -73,6 +73,8 @@ You can run agents from the API by using the generated endpoint:
 }
 ```
 
+![Send event to agent](./chat_put.png)
+
 You can send events to the agent by using the generated endpoint:
 
 `PUT http://localhost:6233/api/agents/AgentChatToolFunctions/:agentId/:runId`
@@ -87,6 +89,12 @@ and the payload:
   }
 }
 ```
+
+## See the agent run
+
+You cna replay and follow the agent run in the UI.
+
+![Replay agent run](./chat_run.png)
 
 Now, you can simply trigger more events from the Developer UI by clicking in the timeline on 'Send again' for the event and change the payload.
 
