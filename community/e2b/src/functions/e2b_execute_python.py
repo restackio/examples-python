@@ -1,8 +1,8 @@
-from e2b_code_interpreter import Sandbox
-from restack_ai.function import function, log
-from pydantic import BaseModel
+
 from dotenv import load_dotenv
-import json
+from e2b_code_interpreter import Sandbox
+from pydantic import BaseModel
+from restack_ai.function import function, log
 
 load_dotenv()
 

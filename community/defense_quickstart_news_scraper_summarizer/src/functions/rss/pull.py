@@ -1,8 +1,10 @@
-import requests
 import xml.etree.ElementTree as ET
+
+import requests
 from restack_ai.function import function, log
 
 from .schema import RssInput
+
 
 @function.defn()
 async def rss_pull(input:RssInput):
@@ -30,7 +32,7 @@ async def rss_pull(input:RssInput):
                 "category": category,
                 "creator": creator,
                 "pub_date": pub_date,
-                "content_encoded": content_encoded
+                "content_encoded": content_encoded,
             })
 
         # Limit the number of items based on input.count

@@ -1,11 +1,18 @@
-from datetime import timedelta
 from dataclasses import dataclass
-from restack_ai.workflow import workflow, import_functions, log
+from datetime import timedelta
+
+from restack_ai.workflow import import_functions, log, workflow
 
 with import_functions():
-    from src.functions.transcribe import transcribe, FunctionInputParams as TranscribeFunctionInputParams
-    from src.functions.translate import translate, FunctionInputParams as TranslationFunctionInputParams
-    
+    from src.functions.transcribe import (
+        FunctionInputParams as TranscribeFunctionInputParams,
+    )
+    from src.functions.transcribe import transcribe
+    from src.functions.translate import (
+        FunctionInputParams as TranslationFunctionInputParams,
+    )
+    from src.functions.translate import translate
+
 @dataclass
 class WorkflowInputParams:
     file_data: tuple[str, str]
@@ -24,7 +31,7 @@ class ChildWorkflow:
         transcription = await workflow.step(
             transcribe,
             TranscribeFunctionInputParams(file_data=input.file_data),
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(seconds=120),
         )
 
         translation_prompt = f"""
@@ -35,11 +42,11 @@ class ChildWorkflow:
         translation = await workflow.step(
             translate,
             TranslationFunctionInputParams(user_prompt=translation_prompt),
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(seconds=120),
         )
 
-        log.info("ChildWorkflow completed", transcription=transcription['text'], translation=translation['content'])
+        log.info("ChildWorkflow completed", transcription=transcription["text"], translation=translation["content"])
         return WorkflowOutputParams(
-            transcription=transcription['text'],
-            translation=translation['content']
+            transcription=transcription["text"],
+            translation=translation["content"],
         )

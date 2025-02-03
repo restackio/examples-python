@@ -1,9 +1,11 @@
 import os
 import time
-from .spot_controller import SpotController
+
 import cv2
-from dotenv import load_dotenv  
-from restack_ai.function import function, log
+from dotenv import load_dotenv
+from restack_ai.function import function
+
+from .spot_controller import SpotController
 
 load_dotenv()
 
@@ -25,9 +27,9 @@ async def spot_commands():
     os.system(f"ffplay -nodisp -autoexit -loglevel quiet {sample_name}")
 
 
-    ROBOT_IP = os.getenv['ROBOT_IP']
-    SPOT_USERNAME = os.getenv['SPOT_USERNAME']
-    SPOT_PASSWORD = os.getenv['SPOT_PASSWORD']
+    ROBOT_IP = os.getenv["ROBOT_IP"]
+    SPOT_USERNAME = os.getenv["SPOT_USERNAME"]
+    SPOT_PASSWORD = os.getenv["SPOT_PASSWORD"]
 
     # # Capture image
 

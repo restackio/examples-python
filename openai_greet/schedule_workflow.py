@@ -1,7 +1,9 @@
 import asyncio
 import time
-from restack_ai import Restack
 from dataclasses import dataclass
+
+from restack_ai import Restack
+
 
 @dataclass
 class InputParams:
@@ -14,12 +16,12 @@ async def main():
     runId = await client.schedule_workflow(
         workflow_name="OpenaiGreetWorkflow",
         workflow_id=workflow_id,
-        input=InputParams(name="Restack AI SDK User")
+        input=InputParams(name="Restack AI SDK User"),
     )
 
     await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=runId
+        run_id=runId,
     )
 
     exit(0)

@@ -1,14 +1,14 @@
-from restack_ai.workflow import workflow, import_functions, log
 from datetime import timedelta
-from pydantic import BaseModel,Field
-from typing import List
+
+from pydantic import BaseModel, Field
+from restack_ai.workflow import import_functions, log, workflow
 
 with import_functions():
-    from src.functions.torch_ocr import torch_ocr, OcrInput
-    from src.functions.openai_chat import openai_chat, OpenAiChatInput
+    from src.functions.openai_chat import OpenAiChatInput, openai_chat
+    from src.functions.torch_ocr import OcrInput, torch_ocr
 
 class PdfWorkflowInput(BaseModel):
-    file_upload: List[dict] = Field(files=True)
+    file_upload: list[dict] = Field(files=True)
 
 @workflow.defn()
 class PdfWorkflow:
@@ -19,19 +19,19 @@ class PdfWorkflow:
         ocr_result = await workflow.step(
             torch_ocr,
             OcrInput(
-                file_type=input.file_upload[0]['type'],
-                file_name=input.file_upload[0]['name']
+                file_type=input.file_upload[0]["type"],
+                file_name=input.file_upload[0]["name"],
             ),
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(seconds=120),
         )
 
         llm_result = await workflow.step(
             openai_chat,
             OpenAiChatInput(
                 user_content=f"Make a summary of that PDF. Here is the OCR result: {ocr_result}",
-                model="gpt-4o-mini"
+                model="gpt-4o-mini",
             ),
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(seconds=120),
         )
 
         log.info("PdfWorkflow completed")

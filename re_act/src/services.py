@@ -1,21 +1,23 @@
 import asyncio
 import os
+import webbrowser
+
 from src.client import client
 from src.functions.decide import decide
 from src.functions.generate_email_content import generate_email_content
 from src.functions.send_email import send_email
-from src.workflows.parent_workflow import ParentWorkflow
 from src.workflows.child_workflow_a import ChildWorkflowA
 from src.workflows.child_workflow_b import ChildWorkflowB
+from src.workflows.parent_workflow import ParentWorkflow
 from watchfiles import run_process
-import webbrowser
+
 
 async def main():
     await asyncio.gather(
         client.start_service(
             workflows=[ParentWorkflow, ChildWorkflowA, ChildWorkflowB],
-            functions=[decide, generate_email_content, send_email]
-        )
+            functions=[decide, generate_email_content, send_email],
+        ),
     )
 
 def run_services():

@@ -1,13 +1,13 @@
 from datetime import timedelta
-from typing import List
+
 from pydantic import BaseModel
 from restack_ai.agent import agent, import_functions, log
 
-
 with import_functions():
     from openai import pydantic_function_tool
-    from src.functions.llm_chat import llm_chat, LlmChatInput, Message
-    from src.functions.lookup_sales import lookupSales, LookupSalesInput
+
+    from src.functions.llm_chat import LlmChatInput, Message, llm_chat
+    from src.functions.lookup_sales import LookupSalesInput, lookupSales
     # Step 2: Import your new function to the agent
     # from src.functions.new_function import new_function, FunctionInput, FunctionOutput
 
@@ -24,23 +24,23 @@ class AgentChatToolFunctions:
         self.messages = []
 
     @agent.event
-    async def message(self, message: MessageEvent) -> List[Message]:
+    async def message(self, message: MessageEvent) -> list[Message]:
         log.info(f"Received message: {message.content}")
-        
+
         tools = [pydantic_function_tool(
             model=LookupSalesInput,
             name=lookupSales.__name__,
-            description="Lookup sales for a given category"
+            description="Lookup sales for a given category",
         ),
         # Step 3 Add your new function to the tools list and adjust the system prompt
-        
+
         # pydantic_function_tool(
         #     model=FunctionInput,
         #     name=new_function.__name__,
         #     description="A function to talk to an ERP to get the latest sales data"
         # )
         ]
-        
+
         # Change the system prompt to the agent
         system_content = "You are a helpful assistant that can help with sales data."
 
@@ -48,7 +48,7 @@ class AgentChatToolFunctions:
         completion = await agent.step(llm_chat, LlmChatInput(messages=self.messages, tools=tools, system_content=system_content), start_to_close_timeout=timedelta(seconds=120))
 
         log.info(f"completion: {completion}")
-        
+
         tool_calls = completion.choices[0].message.tool_calls
         self.messages.append(Message(role="assistant", content=completion.choices[0].message.content or "", tool_calls=tool_calls))
 
@@ -71,7 +71,7 @@ class AgentChatToolFunctions:
 
                         completion_with_tool_call = await agent.step(llm_chat, LlmChatInput(messages=self.messages, system_content=system_content), start_to_close_timeout=timedelta(seconds=120))
                         self.messages.append(Message(role="assistant", content=completion_with_tool_call.choices[0].message.content or ""))
-                    
+
                     ## Step 4: Add your new function to the match case and append the result to the messages
                     # case new_function.__name__:
                     #     args = FunctionInput.model_validate_json(tool_call.function.arguments)
@@ -80,27 +80,26 @@ class AgentChatToolFunctions:
 
                     #     result = await workflow.step(new_function, input=FunctionInput(message=args.message), start_to_close_timeout=timedelta(seconds=120))
                     #     self.messages.append(Message(role="tool", tool_call_id=tool_call.id, content=str(result)))
-                        
+
                     #     completion_with_tool_call = await workflow.step(llm_chat, LlmChatInput(messages=self.messages), start_to_close_timeout=timedelta(seconds=120))
                     #     self.messages.append(Message(role="assistant", content=completion_with_tool_call.choices[0].message.content or ""))
-                    
+
 
         else:
             pass
 
         return self.messages
-    
+
     @agent.event
     async def end(self, end: EndEvent) -> EndEvent:
-        log.info(f"Received end")
+        log.info("Received end")
         self.end = True
         return {"end": True}
-  
+
     @agent.run
     async def run(self, input: dict):
         await agent.condition(
-            lambda: self.end
+            lambda: self.end,
         )
-        return
 
 

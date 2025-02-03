@@ -1,6 +1,8 @@
 import asyncio
 import time
+
 from restack_ai import Restack
+
 
 async def main():
 
@@ -12,13 +14,13 @@ async def main():
         workflow_id=workflow_id,
         input={
             "email": "admin@example.com",
-            "current_accepted_applicants_count": 10
-        }
+            "current_accepted_applicants_count": 10,
+        },
     )
 
     await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=runId
+        run_id=runId,
     )
 
     exit(0)

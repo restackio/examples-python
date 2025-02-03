@@ -1,16 +1,19 @@
 import asyncio
 import os
-from src.functions.function import welcome
-from src.client import client
-from src.workflows.workflow import GreetingWorkflow
-from watchfiles import run_process
 import webbrowser
+
+from watchfiles import run_process
+
+from src.client import client
+from src.functions.function import welcome
+from src.workflows.workflow import GreetingWorkflow
+
 
 async def main():
 
     await client.start_service(
         workflows=[GreetingWorkflow],
-        functions=[welcome]
+        functions=[welcome],
     )
 
 def run_services():

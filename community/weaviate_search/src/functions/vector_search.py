@@ -1,6 +1,8 @@
-from restack_ai.function import function, log
 import weaviate.classes as wvc
+from restack_ai.function import function, log
+
 from src.functions.weaviate_client import get_weaviate_client
+
 
 @function.defn()
 async def vector_search() -> str:
@@ -13,11 +15,11 @@ async def vector_search() -> str:
         response = questions.query.near_vector(
             near_vector=query_vector,
             limit=2,
-            return_metadata=wvc.query.MetadataQuery(certainty=True)
+            return_metadata=wvc.query.MetadataQuery(certainty=True),
         )
 
         log.info("vector_search function completed", response=response)
 
-        return '\n\n Found nearest questions: \n\n' + str(response)
+        return "\n\n Found nearest questions: \n\n" + str(response)
     finally:
         client.close()

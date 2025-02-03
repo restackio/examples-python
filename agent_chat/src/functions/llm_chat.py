@@ -1,10 +1,11 @@
-from restack_ai.function import function, log
+import os
+from typing import Literal
+
+from dotenv import load_dotenv
 from openai import OpenAI
 from openai.types.chat.chat_completion import ChatCompletion
-import os
-from dotenv import load_dotenv
 from pydantic import BaseModel
-from typing import Literal, Optional, List
+from restack_ai.function import function, log
 
 load_dotenv()
 
@@ -13,9 +14,9 @@ class Message(BaseModel):
     content: str
 
 class LlmChatInput(BaseModel):
-    system_content: Optional[str] = None
-    model: Optional[str] = None
-    messages: Optional[List[Message]] = None
+    system_content: str | None = None
+    model: str | None = None
+    messages: list[Message] | None = None
 
 @function.defn()
 async def llm_chat(input: LlmChatInput) -> ChatCompletion:

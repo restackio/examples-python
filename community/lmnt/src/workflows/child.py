@@ -1,14 +1,15 @@
 from datetime import timedelta
+
 from pydantic import BaseModel, Field
-from restack_ai.workflow import workflow, import_functions, log
+from restack_ai.workflow import import_functions, log, workflow
 
 with import_functions():
-    from src.functions.synthesize import lmnt_synthesize, SynthesizeInputParams
-    from src.functions.function import example_function, ExampleFunctionInput
+    from src.functions.function import ExampleFunctionInput, example_function
+    from src.functions.synthesize import SynthesizeInputParams, lmnt_synthesize
 
 class ChildWorkflowInput(BaseModel):
-    name: str = Field(default='Hi John Doe')
-    voice: str = Field(default='morgan')
+    name: str = Field(default="Hi John Doe")
+    voice: str = Field(default="morgan")
 
 @workflow.defn()
 class ChildWorkflow:
@@ -24,14 +25,14 @@ class ChildWorkflow:
             SynthesizeInputParams(
                 user_content=input.name,
                 voice=input.voice,
-                filename=f"{input.voice.lower().replace(' ', '_')}.mp3"
+                filename=f"{input.voice.lower().replace(' ', '_')}.mp3",
             ),
             task_queue="lmnt",
-            start_to_close_timeout=timedelta(minutes=2)
+            start_to_close_timeout=timedelta(minutes=2),
         )
 
         return {
-            "audiofile_path": audiofile_path
+            "audiofile_path": audiofile_path,
         }
 
 

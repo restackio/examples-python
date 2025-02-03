@@ -1,7 +1,9 @@
-from restack_ai.function import function, log
-from openai import OpenAI
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
+
+from openai import OpenAI
+from restack_ai.function import function, log
+
 
 @dataclass
 class ResponseFormat:
@@ -22,12 +24,12 @@ async def llm_chat(input: FunctionInputParams) -> str:
         openbabylon_url = os.environ.get("OPENBABYLON_API_URL")
         log.info("openbabylon_url", openbabylon_url=openbabylon_url)
 
-        client = OpenAI(api_key='openbabylon',base_url=os.environ.get("OPENBABYLON_API_URL"))
+        client = OpenAI(api_key="openbabylon",base_url=os.environ.get("OPENBABYLON_API_URL"))
 
         messages = []
         if input.user_prompt:
             messages.append({"role": "user", "content": input.user_prompt})
-        
+
         response = client.chat.completions.create(
             model="orpo-mistral-v0.3-ua-tokV2-focus-10B-low-lr-1epoch-aux-merged-1ep",
             messages=messages,

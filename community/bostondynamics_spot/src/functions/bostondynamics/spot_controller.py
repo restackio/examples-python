@@ -1,17 +1,22 @@
 import time
-import bosdyn.client
-from bosdyn.client.robot_command import RobotCommandClient, RobotCommandBuilder, blocking_stand  # , blocking_sit
-from bosdyn.geometry import EulerZXY
-from bosdyn.api.spot import robot_command_pb2 as spot_command_pb2
-from bosdyn.client.frame_helpers import ODOM_FRAME_NAME
-from bosdyn.api.basic_command_pb2 import RobotCommandFeedbackStatus
-from bosdyn.client.estop import EstopClient, EstopEndpoint, EstopKeepAlive
-from bosdyn.client.robot_state import RobotStateClient
-from bosdyn.client.frame_helpers import ODOM_FRAME_NAME, VISION_FRAME_NAME, BODY_FRAME_NAME, \
-    GRAV_ALIGNED_BODY_FRAME_NAME, get_se2_a_tform_b
-from bosdyn.client import math_helpers
-
 import traceback
+
+import bosdyn.client
+from bosdyn.api.basic_command_pb2 import RobotCommandFeedbackStatus
+from bosdyn.client import math_helpers
+from bosdyn.client.estop import EstopClient, EstopEndpoint, EstopKeepAlive
+from bosdyn.client.frame_helpers import (
+    GRAV_ALIGNED_BODY_FRAME_NAME,
+    VISION_FRAME_NAME,
+    get_se2_a_tform_b,
+)
+from bosdyn.client.robot_command import (  # , blocking_sit
+    RobotCommandBuilder,
+    RobotCommandClient,
+    blocking_stand,
+)
+from bosdyn.client.robot_state import RobotStateClient
+from bosdyn.geometry import EulerZXY
 
 VELOCITY_CMD_DURATION = 0.5
 
@@ -22,10 +27,10 @@ class SpotController:
         self.password = password
         self.robot_ip = robot_ip
 
-        sdk = bosdyn.client.create_standard_sdk('ControllingSDK')
+        sdk = bosdyn.client.create_standard_sdk("ControllingSDK")
 
         self.robot = sdk.create_robot(robot_ip)
-        id_client = self.robot.ensure_client('robot-id')
+        id_client = self.robot.ensure_client("robot-id")
 
         self.robot.authenticate(username, password)
         self.command_client = self.robot.ensure_client(RobotCommandClient.default_service_name)
@@ -36,7 +41,7 @@ class SpotController:
         self._lease_keepalive = None
 
         self._estop_client = self.robot.ensure_client(EstopClient.default_service_name)
-        self._estop_endpoint = EstopEndpoint(self._estop_client, 'GNClient', 9.0)
+        self._estop_endpoint = EstopEndpoint(self._estop_client, "GNClient", 9.0)
         self._estop_keepalive = None
 
         self.state_client = self.robot.ensure_client(RobotStateClient.default_service_name)
@@ -56,7 +61,7 @@ class SpotController:
             self._estop_keepalive = None
 
     def lease_control(self):
-        self._lease_client = self.robot.ensure_client('lease')
+        self._lease_client = self.robot.ensure_client("lease")
         self._lease = self._lease_client.take()
         self._lease_keepalive = bosdyn.client.lease.LeaseKeepAlive(self._lease_client, must_acquire=True)
         self.robot.logger.info("Lease acquired")
@@ -86,7 +91,7 @@ class SpotController:
             footprint_r_body = EulerZXY(yaw=yaws[i], roll=rolls[i], pitch=pitches[i])
             params = RobotCommandBuilder.mobility_params(footprint_R_body=footprint_r_body, body_height=body_height)
             blocking_stand(self.command_client, timeout_sec=timeout, update_frequency=0.02, params=params)
-            self.robot.logger.info("Moved to yaw={} rolls={} pitch={}".format(yaws[i], rolls[i], pitches[i]))
+            self.robot.logger.info(f"Moved to yaw={yaws[i]} rolls={rolls[i]} pitch={pitches[i]}")
             if sleep_after_point_reached:
                 time.sleep(sleep_after_point_reached)
 
@@ -110,7 +115,7 @@ class SpotController:
             goal_x_rt_body=goal_x,
             goal_y_rt_body=goal_y,
             goal_heading_rt_body=0,
-            frame_tree_snapshot=self.robot.get_frame_tree_snapshot()
+            frame_tree_snapshot=self.robot.get_frame_tree_snapshot(),
         )
         # cmd = RobotCommandBuilder.synchro_se2_trajectory_point_command(goal_x=goal_x, goal_y=goal_y, goal_heading=0,
         #                                                                frame_name=GRAV_ALIGNED_BODY_FRAME_NAME)
@@ -118,7 +123,7 @@ class SpotController:
                                                    end_time_secs=time.time() + 10)
         self.wait_until_action_complete(cmd_id)
 
-        self.robot.logger.info("Moved to x={} y={}".format(goal_x, goal_y))
+        self.robot.logger.info(f"Moved to x={goal_x} y={goal_y}")
 
     def power_on_stand_up(self):
         self.robot.power_on(timeout_sec=20)

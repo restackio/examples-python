@@ -1,7 +1,8 @@
 import asyncio
 import time
-from restack_ai import Restack
+
 from dotenv import load_dotenv
+from restack_ai import Restack
 from src.workflows.transcribe_translate import WorkflowInputParams
 
 load_dotenv()
@@ -16,13 +17,13 @@ async def main(input: WorkflowInputParams):
         workflow_id=workflow_id,
         input=WorkflowInputParams(
             file_path=input.file_path,
-            target_language=input.target_language
-        )
+            target_language=input.target_language,
+        ),
     )
 
     await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=run_id
+        run_id=run_id,
     )
 
     exit(0)

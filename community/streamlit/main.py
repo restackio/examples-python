@@ -1,7 +1,8 @@
-import streamlit as st
 import asyncio
-from restack_ai import Restack
 import logging
+
+import streamlit as st
+from restack_ai import Restack
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -19,13 +20,13 @@ async def trigger_workflow(workflow_name, workflow_id, input_data):
 
         result = await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=run_id
+        run_id=run_id,
         )
         print(result)
 
         return result
     except Exception as e:
-        st.error(f"Failed to trigger workflow: {str(e)}")
+        st.error(f"Failed to trigger workflow: {e!s}")
         return None
 
 # Streamlit UI
@@ -41,9 +42,9 @@ if st.button("Trigger Workflow"):
     else:
         input_dict = eval(input_data) if input_data else {}
         run_id = asyncio.run(trigger_workflow(workflow_name, workflow_id, input_dict))
-        
+
         # Log the input data
         logging.info(f"Triggered workflow with input: {input_dict}")
-        
+
         if run_id:
             st.success(f"Workflow triggered successfully with runId: {run_id}")

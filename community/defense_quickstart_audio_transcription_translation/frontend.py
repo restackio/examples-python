@@ -1,6 +1,8 @@
-import streamlit as st
-import requests
 import base64
+
+import requests
+import streamlit as st
+
 # Set page title and header
 st.title("Defense Hackathon Quickstart: War Audio Transcription & Translation")
 
@@ -12,7 +14,7 @@ if uploaded_files:
     file_data_list = []
     for uploaded_file in uploaded_files:
         audio_data = uploaded_file.read()
-        audio_base64 = base64.b64encode(audio_data).decode('utf-8')
+        audio_base64 = base64.b64encode(audio_data).decode("utf-8")
         file_data_list.append((uploaded_file.name, audio_base64))
 
 if "response_history" not in st.session_state:
@@ -21,10 +23,10 @@ if "response_history" not in st.session_state:
 if st.button("Process Audio"):
     if uploaded_file:
         try:
-            with st.spinner('Processing audio...'):
+            with st.spinner("Processing audio..."):
                 response = requests.post(
                     "http://localhost:8000/api/process_audio",
-                    json={"file_data": file_data_list}
+                    json={"file_data": file_data_list},
                 )
 
                 if response.status_code == 200:
@@ -35,14 +37,14 @@ if st.button("Process Audio"):
                         st.session_state.response_history.append({
                             "file_name": uploaded_file.name,
                             "file_type": uploaded_file.type,
-                            "transcription": results[idx]['transcription'],
-                            "translation": results[idx]['translation']
+                            "transcription": results[idx]["transcription"],
+                            "translation": results[idx]["translation"],
                     })
                 else:
                     st.error(f"Error: {response.status_code}")
 
-        except requests.exceptions.ConnectionError as e:
-            st.error(f"Failed to connect to the server. Make sure the FastAPI server is running.")
+        except requests.exceptions.ConnectionError:
+            st.error("Failed to connect to the server. Make sure the FastAPI server is running.")
     else:
         st.warning("Please upload a file before submitting.")
 
@@ -55,4 +57,3 @@ if st.session_state.response_history:
         st.markdown(f"**Transcription:** {item['transcription']}")
         st.markdown(f"**Translation:** {item['translation']}")
         st.markdown("---")
-        

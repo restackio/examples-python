@@ -1,7 +1,9 @@
-from restack_ai.function import function, log
-from pydantic import BaseModel
 import os
+
 from openai import OpenAI
+from pydantic import BaseModel
+from restack_ai.function import function, log
+
 
 class OpenaiToolCallInput(BaseModel):
     user_content: str | None = None
@@ -14,20 +16,20 @@ class OpenaiToolCallInput(BaseModel):
 async def openai_tool_call(input: OpenaiToolCallInput) -> dict:
     try:
         log.info("openai_tool_call function started", input=input)
-        
+
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
         messages = input.messages.copy() if input.messages else [
-            {"role": "system", "content": input.system_content}
+            {"role": "system", "content": input.system_content},
         ]
-        
+
         if input.user_content:
             messages.append({"role": "user", "content": input.user_content})
 
         response = client.chat.completions.create(
             model=input.model,
             messages=messages,
-            **({"tools": input.tools} if input.tools else {})
+            **({"tools": input.tools} if input.tools else {}),
         )
 
         response_message = response.choices[0].message
@@ -35,7 +37,7 @@ async def openai_tool_call(input: OpenaiToolCallInput) -> dict:
 
         return {
             "messages": messages,
-            "response": response_message
+            "response": response_message,
         }
 
     except Exception as e:

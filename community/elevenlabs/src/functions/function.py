@@ -1,14 +1,13 @@
-from restack_ai.function import function, log
-import requests
 import base64
-import json
-import logging
+
+import requests
+from restack_ai.function import function, log
 
 
 @function.defn()
 async def text_to_speech(input: dict) -> dict:
-    """
-    Convert text to speech using ElevenLabs API.
+    """Convert text to speech using ElevenLabs API.
+
     Args:
         input (dict): A dictionary containing:
             - text (str): The text to convert to speech.
@@ -16,8 +15,10 @@ async def text_to_speech(input: dict) -> dict:
             - voice_id (str, optional): Voice ID to use. Defaults to "JBFqnCBsd6RMkjVDRZzb".
             - model_id (str, optional): Model ID to use. Defaults to "eleven_monolingual_v1".
             - twilio_encoding (bool, optional): If True, use Twilio-compatible output format.
+
     Returns:
         dict: A dictionary containing the base64-encoded audio payload.
+
     """
     try:
         # Log the start of the function
@@ -42,15 +43,15 @@ async def text_to_speech(input: dict) -> dict:
         headers = {
             "Accept": "audio/mpeg",
             "Content-Type": "application/json",
-            "xi-api-key": api_key
+            "xi-api-key": api_key,
         }
         data = {
             "text": text,
             "model_id": model_id,
             "voice_settings": {
                 "stability": 0.5,
-                "similarity_boost": 0.5
-            }
+                "similarity_boost": 0.5,
+            },
         }
         if twilio_encoding:
             data["output_format"] = "ulaw_8000"
@@ -60,14 +61,14 @@ async def text_to_speech(input: dict) -> dict:
         response.raise_for_status()
 
         # Collect response chunks and convert to base64
-        content = b''.join(response.iter_content(chunk_size=1024))
-        base64_audio = base64.b64encode(content).decode('utf-8')
+        content = b"".join(response.iter_content(chunk_size=1024))
+        base64_audio = base64.b64encode(content).decode("utf-8")
 
         log.info("ElevenLabs conversion successful", audio_length=len(base64_audio))
         return {
             "media": {
-                "payload": base64_audio
-            }
+                "payload": base64_audio,
+            },
         }
     except Exception as e:
         log.error("text_to_speech function failed", error=str(e))
@@ -78,14 +79,16 @@ async def text_to_speech(input: dict) -> dict:
 
 @function.defn()
 async def isolate_audio(input: dict) -> dict:
-    """
-    Perform audio isolation using the ElevenLabs API via direct HTTP POST request and return Base64-encoded audio.
+    """Perform audio isolation using the ElevenLabs API via direct HTTP POST request and return Base64-encoded audio.
+
     Args:
         input (dict): A dictionary containing:
             - api_key (str): The ElevenLabs API key.
             - audio_file_path (str): Path to the audio file to isolate.
+
     Returns:
         dict: A dictionary containing the Base64-encoded audio payload.
+
     """
     try:
         # Log the start of the function
@@ -109,7 +112,7 @@ async def isolate_audio(input: dict) -> dict:
             # The `requests` library automatically handles the boundary for multipart requests
             files = {"audio": audio_file}
             headers = {
-                "xi-api-key": api_key  # Use the correct header key
+                "xi-api-key": api_key,  # Use the correct header key
             }
 
             # Make the POST request to the ElevenLabs API
@@ -130,8 +133,8 @@ async def isolate_audio(input: dict) -> dict:
         log.info("Audio isolation successful", base64_audio_length=len(base64_audio))
         return {
             "media": {
-                "payload": base64_audio
-            }
+                "payload": base64_audio,
+            },
         }
     except Exception as e:
         log.error("isolate_audio function failed", error=str(e))

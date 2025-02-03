@@ -1,12 +1,13 @@
-from restack_ai.workflow import workflow, log, workflow_info
-from typing import List
-from pydantic import BaseModel, Field
 import asyncio
+
+from pydantic import BaseModel, Field
+from restack_ai.workflow import log, workflow, workflow_info
+
 from .pdf import PdfWorkflow, PdfWorkflowInput
 
 
 class FilesWorkflowInput(BaseModel):
-    files_upload: List[dict] = Field(files=True)
+    files_upload: list[dict] = Field(files=True)
 
 @workflow.defn()
 class FilesWorkflow:
@@ -19,11 +20,11 @@ class FilesWorkflow:
             log.info(f"Queue PdfWorkflow {index} for execution")
             # Ensure child workflows are started and return an awaitable
             task = workflow.child_execute(
-                PdfWorkflow, 
+                PdfWorkflow,
                 workflow_id=f"{parent_workflow_id}-pdf-{index}",
                 input=PdfWorkflowInput(
-                    file_upload=[pdf_input]
-                )
+                    file_upload=[pdf_input],
+                ),
             )
             # Wrap the task in an asyncio.ensure_future to ensure it's awaitable
             tasks.append(asyncio.ensure_future(task))
@@ -35,5 +36,5 @@ class FilesWorkflow:
             log.info(f"PdfWorkflow {i} completed", result=result)
 
         return {
-            "results": results
+            "results": results,
         }

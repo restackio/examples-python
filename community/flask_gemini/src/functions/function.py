@@ -1,7 +1,9 @@
-from restack_ai.function import function, log
-from dataclasses import dataclass
-import google.generativeai as genai
 import os
+from dataclasses import dataclass
+
+import google.generativeai as genai
+from restack_ai.function import function, log
+
 
 @dataclass
 class FunctionInputParams:

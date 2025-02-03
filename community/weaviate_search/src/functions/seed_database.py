@@ -1,7 +1,9 @@
 import json
+
 import requests
-from restack_ai.function import function, log
 import weaviate.classes as wvc
+from restack_ai.function import function, log
+
 from src.functions.weaviate_client import get_weaviate_client
 
 
@@ -32,7 +34,7 @@ async def seed_database() -> str:
                     "question": d["Question"],
                     "category": d["Category"],
                 },
-                vector=d["vector"]
+                vector=d["vector"],
             ))
 
         questions = client.collections.get("Question")

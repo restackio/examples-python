@@ -1,11 +1,12 @@
 from datetime import timedelta
-from restack_ai.workflow import workflow, import_functions, log
+
+from restack_ai.workflow import import_functions, log, workflow
 
 with import_functions():
-    from src.functions.rss.pull import rss_pull
     from src.functions.crawl.website import crawl_website
     from src.functions.helper.split_text import split_text
-    from src.functions.llm.chat import llm_chat, FunctionInputParams
+    from src.functions.llm.chat import FunctionInputParams, llm_chat
+    from src.functions.rss.pull import rss_pull
     from src.functions.rss.schema import RssInput
 
 @workflow.defn()
@@ -16,8 +17,8 @@ class RssWorkflow:
         url = input["url"]
         count = input["count"]
         rss_results = await workflow.step(rss_pull, RssInput(url=url, count=count), start_to_close_timeout=timedelta(seconds=10))
-        urls = [item['link'] for item in rss_results if 'link' in item]
-        titles = [item['title'] for item in rss_results if 'title' in item]
+        urls = [item["link"] for item in rss_results if "link" in item]
+        titles = [item["title"] for item in rss_results if "title" in item]
 
 
         crawled_contents = []
@@ -29,7 +30,7 @@ class RssWorkflow:
                     split_content = await workflow.step(split_text, f"{titles[urls.index(url)]}\n\n{content}", start_to_close_timeout=timedelta(seconds=30))
                     crawled_contents.append(split_content)
                 except Exception as e:
-                    log.error(f"Failed to crawl {url}: {str(e)}")
+                    log.error(f"Failed to crawl {url}: {e!s}")
                     continue
         summaries = []
         for split_content in crawled_contents:

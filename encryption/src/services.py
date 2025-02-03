@@ -1,13 +1,15 @@
 import asyncio
-from src.functions.function import welcome
+
 from src.client import client
+from src.functions.function import welcome
 from src.workflows.workflow import EncryptedWorkflow
+
 
 async def main():
 
     await client.start_service(
         workflows= [EncryptedWorkflow],
-        functions= [welcome]
+        functions= [welcome],
     )
 
 def run_services():

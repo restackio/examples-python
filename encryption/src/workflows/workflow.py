@@ -1,5 +1,7 @@
 from datetime import timedelta
-from restack_ai.workflow import workflow, import_functions, log
+
+from restack_ai.workflow import import_functions, log, workflow
+
 with import_functions():
     from src.functions.function import welcome
 

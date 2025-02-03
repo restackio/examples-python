@@ -1,8 +1,9 @@
-from restack_ai.function import function, log
-from openai import OpenAI
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
+
 from dotenv import load_dotenv
+from openai import OpenAI
+from restack_ai.function import function, log
 
 load_dotenv()
 
@@ -33,10 +34,10 @@ async def openai_greet(input: FunctionInputParams) -> str:
                     "schema": {
                         "type": "object",
                         "properties": {
-                            "message": {"type": "string"}
+                            "message": {"type": "string"},
                         },
-                        "required": ["message"]
-                    }
+                        "required": ["message"],
+                    },
                 },
                 "type": "json_schema",
             },

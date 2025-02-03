@@ -1,9 +1,11 @@
-from datetime import timedelta
 from dataclasses import dataclass
-from restack_ai.workflow import workflow, import_functions, log
+from datetime import timedelta
+
+from restack_ai.workflow import import_functions, log, workflow
 
 with import_functions():
-    from src.functions.denoise import denoise, FunctionInputParams as DenoiseFunctionInputParams
+    from src.functions.denoise import FunctionInputParams as DenoiseFunctionInputParams
+    from src.functions.denoise import denoise
 
 @dataclass
 class WorkflowInputParams:
@@ -24,7 +26,7 @@ class ChildWorkflow:
         cleaned_audio = await workflow.step(
             denoise,
             DenoiseFunctionInputParams(file_data=input.file_data),
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(seconds=120),
         )
 
         log.info("ChildWorkflow completed", cleaned_audio=cleaned_audio)

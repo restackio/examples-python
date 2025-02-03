@@ -1,9 +1,10 @@
-import sendgrid
-from sendgrid.helpers.mail import Mail
-from restack_ai.function import function, log, FunctionFailure
-from dotenv import load_dotenv
 import os
 from dataclasses import dataclass
+
+import sendgrid
+from dotenv import load_dotenv
+from restack_ai.function import FunctionFailure, function, log
+from sendgrid.helpers.mail import Mail
 
 load_dotenv()
 
@@ -17,18 +18,18 @@ async def send_email(input: SendEmailInput):
     from_email = os.environ.get("FROM_EMAIL")
 
     if not from_email:
-        raise FunctionFailure('FROM_EMAIL is not set', non_retryable=True)
-    
-    sendgrid_api_key = os.getenv('SENDGRID_API_KEY')
+        raise FunctionFailure("FROM_EMAIL is not set", non_retryable=True)
+
+    sendgrid_api_key = os.getenv("SENDGRID_API_KEY")
 
     if not sendgrid_api_key:
-        raise FunctionFailure('SENDGRID_API_KEY is not set', non_retryable=True)
-    
+        raise FunctionFailure("SENDGRID_API_KEY is not set", non_retryable=True)
+
     message = Mail(
         from_email=from_email,
         to_emails=from_email,
         subject=input.subject,
-        plain_text_content=input.body
+        plain_text_content=input.body,
     )
 
     try:

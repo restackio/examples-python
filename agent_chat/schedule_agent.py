@@ -1,7 +1,11 @@
 import asyncio
 import time
+
 from restack_ai import Restack
+
 from agent_chat.src.agents.agent import AgentChatInput
+
+
 async def main():
 
     client = Restack()
@@ -10,12 +14,12 @@ async def main():
     run_id = await client.schedule_agent(
         agent_name="AgentChat",
         agent_id=workflow_id,
-        input=AgentChatInput(message="Tell me a joke")
-    ) 
+        input=AgentChatInput(message="Tell me a joke"),
+    )
 
     await client.get_agent_result(
         agent_id=workflow_id,
-        run_id=run_id
+        run_id=run_id,
     )
 
     exit(0)

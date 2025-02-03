@@ -1,15 +1,17 @@
 import asyncio
+
 from src.client import client
+from src.functions.denoise import denoise
 from src.workflows.child import ChildWorkflow
 from src.workflows.parent import ParentWorkflow
-from src.functions.denoise import denoise
+
 
 async def main():
     await asyncio.gather(
         client.start_service(
             workflows=[ParentWorkflow, ChildWorkflow],
-            functions=[denoise]
-        )
+            functions=[denoise],
+        ),
     )
 
 def run_services():

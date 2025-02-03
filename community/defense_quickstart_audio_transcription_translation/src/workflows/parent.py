@@ -1,6 +1,9 @@
-from restack_ai.workflow import workflow, log, workflow_info
 from dataclasses import dataclass
+
+from restack_ai.workflow import log, workflow, workflow_info
+
 from .child import ChildWorkflow
+
 
 @dataclass
 class WorkflowInputParams:

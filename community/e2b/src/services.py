@@ -1,7 +1,8 @@
 import asyncio
 import os
-from watchfiles import run_process
 import webbrowser
+
+from watchfiles import run_process
 
 from src.client import client
 from src.functions.e2b_execute_python import e2b_execute_python
@@ -9,11 +10,12 @@ from src.functions.openai_tool_call import openai_tool_call
 from src.workflows.code_execution import CodeExecutionWorkflow
 from src.workflows.many_code_executions import ManyCodeExecutionWorkflow
 
+
 async def main():
 
     await client.start_service(
         workflows=[CodeExecutionWorkflow, ManyCodeExecutionWorkflow],
-        functions=[e2b_execute_python, openai_tool_call]
+        functions=[e2b_execute_python, openai_tool_call],
     )
 
 def run_services():

@@ -1,9 +1,10 @@
+import time
+from dataclasses import dataclass
+
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from dataclasses import dataclass
 from src.client import client
-import time
-import uvicorn
 
 
 @dataclass
@@ -29,23 +30,23 @@ async def home():
 async def schedule_workflow(request: QueryRequest):
     try:
         workflow_id = f"{int(time.time() * 1000)}-parent_workflow"
-        
+
         runId = await client.schedule_workflow(
             workflow_name="ParentWorkflow",
             workflow_id=workflow_id,
-            input={"file_data": request.file_data}
+            input={"file_data": request.file_data},
         )
         print("Scheduled workflow", runId)
-        
+
         result = await client.get_workflow_result(
             workflow_id=workflow_id,
-            run_id=runId
+            run_id=runId,
         )
-        
+
         return {
             "result": result,
             "workflow_id": workflow_id,
-            "run_id": runId
+            "run_id": runId,
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -54,5 +55,5 @@ async def schedule_workflow(request: QueryRequest):
 def run_app():
     uvicorn.run("src.app:app", host="0.0.0.0", port=8000, reload=True)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_app()

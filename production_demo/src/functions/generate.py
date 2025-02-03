@@ -1,7 +1,7 @@
-from restack_ai.function import function, FunctionFailure, log
 from openai import OpenAI
-
 from pydantic import BaseModel
+from restack_ai.function import FunctionFailure, function, log
+
 
 class GenerateInput(BaseModel):
     prompt: str
@@ -21,14 +21,14 @@ async def llm_generate(input: GenerateInput) -> str:
             messages=[
                 {
                     "role": "user",
-                    "content": input.prompt
-                }
+                    "content": input.prompt,
+                },
             ],
             temperature=0.5,
         )
-    
+
     except Exception as e:
         log.error(f"Failed to generate {e}")
-    
+
     return response.choices[0].message.content
 

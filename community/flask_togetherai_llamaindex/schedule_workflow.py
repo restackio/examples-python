@@ -1,6 +1,8 @@
 import asyncio
 import time
+
 from restack_ai import Restack
+
 
 async def schedule_workflow(workflow_name):
 
@@ -12,12 +14,12 @@ async def schedule_workflow(workflow_name):
     runId = await client.schedule_workflow(
         workflow_name=workflow_name,
         workflow_id=workflow_id,
-        input='test'
+        input="test",
     )
 
     await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=runId
+        run_id=runId,
     )
 
     exit(0)

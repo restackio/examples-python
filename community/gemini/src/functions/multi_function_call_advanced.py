@@ -1,11 +1,12 @@
-from restack_ai.function import function, log
-from pydantic import BaseModel
+import os
+
 from google import genai
 from google.genai import types
-from typing import List, Optional
+from pydantic import BaseModel
+from restack_ai.function import function, log
 
-import os
 from src.functions.tools import get_function_declarations
+
 
 class ChatMessage(BaseModel):
     role: str
@@ -13,7 +14,7 @@ class ChatMessage(BaseModel):
 
 class FunctionInputParams(BaseModel):
     user_content: str
-    chat_history: Optional[List[ChatMessage]] = None
+    chat_history: list[ChatMessage] | None = None
 
 @function.defn()
 async def gemini_multi_function_call_advanced(input: FunctionInputParams):
@@ -25,14 +26,14 @@ async def gemini_multi_function_call_advanced(input: FunctionInputParams):
         tools = [types.Tool(function_declarations=functions)]
 
         response = client.models.generate_content(
-            model='gemini-2.0-flash-exp',
+            model="gemini-2.0-flash-exp",
             contents=[input.user_content] + ([msg.content for msg in input.chat_history] if input.chat_history else []),
             config=types.GenerateContentConfig(
-                tools=tools
-            )
+                tools=tools,
+            ),
         )
         return response
-    
+
     except Exception as e:
         log.error("Error in gemini_multi_function_call_advanced", error=str(e))
         raise e

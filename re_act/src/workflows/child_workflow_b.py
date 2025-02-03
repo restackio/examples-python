@@ -1,10 +1,13 @@
-from restack_ai.workflow import workflow, log, import_functions
 from datetime import timedelta
-from dataclasses import dataclass
+
+from restack_ai.workflow import import_functions, log, workflow
 
 with import_functions():
-    from src.functions.generate_email_content import generate_email_content, GenerateEmailInput
-    from src.functions.send_email import send_email, SendEmailInput
+    from src.functions.generate_email_content import (
+        GenerateEmailInput,
+        generate_email_content,
+    )
+    from src.functions.send_email import SendEmailInput, send_email
 
 @workflow.defn()
 class ChildWorkflowB:
@@ -15,16 +18,16 @@ class ChildWorkflowB:
         text = await workflow.step(
             generate_email_content,
             input=GenerateEmailInput(
-                email_context="Application was rejected"
+                email_context="Application was rejected",
             ),
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(seconds=120),
         )
 
         await workflow.step(
             send_email,
             input=SendEmailInput(
                 subject="Restack AI Summit 2025",
-                body=text
+                body=text,
             ),
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(seconds=120),
         )

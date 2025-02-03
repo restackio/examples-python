@@ -1,6 +1,8 @@
-from restack_ai.workflow import workflow, log, workflow_info
 from pydantic import BaseModel
-from .child import ChildWorkflow, ChildInput
+from restack_ai.workflow import log, workflow, workflow_info
+
+from .child import ChildInput, ChildWorkflow
+
 
 class ParentInput(BaseModel):
     child: bool = True
@@ -18,12 +20,11 @@ class ParentWorkflow:
 
             log.info("Start ChildWorkflow and dont wait for result")
             result = await workflow.child_start(ChildWorkflow, input=ChildInput(name="world"), workflow_id=f"{parent_workflow_id}-child-start")
-            
+
             log.info("Start ChildWorkflow and wait for result")
             result = await workflow.child_execute(ChildWorkflow, input=ChildInput(name="world"), workflow_id=f"{parent_workflow_id}-child-execute")
             log.info("ChildWorkflow completed", result=result)
             return ParentOutput(result="ParentWorkflow completed")
-        
-        else:
-            log.info("ParentWorkflow without starting or executing child workflow")
-            return ParentOutput(result="ParentWorkflow completed")
+
+        log.info("ParentWorkflow without starting or executing child workflow")
+        return ParentOutput(result="ParentWorkflow completed")

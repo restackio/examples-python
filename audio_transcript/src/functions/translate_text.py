@@ -1,8 +1,9 @@
-from restack_ai.function import function, log, FunctionFailure
-from dataclasses import dataclass
-from openai import OpenAI
 import os
+from dataclasses import dataclass
+
 from dotenv import load_dotenv
+from openai import OpenAI
+from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
@@ -12,10 +13,10 @@ class TranslateTextInput:
     target_language: str
 
 @function.defn()
-async def translate_text(input: TranslateTextInput):    
+async def translate_text(input: TranslateTextInput):
     if (os.environ.get("OPENAI_API_KEY") is None):
         raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
-    
+
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
     try:
@@ -24,13 +25,13 @@ async def translate_text(input: TranslateTextInput):
           messages=[
               {
                   "role": "system",
-                  "content": "You are a helpful assistant that translates text from one language to another."
+                  "content": "You are a helpful assistant that translates text from one language to another.",
               },
               {
                   "role": "user",
-                  "content": f"Translate the following text to {input.target_language}: {input.text}"
-              }
-          ]
+                  "content": f"Translate the following text to {input.target_language}: {input.text}",
+              },
+          ],
       )
     except Exception as error:
       log.error("An error occurred during translation", error)

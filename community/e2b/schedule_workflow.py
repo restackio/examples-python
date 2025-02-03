@@ -1,7 +1,11 @@
 import asyncio
 import time
+
 from restack_ai import Restack
-from src.workflows.many_code_executions import ManyCodeExecutionWorkflow, ManyCodeExecutionWorkflowInput
+from src.workflows.many_code_executions import (
+    ManyCodeExecutionWorkflowInput,
+)
+
 
 async def main():
     client = Restack()
@@ -10,12 +14,12 @@ async def main():
     run_id = await client.schedule_workflow(
         workflow_name="ManyCodeExecutionWorkflow",
         workflow_id=workflow_id,
-        input=ManyCodeExecutionWorkflowInput()
+        input=ManyCodeExecutionWorkflowInput(),
     )
 
     await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=run_id
+        run_id=run_id,
     )
 
     exit(0)

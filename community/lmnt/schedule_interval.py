@@ -1,10 +1,10 @@
 import asyncio
 import time
 from datetime import timedelta
-from restack_ai import Restack
-from restack_ai.restack import ScheduleSpec, ScheduleIntervalSpec
 
+from restack_ai.restack import ScheduleIntervalSpec, ScheduleSpec
 from src.client import client
+
 
 async def main():
 
@@ -14,9 +14,9 @@ async def main():
         workflow_id=workflow_id,
         schedule=ScheduleSpec(
             intervals=[ScheduleIntervalSpec(
-                every=timedelta(seconds=1)
-            )]
-        )
+                every=timedelta(seconds=1),
+            )],
+        ),
     )
 
     exit(0)

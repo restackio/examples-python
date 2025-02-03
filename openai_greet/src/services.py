@@ -1,10 +1,13 @@
 import asyncio
 import os
-from src.functions.function import openai_greet
-from src.client import client
-from src.workflows.openai_greet import OpenaiGreetWorkflow
-from watchfiles import run_process
 import webbrowser
+
+from watchfiles import run_process
+
+from src.client import client
+from src.functions.function import openai_greet
+from src.workflows.openai_greet import OpenaiGreetWorkflow
+
 
 async def main():
 

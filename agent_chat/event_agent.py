@@ -1,5 +1,8 @@
 import asyncio
+
 from restack_ai import Restack
+
+
 async def main(agent_id:str,run_id:str):
 
     client = Restack()
@@ -8,7 +11,7 @@ async def main(agent_id:str,run_id:str):
         agent_id=agent_id,
         run_id=run_id,
         event_name="message",
-        event_input={"content": "Tell me another joke"}
+        event_input={"content": "Tell me another joke"},
     )
 
     await client.send_agent_event(

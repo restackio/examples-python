@@ -1,11 +1,13 @@
 from datetime import timedelta
+
 from pydantic import BaseModel, Field
-from restack_ai.workflow import workflow, import_functions, log
+from restack_ai.workflow import import_functions, log, workflow
+
 with import_functions():
-    from src.functions.function import welcome, WelcomeInput
+    from src.functions.function import WelcomeInput, welcome
 
 class GreetingWorkflowInput(BaseModel):
-    name: str = Field(default='Bob')
+    name: str = Field(default="Bob")
 
 @workflow.defn()
 class GreetingWorkflow:

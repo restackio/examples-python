@@ -1,9 +1,12 @@
 import asyncio
 import time
-from restack_ai import Restack
-from restack_ai.restack import ScheduleSpec, ScheduleIntervalSpec
 from datetime import timedelta
+
+from restack_ai import Restack
+from restack_ai.restack import ScheduleIntervalSpec, ScheduleSpec
 from src.workflows.workflow import GreetingWorkflowInput
+
+
 async def main():
 
     client = Restack()
@@ -15,9 +18,9 @@ async def main():
         input=GreetingWorkflowInput(name="Bob"),
         schedule=ScheduleSpec(
             intervals=[ScheduleIntervalSpec(
-                every=timedelta(minutes=10)
-            )]
-        )
+                every=timedelta(minutes=10),
+            )],
+        ),
     )
 
     exit(0)

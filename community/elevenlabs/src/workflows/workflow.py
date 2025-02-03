@@ -1,15 +1,15 @@
-from datetime import timedelta
-from restack_ai.workflow import workflow, import_functions, log
-import logging
-from datetime import timedelta
-from dotenv import load_dotenv
 import os
+from datetime import timedelta
+
+from dotenv import load_dotenv
+from restack_ai.workflow import import_functions, log, workflow
+
 # Load the environment variables
 load_dotenv()
 
 # Import the function
 with import_functions():
-    from src.functions.function import text_to_speech, isolate_audio
+    from src.functions.function import isolate_audio, text_to_speech
 
 
 api_key = os.getenv("ELEVEN_LABS_API_KEY")
@@ -26,14 +26,14 @@ class TextToSpeechWorkflow:
             "api_key": api_key,
             "voice_id": "JBFqnCBsd6RMkjVDRZzb",  # Optional, uses default if not provided
             "model_id": "eleven_monolingual_v1",  # Optional, uses default if not provided
-            "twilio_encoding": False  # Optional, defaults to False
+            "twilio_encoding": False,  # Optional, defaults to False
         }
 
         # Call the `text_to_speech` function as a workflow step
         result = await workflow.step(
-            text_to_speech, 
-            input=input_data, 
-            start_to_close_timeout=timedelta(seconds=120)
+            text_to_speech,
+            input=input_data,
+            start_to_close_timeout=timedelta(seconds=120),
         )
 
         # Save the audio file (optional)
@@ -49,13 +49,12 @@ class TextToSpeechWorkflow:
 
         log.info("TextToSpeechWorkflow completed", result=result)
         return result
-    
+
 @workflow.defn()
 class AudioIsolationWorkflow:
     @workflow.run
     async def run(self, input: dict):
-        """
-        Workflow to isolate audio from a given file path.
+        """Workflow to isolate audio from a given file path.
 
         :param input: A dictionary containing `api_key` and `audio_file_path`.
         """
@@ -67,14 +66,14 @@ class AudioIsolationWorkflow:
         # Define input parameters for the `isolate_audio` function
         input_data = {
             "api_key": api_key,
-            "audio_file_path": audio_file_path
+            "audio_file_path": audio_file_path,
         }
 
         # Call the `isolate_audio` function as a workflow step
         result = await workflow.step(
             isolate_audio,
             input=input_data,
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(seconds=120),
         )
 
         # Log the Base64-encoded audio payload

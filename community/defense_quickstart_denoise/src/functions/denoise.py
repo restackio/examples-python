@@ -1,6 +1,8 @@
-from restack_ai.function import function, log
 from dataclasses import dataclass
+
 import sieve
+from restack_ai.function import function, log
+
 
 @dataclass
 class FunctionInputParams:
@@ -22,7 +24,7 @@ async def denoise(input: FunctionInputParams):
         output = audio_enhance.run(file, backend, task, enhancement_steps).path
 
         log.info("denoise function completed", output=output)
-        return output        
+        return output
 
     except Exception as e:
         log.error("denoise function failed", error=e)

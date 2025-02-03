@@ -1,0 +1,18 @@
+[project]
+name = "examples-python"
+version = "0.0.1"
+requires-python = ">=3.10"
+
+[tool.uv.workspace]
+members = ["*", "community/*", "features/*"]
+exclude = ["**/.*", "community", "features"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9.4",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+
+[tool.ruff.format]

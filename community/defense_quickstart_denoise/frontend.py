@@ -1,11 +1,12 @@
-import streamlit as st
-import requests
 import tempfile
 from pathlib import Path
 
+import requests
+import streamlit as st
+
 st.title("Defense Hackathon Quickstart: War Audio Noise Removal")
 
-tmp_dir = Path(tempfile.gettempdir()) / 'streamlit_uploads'
+tmp_dir = Path(tempfile.gettempdir()) / "streamlit_uploads"
 tmp_dir.mkdir(exist_ok=True)
 
 def get_file_path(uploaded_file):
@@ -30,10 +31,10 @@ if "response_history" not in st.session_state:
 if st.button("Process Audio"):
     if uploaded_files:
         try:
-            with st.spinner('Processing audio...'):
+            with st.spinner("Processing audio..."):
                 response = requests.post(
                     "http://localhost:8000/api/process_audio",
-                    json={"file_data": file_data_list}
+                    json={"file_data": file_data_list},
                 )
 
                 if response.status_code == 200:
@@ -47,12 +48,12 @@ if st.button("Process Audio"):
                             "file_name": uploaded_file.name,
                             "file_type": uploaded_file.type,
                             "original_audio": uploaded_file,
-                            "cleaned_audio": results[idx]['cleaned_audio']
+                            "cleaned_audio": results[idx]["cleaned_audio"],
                         })
                 else:
                     st.error(f"Error: {response.status_code}")
 
-        except requests.exceptions.ConnectionError as e:
+        except requests.exceptions.ConnectionError:
             st.error("Failed to connect to the server. Make sure the FastAPI server is running.")
     else:
         st.warning("Please upload a file before submitting.")
@@ -69,16 +70,15 @@ if st.session_state.response_history:
         with col1:
             st.markdown("**Original Audio:**")
             try:
-                st.audio(item['original_audio'], format=item['file_type'])
+                st.audio(item["original_audio"], format=item["file_type"])
             except Exception as e:
-                st.error(f"Error playing original audio: {str(e)}")
+                st.error(f"Error playing original audio: {e!s}")
 
         with col2:
             st.markdown("**Cleaned Audio:**")
             try:
-                st.audio(item['cleaned_audio'], format='audio/mp3')
+                st.audio(item["cleaned_audio"], format="audio/mp3")
             except Exception as e:
                 st.error(f"Error playing audio: {e}")
 
         st.markdown("---")
-        

@@ -1,13 +1,13 @@
-from restack_ai.function import function, log
-from pydantic import BaseModel, validator
-from typing import List, Optional, Dict
 import inspect
-
 from enum import Enum
+
+from pydantic import BaseModel
+from restack_ai.function import function, log
+
 
 class USTopCities(str, Enum):
     NEW_YORK = "New York, NY"
-    LOS_ANGELES = "Los Angeles, CA" 
+    LOS_ANGELES = "Los Angeles, CA"
     CHICAGO = "Chicago, IL"
     HOUSTON = "Houston, TX"
     PHOENIX = "Phoenix, AZ"
@@ -64,12 +64,13 @@ class WeatherData(BaseModel):
 
 class LocationInput(BaseModel):
     """The city and state, e.g. San Francisco, CA"""
+
     location: USTopCities
 
-CITY_WEATHER_DATA: Dict[USTopCities, WeatherData] = {
+CITY_WEATHER_DATA: dict[USTopCities, WeatherData] = {
     USTopCities.NEW_YORK: WeatherData(temperature="72°F", humidity="60%", air_quality="moderate"),
     USTopCities.LOS_ANGELES: WeatherData(temperature="75°F", humidity="65%", air_quality="good"),
-    USTopCities.CHICAGO: WeatherData(temperature="68°F", humidity="55%", air_quality="good"), 
+    USTopCities.CHICAGO: WeatherData(temperature="68°F", humidity="55%", air_quality="good"),
     USTopCities.HOUSTON: WeatherData(temperature="82°F", humidity="75%", air_quality="moderate"),
     USTopCities.PHOENIX: WeatherData(temperature="95°F", humidity="25%", air_quality="good"),
     USTopCities.PHILADELPHIA: WeatherData(temperature="70°F", humidity="62%", air_quality="moderate"),
@@ -116,7 +117,7 @@ CITY_WEATHER_DATA: Dict[USTopCities, WeatherData] = {
     USTopCities.TULSA: WeatherData(temperature="78°F", humidity="65%", air_quality="good"),
     USTopCities.ARLINGTON: WeatherData(temperature="83°F", humidity="65%", air_quality="moderate"),
     USTopCities.TAMPA: WeatherData(temperature="83°F", humidity="75%", air_quality="moderate"),
-    USTopCities.NEW_ORLEANS: WeatherData(temperature="82°F", humidity="80%", air_quality="moderate")
+    USTopCities.NEW_ORLEANS: WeatherData(temperature="82°F", humidity="80%", air_quality="moderate"),
 }
 
 @function.defn()
@@ -143,7 +144,7 @@ async def get_air_quality(input: LocationInput) -> str:
 def get_function_declarations():
     functions = []
     for func in [get_current_temperature, get_humidity, get_air_quality]:
-        input_type = func.__annotations__['input']
+        input_type = func.__annotations__["input"]
         source = inspect.getsource(func)
         description = source.split('description = "')[1].split('"')[0]
         functions.append({
@@ -155,10 +156,10 @@ def get_function_declarations():
                     "location": {
                         "type": "STRING",
                         "description": input_type.__doc__,
-                        "enum": [city.value for city in USTopCities]
-                    }
+                        "enum": [city.value for city in USTopCities],
+                    },
                 },
-                "required": ["location"]
-            }
+                "required": ["location"],
+            },
         })
     return functions

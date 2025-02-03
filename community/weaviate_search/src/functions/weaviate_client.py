@@ -1,6 +1,8 @@
 import os
+
 import weaviate
 from weaviate.classes.init import Auth
+
 
 def get_weaviate_client():
 		weaviate_url = os.environ["WEAVIATE_URL"]

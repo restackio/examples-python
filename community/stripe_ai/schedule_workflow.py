@@ -1,7 +1,8 @@
 import asyncio
 import time
-from restack_ai import Restack
+
 from dotenv import load_dotenv
+from restack_ai import Restack
 
 load_dotenv()
 
@@ -17,7 +18,7 @@ async def main():
 
     result = await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=run_id
+        run_id=run_id,
     )
 
     print(result)

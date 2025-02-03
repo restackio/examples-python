@@ -1,8 +1,10 @@
 import asyncio
-import time
-from restack_ai import Restack
-from dotenv import load_dotenv
 import os
+import time
+
+from dotenv import load_dotenv
+from restack_ai import Restack
+
 # Load the environment variables
 load_dotenv()
 # Define the audio path and API key
@@ -26,14 +28,14 @@ async def main(audio_path, api_key):
         workflow_id=workflow_id,
         input={
             "api_key": api_key,
-            "audio_file_path": audio_path
-        }
+            "audio_file_path": audio_path,
+        },
     )
 
     # Wait for the workflow result
     result = await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=run_id
+        run_id=run_id,
     )
 
     # Log the result

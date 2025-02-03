@@ -1,14 +1,18 @@
 import asyncio
 import os
-from src.functions.function import text_to_speech,isolate_audio
-from src.client import client
-from src.workflows.workflow import TextToSpeechWorkflow,AudioIsolationWorkflow
+
 from watchfiles import run_process
+
+from src.client import client
+from src.functions.function import isolate_audio, text_to_speech
+from src.workflows.workflow import AudioIsolationWorkflow, TextToSpeechWorkflow
+
+
 async def main():
 
     await client.start_service(
         workflows=[TextToSpeechWorkflow,AudioIsolationWorkflow],
-        functions=[text_to_speech,isolate_audio]
+        functions=[text_to_speech,isolate_audio],
     )
 
 def run_services():

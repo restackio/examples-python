@@ -1,9 +1,10 @@
-from restack_ai.workflow import workflow, import_functions, log, RetryPolicy
-from pydantic import BaseModel
 from datetime import timedelta
 
+from pydantic import BaseModel
+from restack_ai.workflow import RetryPolicy, import_functions, log, workflow
+
 with import_functions():
-    from src.functions.function_call import gemini_function_call, FunctionInputParams
+    from src.functions.function_call import FunctionInputParams, gemini_function_call
 
 class WorkflowInputParams(BaseModel):
     user_content: str = "what's the weather in San Francisco?"
@@ -18,9 +19,9 @@ class GeminiFunctionCallWorkflow:
             FunctionInputParams(user_content=input.user_content),
             start_to_close_timeout=timedelta(seconds=120),
             retry_policy=RetryPolicy(
-                maximum_attempts=1
+                maximum_attempts=1,
             ),
-            task_queue="gemini"
+            task_queue="gemini",
         )
         log.info("GeminiFunctionCallWorkflow completed", result=result)
         return result

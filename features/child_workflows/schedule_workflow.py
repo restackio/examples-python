@@ -1,6 +1,8 @@
 import asyncio
 import time
+
 from restack_ai import Restack
+
 
 async def main():
 
@@ -9,12 +11,12 @@ async def main():
     workflow_id = f"{int(time.time() * 1000)}-ParentWorkflow"
     runId = await client.schedule_workflow(
         workflow_name="ParentWorkflow",
-        workflow_id=workflow_id
+        workflow_id=workflow_id,
     )
 
     await client.get_workflow_result(
         workflow_id=workflow_id,
-        run_id=runId
+        run_id=runId,
     )
 
     exit(0)

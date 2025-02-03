@@ -1,9 +1,10 @@
-from restack_ai.function import function, log
-from pydantic import BaseModel
+import os
+
 from google import genai
 from google.genai import types
+from pydantic import BaseModel
+from restack_ai.function import function, log
 
-import os
 
 @function.defn()
 def get_current_weather(location: str) -> str:
@@ -11,9 +12,10 @@ def get_current_weather(location: str) -> str:
 
     Args:
         location: The city and state, e.g. San Francisco, CA
+
     """
     log.info("get_current_weather function started", location=location)
-    return 'sunny'
+    return "sunny"
 
 class FunctionInputParams(BaseModel):
     user_content: str
@@ -23,11 +25,11 @@ async def gemini_function_call(input: FunctionInputParams) -> str:
     try:
         log.info("gemini_function_call function started", input=input)
         client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
-        
+
         response = client.models.generate_content(
-            model='gemini-2.0-flash-exp',
+            model="gemini-2.0-flash-exp",
             contents=input.user_content,
-            config=types.GenerateContentConfig(tools=[get_current_weather])
+            config=types.GenerateContentConfig(tools=[get_current_weather]),
         )
         log.info("gemini_function_call function completed", response=response.text)
         return response.text

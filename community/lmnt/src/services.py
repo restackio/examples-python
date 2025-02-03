@@ -1,16 +1,15 @@
 import asyncio
 import os
+import webbrowser
+
+from restack_ai.restack import ServiceOptions
 from watchfiles import run_process
 
 from src.client import client
-from restack_ai.restack import ServiceOptions
-
 from src.functions.function import example_function
-from src.functions.synthesize import lmnt_synthesize
 from src.functions.list_voices import lmnt_list_voices
-
-from src.workflows.workflow import ExampleWorkflow, ChildWorkflow
-import webbrowser
+from src.functions.synthesize import lmnt_synthesize
+from src.workflows.workflow import ChildWorkflow, ExampleWorkflow
 
 
 async def main():
@@ -20,8 +19,8 @@ async def main():
             workflows=[ExampleWorkflow, ChildWorkflow],
             functions=[example_function],
             options=ServiceOptions(
-                max_concurrent_workflow_runs=1000
-            )
+                max_concurrent_workflow_runs=1000,
+            ),
 
         ),
         client.start_service(
@@ -29,9 +28,9 @@ async def main():
             functions=[lmnt_synthesize, lmnt_list_voices],
             options=ServiceOptions(
                 rate_limit=2,
-                max_concurrent_function_runs=4
-            )
-        )
+                max_concurrent_function_runs=4,
+            ),
+        ),
     )
 
 def run_services():

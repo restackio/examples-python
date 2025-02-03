@@ -1,8 +1,9 @@
-from pydantic import BaseModel
-from restack_ai.function import function, log, FunctionFailure
-from openai import OpenAI
 import os
+
 from dotenv import load_dotenv
+from openai import OpenAI
+from pydantic import BaseModel
+from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
@@ -16,10 +17,10 @@ async def openai_chat(input: OpenAiChatInput) -> str:
     try:
         log.info("openai_chat function started", input=input)
 
-        
+
         if (os.environ.get("OPENAI_API_KEY") is None):
             raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
-    
+
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
         messages = []
@@ -29,7 +30,7 @@ async def openai_chat(input: OpenAiChatInput) -> str:
 
         response = client.chat.completions.create(
             model=input.model or "gpt-4o-mini",
-            messages=messages
+            messages=messages,
         )
         log.info("openai_chat function completed", response=response)
         return response.choices[0].message.content
