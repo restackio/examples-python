@@ -1,7 +1,7 @@
 from datetime import timedelta
 from typing import List
 from pydantic import BaseModel
-from restack_ai.workflow import workflow, import_functions, log
+from restack_ai.agent import agent, import_functions, log
 
 
 with import_functions():
@@ -17,13 +17,13 @@ class MessageEvent(BaseModel):
 class EndEvent(BaseModel):
     end: bool
 
-@workflow.defn()
+@agent.defn()
 class AgentChatToolFunctions:
     def __init__(self) -> None:
         self.end = False
         self.messages = []
 
-    @workflow.event
+    @agent.event
     async def message(self, message: MessageEvent) -> List[Message]:
         log.info(f"Received message: {message.content}")
         
@@ -45,7 +45,7 @@ class AgentChatToolFunctions:
         system_content = "You are a helpful assistant that can help with sales data."
 
         self.messages.append(Message(role="user", content=message.content or ""))
-        completion = await workflow.step(llm_chat, LlmChatInput(messages=self.messages, tools=tools, system_content=system_content), start_to_close_timeout=timedelta(seconds=120))
+        completion = await agent.step(llm_chat, LlmChatInput(messages=self.messages, tools=tools, system_content=system_content), start_to_close_timeout=timedelta(seconds=120))
 
         log.info(f"completion: {completion}")
         
@@ -66,10 +66,10 @@ class AgentChatToolFunctions:
 
                         log.info(f"calling {name} with args: {args}")
 
-                        result = await workflow.step(lookupSales, input=LookupSalesInput(category=args.category), start_to_close_timeout=timedelta(seconds=120))
+                        result = await agent.step(lookupSales, input=LookupSalesInput(category=args.category), start_to_close_timeout=timedelta(seconds=120))
                         self.messages.append(Message(role="tool", tool_call_id=tool_call.id, content=str(result)))
 
-                        completion_with_tool_call = await workflow.step(llm_chat, LlmChatInput(messages=self.messages, system_content=system_content), start_to_close_timeout=timedelta(seconds=120))
+                        completion_with_tool_call = await agent.step(llm_chat, LlmChatInput(messages=self.messages, system_content=system_content), start_to_close_timeout=timedelta(seconds=120))
                         self.messages.append(Message(role="assistant", content=completion_with_tool_call.choices[0].message.content or ""))
                     
                     ## Step 4: Add your new function to the match case and append the result to the messages
@@ -90,15 +90,15 @@ class AgentChatToolFunctions:
 
         return self.messages
     
-    @workflow.event
+    @agent.event
     async def end(self, end: EndEvent) -> EndEvent:
         log.info(f"Received end")
         self.end = True
         return {"end": True}
   
-    @workflow.run
+    @agent.run
     async def run(self, input: dict):
-        await workflow.condition(
+        await agent.condition(
             lambda: self.end
         )
         return

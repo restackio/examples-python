@@ -2,14 +2,14 @@ import asyncio
 import os
 from src.functions.llm_chat import llm_chat
 from src.client import client
-from src.workflows.workflow import AgentChat
+from agent_chat.src.agents.agent import AgentChat
 from watchfiles import run_process
 import webbrowser
 
 async def main():
 
     await client.start_service(
-        workflows=[AgentChat],
+        agents=[AgentChat],
         functions=[llm_chat]
     )
 
