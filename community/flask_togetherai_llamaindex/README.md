@@ -7,73 +7,87 @@
 - Docker (for running the Restack services)
 - Active [Together AI](https://together.ai) account with API key
 
-## Usage
+## Start Restack
 
-1. Run Restack local engine with Docker:
+To start the Restack, use the following Docker command:
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-2. Open the Web UI to see the workflows:
+## Set up your environment variables:
 
-   ```bash
-   http://localhost:5233
-   ```
+Copy `.env.example` to `.env` and add your Together AI API key:
 
-3. Clone this repository:
+```bash
+cp .env.example .env
+# Edit .env and add your TOGETHER_API_KEY
+```
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/flask_togetherai_llamaindex
-   ```
+## Start python shell
 
-4. Install dependencies using Poetry:
+If using uv:
 
-   ```bash
-   poetry env use 3.12
-   ```
+```bash
+uv venv && source .venv/bin/activate
+```
 
-   ```bash
-   poetry shell
-   ```
+If using poetry:
 
-   ```bash
-   poetry install
-   ```
+```bash
+poetry env use 3.12 && poetry shell
+```
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+If using pip:
 
-5. Set up your environment variables:
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
 
-   Copy `.env.example` to `.env` and add your Together AI API key:
+## Install dependencies
 
-   ```bash
-   cp .env.example .env
-   # Edit .env and add your TOGETHER_API_KEY
-   ```
+If using uv:
 
-6. Run the services:
+```bash
+uv sync
+uv run services
+```
 
-   ```bash
-   poetry run services
-   ```
+If using poetry:
 
-   This will start the Restack service with the defined workflows and functions.
+```bash
+poetry install
+poetry run services
+```
 
-7. In a new terminal, run flask app:
+If using pip:
 
-   ```bash
-   poetry shell
-   ```
+```bash
+pip install -e .
+python -c "from src.services import run_services; run_services()"
+```
 
-   ```bash
-   poetry run flask
-   ```
+## In a new terminal, run flask app:
 
-8. Test your Api a POST request using curl:
+If using uv:
+
+```bash
+uv run flask
+```
+
+If using poetry:
+
+```bash
+poetry run flask
+```
+
+If using pip:
+
+```bash
+python -c "from src.app import run_flask; run_flask()"
+```
+
+## Test your Api a POST request using curl:
 
    ```bash
    curl -X POST \

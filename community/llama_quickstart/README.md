@@ -17,105 +17,109 @@ The AI workflow will search hacker news based on a query, crawl each project's w
 
 [![Hackathon Walkthrough](https://img.youtube.com/vi/EgiYVXmnalU/0.jpg)](https://www.youtube.com/watch?v=EgiYVXmnalU)
 
-## Usage
+## Start Restack
 
-1. Run Restack local engine with Docker:
+To start the Restack, use the following Docker command:
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-2. Open the Web UI to see the workflows:
+## Set up your environment variables:
 
-   ```bash
-   http://localhost:5233
-   ```
+Copy `.env.example` to `.env` and add your Together AI API key:
 
-3. Clone this repository:
+```bash
+cp .env.example .env
+# Edit .env and add your TOGETHER_API_KEY
+```
+   
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/llama_quickstart
-   ```
+## Start python shell
 
-4. 
+If using uv:
 
-4. Install dependencies using Poetry:
+```bash
+uv venv && source .venv/bin/activate
+```
 
-   ```bash
-   poetry env use 3.12
-   ```
+If using poetry:
 
-   ```bash
-   poetry shell
-   ```
+```bash
+poetry env use 3.12 && poetry shell
+```
 
-   ```bash
-   poetry install
-   ```
+If using pip:
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
+
+## Install dependencies
+
+If using uv:
+
+```bash
+uv sync
+uv run services
+```
+
+If using poetry:
+
+```bash
+poetry install
+poetry run services
+```
+
+If using pip:
+
+```bash
+pip install -e .
+python -c "from src.services import run_services; run_services()"
+```
+
+## In a new terminal, run FastAPI app:
+
+If using uv:
+
+```bash
+uv run app
+```
+
+If using poetry:
+
+```bash
+poetry run app
+```
+
+If using pip:
+
+```bash
+python -c "from src.app import run_app; run_app()"
+```
 
 
-5. Set up your environment variables:
+## In a new terminal, run the Streamlit frontend
 
-   Copy `.env.example` to `.env` and add your Together AI API key:
+If using uv:
 
-   ```bash
-   cp .env.example .env
-   # Edit .env and add your TOGETHER_API_KEY
-   ```
+```bash
+uv run streamlit run frontend.py
+```
 
-6. Open poetry shell:
+If using poetry:
 
-   ```bash
-   poetry env use 3.12
-   ```
+```bash
+poetry run streamlit run frontend.py
+```
 
-   ```bash
-   poetry shell
-   ```
+If using pip:
 
-   ```bash
-   poetry install
-   ```
+```bash
+python -c "from src.frontend import run_frontend; run_frontend()"
+```
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
-
-It will display an interpreter path like
-...caches/pypoetry/virtualenvs/get-started-ORuVhULK-py3.12
-
-When you open a python file in VSCode or other IDEs like Cursor, you can select the interpreter path to use the poetry environment.
-
-7. Run the services:
-
-   ```bash
-   poetry run services
-   ```
-
-   This will start the Restack service with the defined workflows and functions.
-
-8. In a new terminal, run FastAPI app:
-
-   ```bash
-   poetry shell
-   ```
-
-   ```bash
-   poetry run app
-   ```
-
-9. In a new terminal, run the Streamlit frontend
-
-   ```bash
-   poetry run streamlit run frontend.py
-   ```
-
-10. You can test the API endpoint without the Streamlit UI with:
+## You can test the API endpoint without the Streamlit UI with:
 
 ```bash
 curl -X POST \

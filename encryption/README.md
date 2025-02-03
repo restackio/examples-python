@@ -8,72 +8,98 @@ This repository contains a simple example project to help you get started with t
 - Poetry (for dependency management)
 - Docker (for running the Restack services)
 
-## Usage
+## Start Restack
 
-1. Run Restack local engine with Docker:
+To start the Restack, use the following Docker command:
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-2. Open the web UI to see the workflows:
+## Start python shell
 
-   ```bash
-   http://localhost:5233
-   ```
+If using uv:
 
-3. Clone this repository:
+```bash
+uv venv && source .venv/bin/activate
+```
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/get-started
-   ```
+If using poetry:
 
-4. Install dependencies using Poetry:
+```bash
+poetry env use 3.12 && poetry shell
+```
 
-   ```bash
-   poetry env use 3.12
-   ```
+If using pip:
 
-   ```bash
-   poetry shell
-   ```
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
 
-   ```bash
-   poetry install
-   ```
+## Install dependencies
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+If using uv:
 
-5. Run the services:
+```bash
+uv sync
+uv run services
+```
 
-   ```bash
-   poetry run services
-   ```
+If using poetry:
 
-   This will start the Restack service with the defined workflows and functions.
+```bash
+poetry install
+poetry run services
+```
 
-6. In a new terminal, run the encryption codec server:
+If using pip:
 
-   ```bash
-   poetry run codec
-   ```
+```bash
+pip install -e .
+python -c "from src.services import run_services; run_services()"
+```
 
-7. In an another terminal, run the workflow
+## In a new terminal, run the encryption codec server:
 
-   ```bash
-   poetry shell
-   ```
+If using uv:
 
-   ```bash
-   poetry run schedule
-   ```
+```bash
+uv run codec
+```
 
-   This will schedule the `GreetingWorkflow` and print the result.
+If using poetry:
 
-8. To decrypt use http://localhost:8081 in the UI settings as the codec address
+```bash
+poetry run codec
+```
+
+If using pip:
+
+```bash
+python -c "from src.codec_server import run_codec_server; run_codec_server()"
+```
+
+### In an another terminal, run the workflow
+
+If using uv:
+
+```bash
+uv run schedule
+```
+
+If using poetry:
+
+```bash
+poetry run schedule
+```
+
+If using pip:
+
+```bash
+python -c "from src.schedule_workflow import run_schedule_workflow; run_schedule_workflow()"
+```
+
+### To decrypt use http://localhost:8081 in the UI settings as the codec address
 
 ## Project Structure
 

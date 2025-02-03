@@ -80,7 +80,7 @@ You can run workflows with any client connected to Restack, for example:
 If using uv:
 
 ```bash
-poetry run schedule
+uv run schedule
 ```
 
 If using poetry:
