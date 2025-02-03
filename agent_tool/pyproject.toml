@@ -23,4 +23,3 @@ build-backend = "poetry.core.masonry.api"
 # CLI command configuration
 [tool.poetry.scripts]
 dev = "src.services:watch_services"
-services = "src.services:run_services"
