@@ -12,72 +12,94 @@ It demonstrates how to control Boston Dynamics Spot robot through a basic workfl
 
 ## Usage
 
-1. Run Restack local engine with Docker:
+## Start Restack
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+To start the Restack, use the following Docker command:
 
-2. Open the web UI to see the workflows:
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-   ```bash
-   http://localhost:5233
-   ```
+## Start python shell
 
-3. Clone this repository:
+If using uv:
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/bostondynamics_spot
-   ```
+```bash
+uv venv && source .venv/bin/activate
+```
 
-4. Install dependencies using Poetry:
+If using poetry:
 
-   ```bash
-   poetry env use 3.12
-   ```
+```bash
+poetry env use 3.12 && poetry shell
+```
 
-   ```bash
-   poetry shell
-   ```
+If using pip:
 
-   ```bash
-   poetry install
-   ```
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+## Install dependencies
 
-5. Run the services:
+If using uv:
 
-   ```bash
-   poetry run services
-   ```
+```bash
+uv sync
+uv run services
+```
 
-   This will start the Restack service with the defined workflows and functions.
+If using poetry:
 
-6. In a new terminal, schedule the workflow:
+```bash
+poetry install
+poetry run services
+```
 
-   ```bash
-   poetry shell
-   ```
+If using pip:
 
-   ```bash
-   poetry run schedule
-   ```
+```bash
+pip install -e .
+python -c "from src.services import run_services; run_services()"
+```
 
-   This will schedule the `GreetingWorkflow` and print the result.
+## Run workflows
 
-7. Optionally, schedule the workflow to run on a specific calendar or interval:
+### from UI
 
-   ```bash
-   poetry run calendar
-   ```
+You can run workflows from the UI by clicking the "Run" button.
 
-   ```bash
-   poetry run interval
-   ```
+![Run workflows from UI](./ui-screenshot.png)
+
+### from API
+
+You can run workflows from the API by using the generated endpoint:
+
+`POST http://localhost:6233/api/workflows/TranscribeTranslateWorkflow`
+
+### from any client
+
+You can run workflows with any client connected to Restack, for example:
+
+If using uv:
+
+```bash
+uv run schedule
+```
+
+If using poetry:
+
+```bash
+poetry run schedule
+```
+
+If using pip:
+
+```bash
+python -c "from schedule_workflow import run_schedule_workflow; run_schedule_workflow()"
+```
+
+executes `schedule_workflow.py` which will connect to Restack and execute the `TranscribeTranslateWorkflow` workflow.
 
 ## Project Structure
 

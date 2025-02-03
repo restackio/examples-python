@@ -7,70 +7,84 @@
 - Docker (for running the Restack services)
 - Active [Google AI Studio](https://aistudio.google.com) account with API key
 
-## Usage
+## Start Restack
 
-1. Run Restack local engine with Docker:
+To start the Restack, use the following Docker command:
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-2. Open the web UI to see the workflows:
+## Set `GEMINI_API_KEY` as an environment variable from [Google AI Studio](https://aistudio.google.com)
 
-   ```bash
-   http://localhost:5233
-   ```
+```bash
+export GEMINI_API_KEY=<your-api-key>
+```
 
-3. Clone this repository:
+## Start python shell
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/flask_gemini
-   ```
+If using uv:
 
-4. Install dependencies using Poetry:
+```bash
+uv venv && source .venv/bin/activate
+```
 
-   ```bash
-   poetry env use 3.12
-   ```
+If using poetry:
 
-   ```bash
-   poetry shell
-   ```
+```bash
+poetry env use 3.12 && poetry shell
+```
 
-   ```bash
-   poetry install
-   ```
+If using pip:
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
 
-5. Set `GEMINI_API_KEY` as an environment variable from [Google AI Studio](https://aistudio.google.com)
+## Install dependencies
 
-   ```bash
-   export GEMINI_API_KEY=<your-api-key>
-   ```
+If using uv:
 
-6. Run the services:
+```bash
+uv sync
+uv run dev
+```
 
-   ```bash
-   poetry run services
-   ```
+If using poetry:
 
-   This will start the Restack service with the defined workflows and functions.
+```bash
+poetry install
+poetry run dev
+```
 
-7. In a new terminal, run flask app:
+If using pip:
 
-   ```bash
-   poetry shell
-   ```
+```bash
+pip install -e .
+python -c "from src.services import watch_services; watch_services()"
+```
 
-   ```bash
-   poetry run flask
-   ```
+## In a new terminal, run flask app:
 
-8. Test your API with a POST request using curl:
+If using uv:
+
+```bash
+uv run flask
+```
+
+If using poetry:
+
+```bash
+poetry run flask
+```
+
+If using pip:
+
+```bash
+python -c "from src.app import run_flask; run_flask()"
+```
+
+## Test your API with a POST request using curl:
 
    ```bash
    curl -X POST \

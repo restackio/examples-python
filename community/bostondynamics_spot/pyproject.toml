@@ -1,31 +1,31 @@
-# Project metadata
-[tool.poetry]
+[project]
 name = "bostondynamics_spot"
 version = "0.0.1"
 description = "A simple example to get started with the restack-ai SDK"
-authors = [
-    "Restack Team <service@restack.io>",
-]
+authors = [{ name = "Restack Team", email = "service@restack.io" }]
+requires-python = ">=3.10,<4.0"
 readme = "README.md"
-packages = [{include = "src"}]
+dependencies = [
+    "restack-ai>=0.0.55,<0.0.56",
+    "bosdyn-client==4.1.0",
+    "opencv-python==4.10.0.84",
+    "setuptools==75.6.0",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-restack-ai = "^0.0.55"
-bosdyn-client = "4.1.0"
-opencv-python = "4.10.0.84"
-setuptools = "75.6.0"
-
-[tool.poetry.dev-dependencies]
-pytest = "6.2"  # Optional: Add if you want to include tests in your example
-
-# Build system configuration
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-# CLI command configuration
-[tool.poetry.scripts]
+[project.scripts]
 services = "src.services:run_services"
 spot = "src.spot_services:run_services"
 schedule = "schedule_workflow:run_schedule_workflow"
+
+[dependency-groups]
+dev = ["pytest==6.2"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -13,25 +13,7 @@ The example is a follow along of <https://weaviate.io/developers/weaviate/starte
 - Python 3.9 or higher
 - Poetry (for dependency management)
 
-## Installation
-
-2. Install dependencies using Poetry:
-
-   ```bash
-   poetry env use 3.12
-   ```
-
-   ```bash
-   poetry shell
-   ```
-
-   ```bash
-   poetry install
-   ```
-
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+## Environment Variables
 
 To use this project, you need to have access to Weaviate Cloud. Follow these steps to obtain your `WEAVIATE_URL` and `WEAVIATE_API_KEY`:
 
@@ -51,34 +33,91 @@ Using `docker run`:
 docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
 ```
 
-### Running the Services
+## Start python shell
 
-To start the Restack services, run:
+If using uv:
 
 ```bash
-poetry run services
+uv venv && source .venv/bin/activate
 ```
 
-This will start the Restack service with the defined workflows and functions.
+If using poetry:
+
+```bash
+poetry env use 3.12 && poetry shell
+```
+
+If using pip:
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
+
+## Install dependencies
+
+If using uv:
+
+```bash
+uv sync
+uv run dev
+```
+
+If using poetry:
+
+```bash
+poetry install
+poetry run dev
+```
+
+If using pip:
+
+```bash
+pip install -e .
+python -c "from src.services import watch_services; watch_services()"
+```
 
 ### Scheduling Workflows
 
 To schedule and run the example workflows, use:
 
+If using uv:
+
 ```bash
-poetry shell
+uv run schedule-seed-workflow
 ```
+
+If using poetry:
 
 ```bash
 poetry run schedule-seed-workflow
+```
+
+If using pip:
+
+```bash
+python -c "from src.schedule_workflow import run_schedule_seed_workflow; run_schedule_seed_workflow()"
 ```
 
 This will schedule the "SeedWorkflow" and print the result.
 
 To run the search workflow, use:
 
+If using uv:
+
+```bash
+uv run schedule-search-workflow
+```
+
+If using poetry:
+
 ```bash
 poetry run schedule-search-workflow
 ```
 
-This will schedule and execute the search workflow, allowing you to perform searches on your Weaviate instance.
+If using pip:
+
+```bash
+python -c "from src.schedule_workflow import run_schedule_search_workflow; run_schedule_search_workflow()"
+```
+
+This will schedule the "SearchWorkflow" and print the result.

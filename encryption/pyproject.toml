@@ -1,29 +1,29 @@
-# Project metadata
-[tool.poetry]
+[project]
 name = "encryption"
 version = "0.0.1"
 description = "A simple example to get started with the restack-ai SDK"
-authors = [
-    "Restack Team <service@restack.io>",
-]
+authors = [{ name = "Restack Team", email = "service@restack.io" }]
+requires-python = ">=3.10,<4.0"
 readme = "README.md"
-packages = [{include = "src"}]
+dependencies = [
+    "aiohttp>=3.11.10",
+    "restack-ai>=0.0.55,<0.0.56",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-aiohttp = "3.11.6"
-restack-ai = "^0.0.55"
-
-[tool.poetry.dev-dependencies]
-pytest = "6.2"  # Optional: Add if you want to include tests in your example
-
-# Build system configuration
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-# CLI command configuration
-[tool.poetry.scripts]
+[project.scripts]
 services = "src.services:run_services"
 schedule = "schedule_workflow:run_schedule_workflow"
 codec = "src.codec_server:run_codec_server"
+
+[dependency-groups]
+dev = ["pytest==6.2"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

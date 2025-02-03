@@ -9,83 +9,111 @@ The model will act as a pirate and you can send it prompts from the streamlit ui
 - Docker (for running the Restack services)
 - Active [Together AI](https://together.ai) account with API key
 
-## Usage
+## Start Restack
 
-1. Run Restack local engine with Docker:
-
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
-
-2. Open the Web UI to see the workflows:
-
-   ```bash
-   http://localhost:5233
-   ```
-
-3. Clone this repository:
-
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/fastapi_togetherai_llama
-   ```
-
-4. Install dependencies using Poetry:
+To start the Restack, use the following Docker command:
 
 ```bash
-poetry env use 3.12
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
 ```
 
+## Set up your environment variables:
+
+Copy `.env.example` to `.env` and add your Together AI API key:
+
 ```bash
-poetry shell
+cp .env.example .env
+# Edit .env and add your TOGETHER_API_KEY
 ```
+
+## Start python shell
+
+If using uv:
+
+```bash
+uv venv && source .venv/bin/activate
+```
+
+If using poetry:
+
+```bash
+poetry env use 3.12 && poetry shell
+```
+
+If using pip:
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
+
+## Install dependencies
+
+If using uv:
+
+```bash
+uv sync
+uv run services
+```
+
+If using poetry:
 
 ```bash
 poetry install
+poetry run services
 ```
+
+If using pip:
 
 ```bash
-poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
+pip install -e .
+python -c "from src.services import run_services; run_services()"
 ```
 
-5. Set up your environment variables:
+## In a new terminal, run fastapi app:
 
-   Copy `.env.example` to `.env` and add your Together AI API key:
+If using uv:
 
-   ```bash
-   cp .env.example .env
-   # Edit .env and add your TOGETHER_API_KEY
+```bash
+uv run app
+```
+
+If using poetry:
+
+```bash
+poetry run app
+```
+
+If using pip:
+
+```bash
+python -c "from src.app import run_app; run_app()"
+```
+
+## In a new terminal, run the streamlit frontend
+
+If using uv:
+
+```bash
+uv run streamlit run frontend.py
    ```
 
-6. Run the services:
+If using poetry:
 
-   ```bash
-   poetry run services
-   ```
+```bash
+poetry run streamlit run frontend.py
+```
 
-   This will start the Restack service with the defined workflows and functions.
+If using pip:
 
-7. In a new terminal, run fastapi app:
+```bash
+python -c "from src.frontend import run_frontend; run_frontend()"
+```
 
-   ```bash
-   poetry shell
-   ```
+## You can test api endpoint without the streamlit UI with:
 
-   ```bash
-   poetry run app
-   ```
-
-8. In a new terminal, run the streamlit frontend
-
-   ```bash
-   poetry run streamlit run frontend.py
-   ```
-
-9. You can test api endpoint without the streamlit UI with:
-
-   ```bash
-   curl -X POST \
-     http://localhost:8000/api/schedule \
+```bash
+curl -X POST \
+  http://localhost:8000/api/schedule \
      -H "Content-Type: application/json" \
      -d '{"prompt": "Tell me a short joke"}'
    ```

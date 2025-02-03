@@ -13,68 +13,121 @@ You can schedule two scenarios of the workflow.
 - Poetry (for dependency management)
 - Docker (for running the Restack services)
 
-## Usage
+## Start Restack
 
-1. Run Restack local engine with Docker:
+To start the Restack, use the following Docker command:
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-2. Open the web UI to see the workflows:
+## Environment variables
 
-   ```bash
-   http://localhost:5233
-   ```
+Create .env file with: STRIPE_SECRET_KEY and OPENAI_API_KEY  
 
-3. Clone this repository:
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/get-started
-   ```
-  
-4. Create .env file with: STRIPE_SECRET_KEY and OPENAI_API_KEY
+## Start python shell
 
-4. Install dependencies using Poetry:
+If using uv:
 
-   ```bash
-   poetry env use 3.12
-   ```
+```bash
+uv venv && source .venv/bin/activate
+```
 
-   ```bash
-   poetry shell
-   ```
+If using poetry:
 
-   ```bash
-   poetry install
-   ```
+```bash
+poetry env use 3.12 && poetry shell
+```
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+If using pip:
 
-5. Run the services:
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
 
-   ```bash
-   poetry run services
-   ```
+## Install dependencies
 
-   This will start the Restack service with the defined workflows and functions.
+If using uv:
 
-6. In a new terminal, schedule the workflow:
+```bash
+uv sync
+uv run dev
+```
 
-   ```bash
-   poetry shell
-   ```
+If using poetry:
 
-   ```bash
-   poetry run schedule
-   ```
+```bash
+poetry install
+poetry run dev
+```
+
+If using pip:
+
+```bash
+pip install -e .
+python -c "from src.services import watch_services; watch_services()"
+```
+
+
+## Run the services:
+
+If using uv:
+
+```bash
+uv run services
+```
+
+If using poetry:
+
+```bash
+poetry run services
+```
+
+If using pip:
+
+```bash
+python -c "from src.services import run_services; run_services()"
+```
+
+## In a new terminal, schedule the workflow:
+
+If using uv:
+
+```bash
+uv run schedule
+```
+
+If using poetry:
+
+```bash
+poetry run schedule
+```
+
+If using pip:
+
+```bash
+python -c "from schedule_workflow import run_schedule_workflow; run_schedule_workflow()"
+```
 
    This will schedule the `SendEmailWorkflow` and print the result.
 
-7. To simulate a flow where the step for sending email fails and the retry is automatically handled by Restack AI use run:
-   ```bash
-   poetry run schedule_failure
-   ```
+### To simulate a flow where the step for sending email fails and the retry is automatically handled by Restack AI use run:
+
+If using uv:
+
+```bash
+uv run schedule_failure
+```
+
+If using poetry:
+
+```bash
+poetry run schedule_failure
+```
+
+If using pip:
+
+```bash
+python -c "from schedule_workflow_failure import run_schedule_workflow_failure; run_schedule_workflow_failure()"
+```
