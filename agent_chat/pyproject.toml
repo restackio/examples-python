@@ -1,29 +1,30 @@
-[project]
-name = "agent_chat"
-version = "0.0.1"
-description = "An agent chat for Restack"
-authors = [{ name = "Restack Team", email = "service@restack.io" }]
-requires-python = ">=3.10,<4.0"
-readme = "README.md"
-dependencies = [
-    "watchfiles>=1.0.0,<2",
-    "pydantic>=2.10.4,<3",
-    "openai>=1.60.2,<2",
-    "restack-ai>=0.0.55,<0.0.56",
-]
+# Project metadata
+ [tool.poetry]
+ name = "agent_chat"
+ version = "0.0.1"
+ description = "An agent chat for Restack"
+ authors = [
+     "Restack Team <service@restack.io>",
+ ]
+ readme = "README.md"
+ packages = [{include = "src"}]
 
-[project.scripts]
-dev = "src.services:watch_services"
-services = "src.services:run_services"
-schedule = "schedule_workflow:run_schedule_workflow"
-event = "event_workflow:run_event_workflow"
+ [tool.poetry.dependencies]
+ python = ">=3.10,<4.0"
+ watchfiles = "^1.0.0"
+ pydantic = "^2.10.4"
 
-[tool.hatch.build.targets.sdist]
-include = ["src"]
+ # Build system configuration
+ openai = "^1.60.2"
+ restack-ai = "^0.0.55"
 
-[tool.hatch.build.targets.wheel]
-include = ["src"]
+ [build-system]
+ requires = ["poetry-core"]
+ build-backend = "poetry.core.masonry.api"
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+ # CLI command configuration
+ [tool.poetry.scripts]
+ dev = "src.services:watch_services"
+ services = "src.services:run_services"
+ schedule = "schedule_workflow:run_schedule_workflow"
+ event = "event_workflow:run_event_workflow"
