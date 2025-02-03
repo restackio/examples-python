@@ -8,18 +8,14 @@ RUN apt-get update && apt-get install -y \
   libgl1-mesa-glx \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install poetry in the same step to reuse the base layer
-RUN pip install poetry \
-  && poetry config virtualenvs.create false
-
-COPY pyproject.toml ./
+COPY pyproject.toml requirements.txt ./
 
 COPY . .
 
 # Install dependencies
-RUN poetry install --no-interaction --no-ansi
+RUN pip install -e .
 
 # Expose port 80
 EXPOSE 80
 
-CMD poetry run python -m src.services
+CMD ["python", "-m", "src.services"]
