@@ -48,7 +48,7 @@ You can run workflows from the UI by clicking the "Run" button.
 
 You can run workflows from the API by using the generated endpoint:
 
-`POST http://localhost:6233/api/workflows/AgentWorkflow`
+`POST http://localhost:6233/api/agents/AgentChat`
 
 ### from any client
 
@@ -58,7 +58,7 @@ You can run workflows with any client connected to Restack, for example:
 poetry run schedule
 ```
 
-executes `schedule_workflow.py` which will connect to Restack and execute the `AgentWorkflow` workflow.
+executes `schedule_agent.py` which will connect to Restack and execute the `AgentChat` agent.
 
 ## Send events to the Agent
 
@@ -76,7 +76,7 @@ And see the events in the run:
 
 You can send events to the agent by using the following endpoint:
 
-`PUT http://localhost:6233/api/workflows/AgentWorkflow/:workflowId/:runId`
+`PUT http://localhost:6233/api/agents/AgentChat/:agentId/:runId`
 
 with the payload:
 

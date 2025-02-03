@@ -13,10 +13,8 @@ packages = [{include = "src"}]
 python = ">=3.10,<4.0"
 watchfiles = "^1.0.0"
 pydantic = "^2.10.4"
-
-# Build system configuration
 openai = "^1.60.2"
-restack-ai = "^0.0.55"
+restack-ai = "^0.0.57"
 
 [build-system]
 requires = ["poetry-core"]
@@ -26,5 +24,5 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 dev = "src.services:watch_services"
 services = "src.services:run_services"
-schedule = "schedule_workflow:run_schedule_workflow"
-event = "event_workflow:run_event_workflow"
+schedule = "schedule_agent:run_schedule_agent"
+event = "event_agent:run_event_agent"

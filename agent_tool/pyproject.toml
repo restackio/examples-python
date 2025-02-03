@@ -17,7 +17,7 @@ requests = "2.32.3"
 
 # Build system configuration
 openai = "^1.60.2"
-restack-ai = "^0.0.55"
+restack-ai = "^0.0.57"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
