@@ -18,22 +18,45 @@ docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:723
 
 ## Start python shell
 
+If using uv:
+
 ```bash
-poetry env use 3.10 && poetry shell
+uv venv && source .venv/bin/activate
+```
+
+If using poetry:
+
+```bash
+poetry env use 3.12 && poetry shell
+```
+
+If using pip:
+
+```bash
+python -m venv .venv && source .venv/bin/activate
 ```
 
 ## Install dependencies
 
+If using uv:
+
+```bash
+uv sync
+uv run dev
+```
+
+If using poetry:
+
 ```bash
 poetry install
-```
-
-```bash
-poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-```
-
-```bash
 poetry run dev
+```
+
+If using pip:
+
+```bash
+pip install -e .
+python -c "from src.services import watch_services; watch_services()"
 ```
 
 ## Run agent
@@ -54,8 +77,22 @@ You can run workflows from the API by using the generated endpoint:
 
 You can run workflows with any client connected to Restack, for example:
 
+If using uv:
+
 ```bash
-poetry run schedule
+uv run schedule-seed-workflow
+```
+
+If using poetry:
+
+```bash
+poetry run schedule-seed-workflow
+```
+
+If using pip:
+
+```bash
+python -c "from src.schedule_workflow import run_schedule_seed_workflow; run_schedule_seed_workflow()"
 ```
 
 executes `schedule_agent.py` which will connect to Restack and execute the `AgentChat` agent.
@@ -105,8 +142,22 @@ You can send event to the agent workflows with any client connected to Restack, 
 
 Modify workflow_id and run_id in event_workflow.py and then run:
 
+If using uv:
+
+```bash
+uv run event
+```
+
+If using poetry:
+
 ```bash
 poetry run event
+```
+
+If using pip:
+
+```bash
+python -c "from src.event_agent import run_event_agent; run_event_agent()"
 ```
 
 It will connect to Restack and send 2 events to the agent, one to generate another agent and another one to end the conversation.

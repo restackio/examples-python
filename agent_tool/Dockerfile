@@ -4,19 +4,14 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y
 
-RUN pip install poetry
-
-COPY pyproject.toml ./
+COPY pyproject.toml requirements.txt ./
 
 COPY . .
 
-# Configure poetry to not create virtual environment
-RUN poetry config virtualenvs.create false
-
 # Install dependencies
-RUN poetry install --no-interaction --no-ansi
+RUN pip install -e .
 
 # Expose port 80
 EXPOSE 80
 
-CMD poetry run python -m src.services
+CMD ["python", "-m", "src.services"]
