@@ -2,7 +2,7 @@ import asyncio
 import os
 from src.functions.llm_chat import llm_chat
 from src.client import client
-from agent_chat.src.agents.agent import AgentChat
+from src.agents.agent import AgentChat
 from watchfiles import run_process
 import webbrowser
 

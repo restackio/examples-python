@@ -1,7 +1,7 @@
 from datetime import timedelta
 from typing import List
 from pydantic import BaseModel
-from restack_ai.workflow import agent, import_functions, log
+from restack_ai.agent import agent, import_functions, log
 
 with import_functions():
     from src.functions.llm_chat import llm_chat, LlmChatInput, Message
