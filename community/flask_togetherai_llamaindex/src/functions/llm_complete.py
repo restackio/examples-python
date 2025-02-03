@@ -9,7 +9,8 @@ async def llm_complete(prompt) -> str:
     try:
         log.info("llm_complete function started", prompt=prompt)
         llm = TogetherLLM(
-            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo", api_key=os.environ["TOGETHER_API_KEY"],
+            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo",
+            api_key=os.environ["TOGETHER_API_KEY"],
         )
 
         resp = llm.complete(prompt)

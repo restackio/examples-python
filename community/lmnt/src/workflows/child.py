@@ -7,16 +7,22 @@ with import_functions():
     from src.functions.function import ExampleFunctionInput, example_function
     from src.functions.synthesize import SynthesizeInputParams, lmnt_synthesize
 
+
 class ChildWorkflowInput(BaseModel):
     name: str = Field(default="Hi John Doe")
     voice: str = Field(default="morgan")
+
 
 @workflow.defn()
 class ChildWorkflow:
     @workflow.run
     async def run(self, input: ChildWorkflowInput):
         log.info("ChildWorkflow started")
-        await workflow.step(example_function, input=ExampleFunctionInput(name=input.name), start_to_close_timeout=timedelta(minutes=2))
+        await workflow.step(
+            example_function,
+            input=ExampleFunctionInput(name=input.name),
+            start_to_close_timeout=timedelta(minutes=2),
+        )
 
         await workflow.sleep(1)
 
@@ -34,5 +40,3 @@ class ChildWorkflow:
         return {
             "audiofile_path": audiofile_path,
         }
-
-

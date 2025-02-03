@@ -18,4 +18,3 @@ connection_options = CloudConnectionOptions(
     api_key=api_key,
 )
 client = Restack(connection_options)
-

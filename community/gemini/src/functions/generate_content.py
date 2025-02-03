@@ -8,6 +8,7 @@ from restack_ai.function import function, log
 class FunctionInputParams(BaseModel):
     user_content: str
 
+
 @function.defn()
 async def gemini_generate_content(input: FunctionInputParams) -> str:
     try:

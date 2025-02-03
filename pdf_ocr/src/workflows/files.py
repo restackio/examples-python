@@ -9,6 +9,7 @@ from .pdf import PdfWorkflow, PdfWorkflowInput
 class FilesWorkflowInput(BaseModel):
     files_upload: list[dict] = Field(files=True)
 
+
 @workflow.defn()
 class FilesWorkflow:
     @workflow.run

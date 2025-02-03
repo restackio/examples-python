@@ -10,8 +10,10 @@ with import_functions():
         gemini_multi_function_call_advanced,
     )
 
+
 class MultiFunctionCallAdvancedInputParams(BaseModel):
     user_content: str = "What's the weather in San Francisco?"
+
 
 @workflow.defn()
 class GeminiMultiFunctionCallAdvancedWorkflow:
@@ -53,7 +55,11 @@ class GeminiMultiFunctionCallAdvancedWorkflow:
                         func_call = part["functionCall"]
                         function_name = func_call["name"]
 
-                        if function_name in {"get_current_temperature", "get_humidity", "get_air_quality"}:
+                        if function_name in {
+                            "get_current_temperature",
+                            "get_humidity",
+                            "get_air_quality",
+                        }:
                             try:
                                 result = await workflow.step(
                                     globals()[function_name],
@@ -61,10 +67,17 @@ class GeminiMultiFunctionCallAdvancedWorkflow:
                                     task_queue="tools",
                                     retry_policy=RetryPolicy(maximum_attempts=1),
                                 )
-                                function_results.append(f"{function_name} result: {result!s}")
-                                log.info(f"Function {function_name} executed successfully", result=result)
+                                function_results.append(
+                                    f"{function_name} result: {result!s}",
+                                )
+                                log.info(
+                                    f"Function {function_name} executed successfully",
+                                    result=result,
+                                )
                             except Exception as e:
-                                function_results.append(f"Error executing {function_name}: {e!s}")
+                                function_results.append(
+                                    f"Error executing {function_name}: {e!s}",
+                                )
                                 log.error(f"Error executing {function_name}: {e!s}")
 
             if not has_function_calls:
@@ -72,7 +85,9 @@ class GeminiMultiFunctionCallAdvancedWorkflow:
 
             if function_results:
                 current_content = f"Based on these results: {'; '.join(function_results)}, please provide a final answer."
-                self.chat_history.append(ChatMessage(role="user", content=current_content))
+                self.chat_history.append(
+                    ChatMessage(role="user", content=current_content),
+                )
                 function_results = []
             else:
                 break

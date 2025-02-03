@@ -8,6 +8,7 @@ from pydantic import BaseModel
 class ExampleFunctionInput(BaseModel):
     name: str
 
+
 @function.defn()
 async def example_function(input: ExampleFunctionInput) -> str:
     try:

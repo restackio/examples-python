@@ -5,6 +5,7 @@ from restack_ai.workflow import RetryPolicy, import_functions, log, workflow
 with import_functions():
     from src.functions.create_payment_link import create_payment_link
 
+
 @workflow.defn()
 class CreatePaymentLinkWorkflow:
     @workflow.run

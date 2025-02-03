@@ -12,9 +12,11 @@ class ChatMessage(BaseModel):
     role: str
     content: str
 
+
 class FunctionInputParams(BaseModel):
     user_content: str
     chat_history: list[ChatMessage] | None = None
+
 
 @function.defn()
 async def gemini_multi_function_call_advanced(input: FunctionInputParams):
@@ -27,7 +29,12 @@ async def gemini_multi_function_call_advanced(input: FunctionInputParams):
 
         response = client.models.generate_content(
             model="gemini-2.0-flash-exp",
-            contents=[input.user_content] + ([msg.content for msg in input.chat_history] if input.chat_history else []),
+            contents=[input.user_content]
+            + (
+                [msg.content for msg in input.chat_history]
+                if input.chat_history
+                else []
+            ),
             config=types.GenerateContentConfig(
                 tools=tools,
             ),

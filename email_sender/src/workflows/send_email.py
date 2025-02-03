@@ -10,12 +10,14 @@ with import_functions():
     )
     from src.functions.send_email import SendEmailInput, send_email
 
+
 @dataclass
 class WorkflowInputParams:
     email_context: str
     subject: str
     to: str
     simulate_failure: bool = False
+
 
 @workflow.defn()
 class SendEmailWorkflow:

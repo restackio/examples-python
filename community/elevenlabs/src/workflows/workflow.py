@@ -14,6 +14,7 @@ with import_functions():
 
 api_key = os.getenv("ELEVEN_LABS_API_KEY")
 
+
 @workflow.defn()
 class TextToSpeechWorkflow:
     @workflow.run
@@ -37,18 +38,19 @@ class TextToSpeechWorkflow:
         )
 
         # Save the audio file (optional)
-        #try:
-            #log.info("Saving audio file")
-            #audio_data = base64.b64decode(result["media"]["payload"])
-            #with open("output.mp3", "wb") as f:
-               # f.write(audio_data)
-           # log.info("Audio file saved successfully", file_path="output.mp3")
-       # except Exception as e:
-           # log.error("Failed to save the audio file", error=str(e))
-           # raise e
+        # try:
+        # log.info("Saving audio file")
+        # audio_data = base64.b64decode(result["media"]["payload"])
+        # with open("output.mp3", "wb") as f:
+        # f.write(audio_data)
+        # log.info("Audio file saved successfully", file_path="output.mp3")
+        # except Exception as e:
+        # log.error("Failed to save the audio file", error=str(e))
+        # raise e
 
         log.info("TextToSpeechWorkflow completed", result=result)
         return result
+
 
 @workflow.defn()
 class AudioIsolationWorkflow:

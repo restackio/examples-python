@@ -2,7 +2,11 @@ from restack_ai.function import function
 
 
 @function.defn()
-async def split_text(text: str, average_token_per_character: int = 3, max_tokens: int = 4096) -> list:
+async def split_text(
+    text: str,
+    average_token_per_character: int = 3,
+    max_tokens: int = 4096,
+) -> list:
     chunks = []
     current_chunk = []
     current_length = 0

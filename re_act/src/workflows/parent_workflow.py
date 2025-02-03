@@ -9,10 +9,12 @@ from .child_workflow_b import ChildWorkflowB
 with import_functions():
     from src.functions.decide import DecideInput, decide
 
+
 @dataclass
 class ParentWorkflowInput:
     email: str
     current_accepted_applicants_count: int
+
 
 @workflow.defn()
 class ParentWorkflow:
@@ -46,5 +48,3 @@ class ParentWorkflow:
             )
 
         return child_workflow_result
-
-

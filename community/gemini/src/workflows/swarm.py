@@ -13,6 +13,7 @@ from src.workflows.multi_function_call_advanced import (
 class WorkflowInputParams(BaseModel):
     num_cities: int = 50
 
+
 @workflow.defn()
 class GeminiSwarmWorkflow:
     @workflow.run
@@ -23,17 +24,25 @@ class GeminiSwarmWorkflow:
         all_cities = [city.value for city in USTopCities]
 
         # Take the first n cities based on input
-        selected_cities = all_cities[:input.num_cities]
+        selected_cities = all_cities[: input.num_cities]
 
-        results_tasks = await asyncio.gather(*[
-            workflow.child_execute(
-                GeminiMultiFunctionCallAdvancedWorkflow,
-                input=MultiFunctionCallAdvancedInputParams(user_content=f"What's the weather in {city}?"),
-                workflow_id=f"{parent_workflow_id}-child-{city.replace(', ', '-')}",
-            ) for city in selected_cities
-        ])
+        results_tasks = await asyncio.gather(
+            *[
+                workflow.child_execute(
+                    GeminiMultiFunctionCallAdvancedWorkflow,
+                    input=MultiFunctionCallAdvancedInputParams(
+                        user_content=f"What's the weather in {city}?",
+                    ),
+                    workflow_id=f"{parent_workflow_id}-child-{city.replace(', ', '-')}",
+                )
+                for city in selected_cities
+            ],
+        )
 
-        results = [{"city": city, "result": result} for city, result in zip(selected_cities, results_tasks, strict=False)]
+        results = [
+            {"city": city, "result": result}
+            for city, result in zip(selected_cities, results_tasks, strict=False)
+        ]
 
         log.info("GeminiSwarmWorkflow completed", results=results)
         return results

@@ -7,13 +7,14 @@ from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
+
 @dataclass
 class GenerateEmailInput:
     email_context: str
 
+
 @function.defn()
 async def generate_email_content(input: GenerateEmailInput):
-
     try:
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -39,4 +40,3 @@ async def generate_email_content(input: GenerateEmailInput):
     except Exception as e:
         log.error("Failed to generate email content", error=e)
         raise FunctionFailure("Failed to generate email content", non_retryable=True)
-

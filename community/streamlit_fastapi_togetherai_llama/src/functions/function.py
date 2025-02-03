@@ -8,9 +8,11 @@ from restack_ai.function import function, log
 
 load_dotenv()
 
+
 @dataclass
 class FunctionInputParams:
     prompt: str
+
 
 @function.defn()
 async def llm_complete(input: FunctionInputParams):
@@ -22,12 +24,14 @@ async def llm_complete(input: FunctionInputParams):
             raise ValueError("TOGETHER_API_KEY environment variable is required.")
 
         llm = TogetherLLM(
-            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo", api_key=api_key,
+            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo",
+            api_key=api_key,
         )
         messages = [
             ChatMessage(
                 # This is a system prompt that is used to set the behavior of the LLM. You can update this llm_complete function to also accept a system prompt as an input parameter.
-                role=MessageRole.SYSTEM, content="You are a pirate with a colorful personality",
+                role=MessageRole.SYSTEM,
+                content="You are a pirate with a colorful personality",
             ),
             ChatMessage(role=MessageRole.USER, content=input.prompt),
         ]

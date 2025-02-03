@@ -18,9 +18,11 @@ class OCRPrediction(BaseModel):
         description="List of pages with OCR predictions",
     )
 
+
 class OcrInput(BaseModel):
     file_type: str
-    file_name:str
+    file_name: str
+
 
 @function.defn()
 async def torch_ocr(input: OcrInput) -> str:
@@ -28,7 +30,9 @@ async def torch_ocr(input: OcrInput) -> str:
         service = DocumentExtractionService()
 
         # Download the file from localhost
-        response = requests.get(f"{api_address or 'http://localhost:6233'}/api/download/{input.file_name}")
+        response = requests.get(
+            f"{api_address or 'http://localhost:6233'}/api/download/{input.file_name}",
+        )
         response.raise_for_status()  # Raise an error for bad responses
         content = response.content
 
@@ -47,6 +51,7 @@ async def torch_ocr(input: OcrInput) -> str:
     except Exception as e:
         log.error(f"Failed to process file: {e!s}")
         raise FunctionFailure(f"Failed to process file: {e!s}", non_retryable=True)
+
 
 class DocumentExtractionService:
     def __init__(self) -> None:
@@ -69,7 +74,9 @@ class DocumentExtractionService:
         return img_array
 
     def _process_predictions(
-        self, json_output: OCRPrediction, confidence_threshold: float = 0.3,
+        self,
+        json_output: OCRPrediction,
+        confidence_threshold: float = 0.3,
     ) -> str:
         processed_text: list[str] = []
 

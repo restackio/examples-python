@@ -8,21 +8,25 @@ from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
+
 @dataclass
 class FunctionInputParams:
     prompt: str
+
 
 @function.defn()
 async def llm_complete(input: FunctionInputParams):
     try:
         log.info("llm_complete function started", input=input)
         llm = TogetherLLM(
-            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo", api_key=os.getenv("TOGETHER_API_KEY"),
+            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo",
+            api_key=os.getenv("TOGETHER_API_KEY"),
         )
         messages = [
             ChatMessage(
                 # This is a system prompt that is used to set the behavior of the LLM. You can update this llm_complete function to also accept a system prompt as an input parameter.
-                role=MessageRole.SYSTEM, content="You are a pirate with a colorful personality",
+                role=MessageRole.SYSTEM,
+                content="You are a pirate with a colorful personality",
             ),
             ChatMessage(role=MessageRole.USER, content=input.prompt),
         ]

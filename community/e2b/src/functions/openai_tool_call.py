@@ -12,6 +12,7 @@ class OpenaiToolCallInput(BaseModel):
     model: str = "gpt-4"
     messages: list[dict] = []
 
+
 @function.defn()
 async def openai_tool_call(input: OpenaiToolCallInput) -> dict:
     try:
@@ -19,9 +20,13 @@ async def openai_tool_call(input: OpenaiToolCallInput) -> dict:
 
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-        messages = input.messages.copy() if input.messages else [
-            {"role": "system", "content": input.system_content},
-        ]
+        messages = (
+            input.messages.copy()
+            if input.messages
+            else [
+                {"role": "system", "content": input.system_content},
+            ]
+        )
 
         if input.user_content:
             messages.append({"role": "user", "content": input.user_content})

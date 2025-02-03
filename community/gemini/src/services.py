@@ -25,7 +25,13 @@ from src.workflows.swarm import GeminiSwarmWorkflow
 async def main():
     await asyncio.gather(
         client.start_service(
-            workflows=[GeminiGenerateContentWorkflow, GeminiFunctionCallWorkflow, GeminiMultiFunctionCallWorkflow, GeminiMultiFunctionCallAdvancedWorkflow, GeminiSwarmWorkflow],
+            workflows=[
+                GeminiGenerateContentWorkflow,
+                GeminiFunctionCallWorkflow,
+                GeminiMultiFunctionCallWorkflow,
+                GeminiMultiFunctionCallAdvancedWorkflow,
+                GeminiSwarmWorkflow,
+            ],
             functions=[],
             options=ServiceOptions(
                 max_concurrent_workflow_runs=1000,
@@ -42,7 +48,12 @@ async def main():
         ),
         client.start_service(
             task_queue="gemini",
-            functions=[gemini_generate_content, gemini_function_call, gemini_multi_function_call, gemini_multi_function_call_advanced],
+            functions=[
+                gemini_generate_content,
+                gemini_function_call,
+                gemini_multi_function_call,
+                gemini_multi_function_call_advanced,
+            ],
             options=ServiceOptions(
                 rate_limit=0.16,
                 max_concurrent_function_runs=1,
@@ -51,11 +62,13 @@ async def main():
         ),
     )
 
+
 def run_services():
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Service interrupted by user. Exiting gracefully.")
+
 
 def watch_services():
     watch_path = os.getcwd()
@@ -63,5 +76,6 @@ def watch_services():
     webbrowser.open("http://localhost:5233")
     run_process(watch_path, recursive=True, target=run_services)
 
+
 if __name__ == "__main__":
-       run_services()
+    run_services()

@@ -8,10 +8,12 @@ from sendgrid.helpers.mail import Mail
 
 load_dotenv()
 
+
 @dataclass
 class SendEmailInput:
     subject: str
     body: str
+
 
 @function.defn()
 async def send_email(input: SendEmailInput):

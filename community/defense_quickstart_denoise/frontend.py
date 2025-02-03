@@ -9,10 +9,12 @@ st.title("Defense Hackathon Quickstart: War Audio Noise Removal")
 tmp_dir = Path(tempfile.gettempdir()) / "streamlit_uploads"
 tmp_dir.mkdir(exist_ok=True)
 
+
 def get_file_path(uploaded_file):
     temp_path = tmp_dir / uploaded_file.name
     temp_path.write_bytes(uploaded_file.getvalue())
     return str(temp_path.absolute())
+
 
 uploaded_files = st.file_uploader("Choose files", accept_multiple_files=True)
 
@@ -44,17 +46,21 @@ if st.button("Process Audio"):
                     for idx, uploaded_file in enumerate(uploaded_files):
                         with open(file_paths[idx], "rb") as f:
                             file_bytes = f.read()
-                        st.session_state.response_history.append({
-                            "file_name": uploaded_file.name,
-                            "file_type": uploaded_file.type,
-                            "original_audio": uploaded_file,
-                            "cleaned_audio": results[idx]["cleaned_audio"],
-                        })
+                        st.session_state.response_history.append(
+                            {
+                                "file_name": uploaded_file.name,
+                                "file_type": uploaded_file.type,
+                                "original_audio": uploaded_file,
+                                "cleaned_audio": results[idx]["cleaned_audio"],
+                            },
+                        )
                 else:
                     st.error(f"Error: {response.status_code}")
 
         except requests.exceptions.ConnectionError:
-            st.error("Failed to connect to the server. Make sure the FastAPI server is running.")
+            st.error(
+                "Failed to connect to the server. Make sure the FastAPI server is running.",
+            )
     else:
         st.warning("Please upload a file before submitting.")
 

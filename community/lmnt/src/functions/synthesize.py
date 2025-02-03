@@ -1,4 +1,5 @@
 """Module for LMNT speech synthesis functionality."""
+
 import os
 from typing import Any
 
@@ -12,7 +13,11 @@ class SynthesizeInputParams(BaseModel):
     user_content: str = Field(description="The text content to synthesize")
     voice: str = Field(description="The voice to use for synthesis")
     filename: str = Field(description="The output filename")
-    options: dict[str, Any] | None = Field(default=None, description="Optional synthesis parameters")
+    options: dict[str, Any] | None = Field(
+        default=None,
+        description="Optional synthesis parameters",
+    )
+
 
 @function.defn()
 async def lmnt_synthesize(params: SynthesizeInputParams) -> str:

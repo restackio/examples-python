@@ -7,16 +7,18 @@ from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
+
 @dataclass
 class DecideInput:
     email: str
     current_accepted_applicants_count: int
 
+
 @function.defn()
 async def decide(input: DecideInput):
     try:
-        if (os.environ.get("OPENAI_API_KEY") is None):
-                raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
+        if os.environ.get("OPENAI_API_KEY") is None:
+            raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
 
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -68,4 +70,3 @@ async def decide(input: DecideInput):
     except Exception as e:
         log.error("Failed to decide", error=e)
         raise FunctionFailure("Failed to decide", non_retryable=True)
-

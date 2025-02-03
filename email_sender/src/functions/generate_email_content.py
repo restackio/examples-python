@@ -9,10 +9,12 @@ load_dotenv()
 
 tries = 0
 
+
 @dataclass
 class GenerateEmailInput:
     email_context: str
     simulate_failure: bool = False
+
 
 @function.defn()
 async def generate_email_content(input: GenerateEmailInput):
@@ -22,7 +24,7 @@ async def generate_email_content(input: GenerateEmailInput):
         tries += 1
         raise FunctionFailure("Simulated failure", non_retryable=False)
 
-    if (os.environ.get("OPENAI_API_KEY") is None):
+    if os.environ.get("OPENAI_API_KEY") is None:
         raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
 
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -43,4 +45,3 @@ async def generate_email_content(input: GenerateEmailInput):
     )
 
     return response.choices[0].message.content
-

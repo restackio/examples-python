@@ -13,6 +13,7 @@ with import_functions():
 class ExampleWorkflowInput(BaseModel):
     max_amount: int = Field(default=5)
 
+
 @workflow.defn()
 class ExampleWorkflow:
     @workflow.run
@@ -29,7 +30,7 @@ class ExampleWorkflow:
         log.info(f"Starting to process {min(len(voice_list), input.max_amount)} voices")
 
         tasks = []
-        for i, voice in enumerate(voice_list[:input.max_amount]):
+        for i, voice in enumerate(voice_list[: input.max_amount]):
             log.info(f"Creating ChildWorkflow {i+1} for voice {voice['name']}")
             child_input = ChildWorkflowInput(
                 name=f"Hi, my name is {voice['name']}",
@@ -47,7 +48,10 @@ class ExampleWorkflow:
         results = await asyncio.gather(*tasks)
 
         for i, result in enumerate(results, start=1):
-            log.info(f"ChildWorkflow {i} completed", audiofile_path=result["audiofile_path"])
+            log.info(
+                f"ChildWorkflow {i} completed",
+                audiofile_path=result["audiofile_path"],
+            )
 
         return {
             "results": [result["audiofile_path"] for result in results],

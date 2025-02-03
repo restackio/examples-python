@@ -7,6 +7,7 @@ from src.workflows.transcribe_translate import WorkflowInputParams
 
 load_dotenv()
 
+
 async def main(input: WorkflowInputParams):
     client = Restack()
 
@@ -28,8 +29,12 @@ async def main(input: WorkflowInputParams):
 
     exit(0)
 
+
 def run_schedule_workflow():
-    asyncio.run(main(WorkflowInputParams(file_path="./test.mp3", target_language="Spanish")))
+    asyncio.run(
+        main(WorkflowInputParams(file_path="./test.mp3", target_language="Spanish")),
+    )
+
 
 if __name__ == "__main__":
     run_schedule_workflow()

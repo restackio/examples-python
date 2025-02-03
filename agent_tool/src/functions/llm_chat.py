@@ -13,11 +13,13 @@ from restack_ai.function import function, log
 
 load_dotenv()
 
+
 class Message(BaseModel):
     role: Literal["system", "user", "assistant", "tool"]
     content: str
     tool_call_id: str | None = None
     tool_calls: list[ChatCompletionMessageToolCall] | None = None
+
 
 class LlmChatInput(BaseModel):
     system_content: str | None = None
@@ -25,19 +27,22 @@ class LlmChatInput(BaseModel):
     messages: list[Message] | None = None
     tools: list[ChatCompletionToolParam] | None = None
 
+
 @function.defn()
 async def llm_chat(input: LlmChatInput) -> ChatCompletion:
     try:
         log.info("llm_chat function started", input=input)
-        client = OpenAI(base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY"))
-
-
-
+        client = OpenAI(
+            base_url="https://ai.restack.io",
+            api_key=os.environ.get("RESTACK_API_KEY"),
+        )
 
         log.info("pydantic_function_tool", tools=input.tools)
 
         if input.system_content:
-            input.messages.append(Message(role="system", content=input.system_content or ""))
+            input.messages.append(
+                Message(role="system", content=input.system_content or ""),
+            )
 
         response = client.chat.completions.create(
             model=input.model or "restack-c1",

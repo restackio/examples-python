@@ -7,8 +7,10 @@ with import_functions():
     from src.functions.openai_chat import OpenAiChatInput, openai_chat
     from src.functions.torch_ocr import OcrInput, torch_ocr
 
+
 class PdfWorkflowInput(BaseModel):
     file_upload: list[dict] = Field(files=True)
+
 
 @workflow.defn()
 class PdfWorkflow:

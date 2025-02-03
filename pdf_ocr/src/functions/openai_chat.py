@@ -7,18 +7,19 @@ from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
+
 class OpenAiChatInput(BaseModel):
     user_content: str
     system_content: str | None = None
     model: str | None = None
+
 
 @function.defn()
 async def openai_chat(input: OpenAiChatInput) -> str:
     try:
         log.info("openai_chat function started", input=input)
 
-
-        if (os.environ.get("OPENAI_API_KEY") is None):
+        if os.environ.get("OPENAI_API_KEY") is None:
             raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
 
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))

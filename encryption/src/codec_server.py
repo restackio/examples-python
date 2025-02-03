@@ -20,7 +20,8 @@ def build_codec_server() -> web.Application:
 
     # General purpose payloads-to-payloads
     async def apply(
-        fn: Callable[[Iterable[Payload]], Awaitable[list[Payload]]], req: web.Request,
+        fn: Callable[[Iterable[Payload]], Awaitable[list[Payload]]],
+        req: web.Request,
     ) -> web.Response:
         # Read payloads as JSON
         assert req.content_type == "application/json"
@@ -46,6 +47,7 @@ def build_codec_server() -> web.Application:
         ],
     )
     return app
+
 
 def run_codec_server():
     web.run_app(build_codec_server(), host="127.0.0.1", port=8081)

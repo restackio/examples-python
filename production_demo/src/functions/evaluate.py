@@ -6,13 +6,17 @@ from restack_ai.function import FunctionFailure, function, log
 class EvaluateInput(BaseModel):
     generated_text: str
 
+
 @function.defn()
 async def llm_evaluate(input: EvaluateInput) -> str:
     try:
-        client = OpenAI(base_url="http://192.168.205.1:1234/v1/",api_key="llmstudio")
+        client = OpenAI(base_url="http://192.168.205.1:1234/v1/", api_key="llmstudio")
     except Exception as e:
         log.error(f"Failed to create LLM client {e}")
-        raise FunctionFailure(f"Failed to create OpenAI client {e}", non_retryable=True) from e
+        raise FunctionFailure(
+            f"Failed to create OpenAI client {e}",
+            non_retryable=True,
+        ) from e
 
     prompt = (
         f"Evaluate the following joke for humor, creativity, and originality. "

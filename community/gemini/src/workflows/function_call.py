@@ -6,8 +6,10 @@ from restack_ai.workflow import RetryPolicy, import_functions, log, workflow
 with import_functions():
     from src.functions.function_call import FunctionInputParams, gemini_function_call
 
+
 class WorkflowInputParams(BaseModel):
     user_content: str = "what's the weather in San Francisco?"
+
 
 @workflow.defn()
 class GeminiFunctionCallWorkflow:

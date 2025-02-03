@@ -9,8 +9,10 @@ with import_functions():
         gemini_generate_content,
     )
 
+
 class WorkflowInputParams(BaseModel):
     user_content: str = "what's the weather in San Francisco?"
+
 
 @workflow.defn()
 class GeminiGenerateContentWorkflow:

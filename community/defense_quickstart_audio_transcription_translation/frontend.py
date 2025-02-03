@@ -7,7 +7,6 @@ import streamlit as st
 st.title("Defense Hackathon Quickstart: War Audio Transcription & Translation")
 
 
-
 uploaded_files = st.file_uploader("Choose a files", accept_multiple_files=True)
 
 if uploaded_files:
@@ -34,17 +33,21 @@ if st.button("Process Audio"):
 
                     results = response.json()["result"]
                     for idx, uploaded_file in enumerate(uploaded_files):
-                        st.session_state.response_history.append({
-                            "file_name": uploaded_file.name,
-                            "file_type": uploaded_file.type,
-                            "transcription": results[idx]["transcription"],
-                            "translation": results[idx]["translation"],
-                    })
+                        st.session_state.response_history.append(
+                            {
+                                "file_name": uploaded_file.name,
+                                "file_type": uploaded_file.type,
+                                "transcription": results[idx]["transcription"],
+                                "translation": results[idx]["translation"],
+                            },
+                        )
                 else:
                     st.error(f"Error: {response.status_code}")
 
         except requests.exceptions.ConnectionError:
-            st.error("Failed to connect to the server. Make sure the FastAPI server is running.")
+            st.error(
+                "Failed to connect to the server. Make sure the FastAPI server is running.",
+            )
     else:
         st.warning("Please upload a file before submitting.")
 

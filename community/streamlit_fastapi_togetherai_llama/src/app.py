@@ -12,6 +12,7 @@ from restack_ai import Restack
 class PromptRequest:
     prompt: str
 
+
 app = FastAPI()
 
 # Add CORS middleware
@@ -23,9 +24,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 async def home():
     return "Welcome to the TogetherAI LlamaIndex FastAPI App!"
+
 
 @app.post("/api/schedule")
 async def schedule_workflow(request: PromptRequest):
@@ -49,9 +52,11 @@ async def schedule_workflow(request: PromptRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+
 # Remove Flask-specific run code since FastAPI uses uvicorn
 def run_app():
     uvicorn.run("src.app:app", host="0.0.0.0", port=8000, reload=True)
+
 
 if __name__ == "__main__":
     run_app()

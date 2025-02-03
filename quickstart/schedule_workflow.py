@@ -6,7 +6,6 @@ from src.workflows.workflow import GreetingWorkflowInput
 
 
 async def main():
-
     client = Restack()
 
     workflow_id = f"{int(time.time() * 1000)}-GreetingWorkflow"
@@ -23,8 +22,10 @@ async def main():
 
     exit(0)
 
+
 def run_schedule_workflow():
     asyncio.run(main())
+
 
 if __name__ == "__main__":
     run_schedule_workflow()

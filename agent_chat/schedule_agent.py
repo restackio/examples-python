@@ -7,7 +7,6 @@ from agent_chat.src.agents.agent import AgentChatInput
 
 
 async def main():
-
     client = Restack()
 
     workflow_id = f"{int(time.time() * 1000)}-AgentChat"
@@ -24,8 +23,10 @@ async def main():
 
     exit(0)
 
+
 def run_schedule_agent():
     asyncio.run(main())
+
 
 if __name__ == "__main__":
     run_schedule_agent()

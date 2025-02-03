@@ -16,6 +16,7 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+
 def run_async(coro):
     loop = asyncio.new_event_loop()
     return loop.run_until_complete(coro)
@@ -46,13 +47,19 @@ def chat_completion():
 
         for message in messages:
             part = genai.protos.Part(text=message["content"])
-            role = "model" if message["role"] in ["system", "assistant"] else message["role"]
+            role = (
+                "model"
+                if message["role"] in ["system", "assistant"]
+                else message["role"]
+            )
             content = genai.protos.Content(parts=[part], role=role)
             content_objects.append(content)
 
         # Start the completion stream
 
-        completion_stream = genai.GenerativeModel("models/gemini-1.5-flash").generate_content(
+        completion_stream = genai.GenerativeModel(
+            "models/gemini-1.5-flash",
+        ).generate_content(
             contents=content_objects,
             stream=True,
         )
@@ -81,8 +88,10 @@ def test_route():
     print("Test route accessed")
     return "Test route is working", 200
 
+
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 def run_llm():
     app.run(debug=True, host="0.0.0.0", port=1337)

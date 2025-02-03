@@ -5,6 +5,7 @@ from restack_ai.function import function, log
 class WelcomeInput(BaseModel):
     name: str
 
+
 @function.defn()
 async def welcome(input: WelcomeInput) -> str:
     try:

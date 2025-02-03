@@ -27,15 +27,19 @@ if st.button("Generate Response"):
             if response.status_code == 200:
                 st.success("Response received!")
                 # Add the new response to history with the original prompt
-                st.session_state.response_history.append({
-                    "prompt": user_prompt,
-                    "response": response.json()["result"],
-                })
+                st.session_state.response_history.append(
+                    {
+                        "prompt": user_prompt,
+                        "response": response.json()["result"],
+                    },
+                )
             else:
                 st.error(f"Error: {response.status_code}")
 
         except requests.exceptions.ConnectionError:
-            st.error("Failed to connect to the server. Make sure the FastAPI server is running.")
+            st.error(
+                "Failed to connect to the server. Make sure the FastAPI server is running.",
+            )
     else:
         st.warning("Please enter a prompt before submitting.")
 

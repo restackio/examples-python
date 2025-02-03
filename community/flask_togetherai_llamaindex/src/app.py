@@ -7,15 +7,16 @@ from restack_ai import Restack
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route("/")
 def home():
     return "Welcome to the TogetherAI LlamaIndex Flask App!"
+
 
 # New endpoint to schedule workflow and get back result
 @app.route("/api/schedule", methods=["POST"])
 async def schedule_workflow():
     if request.is_json:
-
         prompt = request.json.get("prompt")
         client = Restack()
 
@@ -35,8 +36,10 @@ async def schedule_workflow():
 
     return jsonify({"error": "Request must be JSON"}), 400
 
+
 def run_flask():
     app.run(debug=True)
+
 
 if __name__ == "__main__":
     run_flask()

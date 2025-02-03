@@ -13,14 +13,17 @@ with import_functions():
     )
     from src.functions.translate import translate
 
+
 @dataclass
 class WorkflowInputParams:
     file_data: tuple[str, str]
+
 
 @dataclass
 class WorkflowOutputParams:
     transcription: str
     translation: str
+
 
 @workflow.defn()
 class ChildWorkflow:
@@ -45,7 +48,11 @@ class ChildWorkflow:
             start_to_close_timeout=timedelta(seconds=120),
         )
 
-        log.info("ChildWorkflow completed", transcription=transcription["text"], translation=translation["content"])
+        log.info(
+            "ChildWorkflow completed",
+            transcription=transcription["text"],
+            translation=translation["content"],
+        )
         return WorkflowOutputParams(
             transcription=transcription["text"],
             translation=translation["content"],

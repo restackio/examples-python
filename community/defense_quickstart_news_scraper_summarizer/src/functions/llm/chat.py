@@ -11,10 +11,12 @@ class ResponseFormat:
     description: str
     schema: dict
 
+
 @dataclass
 class FunctionInputParams:
     user_prompt: str
     model: str | None = None
+
 
 @function.defn()
 async def llm_chat(input: FunctionInputParams) -> str:
@@ -24,7 +26,10 @@ async def llm_chat(input: FunctionInputParams) -> str:
         openbabylon_url = os.environ.get("OPENBABYLON_API_URL")
         log.info("openbabylon_url", openbabylon_url=openbabylon_url)
 
-        client = OpenAI(api_key="openbabylon",base_url=os.environ.get("OPENBABYLON_API_URL"))
+        client = OpenAI(
+            api_key="openbabylon",
+            base_url=os.environ.get("OPENBABYLON_API_URL"),
+        )
 
         messages = []
         if input.user_prompt:

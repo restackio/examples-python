@@ -17,8 +17,10 @@ def get_current_weather(location: str) -> str:
     log.info("get_current_weather function started", location=location)
     return "sunny"
 
+
 class FunctionInputParams(BaseModel):
     user_content: str
+
 
 @function.defn()
 async def gemini_function_call(input: FunctionInputParams) -> str:

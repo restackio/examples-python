@@ -11,6 +11,7 @@ from src.client import client
 class QueryRequest:
     file_data: list[tuple[str, str]]
 
+
 app = FastAPI()
 
 # Add CORS middleware
@@ -22,9 +23,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 async def home():
     return "Welcome to the Quickstart: War Denoise example"
+
 
 @app.post("/api/process_audio")
 async def schedule_workflow(request: QueryRequest):
@@ -51,9 +54,11 @@ async def schedule_workflow(request: QueryRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+
 # Remove Flask-specific run code since FastAPI uses uvicorn
 def run_app():
     uvicorn.run("src.app:app", host="0.0.0.0", port=8000, reload=True)
+
 
 if __name__ == "__main__":
     run_app()

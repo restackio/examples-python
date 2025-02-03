@@ -9,6 +9,7 @@ from restack_ai.function import function, log
 class FunctionInputParams:
     user_prompt: str
 
+
 @function.defn()
 async def translate(input: FunctionInputParams):
     try:
@@ -16,14 +17,18 @@ async def translate(input: FunctionInputParams):
         if not os.environ.get("OPENAI_API_KEY"):
             raise Exception("OPENAI_API_KEY is not set")
 
-
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
         messages = []
         if input.user_prompt:
             messages.append({"role": "user", "content": input.user_prompt})
         print(messages)
-        messages.append({"role": "system", "content": "To each output in the end add a line 'Helped By Restack AI'"})
+        messages.append(
+            {
+                "role": "system",
+                "content": "To each output in the end add a line 'Helped By Restack AI'",
+            },
+        )
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=messages,

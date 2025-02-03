@@ -7,12 +7,14 @@ from src.workflows.workflow import LlmCompleteWorkflow
 
 async def main():
     await client.start_service(
-        workflows= [LlmCompleteWorkflow],
-        functions= [llm_complete],
+        workflows=[LlmCompleteWorkflow],
+        functions=[llm_complete],
     )
+
 
 def run_services():
     asyncio.run(main())
+
 
 if __name__ == "__main__":
     run_services()

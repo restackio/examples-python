@@ -9,6 +9,7 @@ with import_functions():
     )
     from src.functions.send_email import SendEmailInput, send_email
 
+
 @workflow.defn()
 class ChildWorkflowA:
     @workflow.run

@@ -12,9 +12,10 @@ from src.workflows.parent import ParentWorkflow
 
 async def main():
     await client.start_service(
-        workflows= [ParentWorkflow, ChildWorkflow],
-        functions= [welcome],
+        workflows=[ParentWorkflow, ChildWorkflow],
+        functions=[welcome],
     )
+
 
 def run_services():
     try:
@@ -29,5 +30,6 @@ def watch_services():
     webbrowser.open("http://localhost:5233")
     run_process(watch_path, recursive=True, target=run_services)
 
+
 if __name__ == "__main__":
-       run_services()
+    run_services()

@@ -7,11 +7,13 @@ from restack_ai.function import function, log
 
 load_dotenv()
 
+
 @dataclass
 class FunctionInputParams:
     user_content: str
     system_content: str | None = None
     model: str | None = None
+
 
 @function.defn()
 async def openai_greet(input: FunctionInputParams) -> str:

@@ -1,4 +1,5 @@
 """Client module for LMNT API integration."""
+
 import os
 
 from dotenv import load_dotenv
@@ -6,9 +7,10 @@ from lmnt.api import Speech
 
 load_dotenv()
 
+
 async def lmnt_client() -> Speech:
     """Initialize and return LMNT Speech client.
-    
+
     Raises:
         ValueError: If LMNT_API_KEY environment variable is not set
         RuntimeError: If client initialization fails

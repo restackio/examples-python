@@ -5,7 +5,6 @@ from src.client import client
 
 
 async def main():
-
     workflow_id = f"{int(time.time() * 1000)}-SpotWorkflow"
     run_id = await client.schedule_workflow(
         workflow_name="SpotWorkflow",
@@ -19,8 +18,10 @@ async def main():
 
     exit(0)
 
+
 def run_schedule_workflow():
     asyncio.run(main())
+
 
 if __name__ == "__main__":
     run_schedule_workflow()

@@ -7,20 +7,20 @@ from restack_ai import Restack
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
+
 # Function to trigger a workflow
 async def trigger_workflow(workflow_name, workflow_id, input_data):
-
     try:
         client = Restack()
         run_id = await client.schedule_workflow(
-          workflow_name= workflow_name,
-          workflow_id= workflow_id,
-          input= input_data,
+            workflow_name=workflow_name,
+            workflow_id=workflow_id,
+            input=input_data,
         )
 
         result = await client.get_workflow_result(
-        workflow_id=workflow_id,
-        run_id=run_id,
+            workflow_id=workflow_id,
+            run_id=run_id,
         )
         print(result)
 
@@ -28,6 +28,7 @@ async def trigger_workflow(workflow_name, workflow_id, input_data):
     except Exception as e:
         st.error(f"Failed to trigger workflow: {e!s}")
         return None
+
 
 # Streamlit UI
 st.title("Trigger Restack Workflow")

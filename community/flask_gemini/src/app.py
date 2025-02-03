@@ -8,18 +8,22 @@ from restack_ai import Restack
 app = Flask(__name__)
 CORS(app)
 
+
 # Example route for the home page
 @app.route("/")
 def home():
     return "Welcome to the Flask App!"
 
+
 @app.route("/test", methods=["GET", "POST"])
 def test_route():
     return "This is a test route", 200
 
+
 @dataclass
 class InputParams:
     user_content: str
+
 
 # New endpoint to schedule workflow and get back result
 @app.route("/api/schedule", methods=["POST"])
@@ -49,6 +53,7 @@ async def schedule_workflow():
 
 def run_flask():
     app.run(debug=True)
+
 
 if __name__ == "__main__":
     run_flask()

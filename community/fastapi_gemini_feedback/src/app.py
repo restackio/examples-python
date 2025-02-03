@@ -8,21 +8,22 @@ from restack_ai import Restack
 app = FastAPI()
 
 
-
 @app.get("/")
 async def home():
     return {"message": "Welcome to the FastAPI App!"}
+
 
 @app.get("/test")
 async def test_route():
     return {"message": "This is a test route"}
 
+
 class InputParams(BaseModel):
     user_content: str
 
+
 @app.post("/api/schedule")
 async def schedule_workflow(data: InputParams):
-
     print(data)
 
     client = Restack()
@@ -41,10 +42,12 @@ async def schedule_workflow(data: InputParams):
         "run_id": run_id,
     }
 
+
 class FeedbackParams(BaseModel):
     workflow_id: str
     run_id: str
     feedback: str
+
 
 @app.post("/api/event/feedback")
 async def send_event_feedback(data: FeedbackParams):
@@ -59,9 +62,11 @@ async def send_event_feedback(data: FeedbackParams):
         event_input={"feedback": data.feedback},
     )
 
+
 class EndParams(BaseModel):
     workflow_id: str
     run_id: str
+
 
 @app.post("/api/event/end")
 async def send_event_end(data: EndParams):
@@ -73,8 +78,10 @@ async def send_event_end(data: EndParams):
         event_name="event_end",
     )
 
+
 def run_app():
     uvicorn.run("src.app:app", host="0.0.0.0", port=5001, reload=True)
+
 
 if __name__ == "__main__":
     run_app()

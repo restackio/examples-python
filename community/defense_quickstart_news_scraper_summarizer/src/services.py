@@ -25,8 +25,10 @@ async def main():
         ),
     )
 
+
 def run_services():
     asyncio.run(main())
+
 
 if __name__ == "__main__":
     run_services()

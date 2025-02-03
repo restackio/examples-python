@@ -8,6 +8,7 @@ from restack_ai.function import function, log
 class FunctionInputParams:
     file_data: tuple[str, str]
 
+
 @function.defn()
 async def denoise(input: FunctionInputParams):
     try:

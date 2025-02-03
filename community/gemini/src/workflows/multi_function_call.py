@@ -9,8 +9,10 @@ with import_functions():
         gemini_multi_function_call,
     )
 
+
 class WorkflowInputParams(BaseModel):
     user_content: str = "what's the weather in San Francisco?"
+
 
 @workflow.defn()
 class GeminiMultiFunctionCallWorkflow:

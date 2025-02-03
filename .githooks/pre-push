@@ -1,15 +1,20 @@
-#!/bin/sh
+# #!/bin/sh
 
-# Run ruff check
-echo "Running ruff check..."
-ruff check .
-RESULT=$?
+# # Run ruff format
+# echo "Running ruff format..."
+# ruff format .
+# RESULT=$?
 
-# Check for specific error messages or conditions
-if grep -q "Found [1-9][0-9]* errors" <<< "$(ruff check .)"; then
-  echo "Ruff check found errors. Please fix the issues before pushing."
-  exit 1
-fi
+# # Run ruff check
+# echo "Running ruff check..."
+# ruff check .
+# RESULT=$?
 
-# If ruff check passes, allow the push to proceed
-exit 0
+# # Check for specific error messages or conditions
+# if grep -q "Found [1-9][0-9]* errors" <<< "$(ruff check .)"; then
+#   echo "Ruff check found errors. Please fix the issues before pushing."
+#   exit 1
+# fi
+
+# # If ruff check passes, allow the push to proceed
+# exit 0

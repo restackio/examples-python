@@ -8,9 +8,11 @@ from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
+
 class FunctionInputParams(BaseModel):
     system_prompt: str
     user_prompt: str
+
 
 @function.defn()
 async def llm_chat(input: FunctionInputParams):
@@ -21,14 +23,17 @@ async def llm_chat(input: FunctionInputParams):
             raise ValueError("TOGETHER_API_KEY environment variable is required.")
 
         llm = TogetherLLM(
-            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo", api_key=api_key,
+            model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo",
+            api_key=api_key,
         )
         messages = [
             ChatMessage(
-                role=MessageRole.SYSTEM, content=input.system_prompt,
+                role=MessageRole.SYSTEM,
+                content=input.system_prompt,
             ),
             ChatMessage(
-                role=MessageRole.USER, content=input.user_prompt,
+                role=MessageRole.USER,
+                content=input.user_prompt,
             ),
         ]
         resp = llm.chat(messages)

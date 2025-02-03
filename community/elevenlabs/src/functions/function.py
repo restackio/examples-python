@@ -74,8 +74,10 @@ async def text_to_speech(input: dict) -> dict:
         log.error("text_to_speech function failed", error=str(e))
         raise e
 
+
 # Initialize logger
-#log = logging.getLogger(__name__)
+# log = logging.getLogger(__name__)
+
 
 @function.defn()
 async def isolate_audio(input: dict) -> dict:
@@ -121,8 +123,14 @@ async def isolate_audio(input: dict) -> dict:
 
         # Check response status
         if response.status_code != 200:
-            log.error("Audio isolation failed", status_code=response.status_code, response=response.text)
-            raise ValueError(f"API request failed with status code {response.status_code}: {response.text}")
+            log.error(
+                "Audio isolation failed",
+                status_code=response.status_code,
+                response=response.text,
+            )
+            raise ValueError(
+                f"API request failed with status code {response.status_code}: {response.text}",
+            )
 
         # Extract the audio payload
         isolated_audio = response.content

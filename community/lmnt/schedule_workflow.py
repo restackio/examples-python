@@ -6,7 +6,6 @@ from src.workflows.child import ChildWorkflowInput
 
 
 async def main():
-
     workflow_id = f"{int(time.time() * 1000)}-ChildWorkflow"
     run_id = await client.schedule_workflow(
         workflow_name="ChildWorkflow",
@@ -21,8 +20,10 @@ async def main():
 
     exit(0)
 
+
 def run_schedule_workflow():
     asyncio.run(main())
+
 
 if __name__ == "__main__":
     run_schedule_workflow()

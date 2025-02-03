@@ -7,6 +7,7 @@ with import_functions():
     from src.functions.denoise import FunctionInputParams as DenoiseFunctionInputParams
     from src.functions.denoise import denoise
 
+
 @dataclass
 class WorkflowInputParams:
     file_data: tuple[str, str]

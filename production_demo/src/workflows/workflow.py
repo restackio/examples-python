@@ -9,8 +9,10 @@ from .child import ChildWorkflow, ChildWorkflowInput
 with import_functions():
     from src.functions.generate import GenerateInput, llm_generate
 
+
 class ExampleWorkflowInput(BaseModel):
     amount: int = Field(default=50)
+
 
 @workflow.defn()
 class ExampleWorkflow:
@@ -37,7 +39,9 @@ class ExampleWorkflow:
 
         generated_text = await workflow.step(
             llm_generate,
-            GenerateInput(prompt=f"Give me the top 3 unique jokes according to the results. {results}"),
+            GenerateInput(
+                prompt=f"Give me the top 3 unique jokes according to the results. {results}",
+            ),
             task_queue="llm",
             start_to_close_timeout=timedelta(minutes=2),
         )
@@ -46,4 +50,3 @@ class ExampleWorkflow:
             "top_jokes": generated_text,
             "results": results,
         }
-

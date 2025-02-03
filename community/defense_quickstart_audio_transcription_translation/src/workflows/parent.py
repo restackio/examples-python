@@ -9,6 +9,7 @@ from .child import ChildWorkflow
 class WorkflowInputParams:
     file_data: list[tuple[str, str]]
 
+
 @workflow.defn()
 class ParentWorkflow:
     @workflow.run
@@ -19,11 +20,13 @@ class ParentWorkflow:
 
         child_workflow_results = []
         for file_data in input.file_data:
-            result = await workflow.child_execute(ChildWorkflow, workflow_id=f"{parent_workflow_id}-child-execute-{file_data[0]}", input=WorkflowInputParams(file_data=file_data))
+            result = await workflow.child_execute(
+                ChildWorkflow,
+                workflow_id=f"{parent_workflow_id}-child-execute-{file_data[0]}",
+                input=WorkflowInputParams(file_data=file_data),
+            )
             child_workflow_results.append(result)
 
         log.info("ParentWorkflow completed", results=child_workflow_results)
 
         return child_workflow_results
-
-

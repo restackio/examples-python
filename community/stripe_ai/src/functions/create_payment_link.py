@@ -10,6 +10,7 @@ from stripe_agent_toolkit.langchain.toolkit import StripeAgentToolkit
 
 load_dotenv()
 
+
 @function.defn()
 async def create_payment_link():
     stripe_secret_key = os.getenv("STRIPE_SECRET_KEY")
@@ -20,7 +21,7 @@ async def create_payment_link():
         raise FunctionFailure("STRIPE_SECRET_KEY is not set", non_retryable=True)
 
     if langchain_api_key is None:
-       raise FunctionFailure("LANGCHAIN_API_KEY is not set", non_retryable=True)
+        raise FunctionFailure("LANGCHAIN_API_KEY is not set", non_retryable=True)
 
     if openai_api_key is None:
         raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
@@ -29,17 +30,17 @@ async def create_payment_link():
         stripe_agent_toolkit = StripeAgentToolkit(
             secret_key=stripe_secret_key,
             configuration={
-            "actions": {
-                "payment_links": {
-                    "create": True,
+                "actions": {
+                    "payment_links": {
+                        "create": True,
+                    },
+                    "products": {
+                        "create": True,
+                    },
+                    "prices": {
+                        "create": True,
+                    },
                 },
-                "products": {
-                    "create": True,
-                },
-                "prices": {
-                    "create": True,
-                },
-            },
             },
         )
 
@@ -47,12 +48,21 @@ async def create_payment_link():
 
         prompt = hub.pull("hwchase17/structured-chat-agent")
 
-        agent = create_structured_chat_agent(model, stripe_agent_toolkit.get_tools(), prompt)
-        agent_executor = AgentExecutor(agent=agent, tools=stripe_agent_toolkit.get_tools())
+        agent = create_structured_chat_agent(
+            model,
+            stripe_agent_toolkit.get_tools(),
+            prompt,
+        )
+        agent_executor = AgentExecutor(
+            agent=agent,
+            tools=stripe_agent_toolkit.get_tools(),
+        )
 
-        result = agent_executor.invoke({
-          "input": 'Create a payment link for a new product called "Test" with a price of $100.',
-        })
+        result = agent_executor.invoke(
+            {
+                "input": 'Create a payment link for a new product called "Test" with a price of $100.',
+            },
+        )
 
         return result["output"]
     except Exception as e:

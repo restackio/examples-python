@@ -10,14 +10,20 @@ with import_functions():
 class ChildInput(BaseModel):
     name: str = "world"
 
+
 class ChildOutput(BaseModel):
     result: str
+
 
 @workflow.defn()
 class ChildWorkflow:
     @workflow.run
     async def run(self, input: ChildInput) -> ChildOutput:
         log.info("ChildWorkflow started")
-        result = await workflow.step(welcome, input=input.name, start_to_close_timeout=timedelta(seconds=120))
+        result = await workflow.step(
+            welcome,
+            input=input.name,
+            start_to_close_timeout=timedelta(seconds=120),
+        )
         log.info("ChildWorkflow completed", result=result)
         return ChildOutput(result=result)
