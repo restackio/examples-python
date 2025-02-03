@@ -6,13 +6,15 @@ authors = []
 requires-python = ">=3.10,<4.0"
 readme = "README.md"
 dependencies = [
+    "pydantic>=2.10.6",
+    "restack-ai==0.0.58",
+    "watchfiles>=1.0.4",
+    "python-dotenv==1.0.1",
     "flask==3.0.3",
     "requests==2.32.3",
     "aiohttp==3.10.10",
-    "python-dotenv==1.0.1",
     "flask-cors==5.0.0",
     "rich==13.9.2",
-    "pydantic==2.9.2",
     "google-generativeai==0.8.3",
     "h11==0.14.0",
 ]

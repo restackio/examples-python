@@ -6,7 +6,10 @@ authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.10,<4.0"
 readme = "README.md"
 dependencies = [
-    "restack-ai>=0.0.55,<0.0.56",
+    "pydantic>=2.10.6",
+    "restack-ai==0.0.58",
+    "watchfiles>=1.0.4",
+    "python-dotenv==1.0.1",
     "streamlit==1.39.0",
     "blinker==1.8.2",
 ]

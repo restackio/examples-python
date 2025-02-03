@@ -6,13 +6,15 @@ authors = [{ name = "Restack Team", email = "service@restack.io" }]
 requires-python = ">=3.10,<4.0"
 readme = "README.md"
 dependencies = [
+    "pydantic>=2.10.6",
+    "restack-ai==0.0.58",
+    "watchfiles>=1.0.4",
+    "python-dotenv==1.0.1",
     "fastapi==0.115.4",
     "uvicorn==0.32.0",
-    "python-dotenv==1.0.1",
     "streamlit==1.40.0",
     "requests==2.32.3",
     "sievedata==1.3.0",
-    "restack-ai>=0.0.55,<0.0.56",
 ]
 
 [project.scripts]
