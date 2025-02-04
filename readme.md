@@ -3,13 +3,14 @@
 This repository contains various examples demonstrating how to use the Restack AI Python SDK. These examples are designed to help you get started with Restack AI and showcase different features and use cases.
 
 This repository is organized into two sections:
+
 - [Official examples](/): Actively maintained and tested by the Restack team
 - [Community](/community) examples: Contributed by the community and may not be regularly updated
 
 ## Prerequisites
 
 - Python 3.12 or higher
-- Poetry (for dependency management)
+- Uv (for dependency management)
 
 ## Getting Started
 

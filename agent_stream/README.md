@@ -24,12 +24,6 @@ If using uv:
 uv venv && source .venv/bin/activate
 ```
 
-If using poetry:
-
-```bash
-poetry env use 3.12 && poetry shell
-```
-
 If using pip:
 
 ```bash
@@ -45,13 +39,6 @@ uv sync
 uv run dev
 ```
 
-If using poetry:
-
-```bash
-poetry install
-poetry run dev
-```
-
 If using pip:
 
 ```bash
@@ -63,25 +50,25 @@ python -c "from src.services import watch_services; watch_services()"
 
 ### from UI
 
-You can run workflows from the UI by clicking the "Run" button.
+You can run agents from the UI by clicking the "Run" button.
 
 ![Run workflows from UI](./chat_post.png)
 
 ### from API
 
-You can run workflows from the API by using the generated endpoint:
+You can run agents from the API by using the generated endpoint:
 
-`POST http://localhost:6233/api/workflows/AgentWorkflow`
+`POST http://localhost:6233/api/agents/AgentStream`
 
 ### from any client
 
-You can run workflows with any client connected to Restack, for example:
+You can run agents with any client connected to Restack, for example:
 
 ```bash
-poetry run schedule
+uv run schedule
 ```
 
-executes `schedule_workflow.py` which will connect to Restack and execute the `AgentWorkflow` workflow.
+executes `schedule_agent.py` which will connect to Restack and execute the `AgentStream` workflow.
 
 ## Send events to the Agent
 
@@ -99,7 +86,7 @@ And see the events in the run:
 
 You can send events to the agent by using the following endpoint:
 
-`PUT http://localhost:6233/api/workflows/AgentWorkflow/:workflowId/:runId`
+`PUT http://localhost:6233/api/agents/AgentStream/:agentId/:runId`
 
 with the payload:
 
@@ -126,10 +113,10 @@ to end the conversation with the agent.
 
 You can send event to the agent workflows with any client connected to Restack, for example:
 
-Modify workflow_id and run_id in event_workflow.py and then run:
+Modify agent_id and run_id in event_agent.py and then run:
 
 ```bash
-poetry run event
+uv run event
 ```
 
 It will connect to Restack and send 2 events to the agent, one to generate another agent and another one to end the conversation.

@@ -3,5 +3,4 @@ __pycache__
 venv
 .env
 .vscode
-poetry.lock
 uv.lock
