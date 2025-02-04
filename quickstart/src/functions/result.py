@@ -4,7 +4,7 @@ import random
 
 
 class ResultParams(BaseModel):
-    todoTile: str
+    todoTitle: str
     todoId: str
 
 

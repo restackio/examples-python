@@ -43,7 +43,7 @@ async def llm_chat(input: LlmChatInput) -> ChatCompletion:
             )
 
         response = client.chat.completions.create(
-            model=input.model or "restack-c1",
+            model=input.model or "gpt-4o-mini",
             messages=input.messages,
             tools=input.tools,
         )

@@ -1,7 +1,7 @@
 # Restack AI - Quickstart
 
 This repository contains a quickstart for Restack.
-It demonstrates how to set up a basic workflow and functions.
+It demonstrates how to set up a basic agent with tool call with a basic workflow and functions.
 
 ## Prerequisites
 
@@ -46,23 +46,23 @@ pip install -e .
 python -c "from src.services import watch_services; watch_services()"
 ```
 
-## Run workflows
+## Run agents
 
 ### from UI
 
-You can run workflows from the UI by clicking the "Run" button.
+You can run agents from the UI by clicking the "Run" button.
 
-![Run workflows from UI](./screenshot-quickstart.png)
+![Run agents from UI](./todo_put.png)
 
 ### from API
 
-You can run workflows from the API by using the generated endpoint:
+You can run agents from the API by using the generated endpoint:
 
-`POST http://localhost:6233/api/workflows/GreetingWorkflow`
+`POST http://localhost:6233/api/agents/AgentTodo`
 
 ### from any client
 
-You can run workflows with any client connected to Restack, for example:
+You can run agents with any client connected to Restack, for example:
 
 If using uv:
 
@@ -73,10 +73,63 @@ uv run schedule
 If using pip:
 
 ```bash
-python -c "from schedule_workflow import run_schedule_workflow; run_schedule_workflow()"
+python -c "from schedule import run_schedule; run_schedule()"
 ```
 
-executes `schedule_workflow.py` which will connect to Restack and execute the `GreetingWorkflow` workflow.
+executes `schedule.py` which will connect to Restack and execute the `AgentTodo` agent.
+
+## Send an event to the agent
+
+In our example we will ask the AI agent to create a todo.
+
+### from UI
+
+```
+{
+  "agentId": "{agent_id}",
+  "runId": "{run_id}",
+  "eventName": "message",
+  "eventInput": {
+    "content": "Can you send an email to the CEO?"
+  }
+}
+```
+
+![Send event to agent](./todo_first_message.png)
+
+You can send events to the agent by using the generated endpoint:
+
+`PUT http://localhost:6233/api/agents/AgentTodo/:agentId/:runId`
+
+and the payload:
+
+```
+{
+  "eventName": "message",
+  "eventInput": {
+    "content": "Can you send an email to the CEO?"
+  }
+}
+```
+
+## See the agent run
+
+The LLM will use tool call to create the todo.
+The creation of the todo will be done in a simple function.
+
+You can replay and follow the agent run in the UI.
+
+![Replay agent run](./todo_llm_answer.png)
+
+Now, you can simply trigger more events from the Developer UI.
+
+In this case, the agent will ask permission to execute the todo.
+
+![Send confirmation to agent](./todo_second_message.png)
+
+If confirmed, this time the agent will execute the todo in a 2-step workflow.
+
+![Execute todo workflow](./todo_child_workflow.png)
 
 ## Deploy on Restack Cloud
 

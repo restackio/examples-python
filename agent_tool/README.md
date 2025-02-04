@@ -102,7 +102,7 @@ and the payload:
 
 ## See the agent run
 
-You cna replay and follow the agent run in the UI.
+You can replay and follow the agent run in the UI.
 
 ![Replay agent run](./chat_run.png)
 
