@@ -26,6 +26,8 @@ class AgentTodo:
     async def message(self, message: MessageEvent) -> List[Message]:
         log.info(f"Received message: {message.content}")
 
+        self.messages.append(Message(role="system", content="You are an AI assistant that creates and execute todos. Eveything the user asks needs to be a todo, that needs to be created and then executed if the user wants to."))
+
         tools = [pydantic_function_tool(
             model=TodoCreateParams,
             name=todo_create.__name__,
@@ -33,7 +35,7 @@ class AgentTodo:
         ), pydantic_function_tool(
             model=TodoExecuteParams,
             name=TodoExecute.__name__,
-            description="Execute a todo"
+            description="Execute a todo, needs to be created first and need confirmation from user before executing."
         )]
 
         self.messages.append(Message(role="user", content=message.content or ""))
@@ -55,19 +57,19 @@ class AgentTodo:
 
                 match name:
                     case todo_create.__name__:
-                        args = todo_create.model_validate_json(tool_call.function.arguments)
+                        args = TodoCreateParams.model_validate_json(tool_call.function.arguments)
 
-                        log.info(f"calling {name} with args: {args}")
+                        # log.info(f"calling {name} with args: {args}")
 
-                        result = await agent.step(todo_create, workflow_id=tool_call.id, input=args)
+                        result = await agent.step(todo_create, input=args)
                         self.messages.append(Message(role="tool", tool_call_id=tool_call.id, content=str(result)))
 
                         completion_with_tool_call = await agent.step(llm_chat, LlmChatInput(messages=self.messages, tools=tools), start_to_close_timeout=timedelta(seconds=120))
                         self.messages.append(Message(role="assistant", content=completion_with_tool_call.choices[0].message.content or ""))
                     case TodoExecute.__name__:
-                        args = TodoExecute.model_validate_json(tool_call.function.arguments)
+                        args = TodoExecuteParams.model_validate_json(tool_call.function.arguments)
 
-                        log.info(f"calling {name} with args: {args}")
+                        # log.info(f"calling {name} with args: {args}")
 
                         result = await agent.child_execute(TodoExecute, workflow_id=tool_call.id, input=args)
                         self.messages.append(Message(role="tool", tool_call_id=tool_call.id, content=str(result)))

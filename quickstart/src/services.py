@@ -11,16 +11,10 @@ from watchfiles import run_process
 import webbrowser
 
 async def main():
-
-    await asyncio.gather(
-        client.start_service(
-            workflows=[TodoExecute],
-            functions=[todo_create, get_random, get_result]
-        ),
-        client.start_service(
-            workflows=[AgentTodo],
-            functions=[llm_chat]
-        )
+    await client.start_service(
+        agents=[AgentTodo],
+        workflows=[TodoExecute],
+        functions=[todo_create, get_random, get_result, llm_chat]
     )
 
 def run_services():
