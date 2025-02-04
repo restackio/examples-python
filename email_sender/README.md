@@ -6,11 +6,10 @@ You can schedule two scenarios of the workflow.
 1. It will be successfull and send an email.
 2. The email content generation step will fail once to showcase how Restack handles retries automatically. Once failure is caught, step will be retry automatically and rest of workflow will be executed as expected and email will be sent.
 
-
 ## Prerequisites
 
 - Python 3.10 or higher
-- Poetry (for dependency management)
+- Uv (for dependency management)
 - Docker (for running the Restack services)
 
 ## Start Restack
@@ -23,8 +22,7 @@ docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:723
 
 ## Environment variables
 
-Create .env file with: STRIPE_SECRET_KEY and OPENAI_API_KEY  
-
+Create .env file with: STRIPE_SECRET_KEY and OPENAI_API_KEY
 
 ## Start python shell
 
@@ -32,12 +30,6 @@ If using uv:
 
 ```bash
 uv venv && source .venv/bin/activate
-```
-
-If using poetry:
-
-```bash
-poetry env use 3.12 && poetry shell
 ```
 
 If using pip:
@@ -55,13 +47,6 @@ uv sync
 uv run dev
 ```
 
-If using poetry:
-
-```bash
-poetry install
-poetry run dev
-```
-
 If using pip:
 
 ```bash
@@ -69,19 +54,12 @@ pip install -e .
 python -c "from src.services import watch_services; watch_services()"
 ```
 
-
 ## Run the services:
 
 If using uv:
 
 ```bash
 uv run services
-```
-
-If using poetry:
-
-```bash
-poetry run services
 ```
 
 If using pip:
@@ -98,19 +76,13 @@ If using uv:
 uv run schedule
 ```
 
-If using poetry:
-
-```bash
-poetry run schedule
-```
-
 If using pip:
 
 ```bash
 python -c "from schedule_workflow import run_schedule_workflow; run_schedule_workflow()"
 ```
 
-   This will schedule the `SendEmailWorkflow` and print the result.
+This will schedule the `SendEmailWorkflow` and print the result.
 
 ### To simulate a flow where the step for sending email fails and the retry is automatically handled by Restack AI use run:
 
@@ -118,12 +90,6 @@ If using uv:
 
 ```bash
 uv run schedule_failure
-```
-
-If using poetry:
-
-```bash
-poetry run schedule_failure
 ```
 
 If using pip:

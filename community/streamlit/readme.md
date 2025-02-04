@@ -5,23 +5,15 @@ This example shows how to use Streamlit to trigger a workflow and display the re
 ## Running the example
 
 ```bash
-poetry env use 3.12
+uv venv && source .venv/bin/activate
 ```
 
 ```bash
-poetry shell
-```
-
-```bash
-poetry install
-```
-
-```bash
-poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
+uv sync
 ```
 
 ```
-poetry run streamlit run main.py
+uv run streamlit run main.py
 ```
 
 ## You will need to have Restack Engine running locally.
@@ -34,9 +26,10 @@ And your restack services, for example:
 
 ```
 cd..
-cd examples/get-started
-poetry install
-poetry run services
+cd examples/quickstart
+uv venv && source .venv/bin/activate
+uv install
+uv run services
 ```
 
 In the streamlit UI, you can trigger the workflow with the following:
