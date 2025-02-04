@@ -3,7 +3,7 @@ __pycache__
 venv
 .env
 .vscode
-poetry.lock
+
 
 src/media/*
 !src/media/.gitkeep

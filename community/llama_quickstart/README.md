@@ -9,7 +9,7 @@ The AI workflow will search hacker news based on a query, crawl each project's w
 ## Prerequisites
 
 - Python 3.12 or higher
-- Poetry (for dependency management)
+- Uv (for dependency management)
 - Docker (for running the Restack services)
 - Active [Together AI](https://together.ai) account with API key
 
@@ -33,7 +33,6 @@ Copy `.env.example` to `.env` and add your Together AI API key:
 cp .env.example .env
 # Edit .env and add your TOGETHER_API_KEY
 ```
-   
 
 ## Start python shell
 
@@ -41,12 +40,6 @@ If using uv:
 
 ```bash
 uv venv && source .venv/bin/activate
-```
-
-If using poetry:
-
-```bash
-poetry env use 3.12 && poetry shell
 ```
 
 If using pip:
@@ -64,13 +57,6 @@ uv sync
 uv run services
 ```
 
-If using poetry:
-
-```bash
-poetry install
-poetry run services
-```
-
 If using pip:
 
 ```bash
@@ -86,18 +72,11 @@ If using uv:
 uv run app
 ```
 
-If using poetry:
-
-```bash
-poetry run app
-```
-
 If using pip:
 
 ```bash
 python -c "from src.app import run_app; run_app()"
 ```
-
 
 ## In a new terminal, run the Streamlit frontend
 
@@ -105,12 +84,6 @@ If using uv:
 
 ```bash
 uv run streamlit run frontend.py
-```
-
-If using poetry:
-
-```bash
-poetry run streamlit run frontend.py
 ```
 
 If using pip:

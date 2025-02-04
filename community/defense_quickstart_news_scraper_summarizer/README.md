@@ -18,7 +18,7 @@ No api key is needed, although a dummy api_key="openbabylon" is necessary for op
 ## Prerequisites
 
 - Python 3.12 or higher
-- Poetry (for dependency management)
+- Uv (for dependency management)
 - Docker (for running Restack services)
 
 ## Usage
@@ -42,22 +42,14 @@ No api key is needed, although a dummy api_key="openbabylon" is necessary for op
    cd examples/defense_quickstart_news_scraper_summarizer
    ```
 
-4. Install dependencies using Poetry:
+4. Install dependencies using Uv:
 
    ```bash
-   poetry env use 3.12
+   uv venv && source .venv/bin/activate
    ```
 
    ```bash
-   poetry shell
-   ```
-
-   ```bash
-   poetry install
-   ```
-
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
+   uv sync
    ```
 
 5. Set up your environment variables:
@@ -73,7 +65,7 @@ No api key is needed, although a dummy api_key="openbabylon" is necessary for op
 6. Run the services:
 
    ```bash
-   poetry run services
+   uv run services
    ```
 
    This will start the Restack service with the defined workflows and functions.
@@ -81,17 +73,17 @@ No api key is needed, although a dummy api_key="openbabylon" is necessary for op
 7. In a new terminal, run FastAPI app:
 
    ```bash
-   poetry shell
+   uv venv && source .venv/bin/activate
    ```
 
    ```bash
-   poetry run app
+   uv run app
    ```
 
 8. In a new terminal, run the Streamlit frontend
 
    ```bash
-   poetry run streamlit run frontend.py
+   uv run streamlit run frontend.py
    ```
 
 9. You can test the API endpoint without the Streamlit UI with:

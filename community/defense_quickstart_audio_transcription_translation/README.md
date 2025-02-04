@@ -21,7 +21,7 @@ OPENBABYLON_API_URL=http://64.139.222.109:80/v1
 ## Prerequisites
 
 - Python 3.12 or higher
-- Poetry (for dependency management)
+- Uv (for dependency management)
 - Docker (for running Restack services)
 
 ## Usage
@@ -45,23 +45,15 @@ OPENBABYLON_API_URL=http://64.139.222.109:80/v1
    cd examples/defense_quickstart_audio_transcription_translation
    ```
 
-4. Setup virtual environment with Poetry:
+4. Setup virtual environment with Uv:
 
    ```bash
-   poetry env use 3.12
+   uv venv && source .venv/bin/activate
    ```
 
-   ```bash
-   poetry shell
-   ```
-
-   ```bash
-   poetry install
-   ```
-
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+```bash
+ uv sync
+```
 
 5. Set up your environment variables:
 
@@ -77,7 +69,7 @@ OPENBABYLON_API_URL=http://64.139.222.109:80/v1
 6. Run the services:
 
    ```bash
-   poetry run services
+   uv run services
    ```
 
    This will start the Restack service with the defined workflows and functions.
@@ -85,17 +77,17 @@ OPENBABYLON_API_URL=http://64.139.222.109:80/v1
 7. In a new terminal, run FastAPI app:
 
    ```bash
-   poetry shell
+   uv venv && source .venv/bin/activate
    ```
 
    ```bash
-   poetry run app
+   uv run app
    ```
 
 8. In a new terminal, run the Streamlit frontend
 
    ```bash
-   poetry run streamlit run frontend.py
+   uv run streamlit run frontend.py
    ```
 
 # Deployment
