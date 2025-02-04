@@ -71,7 +71,7 @@ class AgentTodo:
 
                         # log.info(f"calling {name} with args: {args}")
 
-                        result = await agent.child_execute(TodoExecute, workflow_id=tool_call.id, input=args)
+                        result = await agent.child_execute(workflow=TodoExecute, workflow_id=tool_call.id, input=args)
                         self.messages.append(Message(role="tool", tool_call_id=tool_call.id, content=str(result)))
 
                         completion_with_tool_call = await agent.step(llm_chat, LlmChatInput(messages=self.messages, tools=tools), start_to_close_timeout=timedelta(seconds=120))
