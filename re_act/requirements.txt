@@ -69,7 +69,7 @@ python-dotenv==1.0.1
     #   restack-ai
 python-http-client==3.3.7
     # via sendgrid
-restack-ai==0.0.59
+restack-ai==0.0.60
     # via re-act-example (pyproject.toml)
 sendgrid==6.11.0
     # via re-act-example (pyproject.toml)
