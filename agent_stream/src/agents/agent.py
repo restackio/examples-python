@@ -13,7 +13,7 @@ class EndEvent(BaseModel):
     end: bool
 
 @agent.defn()
-class AgentChat:
+class AgentStream:
     def __init__(self) -> None:
         self.end = False
         self.messages = []
