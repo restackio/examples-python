@@ -2,8 +2,10 @@ from restack_ai.function import function, log
 from pydantic import BaseModel
 import random
 
+
 class RandomParams(BaseModel):
     todoTile: str
+
 
 @function.defn()
 async def get_random(params: RandomParams) -> str:
