@@ -62,12 +62,6 @@ If using uv:
 uv run services
 ```
 
-If using poetry:
-
-```bash
-poetry run services
-```
-
 If using pip:
 
 ```bash
@@ -96,12 +90,6 @@ If using uv:
 
 ```bash
 uv run schedule_failure
-```
-
-If using poetry:
-
-```bash
-poetry run schedule_failure
 ```
 
 If using pip:

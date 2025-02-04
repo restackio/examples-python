@@ -145,12 +145,6 @@ If using uv:
 uv run scale
 ```
 
-If using poetry:
-
-```bash
-poetry run scale
-```
-
 If using pip:
 
 ```bash
@@ -163,12 +157,6 @@ If using uv:
 
 ```bash
 uv run interval
-```
-
-If using poetry:
-
-```bash
-poetry run interval
 ```
 
 If using pip:

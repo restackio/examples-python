@@ -62,12 +62,6 @@ If using uv:
 uv run flask
 ```
 
-If using poetry:
-
-```bash
-poetry run flask
-```
-
 If using pip:
 
 ```bash

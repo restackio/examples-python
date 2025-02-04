@@ -72,12 +72,6 @@ If using uv:
 uv run app
 ```
 
-If using poetry:
-
-```bash
-poetry run app
-```
-
 If using pip:
 
 ```bash
@@ -90,12 +84,6 @@ If using uv:
 
 ```bash
 uv run streamlit run frontend.py
-```
-
-If using poetry:
-
-```bash
-poetry run streamlit run frontend.py
 ```
 
 If using pip:

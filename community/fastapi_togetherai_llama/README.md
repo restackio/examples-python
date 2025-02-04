@@ -62,12 +62,6 @@ If using uv:
 uv run app
 ```
 
-If using poetry:
-
-```bash
-poetry run app
-```
-
 If using pip:
 
 ```bash

@@ -89,12 +89,6 @@ If using uv:
 uv run schedule-search-workflow
 ```
 
-If using poetry:
-
-```bash
-poetry run schedule-search-workflow
-```
-
 If using pip:
 
 ```bash

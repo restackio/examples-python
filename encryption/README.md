@@ -54,12 +54,6 @@ If using uv:
 uv run codec
 ```
 
-If using poetry:
-
-```bash
-poetry run codec
-```
-
 If using pip:
 
 ```bash

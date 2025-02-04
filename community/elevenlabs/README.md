@@ -112,12 +112,6 @@ If using uv:
 uv run voice_isolation
 ```
 
-If using poetry:
-
-```bash
-poetry run voice_isolation
-```
-
 If using pip:
 
 ```bash
