@@ -1,16 +1,26 @@
 import asyncio
 import os
-from src.functions.function import welcome
+from src.functions.random import get_random
+from src.functions.result import get_result
 from src.client import client
-from src.workflows.workflow import GreetingWorkflow
+from src.workflows.todo_execute import TodoExecute
+from src.agents.agent_todo import AgentTodo
+from src.functions.todo_create import todo_create
+from src.functions.llm_chat import llm_chat
 from watchfiles import run_process
 import webbrowser
 
 async def main():
 
-    await client.start_service(
-        workflows=[GreetingWorkflow],
-        functions=[welcome]
+    await asyncio.gather(
+        client.start_service(
+            workflows=[TodoExecute],
+            functions=[todo_create, get_random, get_result]
+        ),
+        client.start_service(
+            workflows=[AgentTodo],
+            functions=[llm_chat]
+        )
     )
 
 def run_services():
