@@ -1,27 +1,30 @@
-[tool.poetry]
+[project]
 name = "audio_transcript"
 version = "0.0.1"
 description = "Transcribe audio with OpenAI Whisper and translate the text with OpenAI GPT-4o-mini"
-authors = [
-    "Restack Team <service@restack.io>",
-]
+authors = [{ name = "Restack Team", email = "service@restack.io" }]
+requires-python = ">=3.10,<4.0"
 readme = "README.md"
-packages = [{include = "src"}]
+dependencies = [
+    "openai>=1.61.0",
+    "pydantic>=2.10.6",
+    "restack-ai==0.0.60",
+    "watchfiles>=1.0.4",
+    "python-dotenv==1.0.1",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-pydantic = "^2.10.3"
-python-dotenv = "1.0.1"
-restack-ai = "^0.0.55"
-openai = "^1.59.8"
-watchfiles = "^1.0.4"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
+[project.scripts]
 dev = "src.services:watch_services"
 services = "src.services:run_services"
 schedule = "schedule_workflow:run_schedule_workflow"
 schedule_failure = "schedule_workflow_failure:run_schedule_workflow_failure"
+
+[tool.hatch.build.targets.sdist]
+include = ["src"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -1,28 +1,29 @@
-# Project metadata
-[tool.poetry]
+[project]
 name = "agent_tool"
 version = "0.0.1"
 description = "A tool for an AI agent"
-authors = [
-    "Restack Team <service@restack.io>",
-]
+authors = [{ name = "Restack Team", email = "service@restack.io" }]
+requires-python = ">=3.10,<4.0"
 readme = "README.md"
-packages = [{include = "src"}]
+dependencies = [
+    "openai>=1.61.0",
+    "pydantic>=2.10.6",
+    "restack-ai==0.0.60",
+    "watchfiles>=1.0.4",
+    "requests==2.32.3",
+    "python-dotenv==1.0.1",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-watchfiles = "^1.0.0"
-pydantic = "^2.10.4"
-requests = "2.32.3"
-
-# Build system configuration
-openai = "^1.60.2"
-restack-ai = "^0.0.55"
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-# CLI command configuration
-[tool.poetry.scripts]
+[project.scripts]
 dev = "src.services:watch_services"
 services = "src.services:run_services"
+
+[tool.hatch.build.targets.sdist]
+include = ["src"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

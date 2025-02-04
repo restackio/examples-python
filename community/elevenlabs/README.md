@@ -10,7 +10,7 @@ This repository contains a simple example project to help you get started with t
 
 ## Installation & Setup
 
-### 1. Run Restack Local Engine with Docker
+## Run Restack Local Engine with Docker
 
 Start the Restack service using Docker:
 
@@ -18,7 +18,7 @@ Start the Restack service using Docker:
 docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
 ```
 
-### 2. Open the Web UI
+## Open the Web UI
 
 After running the Restack service, open the web UI to see the workflows and monitor the execution:
 
@@ -26,7 +26,7 @@ After running the Restack service, open the web UI to see the workflows and moni
 http://localhost:5233
 ```
 
-### 3. Clone This Repository
+## Clone This Repository
 
 Clone the repository and navigate to the example folder:
 
@@ -35,26 +35,50 @@ git clone https://github.com/restackio/examples-python
 cd examples-python/examples/elevenlabs
 ```
 
-### 4. Install Dependencies Using Poetry
+## Start python shell
 
-Set up the environment and install the necessary dependencies:
+If using uv:
 
 ```bash
-poetry env use 3.12
-poetry shell
-poetry install
-poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
+uv venv && source .venv/bin/activate
 ```
 
-### 5. Run the Services
-
-Start the Restack service with the defined workflows and functions:
+If using poetry:
 
 ```bash
+poetry env use 3.12 && poetry shell
+```
+
+If using pip:
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
+
+## Install dependencies
+
+If using uv:
+
+```bash
+uv sync
+uv run dev
+```
+
+If using poetry:
+
+```bash
+poetry install
 poetry run dev
 ```
 
-### 6. Export api key 
+If using pip:
+
+```bash
+pip install -e .
+python -c "from src.services import watch_services; watch_services()"
+```
+
+## Export api key 
 
 ```bash
 export ELEVEN_LABS_API_KEY= your_api_key_here
@@ -77,19 +101,47 @@ The following two functions are defined in this setup:
 To test the **Text to Speech** function
 First go to src/workflows/workflow.py and add your desired text in input_data and then use the following command:
 
+If using uv:
+
+```bash
+uv run text_to_speech
+```
+
+If using poetry:
+
 ```bash
 poetry run text_to_speech
 ```
 
+If using pip:
+
+```bash
+python -c "from src.schedule_workflow import run_schedule_workflow; run_schedule_workflow()"
+```
+
 This will generate speech from the text and output the audio. 
 
-### 2. Test Voice Isolation
+## Test Voice Isolation
 
 To test the **Voice Isolation** function,
 First go to **example-elevenlabs/schedule_workflow_audio_isolation.py** and add your audio file path in audio_path and then use the following command:
 
+If using uv:
+
+```bash
+uv run voice_isolation
+```
+
+If using poetry:
+
 ```bash
 poetry run voice_isolation
+```
+
+If using pip:
+
+```bash
+python -c "from src.schedule_workflow_audio_isolation import run_schedule_workflow_audio_isolation; run_schedule_workflow_audio_isolation()"
 ```
 
 This will isolate the voice from the provided audio file and output the isolated voice audio.

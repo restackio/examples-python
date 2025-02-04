@@ -1,29 +1,31 @@
-# Project metadata
-[tool.poetry]
+[project]
 name = "flask_togetherai_llamaindex"
 version = "0.0.1"
 description = "A simple example to demonstrate usage TogetherAI and LlamaIndex"
-authors = [
-    "Restack Team <service@restack.io>",
-]
+authors = [{ name = "Restack Team", email = "service@restack.io" }]
+requires-python = ">=3.10,<4.0"
 readme = "README.md"
-packages = [{include = "src"}]
+dependencies = [
+    "pydantic>=2.10.6",
+    "restack-ai==0.0.60",
+    "watchfiles>=1.0.4",
+    "python-dotenv==1.0.1",
+    "llama-index==0.11.22",
+    "llama-index-llms-together==0.2.0",
+    "flask[async]==3.0.3",
+    "flask-cors==5.0.0",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-python-dotenv = "1.0.1"
-llama-index = "0.11.22"
-llama-index-llms-together = "0.2.0"
-flask = { version = "3.0.3", extras = ["async"] }
-flask-cors = "5.0.0"
-restack-ai = "^0.0.55"
-
-# Build system configuration
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-# CLI command configuration
-[tool.poetry.scripts]
+[project.scripts]
 services = "src.services:run_services"
 flask = "src.app:run_flask"
+
+[tool.hatch.build.targets.sdist]
+include = ["src"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

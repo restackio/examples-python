@@ -20,32 +20,53 @@ This repository demonstrates how to use [E2B](https://e2b.dev) for code executio
 
 ## Start Restack
 
-To start Restack locally, use the following Docker command:
+To start the Restack, use the following Docker command:
 
 ```bash
 docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
 ```
 
-## Setup Python Environment
+## Start python shell
+
+If using uv:
 
 ```bash
-poetry env use 3.10 && poetry shell
+uv venv && source .venv/bin/activate
 ```
 
-## Install Dependencies
+If using poetry:
+
+```bash
+poetry env use 3.12 && poetry shell
+```
+
+If using pip:
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
+
+## Install dependencies
+
+If using uv:
+
+```bash
+uv sync
+uv run dev
+```
+
+If using poetry:
 
 ```bash
 poetry install
-```
-
-For IDE setup (optional):
-```bash
-poetry env info # Copy the interpreter path to use in your IDE (e.g. Cursor, VSCode)
-```
-
-Start the development server:
-```bash
 poetry run dev
+```
+
+If using pip:
+
+```bash
+pip install -e .
+python -c "from src.services import watch_services; watch_services()"
 ```
 
 ## Running Workflows
@@ -66,8 +87,22 @@ Execute workflows through the Restack API endpoint:
 
 Run workflows programmatically using the Python client:
 
+If using uv:
+
+```bash
+uv run schedule
+```
+
+If using poetry:
+
 ```bash
 poetry run schedule
+```
+
+If using pip:
+
+```bash
+python -c "from schedule_workflow import run_schedule_workflow; run_schedule_workflow()"
 ```
 
 This executes `schedule_workflow.py` which connects to Restack and runs the `CodeExecutionWorkflow`.

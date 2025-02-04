@@ -1,30 +1,34 @@
-# Project metadata
-[tool.poetry]
+[project]
 name = "elvenlabs"
 version = "0.0.1"
 description = "A simple example to get started with the restack-ai SDK with elevenlabs"
-authors = [
-    "Restack Team <service@restack.io>",
-]
+authors = [{ name = "Restack Team", email = "service@restack.io" }]
+requires-python = ">=3.10,<4.0"
 readme = "README.md"
-packages = [{include = "src"}]
+dependencies = [
+    "pydantic>=2.10.6",
+    "restack-ai==0.0.60",
+    "watchfiles>=1.0.4",
+    "python-dotenv==1.0.1",
+    "openai>=1.61.0",
+    "elevenlabs>=1.50.6",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-restack-ai = "0.0.47"
-watchfiles = "^1.0.0"
-elevenlabs = "^0.2.16"  
-[tool.poetry.dev-dependencies]
-pytest = "6.2"  # Optional: Add if you want to include tests in your example
-
-# Build system configuration
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-# CLI command configuration
-[tool.poetry.scripts]
+[project.scripts]
 dev = "src.services:watch_services"
 services = "src.services:run_services"
 text_to_speech = "schedule_workflow:run_schedule_workflow"
 voice_isolation = "schedule_workflow_audio_isolation:run_schedule_workflow_audio_isolation"
+
+[dependency-groups]
+dev = ["pytest==6.2"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

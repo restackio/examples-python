@@ -13,7 +13,7 @@ from src.agents.chat_tool_functions import AgentChatToolFunctions
 async def main():
 
     await client.start_service(
-        workflows=[AgentChatToolFunctions],
+        agents=[AgentChatToolFunctions],
         ## Step 6: Add your new function to the functions list -> functions=[lookupSales, llm_chat, new_function]
         functions=[lookupSales, llm_chat]
     )

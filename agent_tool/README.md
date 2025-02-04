@@ -1,7 +1,9 @@
 # Restack AI - Agent Tool
 
 This repository contains a tool for an AI agent.
-It demonstrates how to set up a basic workflow and functions.
+It demonstrates how to set up a basic agent with functions calling.
+
+Follow [the step-by-step tutorial](https://docs.restack.io/examples/projects/agent#tutorial) on how to customize the agent tool example/
 
 ## Prerequisites
 
@@ -18,22 +20,45 @@ docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:723
 
 ## Start python shell
 
+If using uv:
+
 ```bash
-poetry env use 3.10 && poetry shell
+uv venv && source .venv/bin/activate
+```
+
+If using poetry:
+
+```bash
+poetry env use 3.12 && poetry shell
+```
+
+If using pip:
+
+```bash
+python -m venv .venv && source .venv/bin/activate
 ```
 
 ## Install dependencies
 
+If using uv:
+
+```bash
+uv sync
+uv run dev
+```
+
+If using poetry:
+
 ```bash
 poetry install
-```
-
-```bash
-poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-```
-
-```bash
 poetry run dev
+```
+
+If using pip:
+
+```bash
+pip install -e .
+python -c "from src.services import watch_services; watch_services()"
 ```
 
 ## Configure Your Environment Variables
@@ -42,24 +67,27 @@ Duplicate the `env.example` file and rename it to `.env`.
 
 Obtain a Restack API Key to interact with the 'restack-c1' model at no cost from [console.restack.io](https://console.restack.io)
 
-## Run workflows
+## Run agents
 
 ### from UI
 
-You can run workflows from the UI by clicking the "Run" button.
+You can run agents from the UI by clicking the "Run" button.
 
-![Run workflows from UI](./screenshot-endpoints.png)
+![Run agents from UI](./chat_post.png)
 
 ### from API
 
-You can run workflows from the API by using the generated endpoint:
+You can run agents from the API by using the generated endpoint:
 
-`POST http://localhost:6233/api/workflows/AgentChatToolFunctions`
+`POST http://localhost:6233/api/agents/AgentChatToolFunctions`
 
-## Send an event to the 
+## Send an event to the agent
+
+### from UI
+
 ```
 {
-  "workflowId": "{workflow_id}",
+  "agentId": "{agent_id}",
   "runId": "{run_id}",
   "eventName": "message",
   "eventInput": {
@@ -67,6 +95,29 @@ You can run workflows from the API by using the generated endpoint:
   }
 }
 ```
+
+![Send event to agent](./chat_put.png)
+
+You can send events to the agent by using the generated endpoint:
+
+`PUT http://localhost:6233/api/agents/AgentChatToolFunctions/:agentId/:runId`
+
+and the payload:
+
+```
+{
+  "eventName": "message",
+  "eventInput": {
+    "content": "What clothes are currently on sales?"
+  }
+}
+```
+
+## See the agent run
+
+You cna replay and follow the agent run in the UI.
+
+![Replay agent run](./chat_run.png)
 
 Now, you can simply trigger more events from the Developer UI by clicking in the timeline on 'Send again' for the event and change the payload.
 

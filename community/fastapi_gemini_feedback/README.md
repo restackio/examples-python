@@ -7,83 +7,97 @@
 - Docker (for running the Restack services)
 - Active [Google AI Studio](https://aistudio.google.com) account with API key
 
-## Usage
+## Start Restack
 
-1. Run Restack local engine with Docker:
+To start the Restack, use the following Docker command:
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-2. Open the web UI to see the workflows:
+## Configure your Gemini API key using one of these methods:
 
-   ```bash
-   http://localhost:5233
-   ```
+a. Set as environment variable:
 
-3. Clone this repository:
+```bash
+export GEMINI_API_KEY=<your-api-key>
+```
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/fastapi_gemini_feedback
-   ```
+b. Create a `.env` file:
 
-4. Install dependencies using Poetry:
+- Copy `.env.example` to `.env` in the `fastapi_gemini_feedback` folder
+- Add your API key from [Google AI Studio](https://aistudio.google.com):
 
-   ```bash
-   poetry env use 3.12
-   ```
+```bash
+GEMINI_API_KEY=<your-api-key>
+```
 
-   ```bash
-   poetry shell
-   ```
+## Start python shell
 
-   ```bash
-   poetry install
-   ```
+If using uv:
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+```bash
+uv venv && source .venv/bin/activate
+```
 
-5. Configure your Gemini API key using one of these methods:
+If using poetry:
 
-   a. Set as environment variable:
+```bash
+poetry env use 3.12 && poetry shell
+```
 
-   ```bash
-   export GEMINI_API_KEY=<your-api-key>
-   ```
+If using pip:
 
-   b. Create a `.env` file:
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
 
-   - Copy `.env.example` to `.env` in the `fastapi_gemini_feedback` folder
-   - Add your API key from [Google AI Studio](https://aistudio.google.com):
+## Install dependencies
 
-   ```bash
-   GEMINI_API_KEY=<your-api-key>
-   ```
+If using uv:
 
-6. Run the services:
+```bash
+uv sync
+uv run services
+```
 
-   ```bash
-   poetry run services
-   ```
+If using poetry:
 
-   This will start the Restack service with the defined workflows and functions.
+```bash
+poetry install
+poetry run services
+```
 
-7. In a new terminal, run flask app:
+If using pip:
 
-   ```bash
-   poetry shell
-   ```
+```bash
+pip install -e .
+python -c "from src.services import run_services; run_services()"
+```
 
-   ```bash
-   poetry run app
-   ```
+## In a new terminal, run flask app:
 
-   The app will run at http://0.0.0.0:5001
+If using uv:
 
-8. POST to `http://0.0.0.0:5000/api/schedule` with the following JSON body:
+```bash
+uv run app
+```
+
+If using poetry:
+
+```bash
+poetry run app
+```
+
+If using pip:
+
+```bash
+python -c "from src.app import run_app; run_app()"
+```
+
+The app will run at http://0.0.0.0:5001
+
+## POST to `http://0.0.0.0:5000/api/schedule` with the following JSON body:
 
    ```json
    {
@@ -99,7 +113,7 @@
 
    This will schedule the `GeminiGenerateWorkflow` and print the result. The workflow will continue running, waiting for feedback.
 
-9. POST to `http://0.0.0.0:5000/api/event/feedback` with the following JSON body:
+## POST to `http://0.0.0.0:5000/api/event/feedback` with the following JSON body:
 
    ```json
    {
@@ -117,7 +131,7 @@
 
    Use the `workflow_id` and `run_id` returned from the previous schedule API call to send feedback to the workflow.
 
-10. POST to `http://0.0.0.0:5001/api/event/end` to end the workflow with the following JSON body:
+## POST to `http://0.0.0.0:5001/api/event/end` to end the workflow with the following JSON body:
 
 ```json
 {

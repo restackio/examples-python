@@ -8,63 +8,77 @@ This repository contains a an example on how restack can use langchain and the s
 - Poetry (for dependency management)
 - Docker (for running the Restack services)
 
-## Usage
+## Start Restack
 
-1. Run Restack local engine with Docker:
+To start the Restack, use the following Docker command:
 
-   ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
-   ```
+```bash
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+```
 
-2. Open the web UI to see the workflows:
+## Create .env file with: STRIPE_SECRET_KEY, LANGCHAIN_API_KEY and OPENAI_API_KEY
 
-   ```bash
-   http://localhost:5233
-   ```
+## Start python shell
 
-3. Clone this repository:
+If using uv:
 
-   ```bash
-   git clone https://github.com/restackio/examples-python
-   cd examples-python/examples/get-started
-   ```
-  
-4. Create .env file with: STRIPE_SECRET_KEY, LANGCHAIN_API_KEY and OPENAI_API_KEY
+```bash
+uv venv && source .venv/bin/activate
+```
 
-4. Install dependencies using Poetry:
+If using poetry:
 
-   ```bash
-   poetry env use 3.12
-   ```
+```bash
+poetry env use 3.12 && poetry shell
+```
 
-   ```bash
-   poetry shell
-   ```
+If using pip:
 
-   ```bash
-   poetry install
-   ```
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
 
-   ```bash
-   poetry env info # Optional: copy the interpreter path to use in your IDE (e.g. Cursor, VSCode, etc.)
-   ```
+## Install dependencies
 
-5. Run the services:
+If using uv:
 
-   ```bash
-   poetry run services
-   ```
+```bash
+uv sync
+uv run dev
+```
 
-   This will start the Restack service with the defined workflows and functions.
+If using poetry:
 
-6. In a new terminal, schedule the workflow:
+```bash
+poetry install
+poetry run dev
+```
 
-   ```bash
-   poetry shell
-   ```
+If using pip:
 
-   ```bash
-   poetry run schedule
-   ```
+```bash
+pip install -e .
+python -c "from src.services import watch_services; watch_services()"
+```
 
-   This will schedule the `CreatePaymentLinkWorkflow` and print the result.
+## In a new terminal, schedule the workflow:
+
+If using uv:
+
+```bash
+uv run schedule
+```
+
+If using poetry:
+
+```bash
+poetry run schedule
+```
+
+If using pip:
+
+```bash
+python -c "from schedule_workflow import run_schedule_workflow; run_schedule_workflow()"
+```
+
+This will schedule the `CreatePaymentLinkWorkflow` and print the result.
