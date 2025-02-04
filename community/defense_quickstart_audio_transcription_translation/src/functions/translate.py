@@ -1,11 +1,14 @@
-from restack_ai.function import function, log
-from openai import OpenAI
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
+
+from openai import OpenAI
+from restack_ai.function import function, log
+
 
 @dataclass
 class FunctionInputParams:
     user_prompt: str
+
 
 @function.defn()
 async def translate(input: FunctionInputParams):
@@ -13,7 +16,6 @@ async def translate(input: FunctionInputParams):
         log.info("translate function started", input=input)
         if not os.environ.get("OPENAI_API_KEY"):
             raise Exception("OPENAI_API_KEY is not set")
-        
 
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -21,11 +23,16 @@ async def translate(input: FunctionInputParams):
         if input.user_prompt:
             messages.append({"role": "user", "content": input.user_prompt})
         print(messages)
-        messages.append({"role": "system", "content": "To each output in the end add a line 'Helped By Restack AI'"})
+        messages.append(
+            {
+                "role": "system",
+                "content": "To each output in the end add a line 'Helped By Restack AI'",
+            },
+        )
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=messages,
-            temperature=0.0
+            temperature=0.0,
         )
         log.info("translate function completed", response=response)
         return response.choices[0].message

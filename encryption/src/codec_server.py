@@ -1,5 +1,5 @@
+from collections.abc import Awaitable, Callable, Iterable
 from functools import partial
-from typing import Awaitable, Callable, Iterable, List
 
 from aiohttp import hdrs, web
 from google.protobuf import json_format
@@ -20,7 +20,8 @@ def build_codec_server() -> web.Application:
 
     # General purpose payloads-to-payloads
     async def apply(
-        fn: Callable[[Iterable[Payload]], Awaitable[List[Payload]]], req: web.Request
+        fn: Callable[[Iterable[Payload]], Awaitable[list[Payload]]],
+        req: web.Request,
     ) -> web.Response:
         # Read payloads as JSON
         assert req.content_type == "application/json"
@@ -43,9 +44,10 @@ def build_codec_server() -> web.Application:
             web.post("/encode", partial(apply, codec.encode)),
             web.post("/decode", partial(apply, codec.decode)),
             web.options("/decode", cors_options),
-        ]
+        ],
     )
     return app
+
 
 def run_codec_server():
     web.run_app(build_codec_server(), host="127.0.0.1", port=8081)

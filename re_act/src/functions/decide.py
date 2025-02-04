@@ -1,22 +1,25 @@
-from restack_ai.function import function, log, FunctionFailure
-from dataclasses import dataclass
-from openai import OpenAI
 import os
+from dataclasses import dataclass
+
 from dotenv import load_dotenv
+from openai import OpenAI
+from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
+
 
 @dataclass
 class DecideInput:
     email: str
     current_accepted_applicants_count: int
 
+
 @function.defn()
 async def decide(input: DecideInput):
     try:
-        if (os.environ.get("OPENAI_API_KEY") is None):
-                raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
-            
+        if os.environ.get("OPENAI_API_KEY") is None:
+            raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
+
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
         tools = [
@@ -25,17 +28,17 @@ async def decide(input: DecideInput):
                 "function": {
                     "name": "accept_applicant",
                     "description": "Accept the applicant",
-                    "parameters": {}
-                }
+                    "parameters": {},
+                },
             },
             {
                 "type": "function",
                 "function": {
                     "name": "reject_applicant",
                     "description": "Reject the applicant",
-                    "parameters": {}
-                }
-            }
+                    "parameters": {},
+                },
+            },
         ]
 
         response = client.chat.completions.create(
@@ -43,9 +46,9 @@ async def decide(input: DecideInput):
             messages=[
                 {
                     "role": "system",
-                    "content": f"""
+                    "content": """
                     You are a helpful assistant for event registration that decides if the applicant should be accepted or rejected.
-                    """
+                    """,
                 },
                 {
                     "role": "user",
@@ -58,13 +61,12 @@ async def decide(input: DecideInput):
 
                     Decide if the applicant should be accepted or rejected.
                     """,
-                }
+                },
             ],
-            tools=tools
+            tools=tools,
         )
-        
+
         return response.choices[0].message.tool_calls
     except Exception as e:
         log.error("Failed to decide", error=e)
         raise FunctionFailure("Failed to decide", non_retryable=True)
-

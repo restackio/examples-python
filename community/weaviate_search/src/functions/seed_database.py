@@ -1,7 +1,9 @@
 import json
+
 import requests
-from restack_ai.function import function, log
 import weaviate.classes as wvc
+from restack_ai.function import function, log
+
 from src.functions.weaviate_client import get_weaviate_client
 
 
@@ -26,17 +28,19 @@ async def seed_database() -> str:
 
         question_objs = list()
         for i, d in enumerate(data):
-            question_objs.append(wvc.data.DataObject(
-                properties={
-                    "answer": d["Answer"],
-                    "question": d["Question"],
-                    "category": d["Category"],
-                },
-                vector=d["vector"]
-            ))
+            question_objs.append(
+                wvc.data.DataObject(
+                    properties={
+                        "answer": d["Answer"],
+                        "question": d["Question"],
+                        "category": d["Category"],
+                    },
+                    vector=d["vector"],
+                ),
+            )
 
         questions = client.collections.get("Question")
-        questions.data.insert_many(question_objs)    # This uses batching under the hood
+        questions.data.insert_many(question_objs)  # This uses batching under the hood
 
         log.info("seed_database function completed")
 

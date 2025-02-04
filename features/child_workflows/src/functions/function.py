@@ -1,5 +1,6 @@
 from restack_ai.function import function, log
 
+
 @function.defn(name="welcome")
 async def welcome(input: str) -> str:
     try:

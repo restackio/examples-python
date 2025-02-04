@@ -1,6 +1,7 @@
-from restack_ai.function import function, log
 import requests
 from bs4 import BeautifulSoup
+from restack_ai.function import function, log
+
 
 @function.defn()
 async def crawl_website(url):
@@ -10,10 +11,10 @@ async def crawl_website(url):
         response.raise_for_status()  # Raise an error for bad responses
 
         # Parse the content with BeautifulSoup
-        soup = BeautifulSoup(response.content, 'html.parser')
+        soup = BeautifulSoup(response.content, "html.parser")
 
         # Extract the text content from the page
-        content = soup.get_text(separator=' ', strip=True)
+        content = soup.get_text(separator=" ", strip=True)
 
         log.info("crawl_website", extra={"content": content})
 

@@ -1,10 +1,15 @@
-from restack_ai.workflow import workflow, import_functions, log, RetryPolicy
 from dataclasses import dataclass
 from datetime import timedelta
 
+from restack_ai.workflow import RetryPolicy, import_functions, log, workflow
+
 with import_functions():
-    from src.functions.send_email import send_email, SendEmailInput
-    from src.functions.generate_email_content import generate_email_content, GenerateEmailInput
+    from src.functions.generate_email_content import (
+        GenerateEmailInput,
+        generate_email_content,
+    )
+    from src.functions.send_email import SendEmailInput, send_email
+
 
 @dataclass
 class WorkflowInputParams:
@@ -12,6 +17,7 @@ class WorkflowInputParams:
     subject: str
     to: str
     simulate_failure: bool = False
+
 
 @workflow.defn()
 class SendEmailWorkflow:
@@ -38,7 +44,7 @@ class SendEmailWorkflow:
                 subject=input.subject,
                 to=input.to,
             ),
-            start_to_close_timeout=timedelta(seconds=120)
+            start_to_close_timeout=timedelta(seconds=120),
         )
 
-        return 'Email sent successfully'
+        return "Email sent successfully"

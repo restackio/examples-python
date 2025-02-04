@@ -1,5 +1,5 @@
 import os
-from typing import Iterable, List
+from collections.abc import Iterable
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from restack_ai.security import Payload, PayloadCodec
@@ -17,7 +17,7 @@ class EncryptionCodec(PayloadCodec):
         # safer APIs.
         self.encryptor = AESGCM(key)
 
-    async def encode(self, payloads: Iterable[Payload]) -> List[Payload]:
+    async def encode(self, payloads: Iterable[Payload]) -> list[Payload]:
         # We blindly encode all payloads with the key and set the metadata
         # saying which key we used
         return [
@@ -31,8 +31,8 @@ class EncryptionCodec(PayloadCodec):
             for p in payloads
         ]
 
-    async def decode(self, payloads: Iterable[Payload]) -> List[Payload]:
-        ret: List[Payload] = []
+    async def decode(self, payloads: Iterable[Payload]) -> list[Payload]:
+        ret: list[Payload] = []
         for p in payloads:
             # Ignore ones w/out our expected encoding
             if p.metadata.get("encoding", b"").decode() != "binary/encrypted":
@@ -42,7 +42,7 @@ class EncryptionCodec(PayloadCodec):
             key_id = p.metadata.get("encryption-key-id", b"").decode()
             if key_id != self.key_id:
                 raise ValueError(
-                    f"Unrecognized key ID {key_id}. Current key ID is {self.key_id}."
+                    f"Unrecognized key ID {key_id}. Current key ID is {self.key_id}.",
                 )
             # Decrypt and append
             ret.append(Payload.FromString(self.decrypt(p.data)))

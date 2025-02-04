@@ -1,13 +1,14 @@
-from e2b_code_interpreter import Sandbox
-from restack_ai.function import function, log
-from pydantic import BaseModel
 from dotenv import load_dotenv
-import json
+from e2b_code_interpreter import Sandbox
+from pydantic import BaseModel
+from restack_ai.function import function, log
 
 load_dotenv()
 
+
 class ExecutePythonInput(BaseModel):
     code: str = "print('hello world')"
+
 
 @function.defn()
 async def e2b_execute_python(input: ExecutePythonInput) -> str:

@@ -1,26 +1,28 @@
-import base64
 import io
-from typing import Any, List
+from typing import Any
 
 import numpy as np
+import requests
 from doctr.io import DocumentFile
+from doctr.models import ocr_predictor
 from numpy.typing import NDArray
 from PIL import Image
 from pydantic import BaseModel, Field
-from restack_ai.function import function, log, FunctionFailure
+from restack_ai.function import FunctionFailure, function, log
 
-from doctr.models import ocr_predictor
-import requests
 from ..client import api_address
 
+
 class OCRPrediction(BaseModel):
-    pages: List[dict[str, Any]] = Field(
-        description="List of pages with OCR predictions"
+    pages: list[dict[str, Any]] = Field(
+        description="List of pages with OCR predictions",
     )
+
 
 class OcrInput(BaseModel):
     file_type: str
-    file_name:str
+    file_name: str
+
 
 @function.defn()
 async def torch_ocr(input: OcrInput) -> str:
@@ -28,7 +30,9 @@ async def torch_ocr(input: OcrInput) -> str:
         service = DocumentExtractionService()
 
         # Download the file from localhost
-        response = requests.get(f"{api_address or 'http://localhost:6233'}/api/download/{input.file_name}")
+        response = requests.get(
+            f"{api_address or 'http://localhost:6233'}/api/download/{input.file_name}",
+        )
         response.raise_for_status()  # Raise an error for bad responses
         content = response.content
 
@@ -45,8 +49,9 @@ async def torch_ocr(input: OcrInput) -> str:
         json_output = OCRPrediction.model_validate(result.export())
         return service._process_predictions(json_output)
     except Exception as e:
-        log.error(f"Failed to process file: {str(e)}")
-        raise FunctionFailure(f"Failed to process file: {str(e)}", non_retryable=True)
+        log.error(f"Failed to process file: {e!s}")
+        raise FunctionFailure(f"Failed to process file: {e!s}", non_retryable=True)
+
 
 class DocumentExtractionService:
     def __init__(self) -> None:
@@ -69,15 +74,17 @@ class DocumentExtractionService:
         return img_array
 
     def _process_predictions(
-        self, json_output: OCRPrediction, confidence_threshold: float = 0.3
+        self,
+        json_output: OCRPrediction,
+        confidence_threshold: float = 0.3,
     ) -> str:
-        processed_text: List[str] = []
+        processed_text: list[str] = []
 
         for page in json_output.pages:
-            page_text: List[str] = []
+            page_text: list[str] = []
             for block in page["blocks"]:
                 for line in block["lines"]:
-                    line_text: List[str] = []
+                    line_text: list[str] = []
                     for word in line["words"]:
                         if word["confidence"] > confidence_threshold:
                             line_text.append(word["value"])

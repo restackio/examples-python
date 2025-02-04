@@ -1,18 +1,21 @@
 import asyncio
 import os
 import webbrowser
+
 from watchfiles import run_process
-from restack_ai.restack import ServiceOptions
-from src.functions.function import welcome
+
 from src.client import client
-from src.workflows.parent import ParentWorkflow, ParentInput, ParentOutput
-from src.workflows.child import ChildWorkflow, ChildInput, ChildOutput
+from src.functions.function import welcome
+from src.workflows.child import ChildWorkflow
+from src.workflows.parent import ParentWorkflow
+
 
 async def main():
     await client.start_service(
-        workflows= [ParentWorkflow, ChildWorkflow],
-        functions= [welcome]
+        workflows=[ParentWorkflow, ChildWorkflow],
+        functions=[welcome],
     )
+
 
 def run_services():
     try:
@@ -27,5 +30,6 @@ def watch_services():
     webbrowser.open("http://localhost:5233")
     run_process(watch_path, recursive=True, target=run_services)
 
+
 if __name__ == "__main__":
-       run_services()
+    run_services()
