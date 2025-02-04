@@ -36,7 +36,7 @@ async def llm_chat(input: LlmChatInput) -> str:
         )
 
         # Use Restack API websocket to stream the response
-        final_response = await stream_to_websocket("23da-2a01-5241-ccc-e00-54c9-3c26-c463-b9d8.ngrok-free.app", response)
+        final_response = await stream_to_websocket("f29d-2a01-5241-ccc-e00-54c9-3c26-c463-b9d8.ngrok-free.app", response)
         return final_response
 
     except Exception as e:
