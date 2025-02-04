@@ -34,12 +34,6 @@ If using uv:
 uv venv && source .venv/bin/activate
 ```
 
-If using poetry:
-
-```bash
-poetry env use 3.12 && poetry shell
-```
-
 If using pip:
 
 ```bash
@@ -53,13 +47,6 @@ If using uv:
 ```bash
 uv sync
 uv run dev
-```
-
-If using poetry:
-
-```bash
-poetry install
-poetry run dev
 ```
 
 If using pip:
@@ -93,12 +80,6 @@ If using uv:
 uv run schedule
 ```
 
-If using poetry:
-
-```bash
-poetry run schedule
-```
-
 If using pip:
 
 ```bash
@@ -110,14 +91,15 @@ This executes `schedule_workflow.py` which connects to Restack and runs the `Cod
 ## Cloud Deployment
 
 ### Restack Cloud
+
 Deploy your workflows on Restack Cloud:
+
 1. Create an account at [Restack Console](https://console.restack.io)
 2. Create a stack and import the cloned repository
 3. Reference the Dockerfile path `community/e2b/Dockerfile` and the build context `community/e2b`
 4. Set the environment variables for E2B and OpenAI. Restack environment variables are set automatically.
 
-
 ## Learn More
+
 - [Restack Documentation](https://docs.restack.io)
 - [E2B Documentation](https://e2b.dev/docs)
-

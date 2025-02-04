@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Python 3.9 or higher
-- Poetry (for dependency management)
+- Uv (for dependency management)
 - Docker (for running the Restack services)
 - Active [Google AI Studio](https://aistudio.google.com) account with API key
 
@@ -40,12 +40,6 @@ If using uv:
 uv venv && source .venv/bin/activate
 ```
 
-If using poetry:
-
-```bash
-poetry env use 3.12 && poetry shell
-```
-
 If using pip:
 
 ```bash
@@ -59,13 +53,6 @@ If using uv:
 ```bash
 uv sync
 uv run services
-```
-
-If using poetry:
-
-```bash
-poetry install
-poetry run services
 ```
 
 If using pip:
@@ -99,37 +86,37 @@ The app will run at http://0.0.0.0:5001
 
 ## POST to `http://0.0.0.0:5000/api/schedule` with the following JSON body:
 
-   ```json
-   {
-     "user_content": "Tell me a story"
-   }
-   ```
+```json
+{
+  "user_content": "Tell me a story"
+}
+```
 
-   Or using curl in a new terminal:
+Or using curl in a new terminal:
 
-   ```bash
-   curl -X POST http://0.0.0.0:5001/api/schedule -H "Content-Type: application/json" -d '{"user_content": "Tell me a story"}'
-   ```
+```bash
+curl -X POST http://0.0.0.0:5001/api/schedule -H "Content-Type: application/json" -d '{"user_content": "Tell me a story"}'
+```
 
-   This will schedule the `GeminiGenerateWorkflow` and print the result. The workflow will continue running, waiting for feedback.
+This will schedule the `GeminiGenerateWorkflow` and print the result. The workflow will continue running, waiting for feedback.
 
 ## POST to `http://0.0.0.0:5000/api/event/feedback` with the following JSON body:
 
-   ```json
-   {
-     "feedback": "The story is too long",
-     "workflow_id":"<workflow_id>",
-     "run_id":"<run_id>""
-   }
-   ```
+```json
+{
+  "feedback": "The story is too long",
+  "workflow_id":"<workflow_id>",
+  "run_id":"<run_id>""
+}
+```
 
-   Or using curl:
+Or using curl:
 
-   ```bash
-   curl -X POST http://0.0.0.0:5001/api/event/feedback -H "Content-Type: application/json" -d '{"feedback": "The story is too long", "workflow_id": "<workflow_id>", "run_id": "<run_id>"}'
-   ```
+```bash
+curl -X POST http://0.0.0.0:5001/api/event/feedback -H "Content-Type: application/json" -d '{"feedback": "The story is too long", "workflow_id": "<workflow_id>", "run_id": "<run_id>"}'
+```
 
-   Use the `workflow_id` and `run_id` returned from the previous schedule API call to send feedback to the workflow.
+Use the `workflow_id` and `run_id` returned from the previous schedule API call to send feedback to the workflow.
 
 ## POST to `http://0.0.0.0:5001/api/event/end` to end the workflow with the following JSON body:
 

@@ -5,7 +5,7 @@ The model will act as a pirate and you can send it prompts from the streamlit ui
 ## Prerequisites
 
 - Python 3.9 or higher
-- Poetry (for dependency management)
+- Uv (for dependency management)
 - Docker (for running the Restack services)
 - Active [Together AI](https://together.ai) account with API key
 
@@ -34,12 +34,6 @@ If using uv:
 uv venv && source .venv/bin/activate
 ```
 
-If using poetry:
-
-```bash
-poetry env use 3.12 && poetry shell
-```
-
 If using pip:
 
 ```bash
@@ -53,13 +47,6 @@ If using uv:
 ```bash
 uv sync
 uv run services
-```
-
-If using poetry:
-
-```bash
-poetry install
-poetry run services
 ```
 
 If using pip:
@@ -95,7 +82,7 @@ If using uv:
 
 ```bash
 uv run streamlit run frontend.py
-   ```
+```
 
 If using poetry:
 
@@ -116,6 +103,6 @@ curl -X POST \
   http://localhost:8000/api/schedule \
      -H "Content-Type: application/json" \
      -d '{"prompt": "Tell me a short joke"}'
-   ```
+```
 
-   This will schedule the Llamaindex workflow with simple prompt and return the result.
+This will schedule the Llamaindex workflow with simple prompt and return the result.

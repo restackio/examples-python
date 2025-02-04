@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Python 3.9 or higher
-- Poetry (for dependency management)
+- Uv (for dependency management)
 - Docker (for running the Restack services)
 - Active [Google AI Studio](https://aistudio.google.com) account with API key
 
@@ -29,12 +29,6 @@ If using uv:
 uv venv && source .venv/bin/activate
 ```
 
-If using poetry:
-
-```bash
-poetry env use 3.12 && poetry shell
-```
-
 If using pip:
 
 ```bash
@@ -48,13 +42,6 @@ If using uv:
 ```bash
 uv sync
 uv run dev
-```
-
-If using poetry:
-
-```bash
-poetry install
-poetry run dev
 ```
 
 If using pip:
@@ -86,14 +73,14 @@ python -c "from src.app import run_flask; run_flask()"
 
 ## Test your API with a POST request using curl:
 
-   ```bash
-   curl -X POST \
-     http://127.0.0.1:5000/api/schedule \
-     -H "Content-Type: application/json" \
-     -d '{"user_content": "Tell me a story"}'
-   ```
+```bash
+curl -X POST \
+  http://127.0.0.1:5000/api/schedule \
+  -H "Content-Type: application/json" \
+  -d '{"user_content": "Tell me a story"}'
+```
 
-   This will schedule the `GeminiGenerateWorkflow` and print the result.
+This will schedule the `GeminiGenerateWorkflow` and print the result.
 
 ## Project Structure
 

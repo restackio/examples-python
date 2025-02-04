@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Python 3.9 or higher
-- Poetry (for dependency management)
+- Uv (for dependency management)
 - Docker (for running the Restack services)
 - Active [Together AI](https://together.ai) account with API key
 
@@ -32,12 +32,6 @@ If using uv:
 uv venv && source .venv/bin/activate
 ```
 
-If using poetry:
-
-```bash
-poetry env use 3.12 && poetry shell
-```
-
 If using pip:
 
 ```bash
@@ -51,13 +45,6 @@ If using uv:
 ```bash
 uv sync
 uv run services
-```
-
-If using poetry:
-
-```bash
-poetry install
-poetry run services
 ```
 
 If using pip:
@@ -89,11 +76,11 @@ python -c "from src.app import run_flask; run_flask()"
 
 ## Test your Api a POST request using curl:
 
-   ```bash
-   curl -X POST \
-     http://localhost:5000/api/schedule \
-     -H "Content-Type: application/json" \
-     -d '{"prompt": "Whats a cow?"}'
-   ```
+```bash
+curl -X POST \
+  http://localhost:5000/api/schedule \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "Whats a cow?"}'
+```
 
-   This will schedule the Llamaindex workflow with simple prompt and return the result.
+This will schedule the Llamaindex workflow with simple prompt and return the result.

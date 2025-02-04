@@ -61,7 +61,7 @@ And for each child workflow, for each step you can see how long the function sta
 ## Prerequisites
 
 - Python 3.10 or higher
-- Poetry (for dependency management)
+- Uv (for dependency management)
 - Docker (for running the Restack services)
 - Local LLM provider (we use LMStudio and a Meta Llama 3.2 3B Instruct 4bit model in this example)
 
@@ -92,12 +92,6 @@ If using uv:
 uv venv && source .venv/bin/activate
 ```
 
-If using poetry:
-
-```bash
-poetry env use 3.12 && poetry shell
-```
-
 If using pip:
 
 ```bash
@@ -111,13 +105,6 @@ If using uv:
 ```bash
 uv sync
 uv run dev
-```
-
-If using poetry:
-
-```bash
-poetry install
-poetry run dev
 ```
 
 If using pip:
@@ -153,12 +140,6 @@ If using uv:
 
 ```bash
 uv run schedule
-```
-
-If using poetry:
-
-```bash
-poetry run schedule
 ```
 
 If using pip:

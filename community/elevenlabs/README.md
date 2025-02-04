@@ -4,9 +4,9 @@ This repository contains a simple example project to help you get started with t
 
 ## Prerequisites
 
-* Python 3.8 or higher
-* Poetry (for dependency management)
-* Docker (for running the Restack services)
+- Python 3.8 or higher
+- Uv (for dependency management)
+- Docker (for running the Restack services)
 
 ## Installation & Setup
 
@@ -43,12 +43,6 @@ If using uv:
 uv venv && source .venv/bin/activate
 ```
 
-If using poetry:
-
-```bash
-poetry env use 3.12 && poetry shell
-```
-
 If using pip:
 
 ```bash
@@ -64,13 +58,6 @@ uv sync
 uv run dev
 ```
 
-If using poetry:
-
-```bash
-poetry install
-poetry run dev
-```
-
 If using pip:
 
 ```bash
@@ -78,12 +65,11 @@ pip install -e .
 python -c "from src.services import watch_services; watch_services()"
 ```
 
-## Export api key 
+## Export api key
 
 ```bash
 export ELEVEN_LABS_API_KEY= your_api_key_here
 ```
-
 
 This will start the Restack service, enabling the functions for **Text to Speech** and **Voice Isolation**.
 
@@ -91,8 +77,8 @@ This will start the Restack service, enabling the functions for **Text to Speech
 
 The following two functions are defined in this setup:
 
-* **text_to_speech**: Converts text input to spoken audio.
-* **voice_isolation**: Isolates voice from background noise or other sounds.
+- **text_to_speech**: Converts text input to spoken audio.
+- **voice_isolation**: Isolates voice from background noise or other sounds.
 
 ## Example of Testing the Functions
 
@@ -107,19 +93,13 @@ If using uv:
 uv run text_to_speech
 ```
 
-If using poetry:
-
-```bash
-poetry run text_to_speech
-```
-
 If using pip:
 
 ```bash
 python -c "from src.schedule_workflow import run_schedule_workflow; run_schedule_workflow()"
 ```
 
-This will generate speech from the text and output the audio. 
+This will generate speech from the text and output the audio.
 
 ## Test Voice Isolation
 
@@ -148,15 +128,15 @@ This will isolate the voice from the provided audio file and output the isolated
 
 ## Project Structure
 
-* **src/**: Main source code directory
-   * **client.py**: Initializes the Restack client.
-   * **functions/**: Contains function definitions like `text_to_speech` and `voice_isolation`.
-   * **workflows/**: Contains workflow definitions.
-   * **services.py**: Sets up and runs the Restack services.
-* **test_functions.py**: Example script to test the **Text to Speech** and **Voice Isolation** functions.
-* **schedule_workflow.py**: Example script to schedule and run workflows if needed.
-* **schedule_workflow.py**: Example script to schedule and run workflows if needed.
-* **mpfile.mp3**: Example audio file
+- **src/**: Main source code directory
+  - **client.py**: Initializes the Restack client.
+  - **functions/**: Contains function definitions like `text_to_speech` and `voice_isolation`.
+  - **workflows/**: Contains workflow definitions.
+  - **services.py**: Sets up and runs the Restack services.
+- **test_functions.py**: Example script to test the **Text to Speech** and **Voice Isolation** functions.
+- **schedule_workflow.py**: Example script to schedule and run workflows if needed.
+- **schedule_workflow.py**: Example script to schedule and run workflows if needed.
+- **mpfile.mp3**: Example audio file
 
 ## Conclusion
 
