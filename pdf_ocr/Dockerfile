@@ -13,7 +13,7 @@ COPY pyproject.toml requirements.txt ./
 COPY . .
 
 # Install dependencies
-RUN uv sync --frozen --no-dev
+RUN uv sync --no-dev
 
 # Expose port 80
 EXPOSE 80
