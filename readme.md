@@ -45,4 +45,4 @@ After running either of these commands, the Restack UI will be available at http
 
 ## Contributing
 
-We welcome contributions to this repository! If you have an example you'd like to add or improvements to existing examples, please feel free to submit a pull request.
+We welcome contributions to this repository. If you have an example you'd like to add or improvements to existing examples, please feel free to submit a pull request.
