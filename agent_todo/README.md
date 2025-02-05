@@ -1,9 +1,7 @@
-# Restack AI - Agent Tool
+# Restack AI - Quickstart
 
-This repository contains a tool for an AI agent.
-It demonstrates how to set up a basic agent with functions calling.
-
-Follow [the step-by-step tutorial](https://docs.restack.io/examples/projects/agent#tutorial) on how to customize the agent tool example/
+This repository contains a quickstart for Restack.
+It demonstrates how to set up a basic agent with tool call with a basic workflow and functions.
 
 ## Prerequisites
 
@@ -48,27 +46,41 @@ pip install -e .
 python -c "from src.services import watch_services; watch_services()"
 ```
 
-## Configure Your Environment Variables
-
-Duplicate the `env.example` file and rename it to `.env`.
-
-Obtain a Restack API Key to interact with the 'restack-c1' model at no cost from [console.restack.io](https://console.restack.io)
-
 ## Run agents
 
 ### from UI
 
 You can run agents from the UI by clicking the "Run" button.
 
-![Run agents from UI](./chat_post.png)
+![Run agents from UI](./todo_put.png)
 
 ### from API
 
 You can run agents from the API by using the generated endpoint:
 
-`POST http://localhost:6233/api/agents/AgentChatToolFunctions`
+`POST http://localhost:6233/api/agents/AgentTodo`
+
+### from any client
+
+You can run agents with any client connected to Restack, for example:
+
+If using uv:
+
+```bash
+uv run schedule
+```
+
+If using pip:
+
+```bash
+python -c "from schedule import run_schedule; run_schedule()"
+```
+
+executes `schedule.py` which will connect to Restack and execute the `AgentTodo` agent.
 
 ## Send an event to the agent
+
+In our example we will ask the AI agent to create a todo.
 
 ### from UI
 
@@ -78,16 +90,16 @@ You can run agents from the API by using the generated endpoint:
   "runId": "{run_id}",
   "eventName": "message",
   "eventInput": {
-    "content": "What clothes are currently on sales?"
+    "content": "Can you send an email to the CEO?"
   }
 }
 ```
 
-![Send event to agent](./chat_put.png)
+![Send event to agent](./todo_first_message.png)
 
 You can send events to the agent by using the generated endpoint:
 
-`PUT http://localhost:6233/api/agents/AgentChatToolFunctions/:agentId/:runId`
+`PUT http://localhost:6233/api/agents/AgentTodo/:agentId/:runId`
 
 and the payload:
 
@@ -95,20 +107,29 @@ and the payload:
 {
   "eventName": "message",
   "eventInput": {
-    "content": "What clothes are currently on sales?"
+    "content": "Can you send an email to the CEO?"
   }
 }
 ```
 
 ## See the agent run
 
+The LLM will use tool call to create the todo.
+The creation of the todo will be done in a simple function.
+
 You can replay and follow the agent run in the UI.
 
-![Replay agent run](./chat_run.png)
+![Replay agent run](./todo_llm_answer.png)
 
-Now, you can simply trigger more events from the Developer UI by clicking in the timeline on 'Send again' for the event and change the payload.
+Now, you can simply trigger more events from the Developer UI.
 
-![Send another message from UI](./event-send-again.png)
+In this case, the agent will ask permission to execute the todo.
+
+![Send confirmation to agent](./todo_second_message.png)
+
+If confirmed, this time the agent will execute the todo in a 2-step workflow.
+
+![Execute todo workflow](./todo_child_workflow.png)
 
 ## Deploy on Restack Cloud
 

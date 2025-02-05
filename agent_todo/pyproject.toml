@@ -10,14 +10,13 @@ dependencies = [
     "restack-ai==0.0.61",
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
+    "openai>=1.61.0"
 ]
 
 [project.scripts]
 dev = "src.services:watch_services"
 services = "src.services:run_services"
-schedule = "schedule_workflow:run_schedule_workflow"
-interval = "schedule_interval:run_schedule_interval"
-calendar = "schedule_calendar:run_schedule_calendar"
+schedule = "schedule:run_schedule"
 
 [tool.hatch.build.targets.sdist]
 include = ["src"]
