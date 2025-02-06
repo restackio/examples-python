@@ -3,11 +3,10 @@ import logging
 import webbrowser
 from pathlib import Path
 
-from watchfiles import run_process
-
 from src.client import client
 from src.functions.function import welcome
 from src.workflows.workflow import GreetingWorkflow
+from watchfiles import run_process
 
 
 async def main() -> None:
