@@ -13,11 +13,11 @@ class FilesWorkflowInput(BaseModel):
 @workflow.defn()
 class FilesWorkflow:
     @workflow.run
-    async def run(self, input: FilesWorkflowInput):
+    async def run(self, files_workflow_input: FilesWorkflowInput) -> list[str]:
         tasks = []
         parent_workflow_id = workflow_info().workflow_id
 
-        for index, pdf_input in enumerate(input.files_upload, start=1):
+        for index, pdf_input in enumerate(files_workflow_input.files_upload, start=1):
             log.info(f"Queue PdfWorkflow {index} for execution")
             # Ensure child workflows are started and return an awaitable
             task = workflow.child_execute(

@@ -7,6 +7,11 @@ from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
+def raise_missing_api_key_error() -> None:
+    error_message = "OPENAI_API_KEY is not set"
+    log.error(error_message)
+    raise FunctionFailure(error_message, non_retryable=True)
+
 
 class OpenAiChatInput(BaseModel):
     user_content: str
@@ -15,12 +20,12 @@ class OpenAiChatInput(BaseModel):
 
 
 @function.defn()
-async def openai_chat(input: OpenAiChatInput) -> str:
+async def openai_chat(openai_chat_input: OpenAiChatInput) -> str:
     try:
-        log.info("openai_chat function started", input=input)
+        log.info("openai_chat function started", input=openai_chat_input)
 
         if os.environ.get("OPENAI_API_KEY") is None:
-            raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
+            raise_missing_api_key_error()
 
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -36,5 +41,6 @@ async def openai_chat(input: OpenAiChatInput) -> str:
         log.info("openai_chat function completed", response=response)
         return response.choices[0].message.content
     except Exception as e:
-        log.error("openai_chat function failed", error=e)
-        raise e
+        error_message = "Failed to chat with OpenAI"
+        log.error(error_message, error=e)
+        raise FunctionFailure(error_message, non_retryable=True) from e

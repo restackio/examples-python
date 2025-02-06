@@ -15,14 +15,14 @@ class PdfWorkflowInput(BaseModel):
 @workflow.defn()
 class PdfWorkflow:
     @workflow.run
-    async def run(self, input: PdfWorkflowInput):
+    async def run(self, pdf_workflow_input: PdfWorkflowInput) -> str:
         log.info("PdfWorkflow started")
 
         ocr_result = await workflow.step(
             torch_ocr,
             OcrInput(
-                file_type=input.file_upload[0]["type"],
-                file_name=input.file_upload[0]["name"],
+                file_type=pdf_workflow_input.file_upload[0]["type"],
+                file_name=pdf_workflow_input.file_upload[0]["name"],
             ),
             start_to_close_timeout=timedelta(seconds=120),
         )
@@ -30,7 +30,11 @@ class PdfWorkflow:
         llm_result = await workflow.step(
             openai_chat,
             OpenAiChatInput(
-                user_content=f"Make a summary of that PDF. Here is the OCR result: {ocr_result}",
+                user_content=f"""
+                Make a summary of that PDF.
+                Here is the OCR result:
+                {ocr_result}
+                """,
                 model="gpt-4o-mini",
             ),
             start_to_close_timeout=timedelta(seconds=120),
