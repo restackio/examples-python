@@ -2,8 +2,10 @@
 #    uv pip compile pyproject.toml -o requirements.txt
 aiohappyeyeballs==2.4.4
     # via aiohttp
-aiohttp==3.11.11
-    # via restack-ai
+aiohttp==3.11.12
+    # via
+    #   openai-greet (pyproject.toml)
+    #   restack-ai
 aiosignal==1.3.2
     # via aiohttp
 annotated-types==0.7.0
