@@ -14,5 +14,6 @@ dev = [
 
 [tool.ruff.lint]
 select = ["ALL"]
+ignore = ["D100", "D101", "D102", "D103","INP001"]
 
 [tool.ruff.format]
