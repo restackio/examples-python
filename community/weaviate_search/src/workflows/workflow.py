@@ -10,7 +10,7 @@ with import_functions():
 @workflow.defn()
 class SeedWorkflow:
     @workflow.run
-    async def run(self):
+    async def run(self) -> str:
         seed_result = await workflow.step(
             seed_database,
             start_to_close_timeout=timedelta(seconds=120),
@@ -22,7 +22,7 @@ class SeedWorkflow:
 @workflow.defn()
 class SearchWorkflow:
     @workflow.run
-    async def run(self):
+    async def run(self) -> str:
         search_result = await workflow.step(
             vector_search,
             start_to_close_timeout=timedelta(seconds=120),

@@ -10,14 +10,14 @@ from src.workflows.workflow import SearchWorkflow, SeedWorkflow
 load_dotenv()
 
 
-async def main():
+async def main() -> None:
     await restack_client.start_service(
         workflows=[SeedWorkflow, SearchWorkflow],
         functions=[seed_database, vector_search],
     )
 
 
-def run_services():
+def run_services() -> None:
     asyncio.run(main())
 
 

@@ -1,6 +1,6 @@
 import json
 
-import requests
+import aiohttp
 import weaviate.classes as wvc
 from restack_ai.function import function, log
 
@@ -12,7 +12,8 @@ async def seed_database() -> str:
     client = get_weaviate_client()
 
     try:
-        # Create the collection. Weaviate's autoschema feature will infer properties when importing.
+        # Create the collection.
+        # Weaviate's autoschema feature will infer properties when importing.
         if not client.collections.exists("Question"):
             questions = client.collections.create(
                 "Question",
@@ -21,13 +22,18 @@ async def seed_database() -> str:
         else:
             questions = client.collections.get("Question")
 
-        fname = "jeopardy_tiny_with_vectors_all-OpenAI-ada-002.json"  # This file includes pre-generated vectors
-        url = f"https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/{fname}"
-        resp = requests.get(url)
-        data = json.loads(resp.text)  # Load data
+        # This file includes pre-generated vectors
+        fname = "jeopardy_tiny_with_vectors_all-OpenAI-ada-002.json"
 
-        question_objs = list()
-        for i, d in enumerate(data):
+        url = f"https://raw.githubusercontent.com/weaviate-tutorials/quickstart/main/data/{fname}"
+        async with aiohttp.ClientSession() as session, session.get(
+                url, timeout=aiohttp.ClientTimeout(total=10),
+            ) as response:
+            response.raise_for_status()  # Raise an error for bad responses
+            data = json.loads(await response.text())  # Load data
+
+        question_objs = []
+        for _i, d in enumerate(data):
             question_objs.append(
                 wvc.data.DataObject(
                     properties={
