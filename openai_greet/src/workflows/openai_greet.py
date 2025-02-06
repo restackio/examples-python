@@ -15,9 +15,9 @@ class WorkflowInputParams:
 @workflow.defn()
 class OpenaiGreetWorkflow:
     @workflow.run
-    async def run(self, input: WorkflowInputParams):
-        log.info("OpenaiGreetWorkflow started", input=input)
-        user_content = f"Greet this person {input.name}"
+    async def run(self, openai_greet_input: WorkflowInputParams) -> str:
+        log.info("OpenaiGreetWorkflow started", input=openai_greet_input)
+        user_content = f"Greet this person {openai_greet_input.name}"
 
         greet_message = await workflow.step(
             openai_greet,
