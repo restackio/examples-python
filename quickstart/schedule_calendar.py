@@ -1,4 +1,5 @@
 import asyncio
+import sys
 import time
 
 from restack_ai import Restack
@@ -6,7 +7,7 @@ from restack_ai.restack import ScheduleCalendarSpec, ScheduleRange, ScheduleSpec
 from src.workflows.workflow import GreetingWorkflowInput
 
 
-async def main():
+async def main() -> None:
     client = Restack()
 
     workflow_id = f"{int(time.time() * 1000)}-GreetingWorkflow"
@@ -24,10 +25,10 @@ async def main():
         ),
     )
 
-    exit(0)
+    sys.exit(0)
 
 
-def run_schedule_calendar():
+def run_schedule_calendar() -> None:
     asyncio.run(main())
 
 
