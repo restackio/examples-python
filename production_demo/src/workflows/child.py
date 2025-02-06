@@ -16,7 +16,7 @@ class ChildWorkflowInput(BaseModel):
 @workflow.defn()
 class ChildWorkflow:
     @workflow.run
-    async def run(self, input: ChildWorkflowInput):
+    async def run(self, child_workflow_input: ChildWorkflowInput) -> dict:
         log.info("ChildWorkflow started")
         await workflow.step(
             example_function,
@@ -28,7 +28,7 @@ class ChildWorkflow:
 
         generated_text = await workflow.step(
             llm_generate,
-            GenerateInput(prompt=input.prompt),
+            GenerateInput(prompt=child_workflow_input.prompt),
             task_queue="llm",
             start_to_close_timeout=timedelta(minutes=2),
         )

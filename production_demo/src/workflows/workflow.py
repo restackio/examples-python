@@ -17,12 +17,12 @@ class ExampleWorkflowInput(BaseModel):
 @workflow.defn()
 class ExampleWorkflow:
     @workflow.run
-    async def run(self, input: ExampleWorkflowInput):
+    async def run(self, example_workflow_input: ExampleWorkflowInput) -> dict:
         # use the parent run id to create child workflow ids
         parent_workflow_id = workflow_info().workflow_id
 
         tasks = []
-        for i in range(input.amount):
+        for i in range(example_workflow_input.amount):
             log.info(f"Queue ChildWorkflow {i+1} for execution")
             task = workflow.child_execute(
                 ChildWorkflow,
@@ -40,7 +40,10 @@ class ExampleWorkflow:
         generated_text = await workflow.step(
             llm_generate,
             GenerateInput(
-                prompt=f"Give me the top 3 unique jokes according to the results. {results}",
+                prompt=f"""
+                Give me the top 3 unique jokes according to the results.
+                {results}
+                """,
             ),
             task_queue="llm",
             start_to_close_timeout=timedelta(minutes=2),

@@ -1,18 +1,18 @@
 import asyncio
-import os
+import logging
 import webbrowser
+from pathlib import Path
 
 from restack_ai.restack import ServiceOptions
-from watchfiles import run_process
-
 from src.client import client
 from src.functions.evaluate import llm_evaluate
 from src.functions.function import example_function
 from src.functions.generate import llm_generate
 from src.workflows.workflow import ChildWorkflow, ExampleWorkflow
+from watchfiles import run_process
 
 
-async def main():
+async def main() -> None:
     await asyncio.gather(
         client.start_service(
             workflows=[ExampleWorkflow, ChildWorkflow],
@@ -32,16 +32,16 @@ async def main():
     )
 
 
-def run_services():
+def run_services() -> None:
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("Service interrupted by user. Exiting gracefully.")
+        logging.info("Service interrupted by user. Exiting gracefully.")
 
 
-def watch_services():
-    watch_path = os.getcwd()
-    print(f"Watching {watch_path} and its subdirectories for changes...")
+def watch_services() -> None:
+    watch_path = Path.cwd()
+    logging.info("Watching %s and its subdirectories for changes...", watch_path)
     webbrowser.open("http://localhost:5233")
     run_process(watch_path, recursive=True, target=run_services)
 
