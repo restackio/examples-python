@@ -4,8 +4,6 @@ version = "0.0.1"
 requires-python = ">=3.10"
 
 [tool.uv.workspace]
-members = ["*", "community/*", "features/*"]
-exclude = ["**/.*", "community", "features"]
 
 [dependency-groups]
 dev = [
@@ -14,6 +12,6 @@ dev = [
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D100", "D101", "D102", "D103","INP001"]
+ignore = ["D100", "D101", "D102", "D103", "D104", "D107", "INP001"]
 
 [tool.ruff.format]
