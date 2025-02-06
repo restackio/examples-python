@@ -22,14 +22,14 @@ class WorkflowInputParams:
 @workflow.defn()
 class SendEmailWorkflow:
     @workflow.run
-    async def run(self, input: WorkflowInputParams):
-        log.info("SendEmailWorkflow started", input=input)
+    async def run(self, workflow_input: WorkflowInputParams) -> str:
+        log.info("SendEmailWorkflow started", input=workflow_input)
 
         text = await workflow.step(
             generate_email_content,
             GenerateEmailInput(
-                email_context=input.email_context,
-                simulate_failure=input.simulate_failure,
+                email_context=workflow_input.email_context,
+                simulate_failure=workflow_input.simulate_failure,
             ),
             retry_policy=RetryPolicy(
                 initial_interval=timedelta(seconds=10),
@@ -41,8 +41,8 @@ class SendEmailWorkflow:
             send_email,
             SendEmailInput(
                 text=text,
-                subject=input.subject,
-                to=input.to,
+                subject=workflow_input.subject,
+                to=workflow_input.to,
             ),
             start_to_close_timeout=timedelta(seconds=120),
         )

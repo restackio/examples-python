@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 import sendgrid
 from dotenv import load_dotenv
-from restack_ai.function import FunctionFailure, function
+from restack_ai.function import FunctionFailure, function, log
 from sendgrid.helpers.mail import Mail
 
 load_dotenv()
@@ -17,26 +17,32 @@ class SendEmailInput:
 
 
 @function.defn()
-async def send_email(input: SendEmailInput) -> None:
+async def send_email(send_email_input: SendEmailInput) -> None:
     from_email = os.getenv("FROM_EMAIL")
 
     if not from_email:
-        raise FunctionFailure("FROM_EMAIL is not set", non_retryable=True)
+        error_message = "FROM_EMAIL is not set"
+        log.error(error_message)
+        raise FunctionFailure(error_message, non_retryable=True)
 
     sendgrid_api_key = os.getenv("SENDGRID_API_KEY")
 
     if not sendgrid_api_key:
-        raise FunctionFailure("SENDGRID_API_KEY is not set", non_retryable=True)
+        error_message = "SENDGRID_API_KEY is not set"
+        log.error(error_message)
+        raise FunctionFailure(error_message, non_retryable=True)
 
     message = Mail(
         from_email=from_email,
-        to_emails=input.to,
-        subject=input.subject,
-        plain_text_content=input.text,
+        to_emails=send_email_input.to,
+        subject=send_email_input.subject,
+        plain_text_content=send_email_input.text,
     )
 
     try:
         sg = sendgrid.SendGridAPIClient(sendgrid_api_key)
         sg.send(message)
-    except Exception:
-        raise FunctionFailure("Failed to send email", non_retryable=False)
+    except Exception as e:
+        error_message = "Failed to send email"
+        log.error(error_message, error=e)
+        raise FunctionFailure(error_message, non_retryable=False) from e

@@ -1,5 +1,6 @@
 import asyncio
 import os
+import sys
 import time
 from dataclasses import dataclass
 
@@ -16,19 +17,27 @@ class InputParams:
     to: str
 
 
-async def main():
+async def main() -> None:
     client = Restack()
 
     workflow_id = f"{int(time.time() * 1000)}-SendEmailWorkflow"
     to_email = os.getenv("TO_EMAIL")
     if not to_email:
-        raise Exception("TO_EMAIL environment variable is not set")
+        error_message = "TO_EMAIL environment variable is not set"
+        raise OSError(error_message)
 
     run_id = await client.schedule_workflow(
         workflow_name="SendEmailWorkflow",
         workflow_id=workflow_id,
         input={
-            "email_context": "This email should contain a greeting. And telling user we have launched a new AI feature with Restack workflows. Workflows now offer logging and automatic retries when one of its steps fails. Name of user is not provided. You can set as goodbye message on the email just say 'Best regards' or something like that. No need to mention name of user or name of person sending the email.",
+            "email_context": """
+            This email should contain a greeting. And telling user we have
+            launched a new AI feature with Restack workflows. Workflows now
+            offer logging and automatic retries when one of its steps fails.
+            Name of user is not provided. You can set as goodbye message on the
+            email just say 'Best regards' or something like that. No need to
+            mention name of user or name of person sending the email.
+            """,
             "subject": "Hello from Restack",
             "to": to_email,
         },
@@ -39,10 +48,10 @@ async def main():
         run_id=run_id,
     )
 
-    exit(0)
+    sys.exit(0)
 
 
-def run_schedule_workflow():
+def run_schedule_workflow() -> None:
     asyncio.run(main())
 
 

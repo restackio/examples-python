@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from dotenv import load_dotenv
 from openai import OpenAI
-from restack_ai.function import FunctionFailure, function
+from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
@@ -17,15 +17,19 @@ class GenerateEmailInput:
 
 
 @function.defn()
-async def generate_email_content(input: GenerateEmailInput):
-    global tries
+async def generate_email_content(generate_email_input: GenerateEmailInput) -> str:
+    global tries  # noqa: PLW0603
 
-    if input.simulate_failure and tries == 0:
+    if generate_email_input.simulate_failure and tries == 0:
         tries += 1
-        raise FunctionFailure("Simulated failure", non_retryable=False)
+        error_message = "Simulated failure"
+        log.error(error_message)
+        raise FunctionFailure(error_message, non_retryable=False)
 
     if os.environ.get("OPENAI_API_KEY") is None:
-        raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
+        error_message = "OPENAI_API_KEY is not set"
+        log.error(error_message)
+        raise FunctionFailure(error_message, non_retryable=True)
 
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -34,11 +38,18 @@ async def generate_email_content(input: GenerateEmailInput):
         messages=[
             {
                 "role": "system",
-                "content": "You are a helpful assistant that generates short emails based on the provided context.",
+                "content": """
+                You are a helpful assistant that generates short emails based
+                on the provided context.
+                The email should be short and to the point.
+                """,
             },
             {
                 "role": "user",
-                "content": f"Generate a short email based on the following context: {input.email_context}",
+                "content": f"""
+                Generate a short email based on the following context:
+                {input.email_context}
+                """,
             },
         ],
         max_tokens=150,

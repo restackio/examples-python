@@ -6,7 +6,7 @@ from src.functions.send_email import send_email
 from src.workflows.send_email import SendEmailWorkflow
 
 
-async def main():
+async def main() -> None:
     await asyncio.gather(
         client.start_service(
             workflows=[SendEmailWorkflow],
@@ -15,7 +15,7 @@ async def main():
     )
 
 
-def run_services():
+def run_services() -> None:
     asyncio.run(main())
 
 
