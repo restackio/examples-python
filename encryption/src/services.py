@@ -5,14 +5,14 @@ from src.functions.function import welcome
 from src.workflows.workflow import EncryptedWorkflow
 
 
-async def main():
+async def main() -> None:
     await client.start_service(
         workflows=[EncryptedWorkflow],
         functions=[welcome],
     )
 
 
-def run_services():
+def run_services() -> None:
     asyncio.run(main())
 
 

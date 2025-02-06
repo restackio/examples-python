@@ -41,9 +41,11 @@ class EncryptionCodec(PayloadCodec):
             # Confirm our key ID is the same
             key_id = p.metadata.get("encryption-key-id", b"").decode()
             if key_id != self.key_id:
+                error_message = "Unrecognized key ID {}. Current key ID is {}."
                 raise ValueError(
-                    f"Unrecognized key ID {key_id}. Current key ID is {self.key_id}.",
+                    error_message.format(key_id, self.key_id),
                 )
+            # Decrypt and append
             # Decrypt and append
             ret.append(Payload.FromString(self.decrypt(p.data)))
         return ret

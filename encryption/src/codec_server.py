@@ -24,7 +24,10 @@ def build_codec_server() -> web.Application:
         req: web.Request,
     ) -> web.Response:
         # Read payloads as JSON
-        assert req.content_type == "application/json"
+        if req.content_type != "application/json":
+            raise web.HTTPUnsupportedMediaType(
+                text="Only application/json is supported",
+            )
         payloads = json_format.Parse(await req.read(), Payloads())
 
         # Apply
@@ -49,5 +52,5 @@ def build_codec_server() -> web.Application:
     return app
 
 
-def run_codec_server():
+def run_codec_server() -> None:
     web.run_app(build_codec_server(), host="127.0.0.1", port=8081)

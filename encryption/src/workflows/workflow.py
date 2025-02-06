@@ -9,7 +9,7 @@ with import_functions():
 @workflow.defn()
 class EncryptedWorkflow:
     @workflow.run
-    async def run(self):
+    async def run(self) -> str:
         log.info("EncryptedWorkflow started")
         result = await workflow.step(
             welcome,

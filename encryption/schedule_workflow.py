@@ -1,10 +1,11 @@
 import asyncio
+import sys
 import time
 
 from src.client import client
 
 
-async def main():
+async def main() -> None:
     workflow_id = f"{int(time.time() * 1000)}-EncryptedWorkflow"
     run_id = await client.schedule_workflow(
         workflow_name="EncryptedWorkflow",
@@ -16,10 +17,10 @@ async def main():
         run_id=run_id,
     )
 
-    exit(0)
+    sys.exit(0)
 
 
-def run_schedule_workflow():
+def run_schedule_workflow() -> None:
     asyncio.run(main())
 
 
