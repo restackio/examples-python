@@ -17,10 +17,10 @@ async def openai_chat(input: OpenAiChatInput) -> str:
         log.info("openai_chat function started", input=input)
 
         
-        if (os.environ.get("OPENAI_API_KEY") is None):
-            raise FunctionFailure("OPENAI_API_KEY is not set", non_retryable=True)
+        if (os.environ.get("RESTACK_API_KEY") is None):
+            raise FunctionFailure("RESTACK_API_KEY is not set", non_retryable=True)
     
-        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+        client = OpenAI(base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY"))
 
         messages = []
         if input.system_content:
