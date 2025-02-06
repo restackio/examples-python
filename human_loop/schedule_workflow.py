@@ -1,14 +1,15 @@
 import asyncio
+import sys
 import time
 
 from restack_ai import Restack
 
 
-async def main():
+async def main() -> None:
     client = Restack()
 
     workflow_id = f"{int(time.time() * 1000)}-HumanLoopWorkflow"
-    runId = await client.schedule_workflow(
+    run_id = await client.schedule_workflow(
         workflow_name="HumanLoopWorkflow",
         workflow_id=workflow_id,
     )
@@ -19,22 +20,22 @@ async def main():
             "feedback": "This is a human feedback",
         },
         workflow_id=workflow_id,
-        run_id=runId,
+        run_id=run_id,
     )
 
-    end = await client.send_workflow_event(
+    await client.send_workflow_event(
         event_name="event_end",
         event_input={
             "end": True,
         },
         workflow_id=workflow_id,
-        run_id=runId,
+        run_id=run_id,
     )
 
-    exit(0)
+    sys.exit(0)
 
 
-def run_schedule_workflow():
+def run_schedule_workflow() -> None:
     asyncio.run(main())
 
 

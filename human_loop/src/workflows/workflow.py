@@ -41,7 +41,7 @@ class HumanLoopWorkflow:
         return end
 
     @workflow.run
-    async def run(self):
+    async def run(self) -> str:
         await workflow.condition(
             lambda: self.end_workflow,
         )
