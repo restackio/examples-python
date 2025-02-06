@@ -5,7 +5,7 @@ from src.functions.create_payment_link import create_payment_link
 from src.workflows.payment_link import CreatePaymentLinkWorkflow
 
 
-async def main():
+async def main() -> None:
     await asyncio.gather(
         client.start_service(
             workflows=[CreatePaymentLinkWorkflow],
@@ -14,7 +14,7 @@ async def main():
     )
 
 
-def run_services():
+def run_services() -> None:
     asyncio.run(main())
 
 

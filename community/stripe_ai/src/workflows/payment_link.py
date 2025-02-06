@@ -9,15 +9,13 @@ with import_functions():
 @workflow.defn()
 class CreatePaymentLinkWorkflow:
     @workflow.run
-    async def run(self):
-        log.info("CreatePaymentLinkWorkflow started", input=input)
+    async def run(self) -> str:
+        log.info("CreatePaymentLinkWorkflow started")
 
-        result = await workflow.step(
+        return await workflow.step(
             create_payment_link,
             retry_policy=RetryPolicy(
                 initial_interval=timedelta(seconds=10),
                 backoff_coefficient=1,
             ),
         )
-
-        return result
