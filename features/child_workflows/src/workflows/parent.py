@@ -15,8 +15,8 @@ class ParentOutput(BaseModel):
 @workflow.defn()
 class ParentWorkflow:
     @workflow.run
-    async def run(self, input: ParentInput) -> ParentOutput:
-        if input.child:
+    async def run(self, parent_input: ParentInput) -> ParentOutput:
+        if parent_input.child:
             # use the parent run id to create child workflow ids
             parent_workflow_id = workflow_info().workflow_id
 

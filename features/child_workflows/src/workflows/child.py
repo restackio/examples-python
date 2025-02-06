@@ -18,11 +18,11 @@ class ChildOutput(BaseModel):
 @workflow.defn()
 class ChildWorkflow:
     @workflow.run
-    async def run(self, input: ChildInput) -> ChildOutput:
+    async def run(self, child_input: ChildInput) -> ChildOutput:
         log.info("ChildWorkflow started")
         result = await workflow.step(
             welcome,
-            input=input.name,
+            input=child_input.name,
             start_to_close_timeout=timedelta(seconds=120),
         )
         log.info("ChildWorkflow completed", result=result)
