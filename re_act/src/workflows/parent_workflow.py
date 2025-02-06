@@ -19,32 +19,29 @@ class ParentWorkflowInput:
 @workflow.defn()
 class ParentWorkflow:
     @workflow.run
-    async def run(self, input: ParentWorkflowInput):
+    async def run(self, parent_workflow_input: ParentWorkflowInput) -> None:
         parent_workflow_id = workflow_info().workflow_id
 
         decide_result = await workflow.step(
             decide,
             input=DecideInput(
-                email=input.email,
-                current_accepted_applicants_count=input.current_accepted_applicants_count,
+                email=parent_workflow_input.email,
+                current_accepted_applicants_count=parent_workflow_input.current_accepted_applicants_count,
             ),
             start_to_close_timeout=timedelta(seconds=120),
         )
 
         decision = decide_result[0]["function"]["name"]
 
-        child_workflow_result = None
         if decision == "accept_applicant":
-            child_workflow_result = await workflow.child_execute(
+            await workflow.child_execute(
                 ChildWorkflowA,
                 workflow_id=f"{parent_workflow_id}-child-a",
-                input=input.email,
+                input=parent_workflow_input.email,
             )
         elif decision == "reject_applicant":
-            child_workflow_result = await workflow.child_execute(
+            await workflow.child_execute(
                 ChildWorkflowB,
                 workflow_id=f"{parent_workflow_id}-child-b",
-                input=input.email,
+                input=parent_workflow_input.email,
             )
-
-        return child_workflow_result

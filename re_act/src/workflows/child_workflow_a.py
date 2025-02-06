@@ -13,7 +13,7 @@ with import_functions():
 @workflow.defn()
 class ChildWorkflowA:
     @workflow.run
-    async def run(self, email: str):
+    async def run(self, email: str) -> None:
         log.info(f"Sending email to {email}")
 
         text = await workflow.step(

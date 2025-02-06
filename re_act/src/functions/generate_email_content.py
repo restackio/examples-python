@@ -14,7 +14,7 @@ class GenerateEmailInput:
 
 
 @function.defn()
-async def generate_email_content(input: GenerateEmailInput):
+async def generate_email_content(generate_email_input: GenerateEmailInput) -> str:
     try:
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -24,12 +24,14 @@ async def generate_email_content(input: GenerateEmailInput):
                 {
                     "role": "system",
                     "content": """
-                    You are a helpful assistant that generates short emails based on the provided context.
+                    You are a helpful assistant that generates short
+                    emails based on the provided context.
                     """,
                 },
                 {
                     "role": "user",
-                    "content": f"""Generate a short email based on the following context: {input.email_context}
+                    "content": f"""Generate a short email based on
+                    the following context: {generate_email_input.email_context}
                     """,
                 },
             ],
@@ -38,5 +40,6 @@ async def generate_email_content(input: GenerateEmailInput):
 
         return response.choices[0].message.content
     except Exception as e:
-        log.error("Failed to generate email content", error=e)
-        raise FunctionFailure("Failed to generate email content", non_retryable=True)
+        error_message = "Failed to generate email content"
+        log.error(error_message, error=e)
+        raise FunctionFailure(error_message, non_retryable=True) from e

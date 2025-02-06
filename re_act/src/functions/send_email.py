@@ -16,27 +16,32 @@ class SendEmailInput:
 
 
 @function.defn()
-async def send_email(input: SendEmailInput):
+async def send_email(send_email_input: SendEmailInput) -> None:
     from_email = os.environ.get("FROM_EMAIL")
 
     if not from_email:
-        raise FunctionFailure("FROM_EMAIL is not set", non_retryable=True)
+        error_message = "FROM_EMAIL is not set"
+        log.error(error_message)
+        raise FunctionFailure(error_message, non_retryable=True)
 
     sendgrid_api_key = os.getenv("SENDGRID_API_KEY")
 
     if not sendgrid_api_key:
-        raise FunctionFailure("SENDGRID_API_KEY is not set", non_retryable=True)
+        error_message = "SENDGRID_API_KEY is not set"
+        log.error(error_message)
+        raise FunctionFailure(error_message, non_retryable=True)
 
     message = Mail(
         from_email=from_email,
         to_emails=from_email,
-        subject=input.subject,
-        plain_text_content=input.body,
+        subject=send_email_input.subject,
+        plain_text_content=send_email_input.body,
     )
 
     try:
         sg = sendgrid.SendGridAPIClient(api_key=sendgrid_api_key)
         sg.send(message)
     except Exception as e:
-        log.error("Failed to send email", error=e)
-        raise FunctionFailure("Failed to send email", non_retryable=True)
+        error_message = "Failed to send email"
+        log.error(error_message, error=e)
+        raise FunctionFailure(error_message, non_retryable=True) from e
