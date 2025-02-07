@@ -15,11 +15,11 @@ class WorkflowInputParams:
 @workflow.defn()
 class GeminiGenerateWorkflow:
     @workflow.run
-    async def run(self, input: WorkflowInputParams):
-        log.info("GeminiGenerateWorkflow started", input=input)
+    async def run(self, gemini_generate_input: WorkflowInputParams) -> str:
+        log.info("GeminiGenerateWorkflow started", input=gemini_generate_input)
         result = await workflow.step(
             gemini_generate,
-            FunctionInputParams(user_content=input.user_content),
+            FunctionInputParams(user_content=gemini_generate_input.user_content),
             start_to_close_timeout=timedelta(seconds=120),
         )
         log.info("GeminiGenerateWorkflow completed", result=result)
