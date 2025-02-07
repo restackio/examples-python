@@ -1,20 +1,23 @@
 import xml.etree.ElementTree as ET
 
-import requests
-from restack_ai.function import function, log
+import aiohttp
+from restack_ai.function import FunctionFailure, function, log
 
 from .schema import RssInput
 
 
 @function.defn()
-async def rss_pull(input: RssInput):
+async def rss_pull(rss_pull_input: RssInput) -> list[dict]:
     try:
         # Fetch the RSS feed
-        response = requests.get(input.url)
-        response.raise_for_status()  # Raise an error for bad responses
+        async with aiohttp.ClientSession() as session, session.get(
+            rss_pull_input.url,
+            timeout=aiohttp.ClientTimeout(total=10),
+        ) as response:
+            response.raise_for_status()  # Raise an error for bad responses
 
         # Parse the RSS feed
-        root = ET.fromstring(response.content)
+        root = ET.fromstring(response.content)  # noqa: S314
         items = []
         for item in root.findall(".//item"):
             title = item.find("title").text
@@ -53,11 +56,14 @@ async def rss_pull(input: RssInput):
             )
 
         # Limit the number of items based on input.count
-        max_count = input.count if input.count is not None else len(items)
+        max_count = (
+            rss_pull_input.count if rss_pull_input.count is not None else len(items)
+        )
         items = items[:max_count]
-
-        log.info("rss_pull", extra={"data": items})
-        return items
     except Exception as error:
-        log.error("rss_pull function failed", error=error)
-        raise error
+        error_message = "rss_pull function failed"
+        log.error(error_message, error=error)
+        raise FunctionFailure(error_message, non_retryable=True) from error
+    else:
+        log.info("rss_pull function succeeded", data=items)
+        return items

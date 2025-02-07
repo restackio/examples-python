@@ -1,3 +1,4 @@
+import logging
 import time
 from dataclasses import dataclass
 
@@ -27,39 +28,39 @@ app.add_middleware(
 
 
 @app.get("/")
-async def home():
+async def home() -> str:
     return "Welcome to the Quickstart: War News Scraper & Summarizer example!"
 
 
 @app.post("/api/schedule")
-async def schedule_workflow(request: QueryRequest):
+async def schedule_workflow(request: QueryRequest) -> dict:
     try:
         workflow_id = f"{int(time.time() * 1000)}-rss_workflow"
 
-        runId = await client.schedule_workflow(
+        run_id = await client.schedule_workflow(
             workflow_name="RssWorkflow",
             workflow_id=workflow_id,
             input={"url": request.url, "count": request.count},
         )
-        print("Scheduled workflow", runId)
+        logging.info("Scheduled workflow", run_id=run_id)
 
         result = await client.get_workflow_result(
             workflow_id=workflow_id,
-            run_id=runId,
+            run_id=run_id,
         )
-
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    else:
         return {
             "result": result,
             "workflow_id": workflow_id,
-            "run_id": runId,
+            "run_id": run_id,
         }
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
 
 
 # Remove Flask-specific run code since FastAPI uses uvicorn
-def run_app():
-    uvicorn.run("src.app:app", host="0.0.0.0", port=8000, reload=True)
+def run_app() -> None:
+    uvicorn.run("src.app:app", host="0.0.0.0", port=8000, reload=True)  # noqa: S104
 
 
 if __name__ == "__main__":

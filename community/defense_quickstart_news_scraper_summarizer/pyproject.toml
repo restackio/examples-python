@@ -14,8 +14,8 @@ dependencies = [
     "fastapi==0.115.4",
     "uvicorn==0.32.0",
     "streamlit==1.40.0",
-    "requests==2.32.3",
     "bs4==0.0.2",
+    "aiohttp>=3.11.11",
 ]
 
 [project.scripts]

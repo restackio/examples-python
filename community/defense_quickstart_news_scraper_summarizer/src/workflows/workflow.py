@@ -13,9 +13,9 @@ with import_functions():
 @workflow.defn()
 class RssWorkflow:
     @workflow.run
-    async def run(self, input: dict):
-        url = input["url"]
-        count = input["count"]
+    async def run(self, rss_workflow_input: dict) -> str:
+        url = rss_workflow_input["url"]
+        count = rss_workflow_input["count"]
         rss_results = await workflow.step(
             rss_pull,
             RssInput(url=url, count=count),
@@ -40,13 +40,17 @@ class RssWorkflow:
                         start_to_close_timeout=timedelta(seconds=30),
                     )
                     crawled_contents.append(split_content)
-                except Exception as e:
-                    log.error(f"Failed to crawl {url}: {e!s}")
+                except Exception as e:  # noqa: BLE001
+                    error_message = f"Failed to crawl {url}"
+                    log.error(error_message, error=e)
                     continue
         summaries = []
         for split_content in crawled_contents:
             for content in split_content:
-                user_prompt = f"Provide a translation of the news article. Translate the following content to English: {content}"
+                user_prompt = f"""
+                Provide a translation of the news article.
+                Translate the following content to English: {content}
+                """
                 translation = await workflow.step(
                     llm_chat,
                     FunctionInputParams(user_prompt=user_prompt),
@@ -54,7 +58,11 @@ class RssWorkflow:
                     start_to_close_timeout=timedelta(seconds=120),
                 )
 
-                user_prompt = f"Provide a summary of the news found on rss feed. Summarize the following content: {translation} in maxium 1 sentence with no more than 20 words"
+                user_prompt = f"""
+                Provide a summary of the news found on rss feed.
+                Summarize the following content: {translation}
+                in maxium 1 sentence with no more than 20 words.
+                """
                 summary = await workflow.step(
                     llm_chat,
                     FunctionInputParams(user_prompt=user_prompt),
@@ -63,7 +71,10 @@ class RssWorkflow:
                 )
                 summaries.append(summary)
 
-        user_prompt = f"Make a daily digest of all the news and tell me what is the most important news. Here are the summaries of the articles: {summaries}."
+        user_prompt = f"""
+        Make a daily digest of all the news and tell me what is the most important news.
+        Here are the summaries of the articles: {summaries}.
+        The digest should be in English."""
 
         return await workflow.step(
             llm_chat,
