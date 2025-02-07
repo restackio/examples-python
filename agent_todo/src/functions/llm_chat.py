@@ -1,4 +1,4 @@
-from restack_ai.function import function, log
+from restack_ai.function import function, log, FunctionFailure
 from openai import OpenAI
 from openai.types.chat.chat_completion import ChatCompletion
 from openai.types.chat.chat_completion_message_tool_call import (
@@ -31,6 +31,10 @@ class LlmChatInput(BaseModel):
 async def llm_chat(input: LlmChatInput) -> ChatCompletion:
     try:
         log.info("llm_chat function started", input=input)
+
+        if (os.environ.get("RESTACK_API_KEY") is None):
+            raise FunctionFailure("RESTACK_API_KEY is not set", non_retryable=True)
+
         client = OpenAI(
             base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY")
         )

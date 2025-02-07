@@ -1,4 +1,4 @@
-from restack_ai.function import function, log
+from restack_ai.function import function, log, FunctionFailure
 from openai import OpenAI
 from dataclasses import dataclass
 import os
@@ -16,6 +16,10 @@ class FunctionInputParams:
 async def llm(input: FunctionInputParams) -> str:
     try:
         log.info("llm function started", input=input)
+
+        if (os.environ.get("RESTACK_API_KEY") is None):
+            raise FunctionFailure("RESTACK_API_KEY is not set", non_retryable=True)
+        
         client = OpenAI(base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY"))
 
         messages = []

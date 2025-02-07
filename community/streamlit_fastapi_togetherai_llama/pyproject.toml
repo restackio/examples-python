@@ -3,11 +3,11 @@ name = "streamlit_fastapi_togetherai_llama"
 version = "0.0.1"
 description = "A simple example showcasing streamlit, fastapi, togetherai and llamaindex"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]
-requires-python = ">=3.9,<3.13"
+requires-python = ">=3.10,<3.13"
 readme = "README.md"
 dependencies = [
     "pydantic>=2.10.6",
-    "restack-ai==0.0.61",
+    "restack-ai==0.0.62",
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
     "fastapi==0.115.4",
