@@ -9,9 +9,9 @@ with import_functions():
 @workflow.defn()
 class LlmCompleteWorkflow:
     @workflow.run
-    async def run(self, input: dict):
-        log.info("LlmCompleteWorkflow started", input=input)
-        prompt = input["prompt"]
+    async def run(self, workflow_input: dict) -> str:
+        log.info("LlmCompleteWorkflow started", input=workflow_input)
+        prompt = workflow_input["prompt"]
         result = await workflow.step(
             llm_complete,
             FunctionInputParams(prompt=prompt),

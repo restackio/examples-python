@@ -1,6 +1,8 @@
 import requests
 import streamlit as st
 
+HTTP_OK = 200
+
 # Set page title and header
 st.title("Restack AI with TogetherAi + LlamaIndex")
 
@@ -22,9 +24,10 @@ if st.button("Generate Response"):
             response = requests.post(
                 "http://localhost:8000/api/schedule",
                 json={"prompt": user_prompt},
+                timeout=10,
             )
 
-            if response.status_code == 200:
+            if response.status_code == HTTP_OK:
                 st.success("Response received!")
                 # Add the new response to history with the original prompt
                 st.session_state.response_history.append(
@@ -38,7 +41,8 @@ if st.button("Generate Response"):
 
         except requests.exceptions.ConnectionError:
             st.error(
-                "Failed to connect to the server. Make sure the FastAPI server is running.",
+                """Failed to connect to the server.
+                Make sure the FastAPI server is running.""",
             )
     else:
         st.warning("Please enter a prompt before submitting.")
