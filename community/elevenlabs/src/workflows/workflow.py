@@ -1,3 +1,4 @@
+# ruff: noqa: ERA001
 import os
 from datetime import timedelta
 
@@ -18,16 +19,22 @@ api_key = os.getenv("ELEVEN_LABS_API_KEY")
 @workflow.defn()
 class TextToSpeechWorkflow:
     @workflow.run
-    async def run(self):
+    async def run(self) -> dict:
         log.info("TextToSpeechWorkflow started")
 
         # Define input parameters for the function
         input_data = {
-            "text": "Hello, this is a test of the ElevenLabs text-to-speech converter using restack SDK.",
+            "text": """
+            Hello, this is a test of the ElevenLabs
+            text-to-speech converter using restack SDK.
+            """,
             "api_key": api_key,
-            "voice_id": "JBFqnCBsd6RMkjVDRZzb",  # Optional, uses default if not provided
-            "model_id": "eleven_monolingual_v1",  # Optional, uses default if not provided
-            "twilio_encoding": False,  # Optional, defaults to False
+             # Optional, uses default if not provided
+            "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+            # Optional, uses default if not provide
+            "model_id": "eleven_monolingual_v1",
+            # Optional, defaults to False
+            "twilio_encoding": False,
         }
 
         # Call the `text_to_speech` function as a workflow step
@@ -55,13 +62,13 @@ class TextToSpeechWorkflow:
 @workflow.defn()
 class AudioIsolationWorkflow:
     @workflow.run
-    async def run(self, input: dict):
+    async def run(self, audio_isolation_input: dict) -> dict:
         """Workflow to isolate audio from a given file path.
 
         :param input: A dictionary containing `api_key` and `audio_file_path`.
         """
-        api_key = input.get("api_key")
-        audio_file_path = input.get("audio_file_path")
+        api_key = audio_isolation_input.get("api_key")
+        audio_file_path = audio_isolation_input.get("audio_file_path")
 
         log.info("AudioIsolationWorkflow started")
 

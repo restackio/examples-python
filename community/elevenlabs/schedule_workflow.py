@@ -1,10 +1,11 @@
 import asyncio
+import sys
 import time
 
 from restack_ai import Restack
 
 
-async def main():
+async def main() -> None:
     client = Restack()
 
     workflow_id = f"{int(time.time() * 1000)}-TextToSpeechWorkflow"
@@ -18,10 +19,10 @@ async def main():
         run_id=run_id,
     )
 
-    exit(0)
+    sys.exit(0)
 
 
-def run_schedule_workflow():
+def run_schedule_workflow() -> None:
     asyncio.run(main())
 
 
