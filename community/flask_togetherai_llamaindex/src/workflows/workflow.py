@@ -9,11 +9,11 @@ with import_functions():
 @workflow.defn()
 class LlmCompleteWorkflow:
     @workflow.run
-    async def run(self, input: str):
-        log.info("LlmCompleteWorkflow started", input=input)
+    async def run(self, llm_complete_input: str) -> str:
+        log.info("LlmCompleteWorkflow started", input=llm_complete_input)
         result = await workflow.step(
             llm_complete,
-            input,
+            llm_complete_input,
             start_to_close_timeout=timedelta(seconds=120),
         )
         log.info("LlmCompleteWorkflow completed", result=result)

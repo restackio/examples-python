@@ -9,14 +9,14 @@ from src.workflows.workflow import LlmCompleteWorkflow
 load_dotenv()
 
 
-async def main():
+async def main() -> None:
     await restack_client.start_service(
         workflows=[LlmCompleteWorkflow],
         functions=[llm_complete],
     )
 
 
-def run_services():
+def run_services() -> None:
     asyncio.run(main())
 
 
