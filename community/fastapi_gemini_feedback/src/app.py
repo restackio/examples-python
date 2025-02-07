@@ -1,3 +1,4 @@
+import logging
 import time
 
 import uvicorn
@@ -9,12 +10,12 @@ app = FastAPI()
 
 
 @app.get("/")
-async def home():
+async def home() -> dict[str, str]:
     return {"message": "Welcome to the FastAPI App!"}
 
 
 @app.get("/test")
-async def test_route():
+async def test_route() -> dict[str, str]:
     return {"message": "This is a test route"}
 
 
@@ -23,8 +24,8 @@ class InputParams(BaseModel):
 
 
 @app.post("/api/schedule")
-async def schedule_workflow(data: InputParams):
-    print(data)
+async def schedule_workflow(data: InputParams) -> dict[str, str]:
+    logging.info("schedule_workflow: %s", data)
 
     client = Restack()
 
@@ -35,7 +36,7 @@ async def schedule_workflow(data: InputParams):
         input=data,
     )
 
-    print(f"Scheduled workflow with run_id: {run_id}")
+    logging.info("Scheduled workflow with run_id: %s", run_id)
 
     return {
         "workflow_id": workflow_id,
@@ -50,10 +51,10 @@ class FeedbackParams(BaseModel):
 
 
 @app.post("/api/event/feedback")
-async def send_event_feedback(data: FeedbackParams):
+async def send_event_feedback(data: FeedbackParams) -> None:
     client = Restack()
 
-    print(f"event feedback: {data}")
+    logging.info("event feedback: %s", data)
 
     await client.send_workflow_event(
         workflow_id=data.workflow_id,
@@ -69,7 +70,7 @@ class EndParams(BaseModel):
 
 
 @app.post("/api/event/end")
-async def send_event_end(data: EndParams):
+async def send_event_end(data: EndParams) -> None:
     client = Restack()
 
     await client.send_workflow_event(
@@ -79,8 +80,8 @@ async def send_event_end(data: EndParams):
     )
 
 
-def run_app():
-    uvicorn.run("src.app:app", host="0.0.0.0", port=5001, reload=True)
+def run_app() -> None:
+    uvicorn.run("src.app:app", host="0.0.0.0", port=5001, reload=True) # noqa: S104
 
 
 if __name__ == "__main__":

@@ -36,7 +36,8 @@ class GeminiGenerateWorkflow:
         return await workflow.step(
             gemini_generate,
             FunctionInputParams(
-                user_content=f"{self.user_content}. Take into account all feedbacks: {self.feedbacks}",
+                user_content=f"""{self.user_content}.
+                Take into account all feedbacks: {self.feedbacks}""",
             ),
             start_to_close_timeout=timedelta(seconds=120),
         )
@@ -48,11 +49,11 @@ class GeminiGenerateWorkflow:
         return end
 
     @workflow.run
-    async def run(self, input: WorkflowInputParams):
-        self.user_content = input.user_content
+    async def run(self, gemini_generate_input: WorkflowInputParams) -> str:
+        self.user_content = gemini_generate_input.user_content
         await workflow.step(
             gemini_generate,
-            FunctionInputParams(user_content=input.user_content),
+            FunctionInputParams(user_content=gemini_generate_input.user_content),
             start_to_close_timeout=timedelta(seconds=120),
         )
         await workflow.condition(
