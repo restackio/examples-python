@@ -16,11 +16,14 @@ class ChildWorkflowInput(BaseModel):
 @workflow.defn()
 class ChildWorkflow:
     @workflow.run
-    async def run(self, input: ChildWorkflowInput):
+    async def run(
+        self,
+        child_workflow_input: ChildWorkflowInput,
+    ) -> dict[str, str]:
         log.info("ChildWorkflow started")
         await workflow.step(
             example_function,
-            input=ExampleFunctionInput(name=input.name),
+            input=ExampleFunctionInput(name=child_workflow_input.name),
             start_to_close_timeout=timedelta(minutes=2),
         )
 
@@ -29,9 +32,9 @@ class ChildWorkflow:
         audiofile_path = await workflow.step(
             lmnt_synthesize,
             SynthesizeInputParams(
-                user_content=input.name,
-                voice=input.voice,
-                filename=f"{input.voice.lower().replace(' ', '_')}.mp3",
+                user_content=child_workflow_input.name,
+                voice=child_workflow_input.voice,
+                filename=f"{child_workflow_input.voice.lower().replace(' ', '_')}.mp3",
             ),
             task_queue="lmnt",
             start_to_close_timeout=timedelta(minutes=2),

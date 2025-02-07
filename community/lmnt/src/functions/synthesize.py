@@ -1,10 +1,10 @@
 """Module for LMNT speech synthesis functionality."""
 
-import os
+from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel, Field
-from restack_ai.function import FunctionFailure, function
+from restack_ai.function import FunctionFailure, function, log
 
 from .utils.client import lmnt_client
 
@@ -25,14 +25,17 @@ async def lmnt_synthesize(params: SynthesizeInputParams) -> str:
     try:
         client = await lmnt_client()
         synthesis = await client.synthesize(params.user_content, params.voice)
-        media_path = os.path.join("src", "media")
-        os.makedirs(media_path, exist_ok=True)
-        file_path = os.path.join(media_path, params.filename)
-        with open(file_path, "wb") as f:
+        media_path = Path("src/media")
+        media_path.mkdir(parents=True, exist_ok=True)
+        file_path = media_path / params.filename
+        with file_path.open("wb") as f:
             f.write(synthesis["audio"])
-        return params.filename
     except Exception as e:
-        raise FunctionFailure(f"Synthesis failed: {e!s}") from e
+        error_message = "Synthesis failed: %s"
+        log.error(error_message, error=e)
+        raise FunctionFailure(error_message) from e
+    else:
+        return params.filename
     finally:
         if client and hasattr(client, "close"):
             await client.close()

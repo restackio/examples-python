@@ -18,8 +18,10 @@ async def lmnt_client() -> Speech:
     """
     api_key = os.getenv("LMNT_API_KEY")
     if not api_key:
-        raise ValueError("LMNT_API_KEY environment variable is not set")
+        error_message = "LMNT_API_KEY environment variable is not set"
+        raise ValueError(error_message)
     try:
         return Speech(api_key)
     except Exception as e:
-        raise RuntimeError(f"Failed to initialize LMNT client: {e!s}") from e
+        error_message = "Failed to initialize LMNT client: %s"
+        raise RuntimeError(error_message) from e

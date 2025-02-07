@@ -17,7 +17,10 @@ class ExampleWorkflowInput(BaseModel):
 @workflow.defn()
 class ExampleWorkflow:
     @workflow.run
-    async def run(self, input: ExampleWorkflowInput):
+    async def run(
+        self,
+        example_workflow_input: ExampleWorkflowInput,
+    ) -> dict[str, list[str]]:
         parent_workflow_id = workflow_info().workflow_id
 
         voices_response = await workflow.step(
@@ -27,11 +30,18 @@ class ExampleWorkflow:
         )
 
         voice_list = voices_response["voices"]
-        log.info(f"Starting to process {min(len(voice_list), input.max_amount)} voices")
+        log.info(
+            "Starting to process %s voices",
+            min(len(voice_list), example_workflow_input.max_amount),
+        )
 
         tasks = []
-        for i, voice in enumerate(voice_list[: input.max_amount]):
-            log.info(f"Creating ChildWorkflow {i+1} for voice {voice['name']}")
+        for i, voice in enumerate(voice_list[: example_workflow_input.max_amount]):
+            log.info(
+                "Creating ChildWorkflow %s for voice %s",
+                i + 1,
+                voice["name"],
+            )
             child_input = ChildWorkflowInput(
                 name=f"Hi, my name is {voice['name']}",
                 voice=voice["id"],
@@ -42,14 +52,15 @@ class ExampleWorkflow:
                 input=child_input,
             )
             tasks.append(task)
-            log.info(f"Created ChildWorkflow {i+1}")
+            log.info("Created ChildWorkflow %s", i + 1)
 
-        log.info(f"Waiting for {len(tasks)} child workflows to complete")
+        log.info("Waiting for %s child workflows to complete", len(tasks))
         results = await asyncio.gather(*tasks)
 
         for i, result in enumerate(results, start=1):
             log.info(
-                f"ChildWorkflow {i} completed",
+                "ChildWorkflow %s completed",
+                i,
                 audiofile_path=result["audiofile_path"],
             )
 

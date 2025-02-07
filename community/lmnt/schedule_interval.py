@@ -1,4 +1,5 @@
 import asyncio
+import sys
 import time
 from datetime import timedelta
 
@@ -6,7 +7,7 @@ from restack_ai.restack import ScheduleIntervalSpec, ScheduleSpec
 from src.client import client
 
 
-async def main():
+async def main() -> None:
     workflow_id = f"{int(time.time() * 1000)}-ChildWorkflow"
     await client.schedule_workflow(
         workflow_name="ChildWorkflow",
@@ -20,10 +21,10 @@ async def main():
         ),
     )
 
-    exit(0)
+    sys.exit(0)
 
 
-def run_schedule_interval():
+def run_schedule_interval() -> None:
     asyncio.run(main())
 
 

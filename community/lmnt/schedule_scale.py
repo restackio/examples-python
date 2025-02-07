@@ -1,11 +1,12 @@
 import asyncio
+import sys
 import time
 
 from restack_ai import Restack
 from src.workflows.workflow import ExampleWorkflowInput
 
 
-async def main():
+async def main() -> None:
     client = Restack()
 
     workflow_id = f"{int(time.time() * 1000)}-ExampleWorkflow"
@@ -15,10 +16,10 @@ async def main():
         input=ExampleWorkflowInput(max_amount=50),
     )
 
-    exit(0)
+    sys.exit(0)
 
 
-def run_schedule_scale():
+def run_schedule_scale() -> None:
     asyncio.run(main())
 
 
