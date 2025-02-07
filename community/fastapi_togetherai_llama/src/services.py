@@ -7,7 +7,7 @@ from src.functions.function import llm_complete
 from src.workflows.workflow import LlmCompleteWorkflow
 
 
-async def main():
+async def main() -> None:
     await asyncio.gather(
         client.start_service(
             workflows=[LlmCompleteWorkflow],
@@ -20,7 +20,7 @@ async def main():
     )
 
 
-def run_services():
+def run_services() -> None:
     asyncio.run(main())
 
 
