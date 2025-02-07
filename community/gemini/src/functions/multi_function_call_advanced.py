@@ -3,7 +3,7 @@ import os
 from google import genai
 from google.genai import types
 from pydantic import BaseModel
-from restack_ai.function import function, log
+from restack_ai.function import FunctionFailure, function, log
 
 from src.functions.tools import get_function_declarations
 
@@ -19,9 +19,14 @@ class FunctionInputParams(BaseModel):
 
 
 @function.defn()
-async def gemini_multi_function_call_advanced(input: FunctionInputParams):
+async def gemini_multi_function_call_advanced(
+    gmfca_input: FunctionInputParams,
+) -> str:
     try:
-        log.info("gemini_multi_function_call_advanced function started", input=input)
+        log.info(
+            "gemini_multi_function_call_advanced function started",
+            input=gmfca_input,
+        )
         client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
         functions = get_function_declarations()
@@ -29,18 +34,21 @@ async def gemini_multi_function_call_advanced(input: FunctionInputParams):
 
         response = client.models.generate_content(
             model="gemini-2.0-flash-exp",
-            contents=[input.user_content]
+            contents=[
+                gmfca_input.user_content,
+            ]
             + (
-                [msg.content for msg in input.chat_history]
-                if input.chat_history
+                [msg.content for msg in gmfca_input.chat_history]
+                if gmfca_input.chat_history
                 else []
             ),
             config=types.GenerateContentConfig(
                 tools=tools,
             ),
         )
-        return response
-
     except Exception as e:
-        log.error("Error in gemini_multi_function_call_advanced", error=str(e))
-        raise e
+        error_message = "Error in gemini_multi_function_call_advanced"
+        log.error(error_message, error=e)
+        raise FunctionFailure(error_message) from e
+    else:
+        return response

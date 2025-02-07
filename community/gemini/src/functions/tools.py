@@ -65,7 +65,7 @@ class WeatherData(BaseModel):
 
 
 class LocationInput(BaseModel):
-    """The city and state, e.g. San Francisco, CA"""
+    """The city and state, e.g. San Francisco, CA."""
 
     location: USTopCities
 
@@ -325,39 +325,45 @@ CITY_WEATHER_DATA: dict[USTopCities, WeatherData] = {
 
 
 @function.defn()
-async def get_current_temperature(input: LocationInput) -> str:
+async def get_current_temperature(location_input: LocationInput) -> str:
     description = "Get the current temperature for a specific location"
-    log.info("get_current_temperature function started", location=input.location)
+    log.info("description: %s", description)
+    log.info(
+        "get_current_temperature function started",
+        location=location_input.location,
+    )
     weather_data = CITY_WEATHER_DATA.get(
-        input.location,
+        location_input.location,
         WeatherData(temperature="75°F", humidity="65%", air_quality="good"),
     )
     return weather_data.temperature
 
 
 @function.defn()
-async def get_humidity(input: LocationInput) -> str:
+async def get_humidity(location_input: LocationInput) -> str:
     description = "Get the current humidity level for a specific location"
-    log.info("get_humidity function started", location=input.location)
+    log.info("description: %s", description)
+    log.info("get_humidity function started", location=location_input.location)
     weather_data = CITY_WEATHER_DATA.get(
-        input.location,
+        location_input.location,
         WeatherData(temperature="75°F", humidity="65%", air_quality="good"),
     )
     return weather_data.humidity
 
 
 @function.defn()
-async def get_air_quality(input: LocationInput) -> str:
+async def get_air_quality(location_input: LocationInput) -> str:
     description = "Get the current air quality for a specific location"
-    log.info("get_air_quality function started", location=input.location)
+    log.info("description: %s", description)
+    log.info("get_air_quality function started", location=location_input.location)
     weather_data = CITY_WEATHER_DATA.get(
-        input.location,
+        location_input.location,
         WeatherData(temperature="75°F", humidity="65%", air_quality="good"),
     )
     return weather_data.air_quality
 
 
-def get_function_declarations():
+def get_function_declarations(): # noqa: ANN201
     functions = []
     for func in [get_current_temperature, get_humidity, get_air_quality]:
         input_type = func.__annotations__["input"]

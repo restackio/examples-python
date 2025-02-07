@@ -17,14 +17,17 @@ class WorkflowInputParams(BaseModel):
 @workflow.defn()
 class GeminiSwarmWorkflow:
     @workflow.run
-    async def run(self, input: WorkflowInputParams):
+    async def run(
+        self,
+        gemini_swarm_input: WorkflowInputParams,
+    ) -> list[dict[str, str]]:
         parent_workflow_id = workflow_info().workflow_id
 
         # Get all available cities from USTopCities enum
         all_cities = [city.value for city in USTopCities]
 
         # Take the first n cities based on input
-        selected_cities = all_cities[: input.num_cities]
+        selected_cities = all_cities[: gemini_swarm_input.num_cities]
 
         results_tasks = await asyncio.gather(
             *[

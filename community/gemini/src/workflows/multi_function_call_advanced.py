@@ -1,3 +1,4 @@
+# ruff: noqa: C901
 from datetime import timedelta
 
 from pydantic import BaseModel
@@ -17,14 +18,20 @@ class MultiFunctionCallAdvancedInputParams(BaseModel):
 
 @workflow.defn()
 class GeminiMultiFunctionCallAdvancedWorkflow:
-    def __init__(self):
+    def __init__(self) -> None:
         self.chat_history = []
 
     @workflow.run
-    async def run(self, input: MultiFunctionCallAdvancedInputParams):
-        log.info("GeminiMultiFunctionCallAdvancedWorkflow started", input=input)
+    async def run(
+        self,
+        multi_function_call_advanced_input: MultiFunctionCallAdvancedInputParams,
+    ) -> dict[str, str]:
+        log.info(
+            "GeminiMultiFunctionCallAdvancedWorkflow started",
+            input=multi_function_call_advanced_input,
+        )
 
-        current_content = input.user_content
+        current_content = multi_function_call_advanced_input.user_content
         final_response = None
         function_results = []
 
@@ -75,16 +82,21 @@ class GeminiMultiFunctionCallAdvancedWorkflow:
                                     result=result,
                                 )
                             except Exception as e:
-                                function_results.append(
-                                    f"Error executing {function_name}: {e!s}",
-                                )
-                                log.error(f"Error executing {function_name}: {e!s}")
+                                error_message = f"""
+                                Error executing {function_name}: {e!s}
+                                """
+                                function_results.append(error_message)
+                                log.error(error_message, error=e)
+                                raise
 
             if not has_function_calls:
                 break
 
             if function_results:
-                current_content = f"Based on these results: {'; '.join(function_results)}, please provide a final answer."
+                current_content = f"""
+                Based on these results: {'; '.join(function_results)},
+                please provide a final answer.
+                """
                 self.chat_history.append(
                     ChatMessage(role="user", content=current_content),
                 )

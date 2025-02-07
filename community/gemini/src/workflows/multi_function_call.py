@@ -17,11 +17,17 @@ class WorkflowInputParams(BaseModel):
 @workflow.defn()
 class GeminiMultiFunctionCallWorkflow:
     @workflow.run
-    async def run(self, input: WorkflowInputParams):
-        log.info("GeminiMultiFunctionCallWorkflow started", input=input)
+    async def run(
+        self,
+        multi_function_call_input: WorkflowInputParams,
+    ) -> dict[str, str]:
+        log.info(
+            "GeminiMultiFunctionCallWorkflow started",
+            input=multi_function_call_input,
+        )
         result = await workflow.step(
             gemini_multi_function_call,
-            FunctionInputParams(user_content=input.user_content),
+            FunctionInputParams(user_content=multi_function_call_input.user_content),
             start_to_close_timeout=timedelta(seconds=120),
             retry_policy=RetryPolicy(
                 maximum_attempts=1,
