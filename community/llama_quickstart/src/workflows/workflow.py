@@ -12,9 +12,9 @@ with import_functions():
 @workflow.defn()
 class HnWorkflow:
     @workflow.run
-    async def run(self, input: dict):
-        query = input["query"]
-        count = input["count"]
+    async def run(self, hn_workflow_input: dict) -> str:
+        query = hn_workflow_input["query"]
+        count = hn_workflow_input["count"]
         hn_results = await workflow.step(
             hn_search,
             HnSearchInput(query=query, count=count),
@@ -50,8 +50,16 @@ class HnWorkflow:
             )
             summaries.append(summary)
 
-        system_prompt = "You are a personal assistant. Provide a summary of the latest hacker news and the summaries of the websites. Structure your response with the title of the project, then a short description and a list of actionable bullet points."
-        user_prompt = f"Here is the latest hacker news data: {hn_results!s} and summaries of the websites: {summaries!s}"
+        system_prompt = """
+        You are a personal assistant.
+        Provide a summary of the latest hacker news and the summaries of the websites.
+        Structure your response with the title of the project,
+        then a short description and a list of actionable bullet points.
+        """
+        user_prompt = f"""
+        Here is the latest hacker news data: {hn_results!s}
+        and summaries of the websites: {summaries!s}
+        """
 
         return await workflow.step(
             llm_chat,

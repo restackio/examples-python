@@ -13,14 +13,18 @@ class FunctionInputParams(BaseModel):
     system_prompt: str
     user_prompt: str
 
+def environment_variable_error(variable_name: str) -> FunctionFailure:
+    error_message = f"{variable_name} environment variable is not set."
+    log.error(error_message)
+    raise FunctionFailure(error_message, non_retryable=True)
+
 
 @function.defn()
-async def llm_chat(input: FunctionInputParams):
+async def llm_chat(llm_chat_input: FunctionInputParams) -> str:
     try:
         api_key = os.getenv("TOGETHER_API_KEY")
         if not api_key:
-            log.error("TOGETHER_API_KEY environment variable is not set.")
-            raise ValueError("TOGETHER_API_KEY environment variable is required.")
+            environment_variable_error("TOGETHER_API_KEY")
 
         llm = TogetherLLM(
             model="meta-llama/Llama-3.2-11B-Vision-Instruct-Turbo",
@@ -29,15 +33,17 @@ async def llm_chat(input: FunctionInputParams):
         messages = [
             ChatMessage(
                 role=MessageRole.SYSTEM,
-                content=input.system_prompt,
+                content=llm_chat_input.system_prompt,
             ),
             ChatMessage(
                 role=MessageRole.USER,
-                content=input.user_prompt,
+                content=llm_chat_input.user_prompt,
             ),
         ]
         resp = llm.chat(messages)
-        return resp.message.content
     except Exception as e:
-        log.error(f"Error interacting with llm: {e}")
-        raise FunctionFailure(f"Error interacting with llm: {e}", non_retryable=True)
+        error_message = "Error interacting with llm"
+        log.error(error_message, error=e)
+        raise FunctionFailure(error_message, non_retryable=True) from e
+    else:
+        return resp.message.content

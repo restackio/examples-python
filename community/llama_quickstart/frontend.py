@@ -1,5 +1,7 @@
-import requests
+import aiohttp
 import streamlit as st
+
+HTTP_OK = 200
 
 # Set page title and header
 st.title("LLama Hackathon Quickstart")
@@ -22,12 +24,13 @@ if st.button("Search HN"):
         try:
             with st.spinner("Searching..."):
                 # Make POST request to FastAPI backend
-                response = requests.post(
+                with aiohttp.ClientSession() as session, session.post(
                     "http://localhost:8000/api/schedule",
                     json={"query": query, "count": count},
-                )
+                ) as response:
+                    response.raise_for_status()
 
-                if response.status_code == 200:
+                if response.status == HTTP_OK:
                     st.success("Response received!")
                     # Add the new response to history with the original prompt
                     st.session_state.response_history.append(
@@ -38,12 +41,17 @@ if st.button("Search HN"):
                         },
                     )
                 else:
-                    st.error(f"Error: {response.status_code}")
-
-        except requests.exceptions.ConnectionError:
+                    st.error(f"Error: {response.status}")
+        except aiohttp.ClientError as e:
             st.error(
-                "Failed to connect to the server. Make sure the FastAPI server is running.",
+                f"""aiohttp error: {e}""",
             )
+        except Exception as e:
+            st.error(
+                f"""Failed to connect to the server.
+                Make sure the FastAPI server is running. {e}""",
+            )
+            raise
     else:
         st.warning("Please enter a prompt before submitting.")
 

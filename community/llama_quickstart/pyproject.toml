@@ -15,7 +15,7 @@ dependencies = [
     "llama-index-llms-together==0.2.0",
     "uvicorn==0.32.0",
     "streamlit==1.40.0",
-    "requests==2.32.3",
+    "aiohttp>=3.11.11",
 ]
 
 [project.scripts]

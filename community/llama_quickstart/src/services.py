@@ -9,7 +9,7 @@ from src.functions.llm.chat import llm_chat
 from src.workflows.workflow import HnWorkflow
 
 
-async def main():
+async def main() -> None:
     await asyncio.gather(
         client.start_service(
             workflows=[HnWorkflow],
@@ -26,7 +26,7 @@ async def main():
     )
 
 
-def run_services():
+def run_services() -> None:
     asyncio.run(main())
 
 
