@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 
 import streamlit as st
@@ -9,7 +10,11 @@ logging.basicConfig(level=logging.INFO)
 
 
 # Function to trigger a workflow
-async def trigger_workflow(workflow_name, workflow_id, input_data):
+async def trigger_workflow(
+    workflow_name: str,
+    workflow_id: str,
+    input_data: dict[str, str],
+) -> str | None:
     try:
         client = Restack()
         run_id = await client.schedule_workflow(
@@ -22,12 +27,15 @@ async def trigger_workflow(workflow_name, workflow_id, input_data):
             workflow_id=workflow_id,
             run_id=run_id,
         )
-        print(result)
-
-        return result
-    except Exception as e:
+    except (ValueError, TypeError) as e:
         st.error(f"Failed to trigger workflow: {e!s}")
         return None
+    except Exception as e:
+        st.error(f"Failed to trigger workflow: {e!s}")
+        raise
+    else:
+        logging.info("Workflow triggered successfully with runId: %s", run_id)
+        return result
 
 
 # Streamlit UI
@@ -41,11 +49,11 @@ if st.button("Trigger Workflow"):
     if not workflow_name or not workflow_id:
         st.error("Workflow name and ID are required.")
     else:
-        input_dict = eval(input_data) if input_data else {}
+        input_dict = json.loads(input_data) if input_data else {}
         run_id = asyncio.run(trigger_workflow(workflow_name, workflow_id, input_dict))
 
         # Log the input data
-        logging.info(f"Triggered workflow with input: {input_dict}")
+        logging.info("Triggered workflow with input: %s", input_dict)
 
         if run_id:
             st.success(f"Workflow triggered successfully with runId: {run_id}")
