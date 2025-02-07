@@ -3,11 +3,11 @@ name = "defense_quickstart_audio_transcription_translation"
 version = "0.0.1"
 description = "Transcribe war-related audio recordings and translate them into English with this example repository"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.10,<3.13"
 readme = "README.md"
 dependencies = [
     "pydantic>=2.10.6",
-    "restack-ai==0.0.61",
+    "restack-ai==0.0.62",
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
     "openai>=1.61.0",

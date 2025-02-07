@@ -50,6 +50,7 @@ class AgentTodo:
         ]
 
         self.messages.append(Message(role="user", content=message.content or ""))
+
         completion = await agent.step(
             llm_chat,
             LlmChatInput(messages=self.messages, tools=tools),

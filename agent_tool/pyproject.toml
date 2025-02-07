@@ -3,12 +3,12 @@ name = "agent_tool"
 version = "0.0.1"
 description = "A tool for an AI agent"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.10,<3.13"
 readme = "README.md"
 dependencies = [
     "openai>=1.61.0",
     "pydantic>=2.10.6",
-    "restack-ai==0.0.61",
+    "restack-ai==0.0.62",
     "watchfiles>=1.0.4",
     "requests==2.32.3",
     "python-dotenv==1.0.1",
