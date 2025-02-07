@@ -13,7 +13,8 @@ class CodeExecutionWorkflowInput(BaseModel):
         default="Calculate how many r's are in the word 'strawberry'",
     )
     system_content: str = Field(
-        default="You are an expert in Python. You can execute Python code and return the result.",
+        default="""You are an expert in Python.
+        You can execute Python code and return the result.""",
     )
 
 
@@ -26,7 +27,7 @@ class CodeExecutionWorkflow:
     @workflow.run
     async def run(
         self,
-        input: CodeExecutionWorkflowInput,
+        cew_input: CodeExecutionWorkflowInput,
     ) -> CodeExecutionWorkflowOutput:
         messages = []
         while True:
@@ -34,15 +35,16 @@ class CodeExecutionWorkflow:
                 openai_tool_call,
                 input=OpenaiToolCallInput(
                     model="gpt-4o-mini",
-                    user_content=input.user_content if not messages else None,
-                    system_content=input.system_content if not messages else None,
+                    user_content=cew_input.user_content if not messages else None,
+                    system_content=cew_input.system_content if not messages else None,
                     messages=messages,
                     tools=[
                         {
                             "type": "function",
                             "function": {
                                 "name": "execute_python",
-                                "description": "Execute python code in a Jupyter notebook cell and return result",
+                                "description": """Execute python code in a Jupyter
+                                notebook cell and return result""",
                                 "parameters": {
                                     "type": "object",
                                     "properties": {

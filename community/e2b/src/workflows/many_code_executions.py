@@ -21,7 +21,8 @@ class ManyCodeExecutionWorkflowInput(BaseModel):
             "Convert 25 Celsius to Fahrenheit",
             "Calculate the area of a circle with radius 5",
             "Find all even numbers between 1 and 20",
-            "Calculate the length of the hypotenuse for a right triangle with sides 3 and 4",
+            """Calculate the length of the hypotenuse
+            for a right triangle with sides 3 and 4""",
         ],
     )
 
@@ -35,7 +36,7 @@ class ManyCodeExecutionWorkflow:
     @workflow.run
     async def run(
         self,
-        input: ManyCodeExecutionWorkflowInput,
+        many_code_execution_workflow_input: ManyCodeExecutionWorkflowInput,
     ) -> ManyCodeExecutionWorkflowOutput:
         tasks = [
             workflow.child_execute(
@@ -43,7 +44,7 @@ class ManyCodeExecutionWorkflow:
                 workflow_id=f"code_execution_{i}",
                 input=CodeExecutionWorkflowInput(user_content=task),
             )
-            for i, task in enumerate(input.tasks)
+            for i, task in enumerate(many_code_execution_workflow_input.tasks)
         ]
         results = await asyncio.gather(*tasks)
         return ManyCodeExecutionWorkflowOutput(results=[r.content for r in results])

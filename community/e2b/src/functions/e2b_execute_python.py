@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from e2b_code_interpreter import Sandbox
 from pydantic import BaseModel
-from restack_ai.function import function, log
+from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
@@ -11,13 +11,15 @@ class ExecutePythonInput(BaseModel):
 
 
 @function.defn()
-async def e2b_execute_python(input: ExecutePythonInput) -> str:
+async def e2b_execute_python(e2b_execute_python_input: ExecutePythonInput) -> str:
     try:
         # Create a new sandbox instance with a 60 second timeout
         sandbox = Sandbox(timeout=60)
-        execution = sandbox.run_code(input.code)
-        result = execution.text
-        return result
+        execution = sandbox.run_code(e2b_execute_python_input.code)
     except Exception as e:
-        log.error("e2b_execute_python function failed", error=e)
-        raise e
+        error_message = "e2b_execute_python function failed"
+        log.error(error_message, error=e)
+        raise FunctionFailure(error_message, non_retryable=True) from e
+    else:
+        log.info("e2b_execute_python function succeeded")
+        return execution.text
