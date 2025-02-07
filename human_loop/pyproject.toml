@@ -3,7 +3,7 @@ name = "human_loop"
 version = "0.0.1"
 description = "A simple example to get started with human-in-the-loop using the restack-ai python library"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.9,<3.13"
 readme = "README.md"
 dependencies = [
     "pydantic>=2.10.6",
