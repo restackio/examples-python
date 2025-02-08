@@ -30,7 +30,7 @@ async def llm_chat(input: LlmChatInput) -> str:
         messages_dicts = [message.model_dump() for message in input.messages]
         # Get the streamed response from OpenAI API
         response: Stream[ChatCompletionChunk] = client.chat.completions.create(
-            model=input.model or "restack-c1",
+            model=input.model or "gpt-4o-mini",
             messages=messages_dicts,
             stream=True,
         )

@@ -38,7 +38,7 @@ async def llm_chat(input: LlmChatInput) -> ChatCompletion:
             )
 
         response = client.chat.completions.create(
-            model=input.model or "restack-c1", messages=input.messages
+            model=input.model or "gpt-4o-mini", messages=input.messages
         )
         return response
     except Exception as e:

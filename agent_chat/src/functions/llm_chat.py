@@ -36,7 +36,7 @@ async def llm_chat(input: LlmChatInput) -> ChatCompletion:
             input.messages.append({"role": "system", "content": input.system_content})
 
         response = client.chat.completions.create(
-            model=input.model or "restack-c1",
+            model=input.model or "gpt-4o-mini",
             messages=input.messages,
         )
         log.info("llm_chat function completed", response=response)
