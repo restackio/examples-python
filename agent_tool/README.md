@@ -52,7 +52,7 @@ python -c "from src.services import watch_services; watch_services()"
 
 Duplicate the `env.example` file and rename it to `.env`.
 
-Obtain a Restack API Key to interact with the 'restack-c1' model at no cost from [console.restack.io](https://console.restack.io)
+Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
 
 ## Run agents
 
