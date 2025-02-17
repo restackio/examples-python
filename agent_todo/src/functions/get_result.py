@@ -1,23 +1,24 @@
-from restack_ai.function import function, log
+import secrets
+
 from pydantic import BaseModel
-import random
+from restack_ai.function import function, log
 
 
 class ResultParams(BaseModel):
-    todoTitle: str
-    todoId: str
+    todo_title: str
+    todo_id: str
 
 
 class ResultResponse(BaseModel):
     status: str
-    todoId: str
+    todo_id: str
 
 
 @function.defn()
 async def get_result(params: ResultParams) -> ResultResponse:
     try:
-        status = random.choice(["completed", "failed"])
-        return ResultResponse(todoId=params.todoId, status=status)
+        status = secrets.choice(["completed", "failed"])
+        return ResultResponse(todo_id=params.todo_id, status=status)
     except Exception as e:
         log.error("result function failed", error=e)
-        raise e
+        raise

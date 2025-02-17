@@ -1,17 +1,20 @@
 import asyncio
-import os
-from src.functions.random import get_random
-from src.functions.result import get_result
-from src.client import client
-from src.workflows.todo_execute import TodoExecute
-from src.agents.agent_todo import AgentTodo
-from src.functions.todo_create import todo_create
-from src.functions.llm_chat import llm_chat
-from watchfiles import run_process
+import logging
 import webbrowser
+from pathlib import Path
+
+from watchfiles import run_process
+
+from src.agents.agent_todo import AgentTodo
+from src.client import client
+from src.functions.get_random import get_random
+from src.functions.get_result import get_result
+from src.functions.llm_chat import llm_chat
+from src.functions.todo_create import todo_create
+from src.workflows.todo_execute import TodoExecute
 
 
-async def main():
+async def main() -> None:
     await client.start_service(
         agents=[AgentTodo],
         workflows=[TodoExecute],
@@ -19,16 +22,16 @@ async def main():
     )
 
 
-def run_services():
+def run_services() -> None:
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("Service interrupted by user. Exiting gracefully.")
+        logging.info("Service interrupted by user. Exiting gracefully.")
 
 
-def watch_services():
-    watch_path = os.getcwd()
-    print(f"Watching {watch_path} and its subdirectories for changes...")
+def watch_services() -> None:
+    watch_path = Path.cwd()
+    logging.info("Watching %s and its subdirectories for changes...", watch_path)
     webbrowser.open("http://localhost:5233")
     run_process(watch_path, recursive=True, target=run_services)
 
