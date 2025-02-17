@@ -8,7 +8,7 @@ with import_functions():
     from openai import pydantic_function_tool
 
     from src.functions.llm_chat import LlmChatInput, Message, llm_chat
-    from src.functions.lookup_sales import LookupSalesInput, lookupSales
+    from src.functions.lookup_sales import LookupSalesInput, lookup_sales
     # Step 2: Import your new function to the agent
     # from src.functions.new_function import new_function, FunctionInput, FunctionOutput
 
@@ -34,7 +34,7 @@ class AgentChatToolFunctions:
         tools = [
             pydantic_function_tool(
                 model=LookupSalesInput,
-                name=lookupSales.__name__,
+                name=lookup_sales.__name__,
                 description="Lookup sales for a given category",
             ),
             # Step 3 Add your new function to the tools list and adjust the system prompt
@@ -77,7 +77,7 @@ class AgentChatToolFunctions:
                 name = tool_call.function.name
 
                 match name:
-                    case lookupSales.__name__:
+                    case lookup_sales.__name__:
                         args = LookupSalesInput.model_validate_json(
                             tool_call.function.arguments
                         )
@@ -85,7 +85,7 @@ class AgentChatToolFunctions:
                         log.info(f"calling {name} with args: {args}")
 
                         result = await agent.step(
-                            function=lookupSales,
+                            function=lookup_sales,
                             agent_input=LookupSalesInput(category=args.category),
                             start_to_close_timeout=timedelta(seconds=120),
                         )
@@ -138,5 +138,5 @@ class AgentChatToolFunctions:
         return {"end": True}
 
     @agent.run
-    async def run(self) -> None:
+    async def run(self, agent_input: dict) -> None:
         await agent.condition(lambda: self.end)
