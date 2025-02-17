@@ -166,5 +166,5 @@ class AgentTodo:
         return {"end": True}
 
     @agent.run
-    async def run(self) -> None:
+    async def run(self, agent_input: dict) -> None:
         await agent.condition(lambda: self.end)
