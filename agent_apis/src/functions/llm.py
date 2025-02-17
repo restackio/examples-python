@@ -1,10 +1,12 @@
-from restack_ai.function import function, log, FunctionFailure
-from openai import OpenAI
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
+
 from dotenv import load_dotenv
+from openai import OpenAI
+from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
+
 
 @dataclass
 class FunctionInputParams:
@@ -12,27 +14,37 @@ class FunctionInputParams:
     system_content: str | None = None
     model: str | None = None
 
-@function.defn()
-async def llm(input: FunctionInputParams) -> str:
-    try:
-        log.info("llm function started", input=input)
 
-        if (os.environ.get("RESTACK_API_KEY") is None):
-            raise FunctionFailure("RESTACK_API_KEY is not set", non_retryable=True)
-        
-        client = OpenAI(base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY"))
+def raise_exception(message: str) -> None:
+    log.error(message)
+    raise Exception(message)
+
+
+@function.defn()
+async def llm(function_input: FunctionInputParams) -> str:
+    try:
+        log.info("llm function started", input=function_input)
+
+        if os.environ.get("RESTACK_API_KEY") is None:
+            error_message = "RESTACK_API_KEY is not set"
+            raise_exception(error_message)
+
+        client = OpenAI(
+            base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY")
+        )
 
         messages = []
-        if input.system_content:
-            messages.append({"role": "system", "content": input.system_content})
-        messages.append({"role": "user", "content": input.user_content})
+        if function_input.system_content:
+            messages.append(
+                {"role": "system", "content": function_input.system_content}
+            )
+        messages.append({"role": "user", "content": function_input.user_content})
 
         response = client.chat.completions.create(
-            model=input.model or "gpt-4o-mini",
-            messages=messages
+            model=function_input.model or "gpt-4o-mini", messages=messages
         )
         log.info("llm function completed", response=response)
         return response.choices[0].message.content
     except Exception as e:
-        log.error("llm function failed", error=e)
-        raise e
+        error_message = "llm function failed"
+        raise FunctionFailure(error_message, non_retryable=True) from e

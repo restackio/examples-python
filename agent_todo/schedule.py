@@ -1,10 +1,12 @@
 import asyncio
+import sys
 import time
+
 from restack_ai import Restack
 from src.agents.agent_todo import AgentTodo
 
 
-async def main():
+async def main() -> None:
     client = Restack()
 
     agent_id = f"{int(time.time() * 1000)}-{AgentTodo.__name__}"
@@ -16,10 +18,10 @@ async def main():
 
     await client.get_agent_result(agent_id=agent_id, run_id=run_id)
 
-    exit(0)
+    sys.exit(0)
 
 
-def run_schedule():
+def run_schedule() -> None:
     asyncio.run(main())
 
 

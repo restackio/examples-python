@@ -1,10 +1,11 @@
-from restack_ai.function import function, log
+import os
+from typing import Literal
+
+from dotenv import load_dotenv
 from openai import OpenAI
 from openai.types.chat.chat_completion import ChatCompletion
-import os
-from dotenv import load_dotenv
 from pydantic import BaseModel
-from typing import Literal, Optional, List
+from restack_ai.function import FunctionFailure, function, log
 
 load_dotenv()
 
@@ -15,32 +16,41 @@ class Message(BaseModel):
 
 
 class LlmChatInput(BaseModel):
-    system_content: Optional[str] = None
-    model: Optional[str] = None
-    messages: Optional[List[Message]] = None
+    system_content: str | None = None
+    model: str | None = None
+    messages: list[Message] | None = None
+
+
+def raise_exception(message: str) -> None:
+    log.error(message)
+    raise FunctionFailure(message, non_retryable=True)
 
 
 @function.defn()
-async def llm_chat(input: LlmChatInput) -> ChatCompletion:
+async def llm_chat(function_input: LlmChatInput) -> ChatCompletion:
     try:
-        log.info("llm_chat function started", input=input)
+        log.info("llm_chat function started", function_input=function_input)
 
-        if (os.environ.get("RESTACK_API_KEY") is None):
-            raise FunctionFailure("RESTACK_API_KEY is not set", non_retryable=True)
-        
+        if os.environ.get("RESTACK_API_KEY") is None:
+            error_message = "RESTACK_API_KEY is not set"
+            raise_exception(error_message)
+
         client = OpenAI(
             base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY")
         )
 
-        if input.system_content:
-            input.messages.append(
-                Message(role="system", content=input.system_content or "")
+        if function_input.system_content:
+            function_input.messages.append(
+                Message(role="system", content=function_input.system_content or "")
             )
 
         response = client.chat.completions.create(
-            model=input.model or "gpt-4o-mini", messages=input.messages
+            model=function_input.model or "gpt-4o-mini",
+            messages=function_input.messages,
         )
-        return response
     except Exception as e:
         log.error("llm_chat function failed", error=e)
-        raise e
+        raise
+    else:
+        log.info("llm_chat function completed", response=response)
+        return response

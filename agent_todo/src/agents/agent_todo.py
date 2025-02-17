@@ -1,14 +1,15 @@
 from datetime import timedelta
-from typing import List
+
 from pydantic import BaseModel
 from restack_ai.agent import agent, import_functions, log
-from src.workflows.todo_execute import TodoExecute, TodoExecuteParams
 
+from src.workflows.todo_execute import TodoExecute, TodoExecuteParams
 
 with import_functions():
     from openai import pydantic_function_tool
-    from src.functions.llm_chat import llm_chat, LlmChatInput, Message
-    from src.functions.todo_create import todo_create, TodoCreateParams
+
+    from src.functions.llm_chat import LlmChatInput, Message, llm_chat
+    from src.functions.todo_create import TodoCreateParams, todo_create
 
 
 class MessageEvent(BaseModel):
@@ -26,7 +27,7 @@ class AgentTodo:
         self.messages = []
 
     @agent.event
-    async def message(self, message: MessageEvent) -> List[Message]:
+    async def message(self, message: MessageEvent) -> list[Message]:
         try:
             log.info(f"Received message: {message.content}")
 
@@ -53,8 +54,8 @@ class AgentTodo:
             self.messages.append(Message(role="user", content=message.content or ""))
 
             completion = await agent.step(
-                llm_chat,
-                LlmChatInput(messages=self.messages, tools=tools),
+                function=llm_chat,
+                agent_input=LlmChatInput(messages=self.messages, tools=tools),
                 start_to_close_timeout=timedelta(seconds=120),
             )
 
@@ -83,7 +84,10 @@ class AgentTodo:
                                 tool_call.function.arguments
                             )
 
-                            result = await agent.step(todo_create, input=args)
+                            result = await agent.step(
+                                function=todo_create,
+                                agent_input=args,
+                            )
                             self.messages.append(
                                 Message(
                                     role="tool",
@@ -93,8 +97,10 @@ class AgentTodo:
                             )
 
                             completion_with_tool_call = await agent.step(
-                                llm_chat,
-                                LlmChatInput(messages=self.messages, tools=tools),
+                                function=llm_chat,
+                                agent_input=LlmChatInput(
+                                    messages=self.messages, tools=tools
+                                ),
                                 start_to_close_timeout=timedelta(seconds=120),
                             )
                             self.messages.append(
@@ -112,7 +118,9 @@ class AgentTodo:
                             )
 
                             result = await agent.child_execute(
-                                workflow=TodoExecute, workflow_id=tool_call.id, input=args
+                                workflow=TodoExecute,
+                                workflow_id=tool_call.id,
+                                input=args,
                             )
                             self.messages.append(
                                 Message(
@@ -123,8 +131,10 @@ class AgentTodo:
                             )
 
                             completion_with_tool_call = await agent.step(
-                                llm_chat,
-                                LlmChatInput(messages=self.messages, tools=tools),
+                                function=llm_chat,
+                                agent_input=LlmChatInput(
+                                    messages=self.messages, tools=tools
+                                ),
                                 start_to_close_timeout=timedelta(seconds=120),
                             )
                             self.messages.append(
@@ -143,19 +153,18 @@ class AgentTodo:
                         content=completion.choices[0].message.content or "",
                     )
                 )
-
-            return self.messages
         except Exception as e:
             log.error(f"Error during message event: {e}")
-            raise e
+            raise
+        else:
+            return self.messages
 
     @agent.event
-    async def end(self, end: EndEvent) -> EndEvent:
+    async def end(self) -> EndEvent:
         log.info("Received end")
         self.end = True
         return {"end": True}
 
     @agent.run
-    async def run(self, input: dict):
+    async def run(self, agent_input: dict) -> None:
         await agent.condition(lambda: self.end)
-        return

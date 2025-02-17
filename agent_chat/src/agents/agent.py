@@ -1,10 +1,10 @@
 from datetime import timedelta
-from typing import List
+
 from pydantic import BaseModel
 from restack_ai.agent import agent, import_functions, log
 
 with import_functions():
-    from src.functions.llm_chat import llm_chat, LlmChatInput, Message
+    from src.functions.llm_chat import LlmChatInput, Message, llm_chat
 
 
 class MessageEvent(BaseModel):
@@ -22,12 +22,12 @@ class AgentChat:
         self.messages = []
 
     @agent.event
-    async def message(self, message: MessageEvent) -> List[Message]:
+    async def message(self, message: MessageEvent) -> list[Message]:
         log.info(f"Received message: {message.content}")
         self.messages.append({"role": "user", "content": message.content})
         assistant_message = await agent.step(
-            llm_chat,
-            LlmChatInput(messages=self.messages),
+            function=llm_chat,
+            agent_input=LlmChatInput(messages=self.messages),
             start_to_close_timeout=timedelta(seconds=120),
         )
         self.messages.append(assistant_message)
@@ -40,6 +40,5 @@ class AgentChat:
         return end
 
     @agent.run
-    async def run(self, input: dict):
+    async def run(self, agent_input: dict) -> None:
         await agent.condition(lambda: self.end)
-        return

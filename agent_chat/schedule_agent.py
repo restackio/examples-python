@@ -1,21 +1,20 @@
 import asyncio
+import sys
 import time
+
 from restack_ai import Restack
 
 
-async def main():
+async def main() -> None:
     client = Restack()
 
     agent_id = f"{int(time.time() * 1000)}-AgentChat"
-    await client.schedule_agent(
-        agent_name="AgentChat",
-        agent_id=agent_id
-    )
+    await client.schedule_agent(agent_name="AgentChat", agent_id=agent_id)
 
-    exit(0)
+    sys.exit(0)
 
 
-def run_schedule_agent():
+def run_schedule_agent() -> None:
     asyncio.run(main())
 
 

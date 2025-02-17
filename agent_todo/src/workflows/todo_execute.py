@@ -1,20 +1,21 @@
 from datetime import timedelta
+
 from pydantic import BaseModel
-from restack_ai.workflow import workflow, import_functions, log
+from restack_ai.workflow import import_functions, log, workflow
 
 with import_functions():
-    from src.functions.random import get_random, RandomParams
-    from src.functions.result import get_result, ResultParams
+    from src.functions.get_random import RandomParams, get_random
+    from src.functions.get_result import ResultParams, get_result
 
 
 class TodoExecuteParams(BaseModel):
-    todoTitle: str
-    todoId: str
+    todo_title: str
+    todo_id: str
 
 
 class TodoExecuteResponse(BaseModel):
-    todoId: str
-    todoTitle: str
+    todo_id: str
+    todo_title: str
     details: str
     status: str
 
@@ -22,11 +23,11 @@ class TodoExecuteResponse(BaseModel):
 @workflow.defn()
 class TodoExecute:
     @workflow.run
-    async def run(self, params: TodoExecuteParams):
+    async def run(self, params: TodoExecuteParams) -> TodoExecuteResponse:
         log.info("TodoExecuteWorkflow started")
         random = await workflow.step(
             get_random,
-            input=RandomParams(todoTitle=params.todoTitle),
+            input=RandomParams(todo_title=params.todo_title),
             start_to_close_timeout=timedelta(seconds=120),
         )
 
@@ -34,13 +35,13 @@ class TodoExecute:
 
         result = await workflow.step(
             get_result,
-            input=ResultParams(todoTitle=params.todoTitle, todoId=params.todoId),
+            input=ResultParams(todo_title=params.todo_title, todo_id=params.todo_id),
             start_to_close_timeout=timedelta(seconds=120),
         )
 
         todo_details = TodoExecuteResponse(
-            todoId=params.todoId,
-            todoTitle=params.todoTitle,
+            todo_id=params.todo_id,
+            todo_title=params.todo_title,
             details=random,
             status=result.status,
         )

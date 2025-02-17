@@ -1,6 +1,7 @@
 from typing import Literal
-from restack_ai.function import function, log
+
 from pydantic import BaseModel
+from restack_ai.function import function, log
 
 
 class SalesItem(BaseModel):
@@ -21,9 +22,9 @@ class LookupSalesOutput(BaseModel):
 
 
 @function.defn()
-async def lookupSales(input: LookupSalesInput) -> LookupSalesOutput:
+async def lookup_sales(function_input: LookupSalesInput) -> LookupSalesOutput:
     try:
-        log.info("lookupSales function started", input=input)
+        log.info("lookup_sales function started", function_input=function_input)
 
         items = [
             SalesItem(
@@ -92,15 +93,17 @@ async def lookupSales(input: LookupSalesInput) -> LookupSalesOutput:
             ),
         ]
 
-        if input.category == "any":
+        if function_input.category == "any":
             filtered_items = items
         else:
-            filtered_items = [item for item in items if item.type == input.category]
+            filtered_items = [
+                item for item in items if item.type == function_input.category
+            ]
 
         # Sort by largest discount first
         filtered_items.sort(key=lambda x: x.sale_discount_pct, reverse=True)
 
         return LookupSalesOutput(sales=filtered_items)
     except Exception as e:
-        log.error("lookupSales function failed", error=e)
-        raise e
+        log.error("lookup_sales function failed", error=e)
+        raise
