@@ -1,13 +1,14 @@
+# ruff: noqa: ERA001
 from datetime import timedelta
-from typing import List
+
 from pydantic import BaseModel
 from restack_ai.agent import agent, import_functions, log
 
-
 with import_functions():
     from openai import pydantic_function_tool
-    from src.functions.llm_chat import llm_chat, LlmChatInput, Message
-    from src.functions.lookup_sales import lookupSales, LookupSalesInput
+
+    from src.functions.llm_chat import LlmChatInput, Message, llm_chat
+    from src.functions.lookup_sales import LookupSalesInput, lookupSales
     # Step 2: Import your new function to the agent
     # from src.functions.new_function import new_function, FunctionInput, FunctionOutput
 
@@ -27,7 +28,7 @@ class AgentChatToolFunctions:
         self.messages = []
 
     @agent.event
-    async def message(self, message: MessageEvent) -> List[Message]:
+    async def message(self, message: MessageEvent) -> list[Message]:
         log.info(f"Received message: {message.content}")
 
         tools = [
@@ -131,12 +132,11 @@ class AgentChatToolFunctions:
         return self.messages
 
     @agent.event
-    async def end(self, end: EndEvent) -> EndEvent:
+    async def end(self) -> EndEvent:
         log.info("Received end")
         self.end = True
         return {"end": True}
 
     @agent.run
-    async def run(self, input: dict):
+    async def run(self) -> None:
         await agent.condition(lambda: self.end)
-        return

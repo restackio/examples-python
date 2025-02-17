@@ -1,3 +1,5 @@
+# ruff: noqa: ERA001, TD002, TD003, FIX002
+
 ## Step 1: Code your own function to talk to a third party API or database
 
 # import os
