@@ -1,7 +1,8 @@
 import os
+
+from dotenv import load_dotenv
 from restack_ai import Restack
 from restack_ai.restack import CloudConnectionOptions
-from dotenv import load_dotenv
 
 # Load environment variables from a .env file
 load_dotenv()
