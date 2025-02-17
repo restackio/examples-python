@@ -10,7 +10,7 @@ dependencies = [
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
     "openai>=1.61.0",
-    "restack-ai>=0.0.63",
+    "restack-ai>=0.0.64",
 ]
 
 [project.scripts]
@@ -20,12 +20,6 @@ schedule = "schedule:run_schedule"
 
 [tool.hatch.build.targets.sdist]
 include = ["src"]
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.uv.sources]
-restack-ai = { path = "../../../sdk/engine/libraries/python/dist/restack_ai-0.0.63-py3-none-any.whl" }
 
 [tool.hatch.build.targets.wheel]
 include = ["src"]
