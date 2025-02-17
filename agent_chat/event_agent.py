@@ -22,7 +22,7 @@ async def main(agent_id: str, run_id: str):
 
 
 def run_event_agent():
-    asyncio.run(main(agent_id="your-agent-id", run_id="your-run-id"))
+    asyncio.run(main(agent_id="1739788461173-AgentChat", run_id="c3937cc9-8d88-4e37-85e1-59e78cf1bf60"))
 
 
 if __name__ == "__main__":

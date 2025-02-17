@@ -28,7 +28,7 @@ class AgentRag:
         log.info(f"Received message: {message.content}")
 
         sales_info = await agent.step(
-            lookupSales, start_to_close_timeout=timedelta(seconds=120)
+            function=lookupSales, start_to_close_timeout=timedelta(seconds=120)
         )
 
         system_content = f"You are a helpful assistant that can help with sales data. Here is the sales information: {sales_info}"
@@ -36,8 +36,8 @@ class AgentRag:
         self.messages.append(Message(role="user", content=message.content or ""))
 
         completion = await agent.step(
-            llm_chat,
-            LlmChatInput(messages=self.messages, system_content=system_content),
+            function=llm_chat,
+            agent_input=LlmChatInput(messages=self.messages, system_content=system_content),
             start_to_close_timeout=timedelta(seconds=120),
         )
 

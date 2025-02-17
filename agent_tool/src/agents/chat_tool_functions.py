@@ -49,8 +49,8 @@ class AgentChatToolFunctions:
 
         self.messages.append(Message(role="user", content=message.content or ""))
         completion = await agent.step(
-            llm_chat,
-            LlmChatInput(
+            function=llm_chat,
+            agent_input=LlmChatInput(
                 messages=self.messages, tools=tools, system_content=system_content
             ),
             start_to_close_timeout=timedelta(seconds=120),
@@ -84,8 +84,8 @@ class AgentChatToolFunctions:
                         log.info(f"calling {name} with args: {args}")
 
                         result = await agent.step(
-                            lookupSales,
-                            input=LookupSalesInput(category=args.category),
+                            function=lookupSales,
+                            agent_input=LookupSalesInput(category=args.category),
                             start_to_close_timeout=timedelta(seconds=120),
                         )
                         self.messages.append(
@@ -97,8 +97,8 @@ class AgentChatToolFunctions:
                         )
 
                         completion_with_tool_call = await agent.step(
-                            llm_chat,
-                            LlmChatInput(
+                            function=llm_chat,
+                            agent_input=LlmChatInput(
                                 messages=self.messages, system_content=system_content
                             ),
                             start_to_close_timeout=timedelta(seconds=120),

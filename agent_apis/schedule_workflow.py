@@ -14,7 +14,7 @@ async def main():
     runId = await client.schedule_workflow(
         workflow_name="MultistepWorkflow",
         workflow_id=workflow_id,
-        input=InputParams(name="Restack AI SDK User")
+        workflow_input=InputParams(name="Restack AI SDK User")
     )
 
     await client.get_workflow_result(

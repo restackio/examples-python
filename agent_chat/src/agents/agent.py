@@ -26,8 +26,8 @@ class AgentChat:
         log.info(f"Received message: {message.content}")
         self.messages.append({"role": "user", "content": message.content})
         assistant_message = await agent.step(
-            llm_chat,
-            LlmChatInput(messages=self.messages),
+            function=llm_chat,
+            agent_input=LlmChatInput(messages=self.messages),
             start_to_close_timeout=timedelta(seconds=120),
         )
         self.messages.append(assistant_message)
@@ -40,6 +40,6 @@ class AgentChat:
         return end
 
     @agent.run
-    async def run(self, input: dict):
+    async def run(self):
         await agent.condition(lambda: self.end)
         return

@@ -53,8 +53,8 @@ class AgentTodo:
             self.messages.append(Message(role="user", content=message.content or ""))
 
             completion = await agent.step(
-                llm_chat,
-                LlmChatInput(messages=self.messages, tools=tools),
+                function=llm_chat,
+                agent_input=LlmChatInput(messages=self.messages, tools=tools),
                 start_to_close_timeout=timedelta(seconds=120),
             )
 
@@ -83,7 +83,10 @@ class AgentTodo:
                                 tool_call.function.arguments
                             )
 
-                            result = await agent.step(todo_create, input=args)
+                            result = await agent.step(
+                                function=todo_create,
+                                agent_input=args,
+                            )
                             self.messages.append(
                                 Message(
                                     role="tool",
@@ -93,8 +96,8 @@ class AgentTodo:
                             )
 
                             completion_with_tool_call = await agent.step(
-                                llm_chat,
-                                LlmChatInput(messages=self.messages, tools=tools),
+                                function=llm_chat,
+                                agent_input=LlmChatInput(messages=self.messages, tools=tools),
                                 start_to_close_timeout=timedelta(seconds=120),
                             )
                             self.messages.append(
@@ -123,8 +126,8 @@ class AgentTodo:
                             )
 
                             completion_with_tool_call = await agent.step(
-                                llm_chat,
-                                LlmChatInput(messages=self.messages, tools=tools),
+                                function=llm_chat,
+                                agent_input=LlmChatInput(messages=self.messages, tools=tools),
                                 start_to_close_timeout=timedelta(seconds=120),
                             )
                             self.messages.append(

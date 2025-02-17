@@ -1,4 +1,4 @@
-from restack_ai.function import function, log
+from restack_ai.function import function, log, FunctionFailure
 from openai import OpenAI
 from openai.types.chat.chat_completion import ChatCompletion
 import os

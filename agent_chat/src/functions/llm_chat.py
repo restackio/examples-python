@@ -21,9 +21,9 @@ class LlmChatInput(BaseModel):
 
 
 @function.defn()
-async def llm_chat(input: LlmChatInput) -> ChatCompletion:
+async def llm_chat(agent_input: LlmChatInput) -> ChatCompletion:
     try:
-        log.info("llm_chat function started", input=input)
+        log.info("llm_chat function started", agent_input=agent_input)
 
         if (os.environ.get("RESTACK_API_KEY") is None):
             raise FunctionFailure("RESTACK_API_KEY is not set", non_retryable=True)
@@ -32,12 +32,12 @@ async def llm_chat(input: LlmChatInput) -> ChatCompletion:
             base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY")
         )
 
-        if input.system_content:
-            input.messages.append({"role": "system", "content": input.system_content})
+        if agent_input.system_content:
+            agent_input.messages.append({"role": "system", "content": agent_input.system_content})
 
         response = client.chat.completions.create(
-            model=input.model or "gpt-4o-mini",
-            messages=input.messages,
+            model=agent_input.model or "gpt-4o-mini",
+            messages=agent_input.messages,
         )
         log.info("llm_chat function completed", response=response)
 
