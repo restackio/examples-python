@@ -1,5 +1,5 @@
-from restack_ai.function import function, log
 from pydantic import BaseModel
+from restack_ai.function import function, log
 
 
 class SalesItem(BaseModel):
@@ -12,9 +12,9 @@ class SalesItem(BaseModel):
 
 
 @function.defn()
-async def lookupSales() -> str:
+async def lookup_sales() -> str:
     try:
-        log.info("lookupSales function started", input=input)
+        log.info("lookup_sales function started")
 
         items = [
             SalesItem(
@@ -85,5 +85,5 @@ async def lookupSales() -> str:
 
         return str(items)
     except Exception as e:
-        log.error("lookupSales function failed", error=e)
-        raise e
+        log.error("lookup_sales function failed", error=e)
+        raise
