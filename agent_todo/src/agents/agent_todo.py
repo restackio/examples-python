@@ -55,7 +55,7 @@ class AgentTodo:
 
             completion = await agent.step(
                 function=llm_chat,
-                agent_input=LlmChatInput(messages=self.messages, tools=tools),
+                function_input=LlmChatInput(messages=self.messages, tools=tools),
                 start_to_close_timeout=timedelta(seconds=120),
             )
 
@@ -86,7 +86,7 @@ class AgentTodo:
 
                             result = await agent.step(
                                 function=todo_create,
-                                agent_input=args,
+                                function_input=args,
                             )
                             self.messages.append(
                                 Message(
@@ -98,7 +98,7 @@ class AgentTodo:
 
                             completion_with_tool_call = await agent.step(
                                 function=llm_chat,
-                                agent_input=LlmChatInput(
+                                function_input=LlmChatInput(
                                     messages=self.messages, tools=tools
                                 ),
                                 start_to_close_timeout=timedelta(seconds=120),
@@ -132,7 +132,7 @@ class AgentTodo:
 
                             completion_with_tool_call = await agent.step(
                                 function=llm_chat,
-                                agent_input=LlmChatInput(
+                                function_input=LlmChatInput(
                                     messages=self.messages, tools=tools
                                 ),
                                 start_to_close_timeout=timedelta(seconds=120),
@@ -166,5 +166,5 @@ class AgentTodo:
         return {"end": True}
 
     @agent.run
-    async def run(self, agent_input: dict) -> None:
+    async def run(self, function_input: dict) -> None:
         await agent.condition(lambda: self.end)

@@ -27,7 +27,7 @@ class TodoExecute:
         log.info("TodoExecuteWorkflow started")
         random = await workflow.step(
             get_random,
-            input=RandomParams(todo_title=params.todo_title),
+            function_input=RandomParams(todo_title=params.todo_title),
             start_to_close_timeout=timedelta(seconds=120),
         )
 
@@ -35,7 +35,7 @@ class TodoExecute:
 
         result = await workflow.step(
             get_result,
-            input=ResultParams(todo_title=params.todo_title, todo_id=params.todo_id),
+            function_input=ResultParams(todo_title=params.todo_title, todo_id=params.todo_id),
             start_to_close_timeout=timedelta(seconds=120),
         )
 

@@ -51,7 +51,7 @@ class AgentChatToolFunctions:
         self.messages.append(Message(role="user", content=message.content or ""))
         completion = await agent.step(
             function=llm_chat,
-            agent_input=LlmChatInput(
+            function_input=LlmChatInput(
                 messages=self.messages, tools=tools, system_content=system_content
             ),
             start_to_close_timeout=timedelta(seconds=120),
@@ -86,7 +86,7 @@ class AgentChatToolFunctions:
 
                         result = await agent.step(
                             function=lookup_sales,
-                            agent_input=LookupSalesInput(category=args.category),
+                            function_input=LookupSalesInput(category=args.category),
                             start_to_close_timeout=timedelta(seconds=120),
                         )
                         self.messages.append(
@@ -99,7 +99,7 @@ class AgentChatToolFunctions:
 
                         completion_with_tool_call = await agent.step(
                             function=llm_chat,
-                            agent_input=LlmChatInput(
+                            function_input=LlmChatInput(
                                 messages=self.messages, system_content=system_content
                             ),
                             start_to_close_timeout=timedelta(seconds=120),
@@ -138,5 +138,5 @@ class AgentChatToolFunctions:
         return {"end": True}
 
     @agent.run
-    async def run(self, agent_input: dict) -> None:
+    async def run(self, function_input: dict) -> None:
         await agent.condition(lambda: self.end)
