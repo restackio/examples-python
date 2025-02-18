@@ -36,7 +36,7 @@ class AgentRag:
 
         completion = await agent.step(
             function=llm_chat,
-            agent_input=LlmChatInput(
+            function_input=LlmChatInput(
                 messages=self.messages, system_content=system_content
             ),
             start_to_close_timeout=timedelta(seconds=120),
@@ -59,5 +59,5 @@ class AgentRag:
         return {"end": True}
 
     @agent.run
-    async def run(self, agent_input: dict) -> None:
+    async def run(self, function_input: dict) -> None:
         await agent.condition(lambda: self.end)

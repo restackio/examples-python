@@ -28,7 +28,7 @@ class MultistepWorkflow:
 
         llm_message = await workflow.step(
             function=llm,
-            workflow_input=FunctionInputParams(
+            function_input=FunctionInputParams(
                 system_content=f"You are a personal assitant and have access to weather data {weather_data}. Always greet person with relevant info from weather data",
                 user_content=user_content,
                 model="gpt-4o-mini",

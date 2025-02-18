@@ -10,7 +10,7 @@ dependencies = [
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
     "openai>=1.61.0",
-    "restack-ai>=0.0.64",
+    "restack-ai>=0.0.65",
 ]
 
 [project.scripts]
