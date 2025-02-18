@@ -3,7 +3,7 @@ name = "openai_greet"
 version = "0.0.1"
 description = "A simple example to greet a person using OpenAI"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]
-requires-python = ">=3.11,<3.13"
+requires-python = ">=3.10,<3.13"
 readme = "README.md"
 dependencies = [
     "pydantic>=2.10.6",
@@ -11,7 +11,7 @@ dependencies = [
     "python-dotenv==1.0.1",
     "openai>=1.61.0",
     "aiohttp>=3.11.12",
-    "restack-ai>=0.0.66",
+    "restack-ai>=0.0.67",
 ]
 
 [project.scripts]
