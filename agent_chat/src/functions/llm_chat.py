@@ -27,7 +27,7 @@ def raise_exception(message: str) -> None:
 
 
 @function.defn()
-async def llm_chat(agent_input: LlmChatInput) -> ChatCompletion:
+async def llm_chat(agent_input: LlmChatInput) -> dict[str, str]:
     try:
         log.info("llm_chat function started", agent_input=agent_input)
 
@@ -44,7 +44,7 @@ async def llm_chat(agent_input: LlmChatInput) -> ChatCompletion:
                 {"role": "system", "content": agent_input.system_content}
             )
 
-        response = client.chat.completions.create(
+        assistant_raw_response = client.chat.completions.create(
             model=agent_input.model or "gpt-4o-mini",
             messages=agent_input.messages,
         )
@@ -52,6 +52,13 @@ async def llm_chat(agent_input: LlmChatInput) -> ChatCompletion:
         log.error("llm_chat function failed", error=e)
         raise
     else:
-        log.info("llm_chat function completed", response=response)
+        log.info("llm_chat function completed", assistant_raw_response=assistant_raw_response)
 
-        return response
+        assistant_response = {
+            "role": assistant_raw_response.choices[0].message.role,
+            "content": assistant_raw_response.choices[0].message.content,
+        }
+
+        log.info("assistant_response", assistant_response=assistant_response)
+
+        return assistant_response
