@@ -3,7 +3,6 @@ from typing import Literal
 
 from dotenv import load_dotenv
 from openai import OpenAI
-from openai.types.chat.chat_completion import ChatCompletion
 from pydantic import BaseModel
 from restack_ai.function import FunctionFailure, function, log
 
