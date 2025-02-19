@@ -1,4 +1,3 @@
-# ruff: noqa: ERA001
 import asyncio
 import logging
 import webbrowser
@@ -11,14 +10,10 @@ from src.client import client
 from src.functions.llm_chat import llm_chat
 from src.functions.lookup_sales import lookup_sales
 
-# Step 5: Import a new function to tool calling here
-# from src.functions.new_function import new_function, FunctionInput, FunctionOutput
-
 
 async def main() -> None:
     await client.start_service(
         agents=[AgentChatToolFunctions],
-        ## Step 6: Add your new function to the functions list -> functions=[lookupSales, llm_chat, new_function]
         functions=[lookup_sales, llm_chat],
     )
 
