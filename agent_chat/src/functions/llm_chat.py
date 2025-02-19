@@ -51,7 +51,9 @@ async def llm_chat(agent_input: LlmChatInput) -> dict[str, str]:
         log.error("llm_chat function failed", error=e)
         raise
     else:
-        log.info("llm_chat function completed", assistant_raw_response=assistant_raw_response)
+        log.info(
+            "llm_chat function completed", assistant_raw_response=assistant_raw_response
+        )
 
         assistant_response = {
             "role": assistant_raw_response.choices[0].message.role,
