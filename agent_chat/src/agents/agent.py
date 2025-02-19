@@ -25,11 +25,15 @@ class AgentChat:
     async def message(self, message: MessageEvent) -> list[Message]:
         log.info(f"Received message: {message.content}")
         self.messages.append({"role": "user", "content": message.content})
-        assistant_message = await agent.step(
+        assistant_message_raw = await agent.step(
             function=llm_chat,
             function_input=LlmChatInput(messages=self.messages),
             start_to_close_timeout=timedelta(seconds=120),
         )
+        assistant_message = {
+            "role": assistant_message_raw.choices[0].message.role,
+            "content": assistant_message_raw.choices[0].message.content,
+        }
         self.messages.append(assistant_message)
         return self.messages
 
