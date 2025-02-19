@@ -120,7 +120,7 @@ class AgentTodo:
                             result = await agent.child_execute(
                                 workflow=TodoExecute,
                                 workflow_id=tool_call.id,
-                                input=args,
+                                workflow_input=args,
                             )
                             self.messages.append(
                                 Message(
