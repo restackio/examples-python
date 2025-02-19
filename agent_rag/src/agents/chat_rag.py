@@ -5,7 +5,7 @@ from restack_ai.agent import agent, import_functions, log
 
 with import_functions():
     from src.functions.llm_chat import LlmChatInput, Message, llm_chat
-    from src.functions.lookup_sales import lookupSales
+    from src.functions.lookup_sales import lookup_sales
 
 
 class MessageEvent(BaseModel):
@@ -27,7 +27,7 @@ class AgentRag:
         log.info(f"Received message: {message.content}")
 
         sales_info = await agent.step(
-            function=lookupSales, start_to_close_timeout=timedelta(seconds=120)
+            function=lookup_sales, start_to_close_timeout=timedelta(seconds=120)
         )
 
         system_content = f"You are a helpful assistant that can help with sales data. Here is the sales information: {sales_info}"
