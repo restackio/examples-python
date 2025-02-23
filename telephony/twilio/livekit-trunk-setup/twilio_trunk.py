@@ -3,8 +3,10 @@ import logging
 import os
 import re
 import subprocess
+
 from dotenv import load_dotenv
 from twilio.rest import Client
+
 
 def get_env_var(var_name):
     value = os.getenv(var_name)
@@ -36,27 +38,26 @@ def create_inbound_trunk(phone_number):
             "numbers": [phone_number]
         }
     }
-    with open('inbound_trunk.json', 'w') as f:
+    with open("inbound_trunk.json", "w") as f:
         json.dump(trunk_data, f, indent=4)
 
     result = subprocess.run(
-        ['lk', 'sip', 'inbound', 'create', 'inbound_trunk.json'],
+        ["lk", "sip", "inbound", "create", "inbound_trunk.json"],
         capture_output=True,
-        text=True
+        text=True, check=False
     )
 
     if result.returncode != 0:
         logging.error(f"Error executing command: {result.stderr}")
         return None
 
-    match = re.search(r'ST_\w+', result.stdout)
+    match = re.search(r"ST_\w+", result.stdout)
     if match:
         inbound_trunk_sid = match.group(0)
         logging.info(f"Created inbound trunk with SID: {inbound_trunk_sid}")
         return inbound_trunk_sid
-    else:
-        logging.error("Could not find inbound trunk SID in output.")
-        return None
+    logging.error("Could not find inbound trunk SID in output.")
+    return None
 
 def create_dispatch_rule(trunk_sid):
     dispatch_rule_data = {
@@ -68,13 +69,13 @@ def create_dispatch_rule(trunk_sid):
             }
         }
     }
-    with open('dispatch_rule.json', 'w') as f:
+    with open("dispatch_rule.json", "w") as f:
         json.dump(dispatch_rule_data, f, indent=4)
 
     result = subprocess.run(
-        ['lk', 'sip', 'dispatch-rule', 'create', 'dispatch_rule.json'],
+        ["lk", "sip", "dispatch-rule", "create", "dispatch_rule.json"],
         capture_output=True,
-        text=True
+        text=True, check=False
     )
 
     if result.returncode != 0:

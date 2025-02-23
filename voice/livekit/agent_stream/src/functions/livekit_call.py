@@ -1,9 +1,9 @@
-
 from dataclasses import dataclass
-import os
-from livekit import api 
+
+from livekit import api
 from livekit.protocol.sip import CreateSIPParticipantRequest, SIPParticipantInfo
-from restack_ai.function import function, log, FunctionFailure
+from restack_ai.function import FunctionFailure, function, log
+
 
 @dataclass
 class LivekitCallInput:
@@ -17,31 +17,30 @@ class LivekitCallInput:
 
 @function.defn()
 async def livekit_call(function_input: LivekitCallInput) -> SIPParticipantInfo:
-  
-  try:
-      livekit_api = api.LiveKitAPI()
+    try:
+        livekit_api = api.LiveKitAPI()
 
-      request = CreateSIPParticipantRequest(
-        sip_trunk_id = function_input.sip_trunk_id,
-        sip_call_to = function_input.phone_number,
-        room_name = function_input.room_id,
-        participant_identity = function_input.agent_id,
-        participant_name = function_input.agent_name,
-        play_dialtone = True
-      )
+        request = CreateSIPParticipantRequest(
+            sip_trunk_id=function_input.sip_trunk_id,
+            sip_call_to=function_input.phone_number,
+            room_name=function_input.room_id,
+            participant_identity=function_input.agent_id,
+            participant_name=function_input.agent_name,
+            play_dialtone=True,
+        )
 
-      log.info("livekit_call CreateSIPParticipantRequest: ", request=request)
+        log.info("livekit_call CreateSIPParticipantRequest: ", request=request)
 
-      participant = await livekit_api.sip.create_sip_participant(request)
-      
-      await livekit_api.aclose()
+        participant = await livekit_api.sip.create_sip_participant(request)
 
-      log.info("livekit_call SIPParticipantInfo:", participant=participant)
+        await livekit_api.aclose()
 
-      return participant
+        log.info("livekit_call SIPParticipantInfo:", participant=participant)
 
-  except Exception as e:
-    log.error("livekit_call function failed", error=str(e))
-    raise FunctionFailure(f"livekit_call function failed: {str(e)}", non_retryable=True)
+        return participant
 
-
+    except Exception as e:
+        log.error("livekit_call function failed", error=str(e))
+        raise FunctionFailure(
+            f"livekit_call function failed: {e!s}", non_retryable=True
+        )

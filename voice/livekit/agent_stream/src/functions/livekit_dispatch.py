@@ -1,32 +1,30 @@
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
+
 from livekit import api
 from livekit.protocol.agent_dispatch import AgentDispatch
-from restack_ai.function import function, log, function_info
+from restack_ai.function import function, function_info, log
+
 
 @dataclass
 class LivekitDispatchInput:
     room_id: str | None = None
 
+
 @function.defn()
 async def livekit_dispatch(function_input: LivekitDispatchInput) -> AgentDispatch:
-    
     try:
         lkapi = api.LiveKitAPI(
             url=os.getenv("LIVEKIT_API_URL"),
             api_key=os.getenv("LIVEKIT_API_KEY"),
-            api_secret=os.getenv("LIVEKIT_API_SECRET")
+            api_secret=os.getenv("LIVEKIT_API_SECRET"),
         )
 
         agent_name = function_info().workflow_type
         agent_id = function_info().workflow_id
         run_id = function_info().workflow_run_id
 
-        metadata = {
-            "agent_name": agent_name,
-            "agent_id": agent_id,
-            "run_id": run_id
-        }
+        metadata = {"agent_name": agent_name, "agent_id": agent_id, "run_id": run_id}
 
         room = function_input.room_id or run_id
 
@@ -37,7 +35,7 @@ async def livekit_dispatch(function_input: LivekitDispatchInput) -> AgentDispatc
         )
 
         await lkapi.aclose()
-        
+
         return dispatch
 
     except Exception as e:
