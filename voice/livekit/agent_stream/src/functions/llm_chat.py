@@ -30,9 +30,9 @@ async def llm_chat(function_input: LlmChatInput) -> str:
             base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY")
         )
 
-        if input.system_content:
+        if function_input.system_content:
             # Insert the system message at the beginning
-            input.messages.insert(
+            function_input.messages.insert(
                 0, Message(role="system", content=function_input.system_content)
             )
 
@@ -46,7 +46,8 @@ async def llm_chat(function_input: LlmChatInput) -> str:
         )
 
         # Use Restack API websocket to stream the response
-        return await stream_to_websocket(api_address, response)
+        log.info("api_address", api_address=api_address)
+        return await stream_to_websocket(api_address="localhost:9233", data=response)
 
     except Exception as e:
         log.error("llm_chat function failed", error=str(e))
