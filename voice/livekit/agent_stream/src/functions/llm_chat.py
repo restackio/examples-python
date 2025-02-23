@@ -2,7 +2,7 @@ from restack_ai.function import function, log, stream_to_websocket
 from openai import OpenAI
 from openai.resources.chat.completions import Stream, ChatCompletionChunk
 import os
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Literal, Optional, List
 from ..client import api_address
 
@@ -13,7 +13,7 @@ class Message(BaseModel):
 class LlmChatInput(BaseModel):
     system_content: Optional[str] = None
     model: Optional[str] = None
-    messages: Optional[List[Message]] = []
+    messages: List[Message] = Field(default_factory=list)
 
 @function.defn()
 async def llm_chat(input: LlmChatInput) -> str:
@@ -24,7 +24,8 @@ async def llm_chat(input: LlmChatInput) -> str:
         )
 
         if input.system_content:
-            input.messages.insert(Message(role="system", content=input.system_content))
+            # Insert the system message at the beginning
+            input.messages.insert(0, Message(role="system", content=input.system_content))
 
         # Convert Message objects to dictionaries
         messages_dicts = [message.model_dump() for message in input.messages]
@@ -36,7 +37,7 @@ async def llm_chat(input: LlmChatInput) -> str:
         )
 
         # Use Restack API websocket to stream the response
-        final_response = await stream_to_websocket("f29d-2a01-5241-ccc-e00-54c9-3c26-c463-b9d8.ngrok-free.app", response)
+        final_response = await stream_to_websocket("localhost:9233", response)
         return final_response
 
     except Exception as e:
