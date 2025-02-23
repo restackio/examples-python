@@ -36,11 +36,9 @@ async def livekit_call(function_input: LivekitCallInput) -> SIPParticipantInfo:
         await livekit_api.aclose()
 
         log.info("livekit_call SIPParticipantInfo:", participant=participant)
-
-        return participant
-
     except Exception as e:
         log.error("livekit_call function failed", error=str(e))
-        raise FunctionFailure(
-            f"livekit_call function failed: {e!s}", non_retryable=True
-        )
+        failure_message = "livekit_call function failed: " + str(e)
+        raise FunctionFailure(failure_message, non_retryable=True) from e
+    else:
+        return participant

@@ -36,8 +36,9 @@ async def livekit_dispatch(function_input: LivekitDispatchInput) -> AgentDispatc
 
         await lkapi.aclose()
 
-        return dispatch
-
     except Exception as e:
         log.error("livekit_dispatch function failed", error=str(e))
-        raise e
+        raise
+
+    else:
+        return dispatch

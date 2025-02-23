@@ -63,11 +63,10 @@ class AgentStream:
         agent_name = agent_info().workflow_type
         agent_id = agent_info().workflow_id
         run_id = agent_info().run_id
-        livekit_response = await agent.step(
+        return await agent.step(
             livekit_token,
             LivekitTokenInput(agent_name=agent_name, agent_id=agent_id, run_id=run_id),
         )
-        return livekit_response
 
     @agent.event
     async def call(self, call_input: dict) -> None:
@@ -77,7 +76,7 @@ class AgentStream:
         agent_id = agent_info().workflow_id
         run_id = agent_info().run_id
         sip_trunk_id = await agent.step(livekit_outbound_trunk)
-        livekit_response = await agent.step(
+        return await agent.step(
             livekit_call,
             LivekitCallInput(
                 sip_trunk_id=sip_trunk_id,
@@ -88,10 +87,9 @@ class AgentStream:
                 run_id=run_id,
             ),
         )
-        return livekit_response
 
     @agent.run
-    async def run(self, agent_input: AgentStreamInput):
+    async def run(self, agent_input: AgentStreamInput) -> None:
         log.info("Run", agent_input=agent_input)
         self.room_id = agent_input.room_id
 
