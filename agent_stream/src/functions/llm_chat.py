@@ -14,6 +14,7 @@ class LlmChatInput(BaseModel):
     system_content: Optional[str] = None
     model: Optional[str] = None
     messages: List[Message] = Field(default_factory=list)
+    stream: bool = True
 
 @function.defn()
 async def llm_chat(input: LlmChatInput) -> str:
