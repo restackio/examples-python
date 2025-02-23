@@ -33,8 +33,8 @@ class AgentStream:
         self.messages.extend(messages_event.messages)
 
         assistant_message = await agent.step(
-            llm_chat,
-            LlmChatInput(messages=self.messages),
+            function=llm_chat,
+            function_input=LlmChatInput(messages=self.messages),
             start_to_close_timeout=timedelta(seconds=120),
         )
         self.messages.append(Message(role="assistant", content=str(assistant_message)))

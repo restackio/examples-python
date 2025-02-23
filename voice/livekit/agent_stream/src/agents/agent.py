@@ -44,8 +44,8 @@ class AgentStream:
         self.messages.extend(messages_event.messages)
 
         assistant_message = await agent.step(
-            llm_chat,
-            LlmChatInput(messages=self.messages),
+            function=llm_chat,
+            function_input=LlmChatInput(messages=self.messages),
             start_to_close_timeout=timedelta(seconds=120),
         )
         self.messages.append(Message(role="assistant", content=str(assistant_message)))
@@ -64,8 +64,8 @@ class AgentStream:
         agent_id = agent_info().workflow_id
         run_id = agent_info().run_id
         return await agent.step(
-            livekit_token,
-            LivekitTokenInput(agent_name=agent_name, agent_id=agent_id, run_id=run_id),
+            function=livekit_token,
+            function_input=LivekitTokenInput(agent_name=agent_name, agent_id=agent_id, run_id=run_id),
         )
 
     @agent.event
@@ -75,10 +75,10 @@ class AgentStream:
         agent_name = agent_info().workflow_type
         agent_id = agent_info().workflow_id
         run_id = agent_info().run_id
-        sip_trunk_id = await agent.step(livekit_outbound_trunk)
+        sip_trunk_id = await agent.step(function=livekit_outbound_trunk)
         return await agent.step(
-            livekit_call,
-            LivekitCallInput(
+            function=livekit_call,
+            function_input=LivekitCallInput(
                 sip_trunk_id=sip_trunk_id,
                 phone_number=phone_number,
                 room_id=self.room_id,
@@ -94,8 +94,11 @@ class AgentStream:
         self.room_id = agent_input.room_id
 
         if not self.room_id:
-            room = await agent.step(livekit_room)
+            room = await agent.step(function=livekit_room)
             self.room_id = room.name
 
-        await agent.step(livekit_dispatch, LivekitDispatchInput(room_id=self.room_id))
+        await agent.step(
+            function=livekit_dispatch,
+            function_input=LivekitDispatchInput(room_id=self.room_id),
+        )
         await agent.condition(lambda: self.end)
