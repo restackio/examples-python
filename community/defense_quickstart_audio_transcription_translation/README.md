@@ -29,7 +29,7 @@ OPENBABYLON_API_URL=http://64.139.222.109:80/v1
 1. Run Restack local engine with Docker:
 
    ```bash
-   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+   docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 -p 9233:9233 ghcr.io/restackio/restack:main
    ```
 
 2. Open the Web UI to see the workflows:
