@@ -3,7 +3,9 @@
 aiohappyeyeballs==2.4.4
     # via aiohttp
 aiohttp==3.11.11
-    # via restack-ai
+    # via
+    #   livekit-api
+    #   restack-ai
 aiosignal==1.3.2
     # via aiohttp
 annotated-types==0.7.0
@@ -42,6 +44,10 @@ idna==3.10
     #   yarl
 jiter==0.8.2
     # via openai
+livekit-api==0.8.2
+    # via agent-stream (pyproject.toml)
+livekit-protocol==0.9.0
+    # via livekit-api
 msgspec==0.18.6
     # via restack-ai
 multidict==6.1.0
@@ -55,7 +61,10 @@ propcache==0.2.1
     #   aiohttp
     #   yarl
 protobuf==5.29.3
-    # via temporalio
+    # via
+    #   livekit-api
+    #   livekit-protocol
+    #   temporalio
 pydantic==2.10.6
     # via
     #   agent-stream (pyproject.toml)
@@ -63,11 +72,13 @@ pydantic==2.10.6
     #   restack-ai
 pydantic-core==2.27.2
     # via pydantic
+pyjwt==2.10.1
+    # via livekit-api
 python-dotenv==1.0.1
     # via
     #   agent-stream (pyproject.toml)
     #   restack-ai
-restack-ai==0.0.62
+restack-ai==0.0.70
     # via agent-stream (pyproject.toml)
 sniffio==1.3.1
     # via
@@ -77,14 +88,18 @@ temporalio==1.9.0
     # via restack-ai
 tqdm==4.67.1
     # via openai
-types-protobuf==5.29.1.20241207
-    # via temporalio
+types-protobuf==4.25.0.20240417
+    # via
+    #   livekit-api
+    #   livekit-protocol
+    #   temporalio
 typing-extensions==4.12.2
     # via
     #   anyio
     #   openai
     #   pydantic
     #   pydantic-core
+    #   restack-ai
     #   temporalio
 watchfiles==1.0.4
     # via agent-stream (pyproject.toml)
