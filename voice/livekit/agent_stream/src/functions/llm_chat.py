@@ -45,9 +45,7 @@ async def llm_chat(function_input: LlmChatInput) -> str:
             stream=True,
         )
 
-        # Use Restack API websocket to stream the response
-        log.info("api_address", api_address=api_address)
-        return await stream_to_websocket(api_address="localhost:9233", data=response)
+        return await stream_to_websocket(api_address=api_address, data=response)
 
     except Exception as e:
         log.error("llm_chat function failed", error=str(e))
