@@ -9,8 +9,11 @@ RUN apt-get update && \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-#Install dependencies
+# Install dependencies
 RUN uv sync --no-dev
 
-# Run the application.
-CMD ["uv", "run", "python", "src/agent.py", "start"]
+# Copy and set the entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
