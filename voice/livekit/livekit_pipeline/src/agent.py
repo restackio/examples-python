@@ -47,7 +47,7 @@ async def entrypoint(ctx: JobContext) -> None:
     run_id = metadata_obj.get("run_id")
 
     agent_backend_host = os.environ.get(
-        "AGENT_BACKEND_HOST", "http://host.docker.internal:9233"
+        "RESTACK_ENGINE_API_ADDRESS", "http://localhost:9233"
     )
     agent_url = f"{agent_backend_host}/stream/agents/{agent_name}/{agent_id}/{run_id}"
     logger.info("agent url: %s", agent_url)
