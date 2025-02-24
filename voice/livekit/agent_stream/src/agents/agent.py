@@ -1,7 +1,6 @@
-from dataclasses import dataclass
 from datetime import timedelta
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from restack_ai.agent import agent, agent_info, import_functions, log
 
 with import_functions():
@@ -25,9 +24,8 @@ class EndEvent(BaseModel):
     end: bool
 
 
-@dataclass
-class AgentStreamInput:
-    room_id: str | None = None
+class AgentStreamInput(BaseModel):
+    room_id: str | None = Field(default="room-1")
 
 
 @agent.defn()
@@ -65,7 +63,9 @@ class AgentStream:
         run_id = agent_info().run_id
         return await agent.step(
             function=livekit_token,
-            function_input=LivekitTokenInput(agent_name=agent_name, agent_id=agent_id, run_id=run_id),
+            function_input=LivekitTokenInput(
+                agent_name=agent_name, agent_id=agent_id, run_id=run_id
+            ),
         )
 
     @agent.event
