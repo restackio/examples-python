@@ -1,3 +1,5 @@
 .venv
 .env.local
-.gitignore 
+.gitignore
+.dockerignore
+__pycache__
