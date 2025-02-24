@@ -47,7 +47,9 @@ def prewarm(proc: JobProcess) -> None:
     logger.info("VAD model loaded successfully.")
 
 async def entrypoint(ctx: JobContext) -> None:
-    metadata = ctx.room.metadata
+    metadata = ctx.job.metadata
+
+    logger.info("job metadata: %s", metadata)
 
     if isinstance(metadata, str):
         try:
