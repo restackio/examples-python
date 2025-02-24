@@ -12,6 +12,7 @@ dependencies = [
     "livekit-plugins-silero>=0.7.4",
     "livekit-plugins-turn-detector>=0.4.0",
     "python-dotenv==1.0.1",
+    "restack-ai>=0.0.71",
 ]
 
 [tool.hatch.build.targets.sdist]
