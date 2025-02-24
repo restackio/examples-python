@@ -1,0 +1,25 @@
+[project]
+name = "livekit-pipeline"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "livekit-agents>=0.12.11",
+    "livekit-plugins-deepgram>=0.6.17",
+    "livekit-plugins-elevenlabs>=0.7.13",
+    "livekit-plugins-openai>=0.10.17",
+    "livekit-plugins-silero>=0.7.4",
+    "livekit-plugins-turn-detector>=0.4.0",
+    "python-dotenv==1.0.1",
+]
+
+[tool.hatch.build.targets.sdist]
+include = ["src"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

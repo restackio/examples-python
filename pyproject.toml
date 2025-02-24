@@ -3,9 +3,6 @@ name = "examples-python"
 version = "0.0.1"
 requires-python = ">=3.10"
 
-[tool.uv.workspace]
-members = ["features_alpha/vllm"]
-
 [dependency-groups]
 dev = [
     "ruff>=0.9.4",
