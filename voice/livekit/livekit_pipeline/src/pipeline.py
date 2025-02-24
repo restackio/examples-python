@@ -71,21 +71,14 @@ async def entrypoint(ctx: JobContext) -> None:
     run_id = metadata_obj.get("run_id")
 
     # Retrieve the Host from environment variables.
-    raw_backend_host = os.environ.get("RESTACK_ENGINE_API_ADDRESS")
-    if not raw_backend_host:
-        logger.warning(
-            "RESTACK_ENGINE_API_ADDRESS is not set, falling back to default http://localhost:9233"
-        )
-        raw_backend_host = "http://localhost:9233"
-
+    engine_api_address = os.environ.get("RESTACK_ENGINE_API_ADDRESS")
+    if not engine_api_address:
+        agent_backend_host = "http://localhost:9233"
     # Ensure the host has a https:// prefix
-    if not raw_backend_host.startswith("https://"):
-        if raw_backend_host.startswith("http://"):
-            agent_backend_host = "https://" + raw_backend_host[len("http://"):]
-        else:
-            agent_backend_host = "https://" + raw_backend_host
+    if not engine_api_address.startswith("https://"):
+        agent_backend_host = "https://" + engine_api_address
     else:
-        agent_backend_host = raw_backend_host
+        agent_backend_host = engine_api_address
 
     logger.info("Using RESTACK_ENGINE_API_ADDRESS: %s", agent_backend_host)
 
