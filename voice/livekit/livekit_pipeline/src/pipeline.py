@@ -14,13 +14,38 @@ from livekit.agents import (
 from livekit.agents.pipeline import VoicePipelineAgent
 from livekit.plugins import deepgram, elevenlabs, openai, silero, turn_detector
 
+# Load environment variables from .env.local
 load_dotenv(dotenv_path=".env.local")
-logger = logging.getLogger("voice-agent")
 
+# Setup basic logging configuration so that all logs are properly output.
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def validate_envs() -> None:
+    """
+    Check for the presence of all required environment variables.
+    Logs a warning if any variable is missing.
+    """
+    required_envs = {
+        "LIVEKIT_URL": "LiveKit server URL",
+        "LIVEKIT_API_KEY": "API Key for LiveKit",
+        "LIVEKIT_API_SECRET": "API Secret for LiveKit",
+        "OPENAI_API_KEY": "API key for OpenAI (used for LLM)",
+        "DEEPGRAM_API_KEY": "API key for Deepgram (used for STT)",
+        "CARTESIA_API_KEY": "API key for Cartesia",
+        "RESTACK_ENGINE_API_ADDRESS": "Backend API Address",
+    }
+    for key, description in required_envs.items():
+        if not os.environ.get(key):
+            logger.warning("Environment variable %s (%s) is not set.", key, description)
+
+# Validate environments at module load
+validate_envs()
 
 def prewarm(proc: JobProcess) -> None:
+    logger.info("Prewarming: loading VAD model...")
     proc.userdata["vad"] = silero.VAD.load()
-
+    logger.info("VAD model loaded successfully.")
 
 async def entrypoint(ctx: JobContext) -> None:
     metadata = ctx.room.metadata
@@ -46,18 +71,34 @@ async def entrypoint(ctx: JobContext) -> None:
     agent_id = metadata_obj.get("agent_id")
     run_id = metadata_obj.get("run_id")
 
-    agent_backend_host = os.environ.get(
-        "RESTACK_ENGINE_API_ADDRESS", "http://localhost:9233"
-    )
-    agent_url = f"{agent_backend_host}/stream/agents/{agent_name}/{agent_id}/{run_id}"
-    logger.info("agent url: %s", agent_url)
+    # Retrieve the Host from environment variables.
+    raw_backend_host = os.environ.get("RESTACK_ENGINE_API_ADDRESS")
+    if not raw_backend_host:
+        logger.warning(
+            "RESTACK_ENGINE_API_ADDRESS is not set, falling back to default http://localhost:9233"
+        )
+        raw_backend_host = "http://localhost:9233"
 
-    logger.info("connecting to room %s", ctx.room.name)
+    # Ensure the host has a https:// prefix
+    if not raw_backend_host.startswith("https://"):
+        if raw_backend_host.startswith("http://"):
+            agent_backend_host = "https://" + raw_backend_host[len("http://"):]
+        else:
+            agent_backend_host = "https://" + raw_backend_host
+    else:
+        agent_backend_host = raw_backend_host
+
+    logger.info("Using RESTACK_ENGINE_API_ADDRESS: %s", agent_backend_host)
+
+    agent_url = f"{agent_backend_host}/stream/agents/{agent_name}/{agent_id}/{run_id}"
+    logger.info("Agent URL: %s", agent_url)
+
+    logger.info("Connecting to room: %s", ctx.room.name)
     await ctx.connect(auto_subscribe=AutoSubscribe.AUDIO_ONLY)
 
     # Wait for the first participant to connect
     participant = await ctx.wait_for_participant()
-    logger.info("starting voice assistant for participant %s", participant.identity)
+    logger.info("Starting voice assistant for participant: %s", participant.identity)
 
     agent = VoicePipelineAgent(
         vad=ctx.proc.userdata["vad"],
@@ -81,8 +122,8 @@ async def entrypoint(ctx: JobContext) -> None:
         metrics.log_metrics(agent_metrics)
         usage_collector.collect(agent_metrics)
 
+    # Start the voice pipeline agent.
     agent.start(ctx.room, participant)
-
 
 if __name__ == "__main__":
     cli.run_app(
