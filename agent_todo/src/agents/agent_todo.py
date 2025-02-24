@@ -12,8 +12,8 @@ with import_functions():
     from src.functions.todo_create import TodoCreateParams, todo_create
 
 
-class MessageEvent(BaseModel):
-    content: str
+class MessagesEvent(BaseModel):
+    messages: list[Message]
 
 
 class EndEvent(BaseModel):
@@ -24,19 +24,16 @@ class EndEvent(BaseModel):
 class AgentTodo:
     def __init__(self) -> None:
         self.end = False
-        self.messages = []
+        self.messages = [Message(
+            role="system",
+            content="You are an AI assistant that creates and execute todos. Eveything the user asks needs to be a todo, that needs to be created and then executed if the user wants to.",
+        )]
+
 
     @agent.event
-    async def message(self, message: MessageEvent) -> list[Message]:
+    async def messages(self, messages_event: MessagesEvent) -> list[Message]:
         try:
-            log.info(f"Received message: {message.content}")
-
-            self.messages.append(
-                Message(
-                    role="system",
-                    content="You are an AI assistant that creates and execute todos. Eveything the user asks needs to be a todo, that needs to be created and then executed if the user wants to.",
-                )
-            )
+            self.messages.extend(messages_event.messages)
 
             tools = [
                 pydantic_function_tool(
@@ -50,8 +47,6 @@ class AgentTodo:
                     description="Execute a todo, needs to be created first and need confirmation from user before executing.",
                 ),
             ]
-
-            self.messages.append(Message(role="user", content=message.content or ""))
 
             completion = await agent.step(
                 function=llm_chat,
@@ -167,4 +162,5 @@ class AgentTodo:
 
     @agent.run
     async def run(self, function_input: dict) -> None:
+        log.info("AgentTodo function_input", function_input=function_input)
         await agent.condition(lambda: self.end)
