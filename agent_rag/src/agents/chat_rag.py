@@ -8,8 +8,8 @@ with import_functions():
     from src.functions.lookup_sales import lookup_sales
 
 
-class MessageEvent(BaseModel):
-    content: str
+class MessagesEvent(BaseModel):
+    messages: list[Message]
 
 
 class EndEvent(BaseModel):
@@ -23,16 +23,15 @@ class AgentRag:
         self.messages = []
 
     @agent.event
-    async def message(self, message: MessageEvent) -> list[Message]:
-        log.info(f"Received message: {message.content}")
+    async def messages(self, messages_event: MessagesEvent) -> list[Message]:
+        log.info(f"Received messages: {messages_event.messages}")
+        self.messages.extend(messages_event.messages)
 
         sales_info = await agent.step(
             function=lookup_sales, start_to_close_timeout=timedelta(seconds=120)
         )
 
         system_content = f"You are a helpful assistant that can help with sales data. Here is the sales information: {sales_info}"
-
-        self.messages.append(Message(role="user", content=message.content or ""))
 
         completion = await agent.step(
             function=llm_chat,
@@ -60,4 +59,5 @@ class AgentRag:
 
     @agent.run
     async def run(self, function_input: dict) -> None:
+        log.info("AgentRag function_input", function_input=function_input)
         await agent.condition(lambda: self.end)

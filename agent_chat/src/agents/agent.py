@@ -7,8 +7,8 @@ with import_functions():
     from src.functions.llm_chat import LlmChatInput, Message, llm_chat
 
 
-class MessageEvent(BaseModel):
-    content: str
+class MessagesEvent(BaseModel):
+    messages: list[Message]
 
 
 class EndEvent(BaseModel):
@@ -22,9 +22,9 @@ class AgentChat:
         self.messages = []
 
     @agent.event
-    async def message(self, message: MessageEvent) -> list[Message]:
-        log.info(f"Received message: {message.content}")
-        self.messages.append({"role": "user", "content": message.content})
+    async def messages(self, messages_event: MessagesEvent) -> list[Message]:
+        log.info(f"Received messages: {messages_event.messages}")
+        self.messages.extend(messages_event.messages)
         assistant_message = await agent.step(
             function=llm_chat,
             function_input=LlmChatInput(messages=self.messages),
@@ -41,4 +41,5 @@ class AgentChat:
 
     @agent.run
     async def run(self, function_input: dict) -> None:
+        log.info("AgentChat function_input", function_input=function_input)
         await agent.condition(lambda: self.end)
