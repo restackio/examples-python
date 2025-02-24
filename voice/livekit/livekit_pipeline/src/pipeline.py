@@ -30,9 +30,8 @@ def validate_envs() -> None:
         "LIVEKIT_URL": "LiveKit server URL",
         "LIVEKIT_API_KEY": "API Key for LiveKit",
         "LIVEKIT_API_SECRET": "API Secret for LiveKit",
-        "OPENAI_API_KEY": "API key for OpenAI (used for LLM)",
         "DEEPGRAM_API_KEY": "API key for Deepgram (used for STT)",
-        "CARTESIA_API_KEY": "API key for Cartesia",
+        "ELEVEN_API_KEY": "API key for ElevenLabs (used for TTS)",
         "RESTACK_ENGINE_API_ADDRESS": "Backend API Address",
     }
     for key, description in required_envs.items():
