@@ -40,6 +40,8 @@ async def entrypoint(ctx: JobContext) -> None:
     else:
         metadata_obj = metadata
 
+    logger.info("metadata_obj: %s", metadata_obj)
+
     agent_name = metadata_obj.get("agent_name")
     agent_id = metadata_obj.get("agent_id")
     run_id = metadata_obj.get("run_id")
