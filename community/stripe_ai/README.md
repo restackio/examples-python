@@ -13,7 +13,7 @@ This repository contains a an example on how restack can use langchain and the s
 To start the Restack, use the following Docker command:
 
 ```bash
-docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 ghcr.io/restackio/restack:main
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 -p 9233:9233 ghcr.io/restackio/restack:main
 ```
 
 ## Create .env file with: STRIPE_SECRET_KEY, LANGCHAIN_API_KEY and OPENAI_API_KEY
