@@ -1,6 +1,4 @@
 
-
-
 # Run agent
 
 in /agent-stream
@@ -8,8 +6,7 @@ in /agent-stream
 uv run dev
 ```
 
-
-# Run audio pipeline
+# Run voice pipeline
 
 in /livekit-pipeline
 ```bash
