@@ -1,5 +1,0 @@
-.venv
-.env.local
-.gitignore
-.dockerignore
-__pycache__
