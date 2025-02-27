@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from restack_ai.agent import agent, agent_info, import_functions, log
 
 with import_functions():
@@ -18,13 +18,8 @@ class MessagesEvent(BaseModel):
 class EndEvent(BaseModel):
     end: bool
 
-
-class AgentStreamInput(BaseModel):
-    room_id: str | None = Field(default="room-1")
-
-
 @agent.defn()
-class AgentStream:
+class AgentTwilio:
     def __init__(self) -> None:
         self.end = False
         self.messages: list[Message] = []
@@ -65,13 +60,10 @@ class AgentStream:
         )
 
     @agent.run
-    async def run(self, agent_input: AgentStreamInput) -> None:
-        log.info("Run", agent_input=agent_input)
-        self.room_id = agent_input.room_id
+    async def run(self) -> None:
 
-        if not self.room_id:
-            room = await agent.step(function=livekit_room)
-            self.room_id = room.name
+        room = await agent.step(function=livekit_room)
+        self.room_id = room.name
 
         await agent.step(
             function=livekit_dispatch,

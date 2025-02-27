@@ -5,7 +5,7 @@ from pathlib import Path
 
 from watchfiles import run_process
 
-from src.agents.agent import AgentStream
+from src.agents.agent import AgentTwilio
 from src.client import client
 from src.functions.livekit_call import livekit_call
 from src.functions.livekit_dispatch import livekit_dispatch
@@ -16,7 +16,7 @@ from src.functions.llm_chat import llm_chat
 
 async def main() -> None:
     await client.start_service(
-        agents=[AgentStream],
+        agents=[AgentTwilio],
         functions=[
             llm_chat,
             livekit_dispatch,

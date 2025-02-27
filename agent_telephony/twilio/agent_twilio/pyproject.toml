@@ -1,5 +1,5 @@
 [project]
-name = "agent_telephony_agent"
+name = "agent_telephony_agent_twilio"
 version = "0.0.1"
 description = "An agent with streaming for Restack"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]

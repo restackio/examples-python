@@ -10,14 +10,8 @@ async def main(agent_id: str, run_id: str) -> None:
     await client.send_agent_event(
         agent_id=agent_id,
         run_id=run_id,
-        event_name="messages",
+        event_name="call",
         event_input={"messages": [{"role": "user", "content": "Tell me another joke"}]},
-    )
-
-    await client.send_agent_event(
-        agent_id=agent_id,
-        run_id=run_id,
-        event_name="end",
     )
 
     sys.exit(0)
