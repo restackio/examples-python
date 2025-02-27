@@ -109,7 +109,7 @@ Open the Livekit Agents Playground:
 
 http://localhost:3000/
 
-Connect and copy the room_id
+Connect and copy the **room_id**
 
 Open Restack Engine:
 
@@ -121,28 +121,36 @@ Create a new agent with room_id from Livekit Agents Playground.
 
 ### from UI
 
-Create the room and run the agent from the UI by clicking the "Run" button for the workflow "RoomWorkflow".
+Run the agent from the UI by clicking the "Run" button for the agent "AgentStream".
 
-![Create room and run agent from UI](./room_url.png)
+![Create agent from UI](./agent_voice_post.png)
 
 ### from API
 
-Create the room and run the agent from the API by using the generated endpoint:
+Run the agent from the API by using the generated endpoint:
 
-`POST http://localhost:6233/api/workflows/RoomWorkflow`
+`POST http://localhost:6233/api/agents/AgentStream`
 
-## Join the video call
+with input:
 
-You can join the video call by using the room url returned by RoomWorkflow.
-You should be able to speak to your replica
+```json
+{
+  "room_id": "your_room_id"
+}
+```
 
-![Join the video call](./tavus_replica.png)
+## Talk to the agent
+
+The Livekit pipleine worker will connect to the room and you can start talking to the agent.
+
+![Talk to the agent](./agent_voice_livekit.png)
+
 
 ## Follow the agent run
 
 You can replay and follow the agent run in the UI.
 
-![Replay agent run](./agent_messages.png)
+![Replay agent run](./agent_voice_replay.png)
 
 ## Deploy on Restack Cloud
 
