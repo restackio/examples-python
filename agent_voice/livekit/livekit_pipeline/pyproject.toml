@@ -1,21 +1,19 @@
 [project]
-name = "pipecat-pipeline"
+name = "livekit-pipeline"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "openai>=1.59.9",
-    "pipecat-ai[daily,deepgram,openai,silero,cartesia]>=0.0.58",
-    "python-dotenv>=1.0.1",
+    "livekit-agents>=0.12.15",
+    "livekit-plugins-deepgram>=0.6.19",
+    "livekit-plugins-elevenlabs>=0.7.13",
+    "livekit-plugins-openai>=0.11.0",
+    "livekit-plugins-silero>=0.7.4",
+    "livekit-plugins-turn-detector>=0.4.2",
+    "python-dotenv==1.0.1",
     "restack-ai>=0.0.74",
-    "pydantic>=2.10.6",
-    "watchfiles>=1.0.4",
 ]
-
-[project.scripts]
-dev = "src.services:watch_services"
-services = "src.services:run_services"
 
 [tool.hatch.build.targets.sdist]
 include = ["src"]
