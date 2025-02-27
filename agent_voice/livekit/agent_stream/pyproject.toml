@@ -1,5 +1,5 @@
 [project]
-name = "agent_stream"
+name = "agent_voice_agent_stream"
 version = "0.0.1"
 description = "An agent with streaming for Restack"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]
@@ -10,7 +10,7 @@ dependencies = [
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
     "openai>=1.61.0",
-    "restack-ai>=0.0.74",
+    "restack-ai>=0.0.75",
     "livekit-api>=0.8.2",
 ]
 

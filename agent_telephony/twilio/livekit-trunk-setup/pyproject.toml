@@ -1,5 +1,5 @@
 [project]
-name = "livekit-twilio-setup"
+name = "agent_telephony_livekit_trunk_setup"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"

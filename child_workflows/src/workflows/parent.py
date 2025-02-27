@@ -11,10 +11,10 @@ class ParentOutput(BaseModel):
 @workflow.defn()
 class ParentWorkflow:
     @workflow.run
-    async def run(self, input: ParentInput) -> ParentOutput:
+    async def run(self, workflow_input: ParentInput) -> ParentOutput:
         
-        log.info("ParentWorkflow started", input=input)
-        if input.child:
+        log.info("ParentWorkflow started", workflow_input=workflow_input)
+        if workflow_input.child:
             # use the parent run id to create child workflow ids
             parent_workflow_id = workflow_info().workflow_id
 
@@ -22,7 +22,7 @@ class ParentWorkflow:
             # result = await workflow.child_start(ChildWorkflow, input=ChildInput(name="world"), workflow_id=f"{parent_workflow_id}-child-start")
             
             log.info("Start ChildWorkflow and wait for result")
-            result = await workflow.child_execute(ChildWorkflow, input=ChildInput(name="world"), workflow_id=f"{parent_workflow_id}-child-execute")
+            result = await workflow.child_execute(workflow=ChildWorkflow, workflow_input=ChildInput(name="world"), workflow_id=f"{parent_workflow_id}-child-execute")
             log.info("ChildWorkflow completed", result=result)
             return ParentOutput(result="ParentWorkflow completed")
         

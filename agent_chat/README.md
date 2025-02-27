@@ -100,8 +100,10 @@ with the payload:
 
 ```json
 {
-  "eventName": "message",
-  "eventInput": { "content": "tell me another joke" }
+  "eventName": "messages",
+  "eventInput": {
+    "messages": [{"role": "user", "content": "tell me a joke"}]
+  }
 }
 ```
 
