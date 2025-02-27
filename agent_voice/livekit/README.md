@@ -9,6 +9,13 @@ Build an AI agent that users can interact with in realtime with voice.
 - Deepgram account (For speech-to-text transcription)
 - ElevenLabs account (for text-to-speech and voice cloning)
 
+
+## Configure environment variables
+
+In all subfolders, duplicate the `env.example` file and rename it to `.env`.
+
+Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
+
 ## Start Restack
 
 To start the Restack, use the following Docker command:
@@ -80,13 +87,6 @@ If using pip:
 pip install -e .
 python src/pipeline.py dev
 ```
-
-## Configure Your Environment Variables
-
-Duplicate the `env.example` file and rename it to `.env`.
-
-Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
-
 
 ## Interact in realtime with the agent
 
