@@ -1,5 +1,5 @@
 [project]
-name = "livekit-pipeline"
+name = "agent_voice_livekit_pipeline"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -12,7 +12,7 @@ dependencies = [
     "livekit-plugins-silero>=0.7.4",
     "livekit-plugins-turn-detector>=0.4.2",
     "python-dotenv==1.0.1",
-    "restack-ai>=0.0.74",
+    "restack-ai>=0.0.75",
 ]
 
 [tool.hatch.build.targets.sdist]

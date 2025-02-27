@@ -1,5 +1,5 @@
 [project]
-name = "pipecat-pipeline"
+name = "agent_video"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -8,7 +8,7 @@ dependencies = [
     "openai>=1.59.9",
     "pipecat-ai[daily,deepgram,openai,silero,cartesia]>=0.0.58",
     "python-dotenv>=1.0.1",
-    "restack-ai>=0.0.74",
+    "restack-ai>=0.0.75",
     "pydantic>=2.10.6",
     "watchfiles>=1.0.4",
 ]

@@ -1,6 +1,6 @@
 # Restack AI - Agent with Video
 
-This repository contains a tool for an AI agent that you cna interact in realtime on a video call.
+Build an AI agent that users can interact with in realtime on a video call.
 
 ## Prerequisites
 
@@ -10,9 +10,9 @@ This repository contains a tool for an AI agent that you cna interact in realtim
 - Cartesia account (for text-to-speech and voice cloning)
 - Tavus account (for video replica)
 
-# Create voice clone
+### How-to create voice clone
 
-follow instructions here:
+Follow instructions here:
 
 https://docs.cartesia.ai/build-with-sonic/capability-guides/clone-voices
 
@@ -21,9 +21,9 @@ You can even localize your voice clone to a specific region:
 https://docs.cartesia.ai/build-with-sonic/capability-guides/localize-voices
 
 
-# Create a Video Replica
+### How-to create a video replica
 
-follow instructions here:
+Follow instructions here:
 
 https://docs.tavus.io/sections/replicas/replica-training
 
@@ -77,13 +77,13 @@ Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost fro
 
 ### from UI
 
-You can run agents from the UI by clicking the "Run" button.
+Create the room and run the agent from the UI by clicking the "Run" button for the workflow "RoomWorkflow".
 
-![Run agents from UI](./room_url.png)
+![Create room and run agent from UI](./room_url.png)
 
 ### from API
 
-You can create the room and run the agent from the API by using the generated endpoint:
+Create the room and run the agent from the API by using the generated endpoint:
 
 `POST http://localhost:6233/api/workflows/RoomWorkflow`
 

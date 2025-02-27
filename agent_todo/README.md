@@ -88,9 +88,9 @@ In our example we will ask the AI agent to create a todo.
 {
   "agentId": "{agent_id}",
   "runId": "{run_id}",
-  "eventName": "message",
+  "eventName": "messages",
   "eventInput": {
-    "content": "Can you send an email to the CEO?"
+    "messages": [{"role": "user", "content": "Can you send an email to the CEO?"}]
   }
 }
 ```
@@ -105,9 +105,9 @@ and the payload:
 
 ```
 {
-  "eventName": "message",
+  "eventName": "messages",
   "eventInput": {
-    "content": "Can you send an email to the CEO?"
+    "messages": [{"role": "user", "content": "Can you send an email to the CEO?"}]
   }
 }
 ```

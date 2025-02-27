@@ -76,9 +76,9 @@ You can run agents from the API by using the generated endpoint:
 {
   "agentId": "{agent_id}",
   "runId": "{run_id}",
-  "eventName": "message",
+  "eventName": "messages",
   "eventInput": {
-    "content": "What clothes are currently on sales?"
+    "messages": [{"role": "user", "content": "Can you send an email to the CEO?"}]
   }
 }
 ```
@@ -93,9 +93,9 @@ and the payload:
 
 ```
 {
-  "eventName": "message",
+  "eventName": "messages",
   "eventInput": {
-    "content": "What clothes are currently on sales?"
+    "messages": [{"role": "user", "content": "What clothes are currently on sale?"}]
   }
 }
 ```
