@@ -117,6 +117,6 @@ class AgentChatToolFunctions:
         return {"end": True}
 
     @agent.run
-    async def run(self, function_input: dict) -> None:
-        log.info("AgentChatToolFunctions function_input", function_input=function_input)
+    async def run(self, agent_input: dict) -> None:
+        log.info("AgentChatToolFunctions agent_input", agent_input=agent_input)
         await agent.condition(lambda: self.end)
