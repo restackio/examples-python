@@ -1,7 +1,6 @@
-# Restack AI - Agent Chat
+# Restack AI - Agent with Stream
 
-This repository contains a an agent chat for Restack.
-It demonstrates how to set up a workflow to have a conversation with an AI agent.
+Build an Agent user can chat with and return streaming response.
 
 ## Prerequisites
 

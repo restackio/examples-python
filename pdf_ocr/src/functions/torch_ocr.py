@@ -27,8 +27,11 @@ async def torch_ocr(input: OcrInput) -> str:
     try:
         service = DocumentExtractionService()
 
-        # Download the file from localhost
-        response = requests.get(f"{api_address or 'http://localhost:6233'}/api/download/{input.file_name}")
+        if api_address:
+            url = f"https://{api_address}/api/download/{input.file_name}"
+        else:
+            url = f"http://localhost:6233/api/download/{input.file_name}"
+        response = requests.get(url)
         response.raise_for_status()  # Raise an error for bad responses
         content = response.content
 
