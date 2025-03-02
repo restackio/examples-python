@@ -5,26 +5,20 @@ from pathlib import Path
 
 from watchfiles import run_process
 
-from src.agents.agent import AgentStream
+from src.agents.agent import AgentVoice
 from src.client import client
-from src.functions.livekit_call import livekit_call
 from src.functions.livekit_dispatch import livekit_dispatch
-from src.functions.livekit_outbound_trunk import livekit_outbound_trunk
 from src.functions.livekit_room import livekit_room
-from src.functions.livekit_token import livekit_token
 from src.functions.llm_chat import llm_chat
 
 
 async def main() -> None:
     await client.start_service(
-        agents=[AgentStream],
+        agents=[AgentVoice],
         functions=[
             llm_chat,
             livekit_dispatch,
-            livekit_token,
-            livekit_call,
             livekit_room,
-            livekit_outbound_trunk,
         ],
     )
 

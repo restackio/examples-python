@@ -5,7 +5,7 @@ from pathlib import Path
 
 from watchfiles import run_process
 
-from src.agents.agent import AgentStream
+from src.agents.agent import AgentVideo
 from src.client import client
 from src.functions.llm_chat import llm_chat
 from src.functions.pipeline import pipecat_pipeline
@@ -14,7 +14,7 @@ from src.workflows.room import RoomWorkflow
 
 async def main() -> None:
     await client.start_service(
-        agents=[AgentStream],
+        agents=[AgentVideo],
         workflows=[RoomWorkflow],
         functions=[
             llm_chat,
