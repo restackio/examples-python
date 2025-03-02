@@ -14,9 +14,11 @@ with import_functions():
 class MessagesEvent(BaseModel):
     messages: list[Message]
 
-
 class EndEvent(BaseModel):
     end: bool
+
+class CallInput(BaseModel):
+    phone_number: str
 
 @agent.defn()
 class AgentTwilio:
@@ -24,7 +26,6 @@ class AgentTwilio:
         self.end = False
         self.messages: list[Message] = []
         self.room_id = ""
-        self.prospect_phone_number = "+491704675288"
 
     @agent.event
     async def messages(self, messages_event: MessagesEvent) -> list[Message]:
@@ -42,7 +43,7 @@ class AgentTwilio:
     @agent.event
     async def call(self, call_input: dict) -> None:
         log.info("Call", call_input=call_input)
-        phone_number = self.prospect_phone_number
+        phone_number = call_input.phone_number
         agent_name = agent_info().workflow_type
         agent_id = agent_info().workflow_id
         run_id = agent_info().run_id

@@ -24,7 +24,7 @@ async def main(agent_id: str, run_id: str) -> None:
 
 
 def run_event_workflow() -> None:
-    asyncio.run(main(agent_id="your-agent-id", run_id="your-run-id"))
+    asyncio.run(main(agent_id="agent-id", run_id="run-id"))
 
 
 if __name__ == "__main__":

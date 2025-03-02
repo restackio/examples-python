@@ -3,7 +3,7 @@ from datetime import timedelta
 from pydantic import BaseModel
 from restack_ai.workflow import import_functions, log, workflow, workflow_info, ParentClosePolicy
 
-from src.agents.agent import AgentStream
+from src.agents.agent import AgentVideo
 
 with import_functions():
     from src.functions.pipeline import PipecatPipelineInput, pipecat_pipeline
@@ -19,7 +19,7 @@ class RoomWorkflow:
     async def run(self) -> RoomWorkflowOutput:
         agent_id = f"{workflow_info().workflow_id}-agent"
         agent = await workflow.child_start(
-            agent=AgentStream,
+            agent=AgentVideo,
             agent_id=agent_id,
             start_to_close_timeout=timedelta(minutes=20),
             parent_close_policy=ParentClosePolicy.ABANDON
@@ -30,7 +30,7 @@ class RoomWorkflow:
         room_url = await workflow.step(
             function=pipecat_pipeline,
             function_input=PipecatPipelineInput(
-                agent_name=AgentStream.__name__,
+                agent_name=AgentVideo.__name__,
                 agent_id=agent.id,
                 agent_run_id=agent.run_id,
             ),
