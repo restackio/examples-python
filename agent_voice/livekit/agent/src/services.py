@@ -8,7 +8,6 @@ from watchfiles import run_process
 from src.agents.agent import AgentVoice
 from src.client import client
 from src.functions.livekit_dispatch import livekit_dispatch
-from src.functions.livekit_room import livekit_room
 from src.functions.llm_chat import llm_chat
 
 
@@ -18,7 +17,6 @@ async def main() -> None:
         functions=[
             llm_chat,
             livekit_dispatch,
-            livekit_room,
         ],
     )
 

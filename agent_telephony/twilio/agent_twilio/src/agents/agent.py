@@ -41,7 +41,7 @@ class AgentTwilio:
         return self.messages
 
     @agent.event
-    async def call(self, call_input: dict) -> None:
+    async def call(self, call_input: CallInput) -> None:
         log.info("Call", call_input=call_input)
         phone_number = call_input.phone_number
         agent_name = agent_info().workflow_type
@@ -60,6 +60,12 @@ class AgentTwilio:
             ),
         )
 
+    @agent.event
+    async def end(self, end: EndEvent) -> EndEvent:
+        log.info("Received end")
+        self.end = True
+        return end
+    
     @agent.run
     async def run(self) -> None:
 
@@ -71,10 +77,3 @@ class AgentTwilio:
             function_input=LivekitDispatchInput(room_id=self.room_id),
         )
         await agent.condition(lambda: self.end)
-
-
-    @agent.event
-    async def end(self, end: EndEvent) -> EndEvent:
-        log.info("Received end")
-        self.end = True
-        return end

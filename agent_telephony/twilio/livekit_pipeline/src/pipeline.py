@@ -31,8 +31,7 @@ def validate_envs() -> None:
         "LIVEKIT_API_KEY": "API Key for LiveKit",
         "LIVEKIT_API_SECRET": "API Secret for LiveKit",
         "DEEPGRAM_API_KEY": "API key for Deepgram (used for STT)",
-        "ELEVEN_API_KEY": "API key for ElevenLabs (used for TTS)",
-        "RESTACK_ENGINE_API_ADDRESS": "Backend API Address",
+        "ELEVEN_API_KEY": "API key for ElevenLabs (used for TTS)"
     }
     for key, description in required_envs.items():
         if not os.environ.get(key):

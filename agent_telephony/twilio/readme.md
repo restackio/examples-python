@@ -130,6 +130,9 @@ with the payload:
 ```json
 {
   "eventName": "call",
+  "eventInput": {
+    "phone_number": "+XXXXXXX"
+  }
 }
 ```
 
