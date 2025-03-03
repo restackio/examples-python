@@ -28,11 +28,10 @@ validators = "^0.34.0"
 restack-ai = "0.0.62"
 docling = "^2.25.0"
 
-[tool.poetry.scripts]
-services = "src.services:run_services"
-
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+services = "src.services:run_services"
 
