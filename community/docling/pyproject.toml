@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "docling-test"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "readme.md"
+packages = [
+    { include = "src" }
+]
+
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "supplemental"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic-settings = "^2.7.1"
+aiohttp = "^3.11.11"
+pydantic = "^2.10.6"
+tavily-python = "^0.5.1"
+openai = "^1.61.1"
+mistune = "^3.1.1"
+requests = "^2.32.3"
+beautifulsoup4 = "^4.13.3"
+gitpython = "^3.1.44"
+validators = "^0.34.0"
+restack-ai = "0.0.62"
+docling = "^2.25.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+services = "src.services:run_services"
+
