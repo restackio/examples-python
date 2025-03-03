@@ -16,10 +16,10 @@ def get_env_var(var_name):
     return value
 
 
-def create_livekit_trunk(client, sip_uri):
+def create_livekit_trunk(client, sip_uri, trunk_name):
     domain_name = f"livekit-trunk-{os.urandom(4).hex()}.pstn.twilio.com"
     trunk = client.trunking.v1.trunks.create(
-        friendly_name="LiveKit Trunk",
+        friendly_name=trunk_name,
         domain_name=domain_name,
     )
     trunk.origination_urls.create(
@@ -27,14 +27,14 @@ def create_livekit_trunk(client, sip_uri):
         weight=1,
         priority=1,
         enabled=True,
-        friendly_name="LiveKit SIP URI",
+        friendly_name=f"{trunk_name} SIP URI",
     )
-    logging.info("Created new LiveKit Trunk.")
+    logging.info(f"Created new {trunk_name} trunk.")
     return trunk
 
 
-def create_inbound_trunk(phone_number):
-    trunk_data = {"trunk": {"name": "Inbound LiveKit Trunk", "numbers": [phone_number]}}
+def create_inbound_trunk(phone_number, trunk_name):
+    trunk_data = {"trunk": {"name": f"Inbound {trunk_name}", "numbers": [phone_number]}}
     with open("inbound_trunk.json", "w") as f:
         json.dump(trunk_data, f, indent=4)
 
@@ -58,9 +58,9 @@ def create_inbound_trunk(phone_number):
     return None
 
 
-def create_dispatch_rule(trunk_sid):
+def create_dispatch_rule(trunk_sid, trunk_name):
     dispatch_rule_data = {
-        "name": "Inbound Dispatch Rule",
+        "name": f"Inbound {trunk_name} Dispatch Rule",
         "trunk_ids": [trunk_sid],
         "rule": {"dispatchRuleIndividual": {"roomPrefix": "call-"}},
     }
@@ -89,23 +89,25 @@ def main():
     auth_token = get_env_var("TWILIO_AUTH_TOKEN")
     phone_number = get_env_var("TWILIO_PHONE_NUMBER")
     sip_uri = get_env_var("LIVEKIT_SIP_URI")
+    trunk_name = get_env_var("TRUNK_NAME")
 
     client = Client(account_sid, auth_token)
 
     existing_trunks = client.trunking.v1.trunks.list()
     livekit_trunk = next(
-        (trunk for trunk in existing_trunks if trunk.friendly_name == "LiveKit Trunk"),
+        (trunk for trunk in existing_trunks if trunk.friendly_name == trunk_name),
         None,
     )
 
     if not livekit_trunk:
-        livekit_trunk = create_livekit_trunk(client, sip_uri)
+        livekit_trunk = create_livekit_trunk(client, sip_uri, trunk_name)
     else:
-        logging.info("LiveKit Trunk already exists. Using the existing trunk.")
+        logging.info(f"{trunk_name} already exists. Using the existing trunk.")
 
-    inbound_trunk_sid = create_inbound_trunk(phone_number)
+
+    inbound_trunk_sid = create_inbound_trunk(phone_number, trunk_name)
     if inbound_trunk_sid:
-        create_dispatch_rule(inbound_trunk_sid)
+        create_dispatch_rule(inbound_trunk_sid, trunk_name)
 
 
 if __name__ == "__main__":
