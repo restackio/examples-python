@@ -1,4 +1,4 @@
-# Restack AI - Agent with Stream
+# Restack AI - Agent with stream
 
 Build an Agent user can chat with and return streaming response.
 

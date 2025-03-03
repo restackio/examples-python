@@ -1,5 +1,5 @@
 
-wip# Restack AI - Agent with Telephony - Vapi
+# Restack AI - Agent with telephony - Vapi
 
 Build an AI agent that do an outbound call with Vapi and can interact with in realtime with voice.
 

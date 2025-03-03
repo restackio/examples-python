@@ -1,6 +1,6 @@
-# Restack AI - Agent Chat
+# Restack AI - Agent with chat
 
-This repository contains a an agent chat for Restack.
+This repository contains an agent with chat for Restack.
 It demonstrates how to set up a workflow to have a conversation with an AI agent.
 
 ## Prerequisites

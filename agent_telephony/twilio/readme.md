@@ -1,5 +1,5 @@
 
-wip# Restack AI - Agent with Telephony - Twilio
+# Restack AI - Agent with telephony - Twilio
 
 Build an AI agent that do an outbound call with Twilio and can interact with in realtime with voice.
 
@@ -7,10 +7,7 @@ Build an AI agent that do an outbound call with Twilio and can interact with in 
 
 - Docker (for running Restack)
 - Python 3.10 or higher
-- Livekit account (for WebRTC pipeline)
-- Deepgram account (For speech-to-text transcription)
-- ElevenLabs account (for text-to-speech and voice cloning)
-- Twilio account (for outbound calls)
+- Vapi account (for outbound calls)
 
 ### Trunk setup for outbound calls with Twilio
 

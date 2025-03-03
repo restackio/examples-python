@@ -1,7 +1,6 @@
-# Restack AI - Agent Tool
+# Restack AI - Agent with tool calling
 
-This repository contains a tool for an AI agent.
-It demonstrates how to set up a basic agent with functions calling.
+This repository demonstrates how to set up a basic agent with tool calling.
 
 Follow [the step-by-step tutorial](https://docs.restack.io/examples/projects/agent#tutorial) on how to customize the agent tool example/
 

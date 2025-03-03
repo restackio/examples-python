@@ -1,4 +1,4 @@
-# Restack AI - Agent with Video
+# Restack AI - Agent with video
 
 Build an AI agent that users can interact with in realtime on a video call.
 
