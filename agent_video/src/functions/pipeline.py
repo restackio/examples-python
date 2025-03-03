@@ -44,7 +44,10 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
             else:
                 agent_backend_host = engine_api_address
 
-            log.info("Using RESTACK_ENGINE_API_ADDRESS", agent_backend_host=agent_backend_host)
+            log.info(
+                "Using RESTACK_ENGINE_API_ADDRESS",
+                agent_backend_host=agent_backend_host,
+            )
 
             agent_url = f"{agent_backend_host}/stream/agents/{function_input.agent_name}/{function_input.agent_id}/{function_input.agent_run_id}"
             log.info("Agent URL", agent_url=agent_url)
@@ -150,7 +153,10 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
                 try:
                     await runner.run(task)
                 except Exception as e:
-                    log.error("Pipeline runner encountered an error, cancelling pipeline", error=e)
+                    log.error(
+                        "Pipeline runner encountered an error, cancelling pipeline",
+                        error=e,
+                    )
                     # Cancel the pipeline task if an error occurs within the pipeline runner.
                     await task.cancel()
                     raise e

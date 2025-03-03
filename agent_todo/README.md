@@ -1,6 +1,6 @@
-# Restack AI - Quickstart
+# Restack AI - Agent with todo list
 
-This repository contains a quickstart for Restack.
+This repository contains an agent with todo list for Restack.
 It demonstrates how to set up a basic agent with tool call with a basic workflow and functions.
 
 ## Prerequisites

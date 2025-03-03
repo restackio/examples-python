@@ -1,17 +1,17 @@
 
-# Restack AI - Agent with telephony - Twilio
+# Restack AI - Agent with telephony - Vapi
 
-Build an AI agent that do an outbound call with Twilio and can interact with in realtime with voice.
+Build an AI agent that do an outbound call with Vapi and can interact with in realtime with voice.
 
 ## Prerequisites
 
 - Docker (for running Restack)
 - Python 3.10 or higher
-- Vapi account (for outbound calls)
+- Vapi account
 
-### Trunk setup for outbound calls with Twilio
+### Create a Vapi account
 
-In /livekit-trunk-setup you can find a script to create automaticlaly trunk setup on Twilio.
+See more on [Vapi documentation](https://docs.vapi.ai/quickstart/phone/outbound)
 
 ## Start Restack
 
@@ -102,15 +102,14 @@ Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost fro
 
 ### from UI
 
-Run the agent from the UI by clicking the "Run" button for the agent "AgentTwilio".
-
-![Create agent from UI](./agent_voice_post.png)
+Run the agent from the UI by clicking the "Run" button for the agent "`POST http://localhost:6233/api/agents/AgentVapi`
+".
 
 ### from API
 
 Run the agent from the API by using the generated endpoint:
 
-`POST http://localhost:6233/api/agents/AgentTwilio`
+`POST http://localhost:6233/api/agents/AgentVapi`
 
 Restack agent will create a Livekit WebRTC room and will ask a livekit pipeline to connect to it, ready for a phone call.
 
@@ -120,7 +119,7 @@ Restack agent will create a Livekit WebRTC room and will ask a livekit pipeline 
 
 You can send events to the agent by using the following endpoint:
 
-`PUT http://localhost:6233/api/agents/AgentTwilio/:agentId/:runId`
+`PUT http://localhost:6233/api/agents/AgentVapi/:agentId/:runId`
 
 with the payload:
 
@@ -128,6 +127,7 @@ with the payload:
 {
   "eventName": "call",
   "eventInput": {
+    "assistant_id": "assistant_id",
     "phone_number": "+XXXXXXX"
   }
 }

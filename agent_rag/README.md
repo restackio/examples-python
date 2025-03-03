@@ -1,4 +1,4 @@
-# Restack AI - Agent Rag
+# Restack AI - Agent with RAG
 
 This repository demonstrates how to set up a basic agent with RAG.
 

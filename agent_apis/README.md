@@ -1,6 +1,6 @@
-# Restack AI - Agent with Third Party APIs
+# Restack AI - Agent with third party APIs
 
-This repository contains an agent with Third Party APIs
+This repository contains an agent with third party APIs
 It demonstrates how to set up a multi steps workflow with Weather API and OpenAI.
 
 ## Prerequisites
