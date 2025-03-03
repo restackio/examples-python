@@ -21,29 +21,29 @@ load_dotenv(dotenv_path=".env.local")
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def validate_envs() -> None:
-    """
-    Check for the presence of all required environment variables.
-    Logs a warning if any variable is missing.
-    """
     required_envs = {
         "LIVEKIT_URL": "LiveKit server URL",
         "LIVEKIT_API_KEY": "API Key for LiveKit",
         "LIVEKIT_API_SECRET": "API Secret for LiveKit",
         "DEEPGRAM_API_KEY": "API key for Deepgram (used for STT)",
-        "ELEVEN_API_KEY": "API key for ElevenLabs (used for TTS)"
+        "ELEVEN_API_KEY": "API key for ElevenLabs (used for TTS)",
     }
     for key, description in required_envs.items():
         if not os.environ.get(key):
             logger.warning("Environment variable %s (%s) is not set.", key, description)
 
+
 # Validate environments at module load
 validate_envs()
+
 
 def prewarm(proc: JobProcess) -> None:
     logger.info("Prewarming: loading VAD model...")
     proc.userdata["vad"] = silero.VAD.load()
     logger.info("VAD model loaded successfully.")
+
 
 async def entrypoint(ctx: JobContext) -> None:
     metadata = ctx.job.metadata
@@ -75,11 +75,10 @@ async def entrypoint(ctx: JobContext) -> None:
     engine_api_address = os.environ.get("RESTACK_ENGINE_API_ADDRESS")
     if not engine_api_address:
         agent_backend_host = "http://localhost:9233"
+    elif not engine_api_address.startswith("https://"):
+        agent_backend_host = "https://" + engine_api_address
     else:
-        if not engine_api_address.startswith("https://"):
-            agent_backend_host = "https://" + engine_api_address
-        else:
-            agent_backend_host = engine_api_address
+        agent_backend_host = engine_api_address
 
     logger.info("Using RESTACK_ENGINE_API_ADDRESS: %s", agent_backend_host)
 
@@ -119,6 +118,7 @@ async def entrypoint(ctx: JobContext) -> None:
 
     # Start the voice pipeline agent.
     agent.start(ctx.room, participant)
+
 
 if __name__ == "__main__":
     cli.run_app(

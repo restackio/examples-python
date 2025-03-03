@@ -1,14 +1,11 @@
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.agent import agent, agent_info, import_functions, log
+from restack_ai.agent import agent, import_functions, log
 
 with import_functions():
-    from src.functions.livekit_call import LivekitCallInput, livekit_call
-    from src.functions.livekit_dispatch import LivekitDispatchInput, livekit_dispatch
-    from src.functions.livekit_outbound_trunk import livekit_outbound_trunk
-    from src.functions.livekit_room import livekit_room
     from src.functions.llm_chat import LlmChatInput, Message, llm_chat
+    from src.functions.vapi_call import VapiCallInput, vapi_call
 
 
 class MessagesEvent(BaseModel):
@@ -20,15 +17,15 @@ class EndEvent(BaseModel):
 
 
 class CallInput(BaseModel):
+    assistant_id: str
     phone_number: str
 
 
 @agent.defn()
-class AgentTwilio:
+class AgentVapi:
     def __init__(self) -> None:
         self.end = False
         self.messages: list[Message] = []
-        self.room_id = ""
 
     @agent.event
     async def messages(self, messages_event: MessagesEvent) -> list[Message]:
@@ -46,20 +43,14 @@ class AgentTwilio:
     @agent.event
     async def call(self, call_input: CallInput) -> None:
         log.info("Call", call_input=call_input)
+        assistant_id = call_input.assistant_id
         phone_number = call_input.phone_number
-        agent_name = agent_info().workflow_type
-        agent_id = agent_info().workflow_id
-        run_id = agent_info().run_id
-        sip_trunk_id = await agent.step(function=livekit_outbound_trunk)
+
         return await agent.step(
-            function=livekit_call,
-            function_input=LivekitCallInput(
-                sip_trunk_id=sip_trunk_id,
+            function=vapi_call,
+            function_input=VapiCallInput(
+                assistant_id=assistant_id,
                 phone_number=phone_number,
-                room_id=self.room_id,
-                agent_name=agent_name,
-                agent_id=agent_id,
-                run_id=run_id,
             ),
         )
 
@@ -71,11 +62,4 @@ class AgentTwilio:
 
     @agent.run
     async def run(self) -> None:
-        room = await agent.step(function=livekit_room)
-        self.room_id = room.name
-
-        await agent.step(
-            function=livekit_dispatch,
-            function_input=LivekitDispatchInput(room_id=self.room_id),
-        )
         await agent.condition(lambda: self.end)

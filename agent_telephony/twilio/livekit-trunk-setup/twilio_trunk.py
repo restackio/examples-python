@@ -15,6 +15,7 @@ def get_env_var(var_name):
         exit(1)
     return value
 
+
 def create_livekit_trunk(client, sip_uri):
     domain_name = f"livekit-trunk-{os.urandom(4).hex()}.pstn.twilio.com"
     trunk = client.trunking.v1.trunks.create(
@@ -31,20 +32,17 @@ def create_livekit_trunk(client, sip_uri):
     logging.info("Created new LiveKit Trunk.")
     return trunk
 
+
 def create_inbound_trunk(phone_number):
-    trunk_data = {
-        "trunk": {
-            "name": "Inbound LiveKit Trunk",
-            "numbers": [phone_number]
-        }
-    }
+    trunk_data = {"trunk": {"name": "Inbound LiveKit Trunk", "numbers": [phone_number]}}
     with open("inbound_trunk.json", "w") as f:
         json.dump(trunk_data, f, indent=4)
 
     result = subprocess.run(
         ["lk", "sip", "inbound", "create", "inbound_trunk.json"],
         capture_output=True,
-        text=True, check=False
+        text=True,
+        check=False,
     )
 
     if result.returncode != 0:
@@ -59,15 +57,12 @@ def create_inbound_trunk(phone_number):
     logging.error("Could not find inbound trunk SID in output.")
     return None
 
+
 def create_dispatch_rule(trunk_sid):
     dispatch_rule_data = {
         "name": "Inbound Dispatch Rule",
         "trunk_ids": [trunk_sid],
-        "rule": {
-            "dispatchRuleIndividual": {
-                "roomPrefix": "call-"
-            }
-        }
+        "rule": {"dispatchRuleIndividual": {"roomPrefix": "call-"}},
     }
     with open("dispatch_rule.json", "w") as f:
         json.dump(dispatch_rule_data, f, indent=4)
@@ -75,7 +70,8 @@ def create_dispatch_rule(trunk_sid):
     result = subprocess.run(
         ["lk", "sip", "dispatch-rule", "create", "dispatch_rule.json"],
         capture_output=True,
-        text=True, check=False
+        text=True,
+        check=False,
     )
 
     if result.returncode != 0:
@@ -83,6 +79,7 @@ def create_dispatch_rule(trunk_sid):
         return
 
     logging.info(f"Dispatch rule created: {result.stdout}")
+
 
 def main():
     load_dotenv()
@@ -98,7 +95,7 @@ def main():
     existing_trunks = client.trunking.v1.trunks.list()
     livekit_trunk = next(
         (trunk for trunk in existing_trunks if trunk.friendly_name == "LiveKit Trunk"),
-        None
+        None,
     )
 
     if not livekit_trunk:
@@ -109,6 +106,7 @@ def main():
     inbound_trunk_sid = create_inbound_trunk(phone_number)
     if inbound_trunk_sid:
         create_dispatch_rule(inbound_trunk_sid)
+
 
 if __name__ == "__main__":
     main()

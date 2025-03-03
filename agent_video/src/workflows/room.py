@@ -1,7 +1,13 @@
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.workflow import import_functions, log, workflow, workflow_info, ParentClosePolicy
+from restack_ai.workflow import (
+    ParentClosePolicy,
+    import_functions,
+    log,
+    workflow,
+    workflow_info,
+)
 
 from src.agents.agent import AgentVideo
 
@@ -22,7 +28,7 @@ class RoomWorkflow:
             agent=AgentVideo,
             agent_id=agent_id,
             start_to_close_timeout=timedelta(minutes=20),
-            parent_close_policy=ParentClosePolicy.ABANDON
+            parent_close_policy=ParentClosePolicy.ABANDON,
         )
 
         log.info("Agent started", agent=agent)
