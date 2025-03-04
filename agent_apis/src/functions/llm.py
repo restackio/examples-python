@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from dotenv import load_dotenv
 from openai import OpenAI
-from restack_ai.function import FunctionFailure, function, log
+from restack_ai.function import NonRetryableError, function, log
 
 load_dotenv()
 
@@ -47,4 +47,4 @@ async def llm(function_input: FunctionInputParams) -> str:
         return response.choices[0].message.content
     except Exception as e:
         error_message = "llm function failed"
-        raise FunctionFailure(error_message, non_retryable=True) from e
+        raise NonRetryableError(error_message) from e

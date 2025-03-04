@@ -7,7 +7,7 @@ from doctr.io import DocumentFile
 from numpy.typing import NDArray
 from PIL import Image
 from pydantic import BaseModel, Field
-from restack_ai.function import function, log, FunctionFailure
+from restack_ai.function import function, log, NonRetryableError
 
 from doctr.models import ocr_predictor
 import requests
@@ -42,14 +42,14 @@ async def torch_ocr(input: OcrInput) -> str:
             processed_img: NDArray[np.uint8] = service._preprocess_image(image)
             doc = DocumentFile.from_images(processed_img)
         else:
-            raise FunctionFailure("Unsupported file type", non_retryable=True)
+            raise NonRetryableError("Unsupported file type")
 
         result = service.predictor(doc)
         json_output = OCRPrediction.model_validate(result.export())
         return service._process_predictions(json_output)
     except Exception as e:
-        log.error(f"Failed to process file: {str(e)}")
-        raise FunctionFailure(f"Failed to process file: {str(e)}", non_retryable=True)
+        error_message = f"Failed to process file: {str(e)}"
+        raise NonRetryableError(error_message) from e
 
 class DocumentExtractionService:
     def __init__(self) -> None:

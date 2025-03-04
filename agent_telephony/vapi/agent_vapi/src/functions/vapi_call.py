@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass
 
-from restack_ai.function import FunctionFailure, function, log
+from restack_ai.function import NonRetryableError, function, log
 from vapi import AsyncVapi, Call
 
 
@@ -26,8 +26,7 @@ async def vapi_call(function_input: VapiCallInput) -> Call:
         log.info("vapi_call: ", call=call)
 
     except Exception as e:
-        log.error("vapi_call function failed", error=str(e))
-        failure_message = "vapi_call function failed: " + str(e)
-        raise FunctionFailure(failure_message, non_retryable=True) from e
+        error_message = f"vapi_call function failed: {e}"
+        raise NonRetryableError(error_message) from e
     else:
         return call
