@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.agent import agent, import_functions, log
+from restack_ai.agent import NonRetryableError, agent, import_functions, log
 
 with import_functions():
     from openai import pydantic_function_tool
@@ -40,75 +40,88 @@ class AgentChatToolFunctions:
             ),
         ]
 
-
-        completion = await agent.step(
-            function=llm_chat,
-            function_input=LlmChatInput(
-                messages=self.messages, tools=tools
-            ),
-            start_to_close_timeout=timedelta(seconds=120),
-        )
-
-        log.info(f"completion: {completion}")
-
-        tool_calls = completion.choices[0].message.tool_calls
-        self.messages.append(
-            Message(
-                role="assistant",
-                content=completion.choices[0].message.content or "",
-                tool_calls=tool_calls,
+        try:
+            completion = await agent.step(
+                function=llm_chat,
+                function_input=LlmChatInput(
+                    messages=self.messages, tools=tools
+                ),
+                start_to_close_timeout=timedelta(seconds=120),
             )
-        )
-
-        log.info(f"tool_calls: {tool_calls}")
-
-        if tool_calls:
-            for tool_call in tool_calls:
-                log.info(f"tool_call: {tool_call}")
-
-                name = tool_call.function.name
-
-                match name:
-                    case lookup_sales.__name__:
-                        args = LookupSalesInput.model_validate_json(
-                            tool_call.function.arguments
-                        )
-
-                        log.info(f"calling {name} with args: {args}")
-
-                        result = await agent.step(
-                            function=lookup_sales,
-                            function_input=LookupSalesInput(category=args.category),
-                            start_to_close_timeout=timedelta(seconds=120),
-                        )
-                        self.messages.append(
-                            Message(
-                                role="tool",
-                                tool_call_id=tool_call.id,
-                                content=str(result),
-                            )
-                        )
-
-                        completion_with_tool_call = await agent.step(
-                            function=llm_chat,
-                            function_input=LlmChatInput(
-                                messages=self.messages, system_content=system_content
-                            ),
-                            start_to_close_timeout=timedelta(seconds=120),
-                        )
-                        self.messages.append(
-                            Message(
-                                role="assistant",
-                                content=completion_with_tool_call.choices[
-                                    0
-                                ].message.content
-                                or "",
-                            )
-                        )
+        except Exception as e:
+            error_message = f"Error during llm_chat: {e}"
+            raise NonRetryableError(error_message) from e
         else:
-            pass
+            log.info(f"completion: {completion}")
 
-        return self.messages
+            tool_calls = completion.choices[0].message.tool_calls
+            self.messages.append(
+                Message(
+                    role="assistant",
+                    content=completion.choices[0].message.content or "",
+                    tool_calls=tool_calls,
+                )
+            )
+
+            log.info(f"tool_calls: {tool_calls}")
+
+            if tool_calls:
+                for tool_call in tool_calls:
+                    log.info(f"tool_call: {tool_call}")
+
+                    name = tool_call.function.name
+
+                    match name:
+                        case lookup_sales.__name__:
+                            args = LookupSalesInput.model_validate_json(
+                                tool_call.function.arguments
+                            )
+
+                            log.info(f"calling {name} with args: {args}")
+
+                            try:
+                                result = await agent.step(
+                                    function=lookup_sales,
+                                    function_input=LookupSalesInput(category=args.category),
+                                    start_to_close_timeout=timedelta(seconds=120),
+                                )
+                            except Exception as e:
+                                error_message = f"Error during lookup_sales: {e}"
+                                raise NonRetryableError(error_message) from e
+                            else:
+                                self.messages.append(
+                                    Message(
+                                        role="tool",
+                                        tool_call_id=tool_call.id,
+                                        content=str(result),
+                                    )
+                                )
+
+                                try:
+                                    completion_with_tool_call = await agent.step(
+                                        function=llm_chat,
+                                        function_input=LlmChatInput(
+                                            messages=self.messages
+                                        ),
+                                        start_to_close_timeout=timedelta(seconds=120),
+                                    )
+                                except Exception as e:
+                                    error_message = f"Error during llm_chat: {e}"
+                                    raise NonRetryableError(error_message) from e
+                                else:
+                                    self.messages.append(
+                                        Message(
+                                            role="assistant",
+                                            content=completion_with_tool_call.choices[
+                                                0
+                                            ].message.content
+                                            or "",
+                                        )
+                                    )
+            else:
+                pass
+
+            return self.messages
 
     @agent.event
     async def end(self) -> EndEvent:
