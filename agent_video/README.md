@@ -2,6 +2,9 @@
 
 Build an AI agent that users can interact with in realtime on a video call.
 
+This readme explains how to run this example.
+For a complete documentation on how the agent works and how to setup the services, visit https://docs.restack.io/telephony-video-voice/video
+
 ## Prerequisites
 
 - Docker (for running Restack)
@@ -9,25 +12,6 @@ Build an AI agent that users can interact with in realtime on a video call.
 - Deepgram account (For speech-to-text transcription)
 - Cartesia account (for text-to-speech and voice cloning)
 - Tavus account (for video replica)
-
-### How-to create voice clone
-
-Follow instructions here:
-
-https://docs.cartesia.ai/build-with-sonic/capability-guides/clone-voices
-
-You can even localize your voice clone to a specific region:
-
-https://docs.cartesia.ai/build-with-sonic/capability-guides/localize-voices
-
-
-### How-to create a video replica
-
-Follow instructions here:
-
-https://docs.tavus.io/sections/replicas/replica-training
-
-
 
 ## Start Restack
 
