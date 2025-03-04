@@ -10,8 +10,8 @@ dependencies = [
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
     "openai>=1.61.0",
-    "restack-ai>=0.0.77",
     "livekit-api>=0.8.2",
+    "restack-ai>=0.0.78",
 ]
 
 [project.scripts]
@@ -25,6 +25,7 @@ include = ["src"]
 
 [tool.hatch.build.targets.wheel]
 include = ["src"]
+
 
 [build-system]
 requires = ["hatchling"]
