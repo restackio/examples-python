@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.agent import agent, agent_info, import_functions, log
+from restack_ai.agent import NonRetryableError, agent, agent_info, import_functions, log
 
 with import_functions():
     from src.functions.livekit_call import LivekitCallInput, livekit_call
@@ -34,14 +34,18 @@ class AgentTwilio:
     async def messages(self, messages_event: MessagesEvent) -> list[Message]:
         log.info(f"Received message: {messages_event.messages}")
         self.messages.extend(messages_event.messages)
-
-        assistant_message = await agent.step(
-            function=llm_chat,
-            function_input=LlmChatInput(messages=self.messages),
-            start_to_close_timeout=timedelta(seconds=120),
-        )
-        self.messages.append(Message(role="assistant", content=str(assistant_message)))
-        return self.messages
+        try:
+            assistant_message = await agent.step(
+                function=llm_chat,
+                function_input=LlmChatInput(messages=self.messages),
+                start_to_close_timeout=timedelta(seconds=120),
+            )
+        except Exception as e:
+            error_message = f"Error during llm_chat: {e}"
+            raise NonRetryableError(error_message) from e
+        else:
+            self.messages.append(Message(role="assistant", content=str(assistant_message)))
+            return self.messages
 
     @agent.event
     async def call(self, call_input: CallInput) -> None:
@@ -50,18 +54,29 @@ class AgentTwilio:
         agent_name = agent_info().workflow_type
         agent_id = agent_info().workflow_id
         run_id = agent_info().run_id
-        sip_trunk_id = await agent.step(function=livekit_outbound_trunk)
-        return await agent.step(
-            function=livekit_call,
-            function_input=LivekitCallInput(
-                sip_trunk_id=sip_trunk_id,
-                phone_number=phone_number,
-                room_id=self.room_id,
-                agent_name=agent_name,
-                agent_id=agent_id,
-                run_id=run_id,
-            ),
-        )
+        try:
+            sip_trunk_id = await agent.step(function=livekit_outbound_trunk)
+        except Exception as e:
+            error_message = f"Error during livekit_outbound_trunk: {e}"
+            raise NonRetryableError(error_message) from e
+        else:
+            try:
+                result =await agent.step(
+                    function=livekit_call,
+                    function_input=LivekitCallInput(
+                    sip_trunk_id=sip_trunk_id,
+                    phone_number=phone_number,
+                    room_id=self.room_id,
+                    agent_name=agent_name,
+                    agent_id=agent_id,
+                        run_id=run_id,
+                    ),
+                )
+            except Exception as e:
+                error_message = f"Error during livekit_call: {e}"
+                raise NonRetryableError(error_message) from e
+            else:
+                return result
 
     @agent.event
     async def end(self, end: EndEvent) -> EndEvent:
@@ -73,9 +88,13 @@ class AgentTwilio:
     async def run(self) -> None:
         room = await agent.step(function=livekit_room)
         self.room_id = room.name
-
-        await agent.step(
-            function=livekit_dispatch,
-            function_input=LivekitDispatchInput(room_id=self.room_id),
-        )
-        await agent.condition(lambda: self.end)
+        try:
+            await agent.step(
+                function=livekit_dispatch,
+                function_input=LivekitDispatchInput(room_id=self.room_id),
+            )
+        except Exception as e:
+            error_message = f"Error during livekit_dispatch: {e}"
+            raise NonRetryableError(error_message) from e
+        else:
+            await agent.condition(lambda: self.end)
