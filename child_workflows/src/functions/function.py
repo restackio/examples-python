@@ -1,4 +1,5 @@
-from restack_ai.function import function, log, NonRetryableError
+from restack_ai.function import NonRetryableError, function, log
+
 
 @function.defn(name="welcome")
 async def welcome(function_input: str) -> str:

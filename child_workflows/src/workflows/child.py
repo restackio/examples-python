@@ -1,9 +1,11 @@
 from datetime import timedelta
+
 from pydantic import BaseModel
-from restack_ai.workflow import NonRetryableError, workflow, import_functions, log
+from restack_ai.workflow import NonRetryableError, import_functions, log, workflow
+
 with import_functions():
     from src.functions.function import welcome
-    
+
 
 class ChildInput(BaseModel):
     name: str = "world"
