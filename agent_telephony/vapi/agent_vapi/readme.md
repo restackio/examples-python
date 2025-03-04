@@ -3,6 +3,9 @@
 
 Build an AI agent that do an outbound call with Vapi and can interact with in realtime with voice.
 
+This readme explains how to run this example.
+For a complete documentation on how the agent works and how to setup the services, visit https://docs.restack.io/telephony-video-voice/telephony
+
 ## Prerequisites
 
 - Docker (for running Restack)

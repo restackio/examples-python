@@ -2,13 +2,15 @@
 
 Build an AI agent that users can interact with in realtime with voice.
 
+This readme explains how to run this example.
+For a complete documentation on how the agent works and how to setup the services, visit https://docs.restack.io/telephony-video-voice/voice
+
 ## Prerequisites
 
 - Docker (for running Restack)
 - Python 3.10 or higher
 - Deepgram account (For speech-to-text transcription)
 - ElevenLabs account (for text-to-speech and voice cloning)
-
 
 ## Configure environment variables
 
