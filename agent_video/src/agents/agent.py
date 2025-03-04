@@ -5,7 +5,7 @@ from restack_ai.agent import agent, import_functions, log
 
 with import_functions():
     from src.functions.llm_chat import LlmChatInput, Message, llm_chat
-
+    from src.functions.context_docs import context_docs
 
 class MessagesEvent(BaseModel):
     messages: list[Message]
@@ -42,4 +42,11 @@ class AgentVideo:
 
     @agent.run
     async def run(self) -> None:
+        docs = await agent.step(function=context_docs)
+        system_prompt=f"""
+        You are an interactive video assistant, your answers will be used in text to speech so try to keep answers short and concise so that interaction is seamless.
+        You can answer questions about the following documentation:
+        {docs}
+        """
+        self.messages.append(Message(role="system", content=system_prompt))
         await agent.condition(lambda: self.end)
