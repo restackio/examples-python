@@ -4,8 +4,8 @@ from pydantic import BaseModel
 from restack_ai.agent import agent, import_functions, log
 
 with import_functions():
-    from src.functions.llm_chat import LlmChatInput, Message, llm_chat
     from src.functions.context_docs import context_docs
+    from src.functions.llm_chat import LlmChatInput, Message, llm_chat
 
 class MessagesEvent(BaseModel):
     messages: list[Message]

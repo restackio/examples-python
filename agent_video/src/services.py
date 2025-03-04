@@ -7,10 +7,10 @@ from watchfiles import run_process
 
 from src.agents.agent import AgentVideo
 from src.client import client
+from src.functions.context_docs import context_docs
 from src.functions.llm_chat import llm_chat
 from src.functions.pipeline import pipecat_pipeline
 from src.workflows.room import RoomWorkflow
-from src.functions.context_docs import context_docs
 
 
 async def main() -> None:
