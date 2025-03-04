@@ -1,4 +1,4 @@
-from restack_ai.function import function, log
+from restack_ai.function import function, log, NonRetryableError
 
 @function.defn(name="welcome")
 async def welcome(function_input: str) -> str:
@@ -7,4 +7,4 @@ async def welcome(function_input: str) -> str:
         return f"Hello, {function_input}!"
     except Exception as e:
         log.error("welcome function failed", error=e)
-        raise e
+        raise NonRetryableError(f"Welcome function failed: {e}") from e
