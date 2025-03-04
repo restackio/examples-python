@@ -1,12 +1,15 @@
 import asyncio
-from src.functions.torch_ocr import torch_ocr
-from src.functions.openai_chat import openai_chat
-from src.client import client
-from src.workflows.pdf import PdfWorkflow
-from src.workflows.files import FilesWorkflow
-from watchfiles import run_process
-import webbrowser
 import os
+import webbrowser
+
+from watchfiles import run_process
+
+from src.client import client
+from src.functions.openai_chat import openai_chat
+from src.functions.torch_ocr import torch_ocr
+from src.workflows.files import FilesWorkflow
+from src.workflows.pdf import PdfWorkflow
+
 
 async def main():
 
@@ -16,7 +19,7 @@ async def main():
           functions= [torch_ocr, openai_chat]
       )
     )
-    
+
 def run_services():
     try:
         asyncio.run(main())

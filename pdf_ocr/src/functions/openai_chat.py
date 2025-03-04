@@ -1,8 +1,9 @@
-from pydantic import BaseModel
-from restack_ai.function import function, log, FunctionFailure
-from openai import OpenAI
 import os
+
 from dotenv import load_dotenv
+from openai import OpenAI
+from pydantic import BaseModel
+from restack_ai.function import NonRetryableError, function, log
 
 load_dotenv()
 
@@ -16,10 +17,9 @@ async def openai_chat(input: OpenAiChatInput) -> str:
     try:
         log.info("openai_chat function started", input=input)
 
-        
         if (os.environ.get("RESTACK_API_KEY") is None):
-            raise FunctionFailure("RESTACK_API_KEY is not set", non_retryable=True)
-    
+            raise NonRetryableError("RESTACK_API_KEY is not set")
+
         client = OpenAI(base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY"))
 
         messages = []

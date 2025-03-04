@@ -1,5 +1,5 @@
 import aiohttp
-from restack_ai.function import function, log
+from restack_ai.function import NonRetryableError, function, log
 
 HTTP_OK = 200
 
@@ -21,6 +21,6 @@ async def weather() -> str:
                 return str(data)
             error_message = f"Error: {response.status}"
             raise_exception(error_message)
-    except Exception:
-        log.error("Error: {e}")
-        raise
+    except Exception as e:
+        error_message = f"Error: {e}"
+        raise NonRetryableError(error_message) from e

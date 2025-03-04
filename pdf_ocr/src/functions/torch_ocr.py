@@ -1,20 +1,20 @@
-import base64
 import io
-from typing import Any, List
+from typing import Any
 
 import numpy as np
+import requests
 from doctr.io import DocumentFile
+from doctr.models import ocr_predictor
 from numpy.typing import NDArray
 from PIL import Image
 from pydantic import BaseModel, Field
-from restack_ai.function import function, log, NonRetryableError
+from restack_ai.function import NonRetryableError, function
 
-from doctr.models import ocr_predictor
-import requests
 from ..client import api_address
 
+
 class OCRPrediction(BaseModel):
-    pages: List[dict[str, Any]] = Field(
+    pages: list[dict[str, Any]] = Field(
         description="List of pages with OCR predictions"
     )
 
@@ -48,7 +48,7 @@ async def torch_ocr(input: OcrInput) -> str:
         json_output = OCRPrediction.model_validate(result.export())
         return service._process_predictions(json_output)
     except Exception as e:
-        error_message = f"Failed to process file: {str(e)}"
+        error_message = f"Failed to process file: {e!s}"
         raise NonRetryableError(error_message) from e
 
 class DocumentExtractionService:
@@ -74,13 +74,13 @@ class DocumentExtractionService:
     def _process_predictions(
         self, json_output: OCRPrediction, confidence_threshold: float = 0.3
     ) -> str:
-        processed_text: List[str] = []
+        processed_text: list[str] = []
 
         for page in json_output.pages:
-            page_text: List[str] = []
+            page_text: list[str] = []
             for block in page["blocks"]:
                 for line in block["lines"]:
-                    line_text: List[str] = []
+                    line_text: list[str] = []
                     for word in line["words"]:
                         if word["confidence"] > confidence_threshold:
                             line_text.append(word["value"])

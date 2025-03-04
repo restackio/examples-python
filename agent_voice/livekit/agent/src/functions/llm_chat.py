@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Literal
 
 from openai import OpenAI
 from pydantic import BaseModel, Field
-from restack_ai.function import function, log, stream_to_websocket, NonRetryableError
+from restack_ai.function import NonRetryableError, function, stream_to_websocket
 
 from src.client import api_address
 
@@ -48,5 +48,5 @@ async def llm_chat(function_input: LlmChatInput) -> str:
         return await stream_to_websocket(api_address=api_address, data=response)
 
     except Exception as e:
-        log.error("llm_chat function failed", error=str(e))
-        raise NonRetryableError(f"LLM chat failed: {e}") from e
+        error_message = "LLM chat failed"
+        raise NonRetryableError(error_message) from e

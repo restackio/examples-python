@@ -1,7 +1,7 @@
 from typing import Literal
 
 from pydantic import BaseModel
-from restack_ai.function import function, log
+from restack_ai.function import NonRetryableError, function, log
 
 
 class SalesItem(BaseModel):
@@ -105,5 +105,5 @@ async def lookup_sales(function_input: LookupSalesInput) -> LookupSalesOutput:
 
         return LookupSalesOutput(sales=filtered_items)
     except Exception as e:
-        log.error("lookup_sales function failed", error=e)
-        raise
+        error_message = f"lookup_sales function failed: {e}"
+        raise NonRetryableError(error_message) from e

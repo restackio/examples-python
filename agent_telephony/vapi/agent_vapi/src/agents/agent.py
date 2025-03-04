@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.agent import agent, import_functions, log
+from restack_ai.agent import NonRetryableError, agent, import_functions, log
 
 with import_functions():
     from src.functions.llm_chat import LlmChatInput, Message, llm_chat
@@ -32,13 +32,18 @@ class AgentVapi:
         log.info(f"Received message: {messages_event.messages}")
         self.messages.extend(messages_event.messages)
 
-        assistant_message = await agent.step(
-            function=llm_chat,
-            function_input=LlmChatInput(messages=self.messages),
-            start_to_close_timeout=timedelta(seconds=120),
-        )
-        self.messages.append(Message(role="assistant", content=str(assistant_message)))
-        return self.messages
+        try:
+            assistant_message = await agent.step(
+                function=llm_chat,
+                function_input=LlmChatInput(messages=self.messages),
+                start_to_close_timeout=timedelta(seconds=120),
+            )
+        except Exception as e:
+            error_message = f"llm_chat function failed: {e}"
+            raise NonRetryableError(error_message) from e
+        else:
+            self.messages.append(Message(role="assistant", content=str(assistant_message)))
+            return self.messages
 
     @agent.event
     async def call(self, call_input: CallInput) -> None:
@@ -46,13 +51,19 @@ class AgentVapi:
         assistant_id = call_input.assistant_id
         phone_number = call_input.phone_number
 
-        return await agent.step(
-            function=vapi_call,
-            function_input=VapiCallInput(
-                assistant_id=assistant_id,
-                phone_number=phone_number,
-            ),
-        )
+        try:
+            result = agent.step(
+                function=vapi_call,
+                function_input=VapiCallInput(
+                    assistant_id=assistant_id,
+                    phone_number=phone_number,
+                ),
+            )
+        except Exception as e:
+            error_message = f"vapi_call function failed: {e}"
+            raise NonRetryableError(error_message) from e
+        else:
+            return result
 
     @agent.event
     async def end(self, end: EndEvent) -> EndEvent:

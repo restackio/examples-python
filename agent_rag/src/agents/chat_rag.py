@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.agent import agent, import_functions, log, NonRetryableError
+from restack_ai.agent import NonRetryableError, agent, import_functions, log
 
 with import_functions():
     from src.functions.llm_chat import LlmChatInput, Message, llm_chat

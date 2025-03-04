@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from livekit import api
 from livekit.protocol.agent_dispatch import AgentDispatch
-from restack_ai.function import function, function_info, log
+from restack_ai.function import NonRetryableError, function, function_info
 
 
 @dataclass
@@ -37,8 +37,8 @@ async def livekit_dispatch(function_input: LivekitDispatchInput) -> AgentDispatc
         await lkapi.aclose()
 
     except Exception as e:
-        log.error("livekit_dispatch function failed", error=str(e))
-        raise
+        error_message = f"livekit_dispatch function failed: {e}"
+        raise NonRetryableError(error_message) from e
 
     else:
         return dispatch

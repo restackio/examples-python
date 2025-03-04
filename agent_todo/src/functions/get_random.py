@@ -1,7 +1,7 @@
 import secrets
 
 from pydantic import BaseModel
-from restack_ai.function import function, log
+from restack_ai.function import NonRetryableError, function
 
 
 class RandomParams(BaseModel):
@@ -13,7 +13,7 @@ async def get_random(params: RandomParams) -> str:
     try:
         random_number = secrets.randbelow(100)
     except Exception as e:
-        log.error("random function failed", error=e)
-        raise
+        error_message = f"get_random function failed: {e}"
+        raise NonRetryableError(error_message) from e
     else:
         return f"The random number for {params.todo_title} is {random_number}."

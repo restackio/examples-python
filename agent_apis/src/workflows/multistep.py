@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from pydantic import BaseModel, Field
-from restack_ai.workflow import import_functions, log, workflow, NonRetryableError
+from restack_ai.workflow import NonRetryableError, import_functions, log, workflow
 
 with import_functions():
     from src.functions.llm import FunctionInputParams, llm
