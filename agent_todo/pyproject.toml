@@ -10,7 +10,7 @@ dependencies = [
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
     "openai>=1.61.0",
-    "restack-ai>=0.0.77",
+    "restack-ai>=0.0.78",
 ]
 
 [project.scripts]
@@ -23,6 +23,9 @@ include = ["src"]
 
 [tool.hatch.build.targets.wheel]
 include = ["src"]
+
+[tool.uv.sources]
+restack-ai = { path = "../../../sdk/engine/libraries/python/dist/restack_ai-0.0.78-py3-none-any.whl" }
 
 [build-system]
 requires = ["hatchling"]
