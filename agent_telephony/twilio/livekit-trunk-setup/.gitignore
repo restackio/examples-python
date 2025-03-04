@@ -2,3 +2,4 @@
 .venv
 .env
 uv.lock
+inbound_trunk.json

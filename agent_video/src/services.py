@@ -10,6 +10,7 @@ from src.client import client
 from src.functions.llm_chat import llm_chat
 from src.functions.pipeline import pipecat_pipeline
 from src.workflows.room import RoomWorkflow
+from src.functions.context_docs import context_docs
 
 
 async def main() -> None:
@@ -19,6 +20,7 @@ async def main() -> None:
         functions=[
             llm_chat,
             pipecat_pipeline,
+            context_docs,
         ],
     )
 
