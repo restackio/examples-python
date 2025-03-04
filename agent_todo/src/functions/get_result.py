@@ -1,7 +1,7 @@
 import secrets
 
 from pydantic import BaseModel
-from restack_ai.function import function, log
+from restack_ai.function import NonRetryableError, function
 
 
 class ResultParams(BaseModel):
@@ -20,5 +20,5 @@ async def get_result(params: ResultParams) -> ResultResponse:
         status = secrets.choice(["completed", "failed"])
         return ResultResponse(todo_id=params.todo_id, status=status)
     except Exception as e:
-        log.error("result function failed", error=e)
-        raise
+        error_message = f"get_result function failed: {e}"
+        raise NonRetryableError(error_message) from e

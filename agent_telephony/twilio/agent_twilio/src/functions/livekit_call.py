@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from livekit import api
 from livekit.protocol.sip import CreateSIPParticipantRequest, SIPParticipantInfo
-from restack_ai.function import FunctionFailure, function, log
+from restack_ai.function import NonRetryableError, function, log
 
 
 @dataclass
@@ -37,8 +37,7 @@ async def livekit_call(function_input: LivekitCallInput) -> SIPParticipantInfo:
 
         log.info("livekit_call SIPParticipantInfo:", participant=participant)
     except Exception as e:
-        log.error("livekit_call function failed", error=str(e))
-        failure_message = "livekit_call function failed: " + str(e)
-        raise FunctionFailure(failure_message, non_retryable=True) from e
+        error_message = f"livekit_call function failed: {e}"
+        raise NonRetryableError(error_message) from e
     else:
         return participant

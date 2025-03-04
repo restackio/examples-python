@@ -1,7 +1,7 @@
 import secrets
 
 from pydantic import BaseModel
-from restack_ai.function import function, log
+from restack_ai.function import NonRetryableError, function, log
 
 
 class TodoCreateParams(BaseModel):
@@ -15,8 +15,8 @@ async def todo_create(params: TodoCreateParams) -> str:
 
         todo_id = f"todo-{secrets.randbelow(9000) + 1000}"
     except Exception as e:
-        log.error("todo_create function failed", error=e)
-        raise
+        error_message = f"todo_create function failed: {e}"
+        raise NonRetryableError(error_message) from e
     else:
         log.info("todo_create function completed", todo_id=todo_id)
         return f"Created the todo '{params.title}' with id: {todo_id}"

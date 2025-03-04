@@ -6,7 +6,7 @@ from livekit.protocol.sip import (
     ListSIPOutboundTrunkRequest,
     SIPOutboundTrunkInfo,
 )
-from restack_ai.function import FunctionFailure, function, function_info, log
+from restack_ai.function import NonRetryableError, function, function_info, log
 
 
 @function.defn()
@@ -45,9 +45,8 @@ async def livekit_outbound_trunk() -> str:
         await livekit_api.aclose()
 
     except Exception as e:  # Consider catching a more specific exception if possible
-        log.error("livekit_outbound_trunk function failed", error=str(e))
-        failure_message = "livekit_outbound_trunk function failed: " + str(e)
-        raise FunctionFailure(failure_message, non_retryable=True) from e
+        error_message = f"livekit_outbound_trunk function failed: {e}"
+        raise NonRetryableError(error_message) from e
 
     else:
         return trunk.sip_trunk_id

@@ -8,9 +8,9 @@ dependencies = [
     "openai>=1.59.9",
     "pipecat-ai[daily,deepgram,openai,silero,cartesia]>=0.0.58",
     "python-dotenv>=1.0.1",
-    "restack-ai>=0.0.77",
     "pydantic>=2.10.6",
     "watchfiles>=1.0.4",
+    "restack-ai>=0.0.78",
 ]
 
 [project.scripts]

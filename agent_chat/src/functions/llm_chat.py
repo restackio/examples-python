@@ -4,7 +4,7 @@ from typing import Literal
 from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel
-from restack_ai.function import FunctionFailure, function, log
+from restack_ai.function import NonRetryableError, function, log
 
 load_dotenv()
 
@@ -22,7 +22,7 @@ class LlmChatInput(BaseModel):
 
 def raise_exception(message: str) -> None:
     log.error(message)
-    raise FunctionFailure(message, non_retryable=True)
+    raise NonRetryableError(message)
 
 
 @function.defn()
@@ -48,8 +48,8 @@ async def llm_chat(agent_input: LlmChatInput) -> dict[str, str]:
             messages=agent_input.messages,
         )
     except Exception as e:
-        log.error("llm_chat function failed", error=e)
-        raise
+        error_message = f"LLM chat failed: {e}"
+        raise NonRetryableError(error_message) from e
     else:
         log.info(
             "llm_chat function completed", assistant_raw_response=assistant_raw_response

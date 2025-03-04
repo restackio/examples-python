@@ -21,7 +21,7 @@ from pipecat.services.openai import OpenAILLMService
 from pipecat.services.tavus import TavusVideoService
 from pipecat.transports.services.daily import DailyParams, DailyTransport
 from pydantic import BaseModel
-from restack_ai.function import FunctionFailure, function, log
+from restack_ai.function import NonRetryableError, function, log
 
 load_dotenv(override=True)
 
@@ -149,17 +149,15 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
 
             runner = PipelineRunner()
 
-            async def run_pipeline():
+            async def run_pipeline() -> None:
                 try:
                     await runner.run(task)
                 except Exception as e:
-                    log.error(
-                        "Pipeline runner encountered an error, cancelling pipeline",
-                        error=e,
-                    )
+                    error_message = "Pipeline runner encountered an error, cancelling pipeline"
+                    log.error(error_message, error=e)
                     # Cancel the pipeline task if an error occurs within the pipeline runner.
                     await task.cancel()
-                    raise e
+                    raise NonRetryableError(error_message) from e
 
             # Launch the pipeline runner as a background task so it doesn't block the return.
             asyncio.create_task(run_pipeline())
@@ -169,5 +167,6 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
             # Return the room_url immediately.
             return room_url
     except Exception as e:
-        log.error("Pipecat pipeline failed", error=e)
-        raise FunctionFailure(f"Pipecat pipeline failed: {e}", non_retryable=True)
+        error_message = "Pipecat pipeline failed"
+        log.error(error_message, error=e)
+        raise NonRetryableError(error_message) from e

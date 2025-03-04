@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.agent import agent, import_functions, log
+from restack_ai.agent import NonRetryableError, agent, import_functions, log
 
 with import_functions():
     from src.functions.llm_chat import LlmChatInput, Message, llm_chat
@@ -32,13 +32,18 @@ class AgentStream:
         log.info(f"Received message: {messages_event.messages}")
         self.messages.extend(messages_event.messages)
 
-        assistant_message = await agent.step(
-            function=llm_chat,
-            function_input=LlmChatInput(messages=self.messages),
-            start_to_close_timeout=timedelta(seconds=120),
-        )
-        self.messages.append(Message(role="assistant", content=str(assistant_message)))
-        return self.messages
+        try:
+            assistant_message = await agent.step(
+                function=llm_chat,
+                function_input=LlmChatInput(messages=self.messages),
+                start_to_close_timeout=timedelta(seconds=120),
+            )
+        except Exception as e:
+            error_message = f"Error during llm_chat: {e}"
+            raise NonRetryableError(error_message) from e
+        else:
+            self.messages.append(Message(role="assistant", content=str(assistant_message)))
+            return self.messages
 
     @agent.event
     async def end(self, end: EndEvent) -> EndEvent:

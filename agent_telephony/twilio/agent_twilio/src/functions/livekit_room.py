@@ -2,7 +2,7 @@ import os
 
 from livekit import api
 from livekit.api import CreateRoomRequest, Room
-from restack_ai.function import function, function_info, log
+from restack_ai.function import NonRetryableError, function, function_info
 
 
 @function.defn()
@@ -27,8 +27,8 @@ async def livekit_room() -> Room:
         await lkapi.aclose()
 
     except Exception as e:
-        log.error("livekit_dispatch function failed", error=str(e))
-        raise
+        error_message = f"livekit_room function failed: {e}"
+        raise NonRetryableError(error_message) from e
 
     else:
         return room
