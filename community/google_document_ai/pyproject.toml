@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "google_document_ai"
+version = "0.0.1"
+description = "A simple example to use Google Document AI to OCR a pdf and then use OpenAI to summarize the text"
+authors = [
+    "Restack Team <service@restack.io>",
+]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+openai = "^1.57.2"
+python-dotenv = "1.0.1"
+pydantic = "^2.10.3"
+google-cloud-documentai = "^3.1.0"
+restack-ai = "^0.0.54"
+watchfiles = "^1.0.4"
+python-doctr = {extras = ["torch"], version = "^0.10.0"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dev = "src.services:watch_services"
+services = "src.services:run_services"
+
