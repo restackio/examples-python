@@ -20,15 +20,15 @@ class ChildWorkflow:
         await workflow.sleep(1)
 
         generated_text = await workflow.step(
-            llm_generate,
-            GenerateInput(prompt=input.prompt),
+            function=llm_generate,
+            function_input=GenerateInput(prompt=input.prompt),
             task_queue="llm",
             start_to_close_timeout=timedelta(minutes=2)
         )
 
         evaluation = await workflow.step(
-            llm_evaluate,
-            EvaluateInput(generated_text=generated_text),
+            function=llm_evaluate,
+            function_input=EvaluateInput(generated_text=generated_text),
             task_queue="llm",
             start_to_close_timeout=timedelta(minutes=5)
         )

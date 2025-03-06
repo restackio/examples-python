@@ -17,8 +17,8 @@ class PdfWorkflow:
         log.info("PdfWorkflow started")
         try:
             ocr_result = await workflow.step(
-                torch_ocr,
-                OcrInput(
+                function=torch_ocr,
+                function_input=OcrInput(
                     file_type=input.file_upload[0]["type"],
                     file_name=input.file_upload[0]["name"]
                 ),
@@ -31,8 +31,8 @@ class PdfWorkflow:
 
             try:
                 llm_result = await workflow.step(
-                    openai_chat,
-                    OpenAiChatInput(
+                    function=openai_chat,
+                    function_input=OpenAiChatInput(
                         user_content=f"Make a summary of that PDF. Here is the OCR result: {ocr_result}",
                         model="gpt-4o-mini"
                     ),

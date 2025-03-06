@@ -3,7 +3,7 @@ name = "agent_telephony_agent_twilio"
 version = "0.0.1"
 description = "An agent with streaming for Restack"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.10,<3.14"
 readme = "README.md"
 dependencies = [
     "pydantic>=2.10.6",
@@ -11,8 +11,7 @@ dependencies = [
     "python-dotenv==1.0.1",
     "openai>=1.61.0",
     "livekit-api>=0.8.2",
-    "restack-ai>=0.0.78",
-]
+    "restack-ai>=0.0.80",]
 
 [project.scripts]
 dev = "src.services:watch_services"

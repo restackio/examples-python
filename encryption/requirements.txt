@@ -40,9 +40,9 @@ pydantic-core==2.27.2
     # via pydantic
 python-dotenv==1.0.1
     # via restack-ai
-restack-ai==0.0.62
+restack-ai==0.0.80
     # via encryption (pyproject.toml)
-temporalio==1.9.0
+temporalio==1.10.0
     # via restack-ai
 types-protobuf==5.29.1.20241207
     # via temporalio
@@ -50,6 +50,7 @@ typing-extensions==4.12.2
     # via
     #   pydantic
     #   pydantic-core
+    #   restack-ai
     #   temporalio
 websockets==14.2
     # via restack-ai

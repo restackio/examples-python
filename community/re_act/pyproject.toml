@@ -1,24 +1,23 @@
 [project]
-name = "human_loop"
+name = "re_act_example"
 version = "0.0.1"
-description = "A simple example to get started with human-in-the-loop using the restack-ai python library"
+description = "ReAct Example"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]
 requires-python = ">=3.10,<3.13"
 readme = "README.md"
 dependencies = [
     "pydantic>=2.10.6",
-    "restack-ai==0.0.62",
+    "restack-ai==0.0.80",
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
+    "openai>=1.61.0",
+    "sendgrid==6.11.0",
 ]
 
 [project.scripts]
 dev = "src.services:watch_services"
 services = "src.services:run_services"
-schedule = "schedule_workflow:run_schedule_workflow"
-
-[dependency-groups]
-dev = ["pytest==6.2"]
+schedule_workflow = "schedule_workflow:run_schedule_workflow"
 
 [tool.hatch.build.targets.sdist]
 include = ["src"]

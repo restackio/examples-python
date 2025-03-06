@@ -22,7 +22,7 @@ class MultistepWorkflow:
         # Step 1 get weather data
         try:
             weather_data = await workflow.step(
-                weather, start_to_close_timeout=timedelta(seconds=120)
+                function=weather, start_to_close_timeout=timedelta(seconds=120)
             )
         except Exception as e:
             error_message = f"Error during weather: {e}"

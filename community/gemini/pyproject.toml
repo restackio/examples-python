@@ -3,11 +3,11 @@ name = "gemini"
 version = "0.0.1"
 description = "A simple example to integrate Google Gemini into a Restack project"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.10,<3.14"
 readme = "README.md"
 dependencies = [
     "pydantic>=2.10.6",
-    "restack-ai==0.0.62",
+    "restack-ai==0.0.80",
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
     "google-genai==0.5.0",

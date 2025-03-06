@@ -6,27 +6,27 @@ async def main():
 
     client = Restack()
 
-    workflow_id = f"{int(time.time() * 1000)}-HumanLoopWorkflow"
-    runId = await client.schedule_workflow(
-        workflow_name="HumanLoopWorkflow",
-        workflow_id=workflow_id
+    agent_id = f"{int(time.time() * 1000)}-AgentHumanLoop"
+    runId = await client.schedule_agent(
+        agent_name="AgentHumanLoop",
+        agent_id=agent_id
     )
 
-    await client.send_workflow_event(
+    await client.send_agent_event(
         event_name="event_feedback",
         event_input={
             "feedback": "This is a human feedback"
         },
-        workflow_id=workflow_id,
+        agent_id=agent_id,
         run_id=runId,
     )
 
-    end = await client.send_workflow_event(
+    end = await client.send_agent_event(
         event_name="event_end",
         event_input={
             "end": True
         },
-        workflow_id=workflow_id,
+        agent_id=agent_id,
         run_id=runId,
     )
 

@@ -21,7 +21,7 @@ class ExampleWorkflow:
         for i in range(input.amount):
             log.info(f"Queue ChildWorkflow {i+1} for execution")
             task = workflow.child_execute(
-                ChildWorkflow, 
+                workflow=ChildWorkflow, 
                 workflow_id=f"{parent_workflow_id}-child-execute-{i+1}",
                 input=ChildWorkflowInput(name=f"child workflow {i+1}")
             )
@@ -34,8 +34,8 @@ class ExampleWorkflow:
             log.info(f"ChildWorkflow {i} completed", result=result)
 
         generated_text = await workflow.step(
-            llm_generate,
-            GenerateInput(prompt=f"Give me the top 3 unique jokes according to the results. {results}"),
+            function=llm_generate,
+            function_input=GenerateInput(prompt=f"Give me the top 3 unique jokes according to the results. {results}"),
             task_queue="llm",
             start_to_close_timeout=timedelta(minutes=2)
         )

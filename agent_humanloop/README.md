@@ -1,7 +1,7 @@
-# Restack AI - Human in the loop
+# Restack AI - Agent with human in the loop
 
-This repository contains an example for Human in the loop with Restack.
-It demonstrates how to set up a basic workflow and functions.
+This repository contains an example Agent with human in the loop with Restack.
+It demonstrates how to set up a basic Agent and functions.
 
 ## Prerequisites
 
@@ -46,23 +46,23 @@ pip install -e .
 python -c "from src.services import watch_services; watch_services()"
 ```
 
-## Run workflows
+## Run agents
 
 ### from UI
 
-You can run workflows from the UI by clicking the "Run" button.
+You can run agents from the UI by clicking the "Run" button.
 
-![Run workflows from UI](./screenshot-quickstart.png)
+![Run agents from UI](./screenshot-quickstart.png)
 
 ### from API
 
-You can run workflows from the API by using the generated endpoint:
+You can run agents from the API by using the generated endpoint:
 
-`POST http://localhost:6233/api/workflows/HumanLoopWorkflow`
+`POST http://localhost:6233/api/agents/AgentHumanLoop`
 
 ### from any client
 
-You can run workflows with any client connected to Restack, for example:
+You can run agents with any client connected to Restack, for example:
 
 If using uv:
 
@@ -73,10 +73,10 @@ uv run schedule
 If using pip:
 
 ```bash
-python -c "from schedule_workflow import run_schedule_workflow; run_schedule_workflow()"
+python -c "from schedule_agent import run_schedule_agent; run_schedule_agent()"
 ```
 
-executes `schedule_workflow.py` which will connect to Restack and execute the `HumanLoopWorkflow` workflow.
+executes `schedule_agent.py` which will connect to Restack and execute the `AgentHumanLoop` agent.
 
 ## Deploy on Restack Cloud
 

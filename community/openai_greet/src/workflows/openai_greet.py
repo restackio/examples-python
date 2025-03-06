@@ -18,8 +18,8 @@ class OpenaiGreetWorkflow:
 
 
         greet_message = await workflow.step(
-            openai_greet,
-            FunctionInputParams(
+            function=openai_greet,
+            function_input=FunctionInputParams(
                 user_content=user_content,
             ),
             start_to_close_timeout=timedelta(seconds=120)
