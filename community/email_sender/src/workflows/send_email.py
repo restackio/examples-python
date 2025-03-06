@@ -20,8 +20,8 @@ class SendEmailWorkflow:
         log.info("SendEmailWorkflow started", input=input)
 
         text = await workflow.step(
-            generate_email_content,
-            GenerateEmailInput(
+            function=generate_email_content,
+            function_input=GenerateEmailInput(
                 email_context=input.email_context,
                 simulate_failure=input.simulate_failure,
             ),
@@ -32,8 +32,8 @@ class SendEmailWorkflow:
         )
 
         await workflow.step(
-            send_email,
-            SendEmailInput(
+            function=send_email,
+            function_input=SendEmailInput(
                 text=text,
                 subject=input.subject,
                 to=input.to,

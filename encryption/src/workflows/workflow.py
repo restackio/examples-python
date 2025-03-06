@@ -8,7 +8,7 @@ class EncryptedWorkflow:
     @workflow.run
     async def run(self):
         log.info("EncryptedWorkflow started")
-        result = await workflow.step(welcome, input="world", start_to_close_timeout=timedelta(seconds=120))
+        result = await workflow.step(function=welcome, function_input="world", start_to_close_timeout=timedelta(seconds=120))
         log.info("EncryptedWorkflow completed", result=result)
         return result
 

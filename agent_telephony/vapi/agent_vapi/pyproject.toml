@@ -3,7 +3,7 @@ name = "agent_telephony_agent_vapi"
 version = "0.0.1"
 description = "An agent with streaming for Restack"
 authors = [{ name = "Restack Team", email = "service@restack.io" }]
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.10,<3.14"
 readme = "README.md"
 dependencies = [
     "pydantic>=2.10.6",

@@ -15,15 +15,15 @@ class TranscribeTranslateWorkflow:
         log.info("TranscribeTranslateWorkflow started", input=input)
 
         transcription = await workflow.step(
-            transcribe_audio,
-            TranscribeAudioInput(
+            function=transcribe_audio,
+            function_input=TranscribeAudioInput(
                 file_path=input.file_path,
             ),
         )
 
         translation = await workflow.step(
-            translate_text,
-            TranslateTextInput(
+            function=translate_text,
+            function_input=TranslateTextInput(
                 text=transcription,
                 target_language=input.target_language,
             ),

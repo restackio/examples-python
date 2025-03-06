@@ -1,5 +1,5 @@
 from datetime import timedelta
-from restack_ai.workflow import workflow, import_functions, log
+from restack_ai.agent import agent, import_functions, log
 from dataclasses import dataclass
 
 with import_functions():
@@ -13,30 +13,30 @@ class Feedback:
 class End:
     end: bool
 
-@workflow.defn()
-class HumanLoopWorkflow:
+@agent.defn()
+class AgentHumanLoop:
     def __init__(self) -> None:
         self.end_workflow = False
         self.feedbacks = []
-    @workflow.event
+    @agent.event
     async def event_feedback(self, feedback: Feedback) -> Feedback:
-        result = await workflow.step(feedback_function, InputFeedback(feedback.feedback), start_to_close_timeout=timedelta(seconds=120))
+        result = await agent.step(function=feedback_function, function_input=InputFeedback(feedback.feedback), start_to_close_timeout=timedelta(seconds=120))
         log.info("Received feedback", result=result)
         return result
     
-    @workflow.event
+    @agent.event
     async def event_end(self, end: End) -> End:
         log.info("Received end", end=end)
         self.end_workflow = end.end
         return end
 
-    @workflow.run
+    @agent.run
     async def run(self):
-        await workflow.condition(
+        await agent.condition(
             lambda: self.end_workflow
         )
-        result = await workflow.step(goodbye, start_to_close_timeout=timedelta(seconds=120))
-        log.info("Workflow ended", result=result)
+        result = await agent.step(function=goodbye, start_to_close_timeout=timedelta(seconds=120))
+        log.info("Agent ended", result=result)
         return result
 
 

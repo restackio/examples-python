@@ -21,7 +21,7 @@ class FilesWorkflow:
             # Ensure child workflows are started and return an awaitable
             try:
                 task = workflow.child_execute(
-                    PdfWorkflow,
+                    workflow=PdfWorkflow,
                     workflow_id=f"{parent_workflow_id}-pdf-{index}",
                     input=PdfWorkflowInput(
                         file_upload=[pdf_input]

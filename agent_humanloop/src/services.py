@@ -3,13 +3,13 @@ import os
 from watchfiles import run_process
 from src.functions.function import feedback, goodbye
 from src.client import client
-from src.workflows.workflow import HumanLoopWorkflow
+from human_loop.src.agents.agent import AgentHumanLoop
 import webbrowser
 
 async def main():
 
     await client.start_service(
-        workflows= [HumanLoopWorkflow],
+        workflows= [AgentHumanLoop],
         functions= [feedback, goodbye]
     )
 
