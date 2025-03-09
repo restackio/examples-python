@@ -1,4 +1,3 @@
-import asyncio
 import json
 import logging
 import os
@@ -11,16 +10,33 @@ from livekit.agents import (
     WorkerOptions,
     cli,
     metrics,
+    
 )
 from livekit.agents.pipeline import VoicePipelineAgent
 from livekit.plugins import deepgram, elevenlabs, openai, silero, turn_detector
 from src.client import client
+from src.otel_provider import record_metrics
+from src.otel_exporter import setup_google_cloud_exporter
 
+# Set up the Google Cloud exporter
+setup_google_cloud_exporter()
+
+# Load environment variables from .env
 load_dotenv(dotenv_path=".env")
 
+# Setup basic logging configuration so that all logs are properly output.
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Initialize total variables at the beginning of the function or module
+# These should be initialized at the module level if they need to persist across multiple calls
+
+total_llm_prompt_tokens = 0
+# Initialize other total variables similarly
+
+total_llm_completion_tokens = 0
+total_tts_characters_count = 0
+total_stt_audio_duration = 0
 
 def validate_envs() -> None:
     required_envs = {
@@ -35,6 +51,7 @@ def validate_envs() -> None:
             logger.warning("Environment variable %s (%s) is not set.", key, description)
 
 
+# Validate environments at module load
 validate_envs()
 
 
@@ -70,6 +87,7 @@ async def entrypoint(ctx: JobContext) -> None:
     agent_id = metadata_obj.get("agent_id")
     run_id = metadata_obj.get("run_id")
 
+    # Retrieve the Host from environment variables.
     engine_api_address = os.environ.get("RESTACK_ENGINE_API_ADDRESS")
     if not engine_api_address:
         agent_backend_host = "http://localhost:9233"
@@ -86,6 +104,7 @@ async def entrypoint(ctx: JobContext) -> None:
     logger.info("Connecting to room: %s", ctx.room.name)
     await ctx.connect(auto_subscribe=AutoSubscribe.AUDIO_ONLY)
 
+    # Wait for the first participant to connect
     participant = await ctx.wait_for_participant()
     logger.info("Starting voice assistant for participant: %s", participant.identity)
 
@@ -93,6 +112,8 @@ async def entrypoint(ctx: JobContext) -> None:
         vad=ctx.proc.userdata["vad"],
         stt=deepgram.STT(),
         llm=openai.LLM(
+            # model="gpt-4o-mini",
+            # api_key=os.environ.get("OPENAI_API_KEY"),
             api_key=f"{agent_id}-livekit",
             base_url=agent_url,
         ),
@@ -104,80 +125,28 @@ async def entrypoint(ctx: JobContext) -> None:
         # max_endpointing_delay=5.0,
     )
 
+
+
     usage_collector = metrics.UsageCollector()
+
+    async def send_pipeline_metrics(summary: str) -> None:
+        logger.warning("Sending pipeline metrics")
+        
 
     @agent.on("metrics_collected")
     def on_metrics_collected(agent_metrics: metrics.AgentMetrics) -> None:
-        metrics.log_metrics(agent_metrics)
-
-        async def send_metrics(agent_metrics):
-            try:
-                latencies = []
-                if isinstance(agent_metrics, metrics.PipelineEOUMetrics):
-                    total_latency = agent_metrics.end_of_utterance_delay
-                    latencies.append(total_latency * 1000)
-
-                elif isinstance(agent_metrics, metrics.PipelineLLMMetrics):
-                    total_latency = agent_metrics.ttft
-                    latencies.append(total_latency * 1000)
-
-                elif isinstance(agent_metrics, metrics.PipelineTTSMetrics):
-                    total_latency = agent_metrics.ttfb
-                    latencies.append(total_latency * 1000)
-
-                if latencies:
-                    metrics_latencies = str(json.dumps({"latencies": latencies}))
-                    logger.info(f"Sending pipeline metrics: {metrics_latencies!s}")
-
-                    await client.send_agent_event(
-                        event_name="pipeline_metrics",
-                        agent_id=agent_id.replace("local-", ""),
-                        run_id=run_id,
-                        event_input={
-                            "metrics": agent_metrics,
-                            "latencies": metrics_latencies,
-                        },
-                    )
-            except Exception as e:
-                logger.error("Error sending pipeline metrics", error=e)
-
-        asyncio.create_task(send_metrics(agent_metrics))
-
-        usage_collector.collect(agent_metrics)
-
+        record_metrics(agent_metrics)
+        
     usage_collector.get_summary()
 
-    async def say(text: str):
-        await agent.say(text)
-
-    @ctx.room.on("data_received")
-    def on_data_received(data_packet) -> None:
-        logger.info(f"Received data: {data_packet}")
-
-        byte_content = data_packet.data
-        if isinstance(byte_content, bytes):
-            text_data = byte_content.decode("utf-8")
-            logger.info(f"Text data: {text_data}")
-
-            asyncio.create_task(say(text_data))
-
-        else:
-            logger.warning("Data is not in bytes format.")
-
     agent.start(ctx.room, participant)
-
-    await asyncio.sleep(0.1)
-
-    await agent.say(
-        "Welcome to restack, how can I help you today?", allow_interruptions=True
-    )
 
 
 if __name__ == "__main__":
     cli.run_app(
         WorkerOptions(
             entrypoint_fnc=entrypoint,
-            agent_name="AgentTwilio",
+            agent_name="AgentTelemetry",
             prewarm_fnc=prewarm,
         )
     )

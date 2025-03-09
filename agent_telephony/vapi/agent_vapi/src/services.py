@@ -7,7 +7,7 @@ from watchfiles import run_process
 
 from src.agents.agent import AgentVapi
 from src.client import client
-from src.functions.llm_chat import llm_chat
+from src.functions.llm_fast import llm_chat
 from src.functions.vapi_call import vapi_call
 
 

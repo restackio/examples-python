@@ -6,7 +6,7 @@ from restack_ai.function import NonRetryableError, function, function_info
 
 
 @function.defn()
-async def livekit_room() -> Room:
+async def livekit_create_room() -> Room:
     try:
         lkapi = api.LiveKitAPI(
             url=os.getenv("LIVEKIT_API_URL"),
@@ -27,7 +27,7 @@ async def livekit_room() -> Room:
         await lkapi.aclose()
 
     except Exception as e:
-        error_message = f"livekit_room function failed: {e}"
+        error_message = f"livekit_create_room function failed: {e}"
         raise NonRetryableError(error_message) from e
 
     else:

@@ -7,22 +7,36 @@ from watchfiles import run_process
 
 from src.agents.agent import AgentTwilio
 from src.client import client
+from src.functions.context_docs import context_docs
 from src.functions.livekit_call import livekit_call
+from src.functions.livekit_create_room import livekit_create_room
+from src.functions.livekit_delete_room import livekit_delete_room
 from src.functions.livekit_dispatch import livekit_dispatch
 from src.functions.livekit_outbound_trunk import livekit_outbound_trunk
-from src.functions.livekit_room import livekit_room
-from src.functions.llm_chat import llm_chat
+from src.functions.livekit_send_data import livekit_send_data
+from src.functions.livekit_token import livekit_token
+from src.functions.llm_logic import llm_logic
+from src.functions.llm_talk import llm_talk
+from src.functions.send_agent_event import send_agent_event
+from src.workflows.logic import LogicWorkflow
 
 
 async def main() -> None:
     await client.start_service(
         agents=[AgentTwilio],
+        workflows=[LogicWorkflow],
         functions=[
-            llm_chat,
+            llm_talk,
+            llm_logic,
             livekit_dispatch,
             livekit_call,
-            livekit_room,
+            livekit_create_room,
+            livekit_delete_room,
             livekit_outbound_trunk,
+            livekit_token,
+            context_docs,
+            livekit_send_data,
+            send_agent_event,
         ],
     )
 

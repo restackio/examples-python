@@ -30,7 +30,7 @@ async def livekit_outbound_trunk() -> str:
 
         trunk = SIPOutboundTrunkInfo(
             name=run_id,
-            address=os.getenv("LIVEKIT_SIP_ADDRESS"),
+            address=os.getenv("TWILIO_TRUNK_TERMINATION_SIP_URL"),
             numbers=[os.getenv("TWILIO_PHONE_NUMBER")],
             auth_username=os.getenv("TWILIO_TRUNK_AUTH_USERNAME"),
             auth_password=os.getenv("TWILIO_TRUNK_AUTH_PASSWORD"),
