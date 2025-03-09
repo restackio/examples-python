@@ -122,6 +122,8 @@ class LogicWorkflow:
                     ),
                 )
 
+                await workflow.sleep(1)
+
                 await workflow.step(
                     function=send_agent_event,
                     function_input=SendAgentEventInput(

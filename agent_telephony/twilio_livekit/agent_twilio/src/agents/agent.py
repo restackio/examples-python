@@ -154,6 +154,7 @@ class AgentTwilio:
                 room_id=self.room_id, text="Thank you for calling restack. Goodbye!"
             ),
         )
+        await agent.sleep(1)
         await agent.step(function=livekit_delete_room)
 
         self.end = True
