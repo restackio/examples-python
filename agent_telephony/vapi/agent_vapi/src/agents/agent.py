@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from restack_ai.agent import NonRetryableError, agent, import_functions, log
 
 with import_functions():
-    from src.functions.llm_fast import LlmChatInput, Message, llm_chat
+    from src.functions.llm_chat import LlmChatInput, Message, llm_chat
     from src.functions.vapi_call import VapiCallInput, vapi_call
 
 
