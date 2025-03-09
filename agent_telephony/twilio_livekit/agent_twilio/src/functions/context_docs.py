@@ -3,12 +3,11 @@ from restack_ai.function import NonRetryableError, function, log
 
 
 async def fetch_content_from_url(url: str) -> str:
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            if response.status == 200:
-                return await response.text()
-            error_message = f"Failed to fetch content: {response.status}"
-            raise NonRetryableError(error_message)
+    async with aiohttp.ClientSession() as session, session.get(url) as response:
+        if response.status == 200:
+            return await response.text()
+        error_message = f"Failed to fetch content: {response.status}"
+        raise NonRetryableError(error_message)
 
 
 @function.defn()

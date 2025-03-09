@@ -11,10 +11,24 @@ from restack_ai.workflow import (
 
 with import_functions():
     from src.functions.context_docs import context_docs
-    from src.functions.livekit_send_data import LivekitSendDataInput, livekit_send_data
-    from src.functions.llm_logic import LlmLogicInput, LlmLogicResponse, llm_logic
-    from src.functions.llm_talk import LlmTalkInput, Message, llm_talk
-    from src.functions.send_agent_event import SendAgentEventInput, send_agent_event
+    from src.functions.livekit_send_data import (
+        LivekitSendDataInput,
+        livekit_send_data,
+    )
+    from src.functions.llm_logic import (
+        LlmLogicInput,
+        LlmLogicResponse,
+        llm_logic,
+    )
+    from src.functions.llm_talk import (
+        LlmTalkInput,
+        Message,
+        llm_talk,
+    )
+    from src.functions.send_agent_event import (
+        SendAgentEventInput,
+        send_agent_event,
+    )
 
 
 class LogicWorkflowInput(BaseModel):

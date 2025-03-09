@@ -12,7 +12,9 @@ from src.functions.livekit_call import livekit_call
 from src.functions.livekit_create_room import livekit_create_room
 from src.functions.livekit_delete_room import livekit_delete_room
 from src.functions.livekit_dispatch import livekit_dispatch
-from src.functions.livekit_outbound_trunk import livekit_outbound_trunk
+from src.functions.livekit_outbound_trunk import (
+    livekit_outbound_trunk,
+)
 from src.functions.livekit_send_data import livekit_send_data
 from src.functions.livekit_token import livekit_token
 from src.functions.llm_logic import llm_logic

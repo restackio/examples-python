@@ -1,7 +1,10 @@
 from dataclasses import dataclass
 
 from livekit import api
-from livekit.protocol.sip import CreateSIPParticipantRequest, SIPParticipantInfo
+from livekit.protocol.sip import (
+    CreateSIPParticipantRequest,
+    SIPParticipantInfo,
+)
 from restack_ai.function import NonRetryableError, function, log
 
 

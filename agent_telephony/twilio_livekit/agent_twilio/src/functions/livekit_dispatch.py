@@ -3,7 +3,11 @@ from dataclasses import dataclass
 
 from livekit import api
 from livekit.protocol.agent_dispatch import AgentDispatch
-from restack_ai.function import NonRetryableError, function, function_info
+from restack_ai.function import (
+    NonRetryableError,
+    function,
+    function_info,
+)
 
 
 @dataclass

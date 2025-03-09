@@ -7,7 +7,7 @@ from restack_ai.function import NonRetryableError, function
 
 
 class LlmLogicResponse(BaseModel):
-    """Structured AI Decision Output for Intelligent Interruptions"""
+    """Structured AI decision output used to interrupt conversations."""
 
     action: Literal["interrupt", "update_context", "end_call"]
     reason: str

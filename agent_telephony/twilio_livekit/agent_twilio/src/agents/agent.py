@@ -15,18 +15,37 @@ from restack_ai.agent import (
 from src.workflows.logic import LogicWorkflow, LogicWorkflowInput
 
 with import_functions():
-    from src.functions.livekit_call import LivekitCallInput, livekit_call
-    from src.functions.livekit_create_room import livekit_create_room
-    from src.functions.livekit_delete_room import livekit_delete_room
-    from src.functions.livekit_dispatch import LivekitDispatchInput, livekit_dispatch
-    from src.functions.livekit_outbound_trunk import livekit_outbound_trunk
+    from src.functions.livekit_call import (
+        LivekitCallInput,
+        livekit_call,
+    )
+    from src.functions.livekit_create_room import (
+        livekit_create_room,
+    )
+    from src.functions.livekit_delete_room import (
+        livekit_delete_room,
+    )
+    from src.functions.livekit_dispatch import (
+        LivekitDispatchInput,
+        livekit_dispatch,
+    )
+    from src.functions.livekit_outbound_trunk import (
+        livekit_outbound_trunk,
+    )
     from src.functions.livekit_send_data import (
         LivekitSendDataInput,
         SendDataResponse,
         livekit_send_data,
     )
-    from src.functions.livekit_token import LivekitTokenInput, livekit_token
-    from src.functions.llm_talk import LlmTalkInput, Message, llm_talk
+    from src.functions.livekit_token import (
+        LivekitTokenInput,
+        livekit_token,
+    )
+    from src.functions.llm_talk import (
+        LlmTalkInput,
+        Message,
+        llm_talk,
+    )
 
 
 class MessagesEvent(BaseModel):

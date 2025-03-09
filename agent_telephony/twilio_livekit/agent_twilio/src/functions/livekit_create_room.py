@@ -2,7 +2,11 @@ import os
 
 from livekit import api
 from livekit.api import CreateRoomRequest, Room
-from restack_ai.function import NonRetryableError, function, function_info
+from restack_ai.function import (
+    NonRetryableError,
+    function,
+    function_info,
+)
 
 
 @function.defn()

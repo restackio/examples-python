@@ -3,7 +3,11 @@ from typing import Literal
 
 from openai import OpenAI
 from pydantic import BaseModel, Field
-from restack_ai.function import NonRetryableError, function, stream_to_websocket
+from restack_ai.function import (
+    NonRetryableError,
+    function,
+    stream_to_websocket,
+)
 
 from src.client import api_address
 

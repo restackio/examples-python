@@ -6,7 +6,12 @@ from livekit.protocol.sip import (
     ListSIPOutboundTrunkRequest,
     SIPOutboundTrunkInfo,
 )
-from restack_ai.function import NonRetryableError, function, function_info, log
+from restack_ai.function import (
+    NonRetryableError,
+    function,
+    function_info,
+    log,
+)
 
 
 @function.defn()
