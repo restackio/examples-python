@@ -43,9 +43,7 @@ class LogicWorkflow:
             slow_response: LlmLogicResponse = await workflow.step(
                 function=llm_logic,
                 function_input=LlmLogicInput(
-                    messages=[
-                        msg.model_dump() for msg in workflow_input.messages
-                    ], 
+                    messages=[msg.model_dump() for msg in workflow_input.messages],
                     documentation=documentation,
                 ),
                 start_to_close_timeout=timedelta(seconds=60),

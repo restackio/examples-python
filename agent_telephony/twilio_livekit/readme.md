@@ -66,7 +66,7 @@ pip install -e .
 python -c "from src.services import watch_services; watch_services()"
 ```
 
-## Start Livekit voice pipeline
+## Start Livekit worker
 
 ### Start python shell
 
@@ -88,14 +88,14 @@ If using uv:
 
 ```bash
 uv sync
-uv run python src/pipeline.py dev
+uv run python src/worker.py dev
 ```
 
 If using pip:
 
 ```bash
 pip install -e .
-python src/pipeline.py dev
+python src/worker.py dev
 ```
 
 ## Configure Your Environment Variables
