@@ -51,6 +51,10 @@ with import_functions():
         Message,
         llm_talk,
     )
+    from src.functions.send_agent_event import (
+        SendAgentEventInput,
+        send_agent_event,
+    )
 
 
 class MessagesEvent(BaseModel):
@@ -73,6 +77,8 @@ class PipelineMetricsEvent(BaseModel):
     metrics: Any
     latencies: str
 
+class AgentTwilioInput(BaseModel):
+    phone_number: str | None = None
 
 class AgentTwilioOutput(BaseModel):
     recording_url: str
@@ -176,7 +182,7 @@ class AgentTwilio:
                 text="Thank you for calling restack. Goodbye!",
             ),
         )
-        await agent.sleep(3)
+        await agent.sleep(8)
         await agent.step(function=livekit_delete_room)
 
         self.end = True
@@ -199,7 +205,7 @@ class AgentTwilio:
         return pipeline_metrics
 
     @agent.run
-    async def run(self) -> None:
+    async def run(self, agent_input: AgentTwilioInput) -> AgentTwilioOutput:
         try:
             room = await agent.step(function=livekit_create_room)
             self.room_id = room.name
@@ -221,6 +227,23 @@ class AgentTwilio:
                     room_id=self.room_id
                 ),
             )
+
+            if agent_input.phone_number:
+                
+                agent_id = agent_info().workflow_id
+                run_id = agent_info().run_id
+
+                await agent.step(
+                    function=send_agent_event,
+                    function_input=SendAgentEventInput(
+                        event_name="call",
+                        agent_id=agent_id,
+                        run_id=run_id,
+                        event_input={
+                            "phone_number": agent_input.phone_number,
+                        },
+                    ),
+                )
 
         except Exception as e:
             error_message = f"Error during agent run: {e}"
