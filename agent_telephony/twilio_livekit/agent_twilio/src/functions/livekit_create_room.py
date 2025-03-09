@@ -31,7 +31,9 @@ async def livekit_create_room() -> Room:
         await lkapi.aclose()
 
     except Exception as e:
-        error_message = f"livekit_create_room function failed: {e}"
+        error_message = (
+            f"livekit_create_room function failed: {e}"
+        )
         raise NonRetryableError(error_message) from e
 
     else:

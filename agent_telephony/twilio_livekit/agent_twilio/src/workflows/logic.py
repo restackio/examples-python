@@ -44,7 +44,9 @@ class LogicWorkflowOutput(BaseModel):
 @workflow.defn()
 class LogicWorkflow:
     @workflow.run
-    async def run(self, workflow_input: LogicWorkflowInput) -> str:
+    async def run(
+        self, workflow_input: LogicWorkflowInput
+    ) -> str:
         context = workflow_input.context
 
         parent_agent_id = workflow_info().parent.workflow_id
@@ -52,12 +54,17 @@ class LogicWorkflow:
 
         log.info("LogicWorkflow started")
         try:
-            documentation = await workflow.step(function=context_docs)
+            documentation = await workflow.step(
+                function=context_docs
+            )
 
             slow_response: LlmLogicResponse = await workflow.step(
                 function=llm_logic,
                 function_input=LlmLogicInput(
-                    messages=[msg.model_dump() for msg in workflow_input.messages],
+                    messages=[
+                        msg.model_dump()
+                        for msg in workflow_input.messages
+                    ],
                     documentation=documentation,
                 ),
                 start_to_close_timeout=timedelta(seconds=60),
@@ -81,7 +88,12 @@ class LogicWorkflow:
                 interrupt_response = await workflow.step(
                     function=llm_talk,
                     function_input=LlmTalkInput(
-                        messages=[Message(role="system", content=slow_response.reason)],
+                        messages=[
+                            Message(
+                                role="system",
+                                content=slow_response.reason,
+                            )
+                        ],
                         context=str(context),
                         mode="interrupt",
                         stream=False,
@@ -92,7 +104,8 @@ class LogicWorkflow:
                 await workflow.step(
                     function=livekit_send_data,
                     function_input=LivekitSendDataInput(
-                        room_id=parent_agent_run_id, text=interrupt_response
+                        room_id=parent_agent_run_id,
+                        text=interrupt_response,
                     ),
                 )
 
@@ -118,7 +131,8 @@ class LogicWorkflow:
                 await workflow.step(
                     function=livekit_send_data,
                     function_input=LivekitSendDataInput(
-                        room_id=parent_agent_run_id, text=goodbye_message
+                        room_id=parent_agent_run_id,
+                        text=goodbye_message,
                     ),
                 )
 
@@ -138,5 +152,7 @@ class LogicWorkflow:
             error_message = f"Error during welcome: {e}"
             raise NonRetryableError(error_message) from e
         else:
-            log.info("LogicWorkflow completed", context=str(context))
+            log.info(
+                "LogicWorkflow completed", context=str(context)
+            )
             return str(context)

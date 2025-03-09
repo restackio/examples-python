@@ -50,9 +50,13 @@ async def llm_talk(function_input: LlmTalkInput) -> str:
                 "Do not re-explain everything, just deliver the most important update. Keep your answer short in max 20 words unless the user asks for more information."
             )
 
-        function_input.messages.insert(0, Message(role="system", content=system_prompt))
+        function_input.messages.insert(
+            0, Message(role="system", content=system_prompt)
+        )
 
-        messages_dicts = [msg.model_dump() for msg in function_input.messages]
+        messages_dicts = [
+            msg.model_dump() for msg in function_input.messages
+        ]
 
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -61,7 +65,9 @@ async def llm_talk(function_input: LlmTalkInput) -> str:
         )
 
         if function_input.stream:
-            return await stream_to_websocket(api_address=api_address, data=response)
+            return await stream_to_websocket(
+                api_address=api_address, data=response
+            )
         return response.choices[0].message.content
 
     except Exception as e:

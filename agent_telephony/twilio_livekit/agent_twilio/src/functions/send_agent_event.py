@@ -14,7 +14,9 @@ class SendAgentEventInput(BaseModel):
 
 
 @function.defn()
-async def send_agent_event(function_input: SendAgentEventInput) -> str:
+async def send_agent_event(
+    function_input: SendAgentEventInput,
+) -> str:
     try:
         return await client.send_agent_event(
             event_name=function_input.event_name,
@@ -24,4 +26,6 @@ async def send_agent_event(function_input: SendAgentEventInput) -> str:
         )
 
     except Exception as e:
-        raise NonRetryableError(f"send_agent_event failed: {e}") from e
+        raise NonRetryableError(
+            f"send_agent_event failed: {e}"
+        ) from e

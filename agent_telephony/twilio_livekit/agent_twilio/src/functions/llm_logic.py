@@ -20,7 +20,9 @@ class LlmLogicInput(BaseModel):
 
 
 @function.defn()
-async def llm_logic(function_input: LlmLogicInput) -> LlmLogicResponse:
+async def llm_logic(
+    function_input: LlmLogicInput,
+) -> LlmLogicResponse:
     try:
         client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 

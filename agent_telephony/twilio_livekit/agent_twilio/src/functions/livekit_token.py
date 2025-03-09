@@ -14,7 +14,8 @@ async def livekit_token(function_input: LivekitTokenInput) -> str:
     try:
         token = (
             api.AccessToken(
-                os.getenv("LIVEKIT_API_KEY"), os.getenv("LIVEKIT_API_SECRET")
+                os.getenv("LIVEKIT_API_KEY"),
+                os.getenv("LIVEKIT_API_SECRET"),
             )
             .with_identity("identity")
             .with_name("dev_user")

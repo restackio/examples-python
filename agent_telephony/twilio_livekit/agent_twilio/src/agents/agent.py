@@ -37,6 +37,11 @@ with import_functions():
         SendDataResponse,
         livekit_send_data,
     )
+    from src.functions.livekit_start_recording import (
+        EgressInfo,
+        LivekitStartRecordingInput,
+        livekit_start_recording,
+    )
     from src.functions.livekit_token import (
         LivekitTokenInput,
         livekit_token,
@@ -69,6 +74,13 @@ class PipelineMetricsEvent(BaseModel):
     latencies: str
 
 
+class AgentTwilioOutput(BaseModel):
+    recording_url: str
+    livekit_room_id: str
+    messages: list[Message]
+    context: str
+
+
 @agent.defn()
 class AgentTwilio:
     def __init__(self) -> None:
@@ -78,7 +90,9 @@ class AgentTwilio:
         self.room_id = ""
 
     @agent.event
-    async def messages(self, messages_event: MessagesEvent) -> list[Message]:
+    async def messages(
+        self, messages_event: MessagesEvent
+    ) -> list[Message]:
         log.info(f"Received message: {messages_event.messages}")
         self.messages.extend(messages_event.messages)
 
@@ -108,7 +122,9 @@ class AgentTwilio:
                 ),
             )
 
-            self.messages.append(Message(role="assistant", content=fast_response))
+            self.messages.append(
+                Message(role="assistant", content=fast_response)
+            )
             return self.messages
         except Exception as e:
             error_message = f"Error during messages: {e}"
@@ -122,7 +138,9 @@ class AgentTwilio:
         agent_id = agent_info().workflow_id
         run_id = agent_info().run_id
         try:
-            sip_trunk_id = await agent.step(function=livekit_outbound_trunk)
+            sip_trunk_id = await agent.step(
+                function=livekit_outbound_trunk
+            )
             await agent.step(
                 function=livekit_call,
                 function_input=LivekitCallInput(
@@ -135,14 +153,17 @@ class AgentTwilio:
                 ),
             )
         except Exception as e:
-            error_message = f"Error during livekit_outbound_trunk: {e}"
+            error_message = (
+                f"Error during livekit_outbound_trunk: {e}"
+            )
             raise NonRetryableError(error_message) from e
 
     @agent.event
     async def say(self, say: str) -> SendDataResponse:
         log.info("Received say")
         return await agent.step(
-            function=livekit_send_data, function_input=LivekitSendDataInput(text=say)
+            function=livekit_send_data,
+            function_input=LivekitSendDataInput(text=say),
         )
 
     @agent.event
@@ -151,10 +172,11 @@ class AgentTwilio:
         await agent.step(
             function=livekit_send_data,
             function_input=LivekitSendDataInput(
-                room_id=self.room_id, text="Thank you for calling restack. Goodbye!"
+                room_id=self.room_id,
+                text="Thank you for calling restack. Goodbye!",
             ),
         )
-        await agent.sleep(1)
+        await agent.sleep(3)
         await agent.step(function=livekit_delete_room)
 
         self.end = True
@@ -170,7 +192,10 @@ class AgentTwilio:
     async def pipeline_metrics(
         self, pipeline_metrics: PipelineMetricsEvent
     ) -> PipelineMetricsEvent:
-        log.info("Received pipeline metrics", pipeline_metrics=pipeline_metrics)
+        log.info(
+            "Received pipeline metrics",
+            pipeline_metrics=pipeline_metrics,
+        )
         return pipeline_metrics
 
     @agent.run
@@ -180,14 +205,34 @@ class AgentTwilio:
             self.room_id = room.name
             await agent.step(
                 function=livekit_token,
-                function_input=LivekitTokenInput(room_id=self.room_id),
+                function_input=LivekitTokenInput(
+                    room_id=self.room_id
+                ),
+            )
+            recording: EgressInfo = await agent.step(
+                function=livekit_start_recording,
+                function_input=LivekitStartRecordingInput(
+                    room_id=self.room_id
+                ),
             )
             await agent.step(
                 function=livekit_dispatch,
-                function_input=LivekitDispatchInput(room_id=self.room_id),
+                function_input=LivekitDispatchInput(
+                    room_id=self.room_id
+                ),
             )
+
         except Exception as e:
             error_message = f"Error during agent run: {e}"
             raise NonRetryableError(error_message) from e
         else:
             await agent.condition(lambda: self.end)
+
+            recording_url = f"https://storage.googleapis.com/{recording.room_composite.file_outputs[0].gcp.bucket}/{recording.room_composite.file_outputs[0].filepath}"
+
+            return AgentTwilioOutput(
+                recording_url=recording_url,
+                livekit_room_id=self.room_id,
+                messages=self.messages,
+                context=self.context,
+            )

@@ -20,8 +20,12 @@ async def livekit_outbound_trunk() -> str:
         livekit_api = api.LiveKitAPI()
         run_id = function_info().workflow_run_id
 
-        existing_trunk = await livekit_api.sip.list_sip_outbound_trunk(
-            list=ListSIPOutboundTrunkRequest(trunk_ids=[str(run_id)])
+        existing_trunk = (
+            await livekit_api.sip.list_sip_outbound_trunk(
+                list=ListSIPOutboundTrunkRequest(
+                    trunk_ids=[str(run_id)]
+                )
+            )
         )
 
         if existing_trunk.items and len(existing_trunk.items) > 0:
@@ -43,14 +47,21 @@ async def livekit_outbound_trunk() -> str:
 
         request = CreateSIPOutboundTrunkRequest(trunk=trunk)
 
-        trunk = await livekit_api.sip.create_sip_outbound_trunk(request)
+        trunk = await livekit_api.sip.create_sip_outbound_trunk(
+            request
+        )
 
-        log.info("livekit_outbound_trunk Successfully created, trunk: ", trunk=trunk)
+        log.info(
+            "livekit_outbound_trunk Successfully created, trunk: ",
+            trunk=trunk,
+        )
 
         await livekit_api.aclose()
 
     except Exception as e:  # Consider catching a more specific exception if possible
-        error_message = f"livekit_outbound_trunk function failed: {e}"
+        error_message = (
+            f"livekit_outbound_trunk function failed: {e}"
+        )
         raise NonRetryableError(error_message) from e
 
     else:

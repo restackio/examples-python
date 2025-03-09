@@ -19,7 +19,9 @@ class LivekitCallInput:
 
 
 @function.defn()
-async def livekit_call(function_input: LivekitCallInput) -> SIPParticipantInfo:
+async def livekit_call(
+    function_input: LivekitCallInput,
+) -> SIPParticipantInfo:
     try:
         livekit_api = api.LiveKitAPI()
 
@@ -32,13 +34,21 @@ async def livekit_call(function_input: LivekitCallInput) -> SIPParticipantInfo:
             play_dialtone=True,
         )
 
-        log.info("livekit_call CreateSIPParticipantRequest: ", request=request)
+        log.info(
+            "livekit_call CreateSIPParticipantRequest: ",
+            request=request,
+        )
 
-        participant = await livekit_api.sip.create_sip_participant(request)
+        participant = (
+            await livekit_api.sip.create_sip_participant(request)
+        )
 
         await livekit_api.aclose()
 
-        log.info("livekit_call SIPParticipantInfo:", participant=participant)
+        log.info(
+            "livekit_call SIPParticipantInfo:",
+            participant=participant,
+        )
     except Exception as e:
         error_message = f"livekit_call function failed: {e}"
         raise NonRetryableError(error_message) from e

@@ -16,6 +16,9 @@ from src.functions.livekit_outbound_trunk import (
     livekit_outbound_trunk,
 )
 from src.functions.livekit_send_data import livekit_send_data
+from src.functions.livekit_start_recording import (
+    livekit_start_recording,
+)
 from src.functions.livekit_token import livekit_token
 from src.functions.llm_logic import llm_logic
 from src.functions.llm_talk import llm_talk
@@ -39,6 +42,7 @@ async def main() -> None:
             context_docs,
             livekit_send_data,
             send_agent_event,
+            livekit_start_recording,
         ],
     )
 
@@ -47,12 +51,17 @@ def run_services() -> None:
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        logging.info("Service interrupted by user. Exiting gracefully.")
+        logging.info(
+            "Service interrupted by user. Exiting gracefully."
+        )
 
 
 def watch_services() -> None:
     watch_path = Path.cwd()
-    logging.info("Watching %s and its subdirectories for changes...", watch_path)
+    logging.info(
+        "Watching %s and its subdirectories for changes...",
+        watch_path,
+    )
     webbrowser.open("http://localhost:5233")
     run_process(watch_path, recursive=True, target=run_services)
 

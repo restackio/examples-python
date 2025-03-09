@@ -20,12 +20,16 @@ async def livekit_delete_room() -> DeleteRoomResponse:
 
         run_id = function_info().workflow_run_id
 
-        deleted_room = await lkapi.room.delete_room(DeleteRoomRequest(room=run_id))
+        deleted_room = await lkapi.room.delete_room(
+            DeleteRoomRequest(room=run_id)
+        )
 
         await lkapi.aclose()
 
     except Exception as e:
-        error_message = f"livekit_delete_room function failed: {e}"
+        error_message = (
+            f"livekit_delete_room function failed: {e}"
+        )
         raise NonRetryableError(error_message) from e
 
     else:
