@@ -45,7 +45,7 @@ class LogicWorkflow:
                 function_input=LlmLogicInput(
                     messages=[
                         msg.model_dump() for msg in workflow_input.messages
-                    ],  # Convert messages to dict
+                    ], 
                     documentation=documentation,
                 ),
                 start_to_close_timeout=timedelta(seconds=60),
