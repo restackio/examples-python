@@ -15,8 +15,7 @@ dependencies = [
     "pillow==11.0.0",
     "python-doctr[torch]==0.10.0",
     "requests==2.32.3",
-    "restack-ai",
-]
+    "restack-ai>=0.0.81",]
 
 [project.scripts]
 dev = "src.services:watch_services"
@@ -27,9 +26,6 @@ include = ["src"]
 
 [tool.hatch.build.targets.wheel]
 include = ["src"]
-
-[tool.uv.sources]
-restack-ai = { path = "../../local-operator/libraries/python" }
 
 [build-system]
 requires = ["hatchling"]
