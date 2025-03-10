@@ -133,7 +133,7 @@ if __name__ == "__main__":
     cli.run_app(
         WorkerOptions(
             entrypoint_fnc=entrypoint,
-            agent_name="AgentTwilio",
+            agent_name="livekit_pipeline",
             prewarm_fnc=prewarm,
         )
     )

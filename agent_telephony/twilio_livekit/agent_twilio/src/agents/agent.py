@@ -119,13 +119,9 @@ class AgentTwilio:
                     messages=self.messages[-3:],
                     context=str(self.context),
                     mode="default",
+                    stream=True
                 ),
                 start_to_close_timeout=timedelta(seconds=3),
-                retry_policy=RetryPolicy(
-                    initial_interval=timedelta(seconds=1),
-                    maximum_attempts=1,
-                    maximum_interval=timedelta(seconds=5),
-                ),
             )
 
             self.messages.append(

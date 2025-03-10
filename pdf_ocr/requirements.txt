@@ -136,7 +136,7 @@ requests==2.32.3
     # via
     #   pdf-ocr (pyproject.toml)
     #   huggingface-hub
-restack-ai==0.0.81
+restack-ai==0.0.82
     # via pdf-ocr (pyproject.toml)
 scipy==1.15.1
     # via python-doctr

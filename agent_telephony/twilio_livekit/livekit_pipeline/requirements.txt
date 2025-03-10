@@ -168,7 +168,7 @@ requests==2.32.3
     # via
     #   huggingface-hub
     #   transformers
-restack-ai==0.0.81
+restack-ai==0.0.82
     # via agent-telephony-livekit-pipeline (pyproject.toml)
 safetensors==0.5.3
     # via transformers

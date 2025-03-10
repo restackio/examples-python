@@ -40,7 +40,7 @@ async def livekit_dispatch(
 
         dispatch = await lkapi.agent_dispatch.create_dispatch(
             api.CreateAgentDispatchRequest(
-                agent_name=agent_name,
+                agent_name='livekit_pipeline',
                 room=room,
                 metadata=str(metadata),
             )
