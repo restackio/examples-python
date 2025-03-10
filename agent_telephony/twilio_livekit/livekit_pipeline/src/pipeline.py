@@ -50,7 +50,7 @@ def create_livekit_pipeline(
                     settings=elevenlabs.tts.VoiceSettings(
                         stability=0,
                         similarity_boost=0,
-                        style=1,
+                        style=0,
                         speed=1.01,
                         use_speaker_boost=False
                     ),
