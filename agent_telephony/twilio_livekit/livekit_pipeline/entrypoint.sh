@@ -2,7 +2,7 @@
 set -e
 
 echo "Running download-files..."
-uv run python src/pipeline.py download-files
+uv run python src/worker.py download-files
 
-echo "Starting pipeline..."
-exec uv run python src/pipeline.py start
+echo "Starting livekit worker..."
+exec uv run python src/worker.py start

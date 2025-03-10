@@ -11,14 +11,23 @@ async def main(agent_id: str, run_id: str) -> None:
         agent_id=agent_id,
         run_id=run_id,
         event_name="call",
-        event_input={"messages": [{"role": "user", "content": "Tell me another joke"}]},
+        event_input={
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "What is Restack framework?",
+                }
+            ]
+        },
     )
 
     sys.exit(0)
 
 
 def run_event_workflow() -> None:
-    asyncio.run(main(agent_id="your-agent-id", run_id="your-run-id"))
+    asyncio.run(
+        main(agent_id="agent-id", run_id="run-id")
+    )
 
 
 if __name__ == "__main__":

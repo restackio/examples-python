@@ -14,7 +14,9 @@ async def main() -> None:
         agent_name=AgentStream.__name__, agent_id=agent_id
     )
 
-    await client.get_agent_result(agent_id=agent_id, run_id=run_id)
+    await client.get_agent_result(
+        agent_id=agent_id, run_id=run_id
+    )
 
     sys.exit(0)
 

@@ -42,7 +42,9 @@ class AgentVapi:
             error_message = f"llm_chat function failed: {e}"
             raise NonRetryableError(error_message) from e
         else:
-            self.messages.append(Message(role="assistant", content=str(assistant_message)))
+            self.messages.append(
+                Message(role="assistant", content=str(assistant_message))
+            )
             return self.messages
 
     @agent.event

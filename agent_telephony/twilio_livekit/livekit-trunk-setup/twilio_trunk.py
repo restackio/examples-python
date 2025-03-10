@@ -104,7 +104,6 @@ def main():
     else:
         logging.info(f"{trunk_name} already exists. Using the existing trunk.")
 
-
     inbound_trunk_sid = create_inbound_trunk(phone_number, trunk_name)
     if inbound_trunk_sid:
         create_dispatch_rule(inbound_trunk_sid, trunk_name)

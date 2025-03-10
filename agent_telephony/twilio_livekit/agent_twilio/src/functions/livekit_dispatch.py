@@ -3,7 +3,11 @@ from dataclasses import dataclass
 
 from livekit import api
 from livekit.protocol.agent_dispatch import AgentDispatch
-from restack_ai.function import NonRetryableError, function, function_info
+from restack_ai.function import (
+    NonRetryableError,
+    function,
+    function_info,
+)
 
 
 @dataclass
@@ -12,7 +16,9 @@ class LivekitDispatchInput:
 
 
 @function.defn()
-async def livekit_dispatch(function_input: LivekitDispatchInput) -> AgentDispatch:
+async def livekit_dispatch(
+    function_input: LivekitDispatchInput,
+) -> AgentDispatch:
     try:
         lkapi = api.LiveKitAPI(
             url=os.getenv("LIVEKIT_API_URL"),
@@ -24,13 +30,19 @@ async def livekit_dispatch(function_input: LivekitDispatchInput) -> AgentDispatc
         agent_id = function_info().workflow_id
         run_id = function_info().workflow_run_id
 
-        metadata = {"agent_name": agent_name, "agent_id": agent_id, "run_id": run_id}
+        metadata = {
+            "agent_name": agent_name,
+            "agent_id": agent_id,
+            "run_id": run_id,
+        }
 
         room = function_input.room_id or run_id
 
         dispatch = await lkapi.agent_dispatch.create_dispatch(
             api.CreateAgentDispatchRequest(
-                agent_name=agent_name, room=room, metadata=str(metadata)
+                agent_name=agent_name,
+                room=room,
+                metadata=str(metadata),
             )
         )
 

@@ -1,12 +1,16 @@
 import os
 
 from livekit import api
-from livekit.api import CreateRoomRequest, Room
-from restack_ai.function import NonRetryableError, function, function_info
+from livekit.api import DeleteRoomRequest, DeleteRoomResponse
+from restack_ai.function import (
+    NonRetryableError,
+    function,
+    function_info,
+)
 
 
 @function.defn()
-async def livekit_room() -> Room:
+async def livekit_delete_room() -> DeleteRoomResponse:
     try:
         lkapi = api.LiveKitAPI(
             url=os.getenv("LIVEKIT_API_URL"),
@@ -16,19 +20,17 @@ async def livekit_room() -> Room:
 
         run_id = function_info().workflow_run_id
 
-        room = await lkapi.room.create_room(
-            CreateRoomRequest(
-                name=run_id,
-                empty_timeout=10 * 60,
-                max_participants=20,
-            )
+        deleted_room = await lkapi.room.delete_room(
+            DeleteRoomRequest(room=run_id)
         )
 
         await lkapi.aclose()
 
     except Exception as e:
-        error_message = f"livekit_room function failed: {e}"
+        error_message = (
+            f"livekit_delete_room function failed: {e}"
+        )
         raise NonRetryableError(error_message) from e
 
     else:
-        return room
+        return deleted_room
