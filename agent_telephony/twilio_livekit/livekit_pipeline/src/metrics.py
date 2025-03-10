@@ -53,7 +53,7 @@ async def send_metrics(
             )
             await client.send_agent_event(
                 event_name="pipeline_metrics",
-                agent_id=agent_id.replace("local-", ""),
+                agent_id=agent_id,
                 run_id=run_id,
                 event_input={
                     "metrics": pipeline_metrics,
