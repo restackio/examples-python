@@ -31,8 +31,8 @@ class ParentWorkflow:
                     workflow_id=f"{parent_workflow_id}-child-execute",
                 )
             except Exception as e:
-                error_message = f"Error during child_execute: {e}"
-                raise NonRetryableError(error_message) from e
+                error_message = "Error during child_execute function"
+                raise NonRetryableError(message=error_message, error=e) from e
             else:
                 log.info("ChildWorkflow completed", result=result)
                 return ParentOutput(result="ParentWorkflow completed")

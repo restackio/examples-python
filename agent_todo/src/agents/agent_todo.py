@@ -1,15 +1,30 @@
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.agent import NonRetryableError, agent, import_functions, log
+from restack_ai.agent import (
+    NonRetryableError,
+    agent,
+    import_functions,
+    log,
+)
 
-from src.workflows.todo_execute import TodoExecute, TodoExecuteParams
+from src.workflows.todo_execute import (
+    TodoExecute,
+    TodoExecuteParams,
+)
 
 with import_functions():
     from openai import pydantic_function_tool
 
-    from src.functions.llm_chat import LlmChatInput, Message, llm_chat
-    from src.functions.todo_create import TodoCreateParams, todo_create
+    from src.functions.llm_chat import (
+        LlmChatInput,
+        Message,
+        llm_chat,
+    )
+    from src.functions.todo_create import (
+        TodoCreateParams,
+        todo_create,
+    )
 
 
 class MessagesEvent(BaseModel):
@@ -54,8 +69,8 @@ class AgentTodo:
                     start_to_close_timeout=timedelta(seconds=120),
                 )
             except Exception as e:
-                error_message = f"Error during llm_chat: {e}"
-                raise NonRetryableError(error_message) from e
+                error_message = "Error during llm_chat function"
+                raise NonRetryableError(message=error_message, error=e) from e
             else:
                 log.info(f"completion: {completion}")
                 tool_calls = completion.choices[0].message.tool_calls
@@ -87,8 +102,8 @@ class AgentTodo:
                                         function_input=args,
                                     )
                                 except Exception as e:
-                                    error_message = f"Error during todo_create: {e}"
-                                    raise NonRetryableError(error_message) from e
+                                    error_message = "Error during todo_create function"
+                                    raise NonRetryableError(message=error_message, error=e) from e
                                 else:
                                     self.messages.append(
                                         Message(
@@ -106,8 +121,8 @@ class AgentTodo:
                                             start_to_close_timeout=timedelta(seconds=120),
                                         )
                                     except Exception as e:
-                                        error_message = f"Error during llm_chat: {e}"
-                                        raise NonRetryableError(error_message) from e
+                                        error_message = "Error during llm_chat function"
+                                        raise NonRetryableError(message=error_message, error=e) from e
                                     else:
                                         self.messages.append(
                                             Message(
@@ -130,8 +145,8 @@ class AgentTodo:
                                         workflow_input=args,
                                     )
                                 except Exception as e:
-                                    error_message = f"Error during TodoExecute: {e}"
-                                    raise NonRetryableError(error_message) from e
+                                    error_message = "Error during TodoExecute function"
+                                    raise NonRetryableError(message=error_message, error=e) from e
                                 else:
                                     self.messages.append(
                                         Message(
@@ -150,8 +165,8 @@ class AgentTodo:
                                         start_to_close_timeout=timedelta(seconds=120),
                                         )
                                     except Exception as e:
-                                        error_message = f"Error during llm_chat: {e}"
-                                        raise NonRetryableError(error_message) from e
+                                        error_message = "Error during llm_chat function"
+                                        raise NonRetryableError(message=error_message, error=e) from e
                                     else:
                                         self.messages.append(
                                             Message(

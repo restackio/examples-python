@@ -58,5 +58,5 @@ async def llm_chat(function_input: LlmChatInput) -> ChatCompletion:
             tools=function_input.tools,
         )
     except Exception as e:
-        error_message = f"LLM chat failed: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during llm_chat function"
+        raise NonRetryableError(message=error_message, error=e) from e

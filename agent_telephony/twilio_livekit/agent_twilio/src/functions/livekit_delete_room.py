@@ -27,10 +27,8 @@ async def livekit_delete_room() -> DeleteRoomResponse:
         await lkapi.aclose()
 
     except Exception as e:
-        error_message = (
-            f"livekit_delete_room function failed: {e}"
-        )
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during livekit_delete_room function"
+        raise NonRetryableError(message=error_message, error=e) from e
 
     else:
         return deleted_room

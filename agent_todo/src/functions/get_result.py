@@ -20,5 +20,5 @@ async def get_result(params: ResultParams) -> ResultResponse:
         status = secrets.choice(["completed", "failed"])
         return ResultResponse(todo_id=params.todo_id, status=status)
     except Exception as e:
-        error_message = f"get_result function failed: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during get_result function"
+        raise NonRetryableError(message=error_message, error=e) from e

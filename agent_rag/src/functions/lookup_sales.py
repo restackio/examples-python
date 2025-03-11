@@ -85,5 +85,5 @@ async def lookup_sales() -> str:
 
         return str(items)
     except Exception as e:
-        error_message = f"lookup_sales function failed: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during lookup_sales function"
+        raise NonRetryableError(message=error_message, error=e) from e

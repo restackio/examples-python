@@ -28,8 +28,8 @@ class FilesWorkflow:
                     )
                 )
             except Exception as e:
-                error_message = f"Failed to execute PdfWorkflow {index}: {e}"
-                raise NonRetryableError(error_message) from e
+                error_message = f"Error during PdfWorkflow {index} execution"
+                raise NonRetryableError(message=error_message, error=e) from e
             else:
                 # Wrap the task in an asyncio.ensure_future to ensure it's awaitable
                 tasks.append(asyncio.ensure_future(task))

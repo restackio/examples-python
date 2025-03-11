@@ -15,7 +15,7 @@ dependencies = [
     "pillow==11.0.0",
     "python-doctr[torch]==0.10.0",
     "requests==2.32.3",
-    "restack-ai>=0.0.81",]
+    "restack-ai>=0.0.83",]
 
 [project.scripts]
 dev = "src.services:watch_services"

@@ -25,8 +25,8 @@ class MultistepWorkflow:
                 function=weather, start_to_close_timeout=timedelta(seconds=120)
             )
         except Exception as e:
-            error_message = f"Error during weather: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during weather function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             # Step 2 Generate greeting with LLM  based on name and weather data
             try:
@@ -40,8 +40,8 @@ class MultistepWorkflow:
                     start_to_close_timeout=timedelta(seconds=120),
                 )
             except Exception as e:
-                error_message = f"Error during llm: {e}"
-                raise NonRetryableError(error_message) from e
+                error_message = "Error during llm function"
+                raise NonRetryableError(message=error_message, error=e) from e
             else:
                 log.info("MultistepWorkflow completed", llm_message=llm_message)
                 return {"message": llm_message, "weather": weather_data}

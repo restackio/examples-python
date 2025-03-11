@@ -49,8 +49,8 @@ class AgentChatToolFunctions:
                 start_to_close_timeout=timedelta(seconds=120),
             )
         except Exception as e:
-            error_message = f"Error during llm_chat: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during llm_chat function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             log.info(f"completion: {completion}")
 
@@ -86,8 +86,8 @@ class AgentChatToolFunctions:
                                     start_to_close_timeout=timedelta(seconds=120),
                                 )
                             except Exception as e:
-                                error_message = f"Error during lookup_sales: {e}"
-                                raise NonRetryableError(error_message) from e
+                                error_message = "Error during lookup_sales function"
+                                raise NonRetryableError(message=error_message, error=e) from e
                             else:
                                 self.messages.append(
                                     Message(
@@ -106,8 +106,8 @@ class AgentChatToolFunctions:
                                         start_to_close_timeout=timedelta(seconds=120),
                                     )
                                 except Exception as e:
-                                    error_message = f"Error during llm_chat: {e}"
-                                    raise NonRetryableError(error_message) from e
+                                    error_message = "Error during llm_chat function"
+                                    raise NonRetryableError(message=error_message, error=e) from e
                                 else:
                                     self.messages.append(
                                         Message(

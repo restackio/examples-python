@@ -49,8 +49,8 @@ async def livekit_dispatch(
         await lkapi.aclose()
 
     except Exception as e:
-        error_message = f"livekit_dispatch function failed: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during livekit_dispatch function"
+        raise NonRetryableError(message=error_message, error=e) from e
 
     else:
         return dispatch

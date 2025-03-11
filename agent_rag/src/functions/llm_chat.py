@@ -23,7 +23,7 @@ class LlmChatInput(BaseModel):
 
 def raise_exception(message: str) -> None:
     log.error(message)
-    raise NonRetryableError(message)
+    raise NonRetryableError(message=message)
 
 
 @function.defn()
@@ -49,8 +49,8 @@ async def llm_chat(function_input: LlmChatInput) -> ChatCompletion:
             messages=function_input.messages,
         )
     except Exception as e:
-        error_message = f"LLM chat failed: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during llm_chat function"
+        raise NonRetryableError(message=error_message, error=e) from e
     else:
         log.info("llm_chat function completed", response=response)
         return response

@@ -15,8 +15,8 @@ async def todo_create(params: TodoCreateParams) -> str:
 
         todo_id = f"todo-{secrets.randbelow(9000) + 1000}"
     except Exception as e:
-        error_message = f"todo_create function failed: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during todo_create function"
+        raise NonRetryableError(message=error_message, error=e) from e
     else:
         log.info("todo_create function completed", todo_id=todo_id)
         return f"Created the todo '{params.title}' with id: {todo_id}"

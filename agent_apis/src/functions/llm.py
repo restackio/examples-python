@@ -46,5 +46,5 @@ async def llm(function_input: FunctionInputParams) -> str:
         log.info("llm function completed", response=response)
         return response.choices[0].message.content
     except Exception as e:
-        error_message = "llm function failed"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during llm function"
+        raise NonRetryableError(message=error_message, error=e) from e
