@@ -13,11 +13,15 @@ from restack_ai.function import NonRetryableError, function, log
 class LivekitStartRecordingInput(BaseModel):
     room_id: str
 
+class LivekitStartRecordingOutput(BaseModel):
+    recording_url: str
+    egress_info: EgressInfo
 
-@function.defn()
-async def livekit_start_recording(
-    function_input: LivekitStartRecordingInput,
-) -> EgressInfo:
+@function(
+    name="livekit_start_recording",
+    description="Start a recording of the call",
+)
+async def livekit_start_recording(function_input: LivekitStartRecordingInput) -> LivekitStartRecordingOutput:
     try:
         if os.getenv("GCP_CREDENTIALS") is None:
             raise NonRetryableError(
@@ -51,6 +55,8 @@ async def livekit_start_recording(
             )
         )
 
+        recording_url = f"https://storage.googleapis.com/{recording.room_composite.file_outputs[0].gcp.bucket}/{recording.room_composite.file_outputs[0].filepath}"
+
         await lkapi.aclose()
 
     except Exception as e:
@@ -60,4 +66,7 @@ async def livekit_start_recording(
         raise NonRetryableError(error_message) from e
 
     else:
-        return recording
+        return LivekitStartRecordingOutput(
+            recording_url=recording_url,
+            egress_info=recording.egress_info
+        )

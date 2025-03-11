@@ -38,8 +38,8 @@ with import_functions():
         livekit_send_data,
     )
     from src.functions.livekit_start_recording import (
-        EgressInfo,
         LivekitStartRecordingInput,
+        LivekitStartRecordingOutput,
         livekit_start_recording,
     )
     from src.functions.livekit_token import (
@@ -211,7 +211,7 @@ class AgentTwilio:
                     room_id=self.room_id
                 ),
             )
-            recording: EgressInfo = await agent.step(
+            recording: LivekitStartRecordingOutput = await agent.step(
                 function=livekit_start_recording,
                 function_input=LivekitStartRecordingInput(
                     room_id=self.room_id
@@ -247,10 +247,8 @@ class AgentTwilio:
         else:
             await agent.condition(lambda: self.end)
 
-            recording_url = f"https://storage.googleapis.com/{recording.room_composite.file_outputs[0].gcp.bucket}/{recording.room_composite.file_outputs[0].filepath}"
-
             return AgentTwilioOutput(
-                recording_url=recording_url,
+                recording_url=recording.recording_url,
                 livekit_room_id=self.room_id,
                 messages=self.messages,
                 context=self.context,
