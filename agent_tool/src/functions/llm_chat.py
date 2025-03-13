@@ -7,7 +7,9 @@ from openai.types.chat.chat_completion import ChatCompletion
 from openai.types.chat.chat_completion_message_tool_call import (
     ChatCompletionMessageToolCall,
 )
-from openai.types.chat.chat_completion_tool_param import ChatCompletionToolParam
+from openai.types.chat.chat_completion_tool_param import (
+    ChatCompletionToolParam,
+)
 from pydantic import BaseModel
 from restack_ai.function import NonRetryableError, function, log
 
@@ -52,11 +54,15 @@ async def llm_chat(function_input: LlmChatInput) -> ChatCompletion:
                 Message(role="system", content=function_input.system_content or "")
             )
 
-        return client.chat.completions.create(
+        result = client.chat.completions.create(
             model=function_input.model or "gpt-4o-mini",
             messages=function_input.messages,
             tools=function_input.tools,
         )
+
+        log.info("llm_chat function completed", result=result)
+
+        return result.model_dump()
     except Exception as e:
         error_message = f"LLM chat failed: {e}"
         raise NonRetryableError(error_message) from e

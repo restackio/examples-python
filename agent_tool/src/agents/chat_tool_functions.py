@@ -1,13 +1,25 @@
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.agent import NonRetryableError, agent, import_functions, log
+from restack_ai.agent import (
+    NonRetryableError,
+    agent,
+    import_functions,
+    log,
+)
 
 with import_functions():
     from openai import pydantic_function_tool
 
-    from src.functions.llm_chat import LlmChatInput, Message, llm_chat
-    from src.functions.lookup_sales import LookupSalesInput, lookup_sales
+    from src.functions.llm_chat import (
+        LlmChatInput,
+        Message,
+        llm_chat,
+    )
+    from src.functions.lookup_sales import (
+        LookupSalesInput,
+        lookup_sales,
+    )
 
 
 class MessagesEvent(BaseModel):

@@ -1,15 +1,30 @@
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.agent import NonRetryableError, agent, import_functions, log
+from restack_ai.agent import (
+    NonRetryableError,
+    agent,
+    import_functions,
+    log,
+)
 
-from src.workflows.todo_execute import TodoExecute, TodoExecuteParams
+from src.workflows.todo_execute import (
+    TodoExecute,
+    TodoExecuteParams,
+)
 
 with import_functions():
     from openai import pydantic_function_tool
 
-    from src.functions.llm_chat import LlmChatInput, Message, llm_chat
-    from src.functions.todo_create import TodoCreateParams, todo_create
+    from src.functions.llm_chat import (
+        LlmChatInput,
+        Message,
+        llm_chat,
+    )
+    from src.functions.todo_create import (
+        TodoCreateParams,
+        todo_create,
+    )
 
 
 class MessagesEvent(BaseModel):
