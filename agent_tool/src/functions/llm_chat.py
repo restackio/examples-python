@@ -7,7 +7,9 @@ from openai.types.chat.chat_completion import ChatCompletion
 from openai.types.chat.chat_completion_message_tool_call import (
     ChatCompletionMessageToolCall,
 )
-from openai.types.chat.chat_completion_tool_param import ChatCompletionToolParam
+from openai.types.chat.chat_completion_tool_param import (
+    ChatCompletionToolParam,
+)
 from pydantic import BaseModel
 from restack_ai.function import NonRetryableError, function, log
 

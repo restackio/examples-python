@@ -1,7 +1,12 @@
 from datetime import timedelta
 
 from pydantic import BaseModel
-from restack_ai.workflow import NonRetryableError, import_functions, log, workflow
+from restack_ai.workflow import (
+    NonRetryableError,
+    import_functions,
+    log,
+    workflow,
+)
 
 with import_functions():
     from src.functions.get_random import RandomParams, get_random
