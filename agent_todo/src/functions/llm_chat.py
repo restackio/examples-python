@@ -62,4 +62,4 @@ async def llm_chat(function_input: LlmChatInput) -> ChatCompletion:
         raise NonRetryableError(error_message) from e
     else:
         log.info("llm_chat function completed", response=response)
-        return response
+        return response.model_dump()
