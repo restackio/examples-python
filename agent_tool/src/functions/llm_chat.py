@@ -52,11 +52,15 @@ async def llm_chat(function_input: LlmChatInput) -> ChatCompletion:
                 Message(role="system", content=function_input.system_content or "")
             )
 
-        return client.chat.completions.create(
+        result = client.chat.completions.create(
             model=function_input.model or "gpt-4o-mini",
             messages=function_input.messages,
             tools=function_input.tools,
         )
+
+        log.info("llm_chat function completed", result=result)
+
+        return result.model_dump()
     except Exception as e:
         error_message = f"LLM chat failed: {e}"
         raise NonRetryableError(error_message) from e
