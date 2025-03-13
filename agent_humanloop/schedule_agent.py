@@ -1,6 +1,8 @@
 import asyncio
 import time
+
 from restack_ai import Restack
+
 
 async def main():
 
