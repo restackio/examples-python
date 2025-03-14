@@ -16,11 +16,6 @@ from pipecat.transports.services.daily import (
     DailyParams,
     DailyTransport,
 )
-from pipecat.transports.services.helpers.daily_rest import (
-    DailyRESTHelper,
-    DailyRoomParams,
-    DailyRoomProperties,
-)
 from pydantic import BaseModel
 from restack_ai.function import (
     NonRetryableError,
@@ -52,46 +47,12 @@ def get_agent_backend_host(engine_api_address: str) -> str:
         return "https://" + engine_api_address
     return engine_api_address
 
-
-async def create_daily_room(
-    session: aiohttp.ClientSession,
-    room_id: str,
-) -> DailyRoomParams:
-    daily_rest_helper = DailyRESTHelper(
-        daily_api_key=os.getenv("DAILYCO_API_KEY"),
-        daily_api_url="https://api.daily.co/v1",
-        aiohttp_session=session,
-    )
-    return await daily_rest_helper.create_room(
-        params=DailyRoomParams(
-            name=room_id,
-            properties=DailyRoomProperties(
-                start_video_off=True,
-                start_audio_off=False,
-                max_participants=2,
-                enable_prejoin_ui=False,
-            ),
-        ),
-    )
-
-
-async def get_daily_token(
-    daily_rest_helper: DailyRESTHelper,
-    room_url: str,
-    expiry_time: float,
-) -> str:
-    return await daily_rest_helper.get_token(
-        room_url,
-        expiry_time,
-    )
-
-
 @function.defn(name="pipecat_pipeline_heygen")
 async def pipecat_pipeline_heygen(
     function_input: PipecatPipelineHeygenInput,
 ) -> str:
     try:
-        async with aiohttp.ClientSession() as heygen_session:
+        async with aiohttp.ClientSession() as session:
 
             engine_api_address = os.environ.get(
                 "RESTACK_ENGINE_API_ADDRESS",
@@ -156,7 +117,7 @@ async def pipecat_pipeline_heygen(
 
             heygen_client = HeyGenClient(
                 api_key=os.getenv("HEYGEN_API_KEY"),
-                session=heygen_session,
+                session=session,
             )
 
             session_response = await heygen_client.new_session(
@@ -173,7 +134,7 @@ async def pipecat_pipeline_heygen(
             heygen_video_service = HeyGenVideoService(
                 session_id=session_response.session_id,
                 session_token=session_response.access_token,
-                session=heygen_session,
+                session=session,
                 realtime_endpoint=session_response.realtime_endpoint,
                 livekit_room_url=session_response.url,
             )
