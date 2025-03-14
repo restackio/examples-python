@@ -9,8 +9,8 @@ from src.agents.agent import AgentVideo
 from src.client import client
 from src.functions.context_docs import context_docs
 from src.functions.llm_chat import llm_chat
-from src.functions.pipeline import pipecat_pipeline
 from src.workflows.room import RoomWorkflow
+from restack_ai.restack import ServiceOptions
 
 
 async def main() -> None:
@@ -19,9 +19,11 @@ async def main() -> None:
         workflows=[RoomWorkflow],
         functions=[
             llm_chat,
-            pipecat_pipeline,
             context_docs,
         ],
+        options=ServiceOptions(
+            endpoint_group="agent_video",  # used to locally show both agent and pipeline endpoint in UI
+        ),
     )
 
 
@@ -29,12 +31,17 @@ def run_services() -> None:
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        logging.info("Service interrupted by user. Exiting gracefully.")
+        logging.info(
+            "Service interrupted by user. Exiting gracefully.",
+        )
 
 
 def watch_services() -> None:
     watch_path = Path.cwd()
-    logging.info("Watching %s and its subdirectories for changes...", watch_path)
+    logging.info(
+        "Watching %s and its subdirectories for changes...",
+        watch_path,
+    )
     webbrowser.open("http://localhost:5233")
     run_process(watch_path, recursive=True, target=run_services)
 

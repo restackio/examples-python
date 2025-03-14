@@ -1,8 +1,3 @@
-#
-# Copyright (c) 2024–2025, Daily
-#
-# SPDX-License-Identifier: BSD 2-Clause License
-#
 import asyncio
 import os
 from collections.abc import Mapping
@@ -14,33 +9,44 @@ from pipecat.audio.vad.silero import SileroVADAnalyzer
 from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineParams, PipelineTask
-from pipecat.processors.aggregators.openai_llm_context import OpenAILLMContext
+from pipecat.processors.aggregators.openai_llm_context import (
+    OpenAILLMContext,
+)
 from pipecat.services.cartesia import CartesiaTTSService
 from pipecat.services.deepgram import DeepgramSTTService
 from pipecat.services.openai import OpenAILLMService
 from pipecat.services.tavus import TavusVideoService
-from pipecat.transports.services.daily import DailyParams, DailyTransport
+from pipecat.transports.services.daily import (
+    DailyParams,
+    DailyTransport,
+)
 from pydantic import BaseModel
 from restack_ai.function import NonRetryableError, function, log
 
 load_dotenv(override=True)
 
 
-class PipecatPipelineInput(BaseModel):
+class PipecatPipelineTavusInput(BaseModel):
     agent_name: str
     agent_id: str
     agent_run_id: str
 
 
-@function.defn(name="pipecat_pipeline")
-async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
+@function.defn(name="pipecat_pipeline_tavus")
+async def pipecat_pipeline_tavus(  # noqa: PLR0915
+    function_input: PipecatPipelineTavusInput,
+) -> str:
     try:
         async with aiohttp.ClientSession() as session:
-            engine_api_address = os.environ.get("RESTACK_ENGINE_API_ADDRESS")
+            engine_api_address = os.environ.get(
+                "RESTACK_ENGINE_API_ADDRESS",
+            )
             if not engine_api_address:
                 agent_backend_host = "http://localhost:9233"
             elif not engine_api_address.startswith("https://"):
-                agent_backend_host = "https://" + engine_api_address
+                agent_backend_host = (
+                    "https://" + engine_api_address
+                )
             else:
                 agent_backend_host = engine_api_address
 
@@ -72,14 +78,19 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
                 ),
             )
 
-            stt = DeepgramSTTService(api_key=os.getenv("DEEPGRAM_API_KEY"))
+            stt = DeepgramSTTService(
+                api_key=os.getenv("DEEPGRAM_API_KEY"),
+            )
 
             tts = CartesiaTTSService(
                 api_key=os.getenv("CARTESIA_API_KEY"),
                 voice_id=os.getenv("CARTESIA_VOICE_ID"),
             )
 
-            llm = OpenAILLMService(api_key="pipecat-pipeline", base_url=agent_url)
+            llm = OpenAILLMService(
+                api_key="pipecat-pipeline",
+                base_url=agent_url,
+            )
 
             messages = [
                 {
@@ -91,7 +102,9 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
             ]
 
             context = OpenAILLMContext(messages)
-            context_aggregator = llm.create_context_aggregator(context)
+            context_aggregator = llm.create_context_aggregator(
+                context,
+            )
 
             pipeline = Pipeline(
                 [
@@ -103,7 +116,7 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
                     tavus,  # Tavus output layer
                     transport.output(),  # Transport bot output
                     context_aggregator.assistant(),  # Assistant spoken responses
-                ]
+                ],
             )
 
             task = PipelineTask(
@@ -120,31 +133,51 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
 
             @transport.event_handler("on_participant_joined")
             async def on_participant_joined(
-                transport: DailyTransport, participant: Mapping[str, Any]
+                transport: DailyTransport,
+                participant: Mapping[str, Any],
             ) -> None:
+                participant_id = participant.get("id")
+                if participant_id is None:
+                    log.warning(
+                        "Participant joined without an 'id', skipping update_subscriptions.",
+                    )
+                    return
+
                 # Ignore the Tavus replica's microphone
-                if participant.get("info", {}).get("userName", "") == persona_name:
-                    log.debug(f"Ignoring {participant['id']}'s microphone")
+                if (
+                    participant.get("info", {}).get(
+                        "userName",
+                        "",
+                    )
+                    == persona_name
+                ):
+                    log.debug(
+                        f"Ignoring {participant_id}'s microphone",
+                    )
                     await transport.update_subscriptions(
                         participant_settings={
-                            participant["id"]: {
-                                "media": {"microphone": "unsubscribed"},
-                            }
-                        }
+                            str(participant_id): {
+                                "media": {
+                                    "microphone": "unsubscribed",
+                                },
+                            },
+                        },
                     )
                 else:
                     messages.append(
                         {
                             "role": "system",
                             "content": "Please introduce yourself to the user. Keep it short and concise.",
-                        }
+                        },
                     )
                     await task.queue_frames(
-                        [context_aggregator.user().get_context_frame()]
+                        [
+                            context_aggregator.user().get_context_frame(),
+                        ],
                     )
 
             @transport.event_handler("on_participant_left")
-            async def on_participant_left(transport, participant, reason):
+            async def on_participant_left() -> None:
                 await task.cancel()
 
             runner = PipelineRunner()
@@ -153,16 +186,22 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
                 try:
                     await runner.run(task)
                 except Exception as e:
-                    error_message = "Pipeline runner encountered an error, cancelling pipeline"
+                    error_message = "Pipeline runner error, cancelling pipeline"
                     log.error(error_message, error=e)
-                    # Cancel the pipeline task if an error occurs within the pipeline runner.
                     await task.cancel()
                     raise NonRetryableError(error_message) from e
 
-            # Launch the pipeline runner as a background task so it doesn't block the return.
-            asyncio.create_task(run_pipeline())
+            pipeline_task = asyncio.create_task(run_pipeline())
+            pipeline_task.add_done_callback(
+                lambda t: t.exception()
+                if t.exception() is not None
+                else None,
+            )
 
-            log.info("Pipecat pipeline started", room_url=room_url)
+            log.info(
+                "Pipecat pipeline started",
+                room_url=room_url,
+            )
 
             # Return the room_url immediately.
             return room_url

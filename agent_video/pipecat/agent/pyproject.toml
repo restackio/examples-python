@@ -1,0 +1,27 @@
+[project]
+name = "agent_video_pipecat_agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openai>=1.59.9",
+    "pipecat-ai[daily,deepgram,openai,silero,cartesia]>=0.0.58",
+    "python-dotenv>=1.0.1",
+    "pydantic>=2.10.6",
+    "watchfiles>=1.0.4",
+    "restack-ai>=0.0.85",]
+
+[project.scripts]
+dev = "src.services:watch_services"
+services = "src.services:run_services"
+
+[tool.hatch.build.targets.sdist]
+include = ["src"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -1,5 +1,5 @@
 [project]
-name = "agent_video"
+name = "agent_video_pipecat_pipeline"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -10,7 +10,9 @@ dependencies = [
     "python-dotenv>=1.0.1",
     "pydantic>=2.10.6",
     "watchfiles>=1.0.4",
-    "restack-ai>=0.0.81",]
+    "restack-ai>=0.0.85",
+    "livekit>=0.21.3",
+]
 
 [project.scripts]
 dev = "src.services:watch_services"
