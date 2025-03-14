@@ -1,6 +1,7 @@
 import asyncio
 import base64
 import json
+import os
 import uuid
 
 import aiohttp
@@ -19,6 +20,7 @@ from pipecat.frames.frames import (
     TTSAudioRawFrame,
     TTSStartedFrame,
     TTSStoppedFrame,
+    StartInterruptionFrame,
 )
 from pipecat.processors.frame_processor import FrameDirection
 from pipecat.services.ai_services import AIService
@@ -55,9 +57,9 @@ class HeyGenVideoService(AIService):
         self._video_event.set()
 
     # Constants
-    SAMPLE_RATE_24000 = 24000
-    BUFFER_DURATION_THRESHOLD_MS = 40
-    BUFFER_COMMIT_THRESHOLD_MS = 500
+    SAMPLE_RATE = 24000
+    BUFFER_DURATION_THRESHOLD_MS = 20
+    BUFFER_COMMIT_THRESHOLD_MS = 200
 
     # AI Service class methods
     async def start(self, frame: StartFrame) -> None:
@@ -78,6 +80,11 @@ class HeyGenVideoService(AIService):
         await self._livekit_disconnect()
         await self.stop_ttfb_metrics()
         await self.stop_processing_metrics()
+      
+    async def interrupt(self, frame: StartInterruptionFrame) -> None:
+        logger.info("HeyGenVideoService interrupting")
+        await super().interrupt(frame)
+        await self._interrupt()
 
     # websocket connection methods
     async def _ws_connect(self) -> None:
@@ -149,9 +156,9 @@ class HeyGenVideoService(AIService):
     async def _ws_send(self, message: dict) -> None:
         """Send a message to HeyGen websocket."""
         try:
-            logger.info(
-                f"HeyGenVideoService ws sending message: {message.get('type')}",
-            )
+            # logger.debug(
+            #     f"HeyGenVideoService ws sending message: {message.get('type')}",
+            # )
             if self._websocket:
                 await self._websocket.send(json.dumps(message))
             else:
@@ -167,7 +174,6 @@ class HeyGenVideoService(AIService):
                 ),
             )
 
-    # heygen api methods
     async def _stop_session(self) -> None:
         """Stop the current session."""
         try:
@@ -178,7 +184,7 @@ class HeyGenVideoService(AIService):
         headers = {
             "Content-Type": "application/json",
             "accept": "application/json",
-            "Authorization": f"Bearer {self._session_token}",
+            "x-api-key": os.getenv("HEYGEN_API_KEY"),
         }
         body = {"session_id": self._session_id}
         async with self._session.post(
@@ -188,6 +194,21 @@ class HeyGenVideoService(AIService):
         ) as r:
             r.raise_for_status()
 
+    async def _interrupt(self) -> None:
+        """Interrupt the current session."""
+        url = f"{self._api_base_url}/v1/streaming.interrupt"
+        headers = {
+            "Content-Type": "application/json",
+            "accept": "application/json",
+            "x-api-key": os.getenv("HEYGEN_API_KEY"),
+        }
+        body = {"session_id": self._session_id}
+        async with self._session.post(
+            url,
+            headers=headers,
+            json=body,
+        ) as r:
+            r.raise_for_status()
     # audio buffer methods
     async def _send_audio(
         self,
@@ -197,18 +218,18 @@ class HeyGenVideoService(AIService):
         finish: bool = False,
     ) -> None:
         try:
-            if sample_rate != self.SAMPLE_RATE_24000:
+            if sample_rate != self.SAMPLE_RATE:
                 resampler = create_default_resampler()
                 audio = await resampler.resample(
                     audio,
                     sample_rate,
-                    self.SAMPLE_RATE_24000,
+                    self.SAMPLE_RATE,
                 )
             # If sample_rate is already 16000, no resampling is needed
             self._buffered_audio_duration_ms += (
                 self._calculate_audio_duration_ms(
                     audio,
-                    self.SAMPLE_RATE_24000,
+                    self.SAMPLE_RATE,
                 )
             )
             await self._agent_audio_buffer_append(audio)
@@ -546,12 +567,14 @@ class HeyGenVideoService(AIService):
                 logger.info("HeyGenVideoService TTS stopped")
                 await self._send_audio(
                     b"\x00\x00",
-                    self.SAMPLE_RATE_24000,
+                    self.SAMPLE_RATE,
                     self._event_id,
                     finish=True,
                 )
                 await self.stop_processing_metrics()
                 self._event_id = None
+            elif isinstance(frame, StartInterruptionFrame):
+                await self._interrupt()
             elif isinstance(frame, EndFrame | CancelFrame):
                 logger.info("HeyGenVideoService session ended")
                 await self._stop()

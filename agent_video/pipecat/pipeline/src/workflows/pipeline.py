@@ -18,6 +18,10 @@ with import_functions():
         PipecatPipelineTavusInput,
         pipecat_pipeline_tavus,
     )
+    from src.functions.daily_create_room import (
+        DailyRoomInput,
+        daily_create_room,
+    )
 
 
 class PipelineWorkflowOutput(BaseModel):
@@ -51,6 +55,14 @@ class PipelineWorkflow:
                 )
 
             elif workflow_input.video_service == "heygen":
+                
+                daily_room = await workflow.step(
+                    task_queue="pipeline",
+                    function=daily_create_room,
+                    function_input=DailyRoomInput(
+                        room_name=workflow_input.agent_run_id,
+                    ),
+                )
                 room_url = await workflow.step(
                     task_queue="pipeline",
                     function=pipecat_pipeline_heygen,
@@ -58,6 +70,8 @@ class PipelineWorkflow:
                         agent_name=workflow_input.agent_name,
                         agent_id=workflow_input.agent_id,
                         agent_run_id=workflow_input.agent_run_id,
+                        daily_room_url=daily_room.room_url,
+                        daily_room_token=daily_room.token,
                     ),
                     start_to_close_timeout=timedelta(minutes=20),
                 )

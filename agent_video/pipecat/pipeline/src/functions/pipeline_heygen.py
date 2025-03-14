@@ -1,4 +1,3 @@
-import asyncio
 import os
 
 import aiohttp
@@ -26,7 +25,6 @@ from pydantic import BaseModel
 from restack_ai.function import (
     NonRetryableError,
     function,
-    function_info,
     log,
 )
 
@@ -43,6 +41,8 @@ class PipecatPipelineHeygenInput(BaseModel):
     agent_name: str
     agent_id: str
     agent_run_id: str
+    daily_room_url: str
+    daily_room_token: str
 
 
 def get_agent_backend_host(engine_api_address: str) -> str:
@@ -91,8 +91,7 @@ async def pipecat_pipeline_heygen(
     function_input: PipecatPipelineHeygenInput,
 ) -> str:
     try:
-        async with aiohttp.ClientSession() as session:
-            room_id = function_info().workflow_run_id
+        async with aiohttp.ClientSession() as heygen_session:
 
             engine_api_address = os.environ.get(
                 "RESTACK_ENGINE_API_ADDRESS",
@@ -109,25 +108,9 @@ async def pipecat_pipeline_heygen(
             agent_url = f"{agent_backend_host}/stream/agents/{function_input.agent_name}/{function_input.agent_id}/{function_input.agent_run_id}"
             log.info("Agent URL", agent_url=agent_url)
 
-            room = await create_daily_room(session, room_id)
-
-            expiry_time: float = 60 * 60
-
-            daily_rest_helper = DailyRESTHelper(
-                daily_api_key=os.getenv("DAILYCO_API_KEY"),
-                daily_api_url="https://api.daily.co/v1",
-                aiohttp_session=session,
-            )
-
-            daily_token = await get_daily_token(
-                daily_rest_helper,
-                room.url,
-                expiry_time,
-            )
-
             transport = DailyTransport(
-                room_url=room.url,
-                token=daily_token,
+                room_url=function_input.daily_room_url,
+                token=function_input.daily_room_token,
                 bot_name="HeyGen",
                 params=DailyParams(
                     audio_out_enabled=True,
@@ -137,6 +120,7 @@ async def pipecat_pipeline_heygen(
                     vad_enabled=True,
                     vad_analyzer=SileroVADAnalyzer(),
                     transcription_enabled=True,
+                    audio_out_sample_rate=HeyGenVideoService.SAMPLE_RATE,
                 ),
             )
 
@@ -147,7 +131,8 @@ async def pipecat_pipeline_heygen(
             tts = CartesiaTTSService(
                 api_key=os.getenv("CARTESIA_API_KEY"),
                 voice_id=os.getenv("CARTESIA_VOICE_ID"),
-                sample_rate=24000,
+                sample_rate=HeyGenVideoService.SAMPLE_RATE,
+                
             )
 
             llm = OpenAILLMService(
@@ -171,7 +156,7 @@ async def pipecat_pipeline_heygen(
 
             heygen_client = HeyGenClient(
                 api_key=os.getenv("HEYGEN_API_KEY"),
-                session=session,
+                session=heygen_session,
             )
 
             session_response = await heygen_client.new_session(
@@ -188,7 +173,7 @@ async def pipecat_pipeline_heygen(
             heygen_video_service = HeyGenVideoService(
                 session_id=session_response.session_id,
                 session_token=session_response.access_token,
-                session=session,
+                session=heygen_session,
                 realtime_endpoint=session_response.realtime_endpoint,
                 livekit_room_url=session_response.url,
             )
@@ -239,40 +224,25 @@ async def pipecat_pipeline_heygen(
                 )
 
             @transport.event_handler("on_participant_left")
-            async def on_participant_left() -> None:
+            async def on_participant_left(
+                transport: DailyTransport,
+                participant: dict,
+                reason: str,
+            ) -> None:
+                log.info(
+                    "Participant left",
+                    participant=participant,
+                    reason=reason,
+                )
                 await task.cancel()
 
             runner = PipelineRunner()
 
-            async def run_pipeline() -> None:
-                try:
-                    log.info("Running pipeline")
-                    await runner.run(task)
-                except Exception as e:
-                    error_message = "Pipeline runner encountered an error, cancelling pipeline"
-                    log.error(error_message, error=e)
-                    # Cancel the pipeline task if an error occurs within the pipeline runner.
-                    await task.cancel()
-                    raise NonRetryableError(error_message) from e
+            await runner.run(task)
 
-            # Launch the pipeline runner as a background task so it doesn't block the return.
-            pipeline_task = asyncio.create_task(run_pipeline())
-            pipeline_task.add_done_callback(
-                lambda t: t.exception()
-                if t.exception() is not None
-                else None,
-            )
-
-            room_url = room.url
-
-            log.info(
-                "Pipecat HeyGen pipeline started",
-                room_url=room_url,
-            )
-
-            # Return the room_url immediately.
-            return room_url
+            return 'Pipeline done'
     except Exception as e:
         error_message = "Pipecat pipeline failed"
         log.error(error_message, error=e)
+        await task.cancel()
         raise NonRetryableError(error_message) from e

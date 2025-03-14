@@ -10,6 +10,7 @@ from src.functions.pipeline_heygen import pipecat_pipeline_heygen
 from src.functions.pipeline_tavus import pipecat_pipeline_tavus
 from src.workflows.pipeline import PipelineWorkflow
 from restack_ai.restack import ServiceOptions
+from src.functions.daily_create_room import daily_create_room
 
 
 async def main() -> None:
@@ -19,9 +20,10 @@ async def main() -> None:
         functions=[
             pipecat_pipeline_tavus,
             pipecat_pipeline_heygen,
+            daily_create_room,
         ],
         options=ServiceOptions(
-            max_concurrent_workflow_runs=1,
+            # max_concurrent_workflow_runs=1,
             endpoint_group="agent_video",  # used to locally show both agent and pipeline endpoints in UI
         ),
     )
