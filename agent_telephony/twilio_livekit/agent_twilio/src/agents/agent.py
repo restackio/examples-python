@@ -133,8 +133,8 @@ class AgentTwilio:
             )
             return self.messages
         except Exception as e:
-            error_message = f"Error during messages: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during messages event"
+            raise NonRetryableError(message=error_message, error=e) from e
 
     @agent.event
     async def call(self, call_input: CallInput) -> None:
@@ -159,10 +159,8 @@ class AgentTwilio:
                 ),
             )
         except Exception as e:
-            error_message = (
-                f"Error during livekit_outbound_trunk: {e}"
-            )
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during call event"
+            raise NonRetryableError(message=error_message, error=e) from e
 
     @agent.event
     async def say(self, say: str) -> SendDataResponse:
@@ -246,8 +244,8 @@ class AgentTwilio:
                 )
 
         except Exception as e:
-            error_message = f"Error during agent run: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during agent run"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             await agent.condition(lambda: self.end)
 

@@ -157,7 +157,7 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
                     log.error(error_message, error=e)
                     # Cancel the pipeline task if an error occurs within the pipeline runner.
                     await task.cancel()
-                    raise NonRetryableError(error_message) from e
+                    raise NonRetryableError(message=error_message, error=e) from e
 
             # Launch the pipeline runner as a background task so it doesn't block the return.
             asyncio.create_task(run_pipeline())
@@ -169,4 +169,4 @@ async def pipecat_pipeline(function_input: PipecatPipelineInput) -> str:
     except Exception as e:
         error_message = "Pipecat pipeline failed"
         log.error(error_message, error=e)
-        raise NonRetryableError(error_message) from e
+        raise NonRetryableError(message=error_message, error=e) from e

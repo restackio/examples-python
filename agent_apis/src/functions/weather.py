@@ -22,5 +22,5 @@ async def weather() -> str:
             error_message = f"Error: {response.status}"
             raise_exception(error_message)
     except Exception as e:
-        error_message = f"Error: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during weather function"
+        raise NonRetryableError(message=error_message, error=e) from e

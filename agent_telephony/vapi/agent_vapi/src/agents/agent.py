@@ -39,8 +39,8 @@ class AgentVapi:
                 start_to_close_timeout=timedelta(seconds=120),
             )
         except Exception as e:
-            error_message = f"llm_chat function failed: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during llm_chat function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             self.messages.append(
                 Message(role="assistant", content=str(assistant_message))
@@ -62,8 +62,8 @@ class AgentVapi:
                 ),
             )
         except Exception as e:
-            error_message = f"vapi_call function failed: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during vapi_call function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             return result
 

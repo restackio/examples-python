@@ -25,8 +25,8 @@ class ChildWorkflow:
                 start_to_close_timeout=timedelta(seconds=120)
             )
         except Exception as e:
-            error_message = f"Error during welcome: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during welcome function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             log.info("ChildWorkflow completed", result=result)
             return ChildOutput(result=result)

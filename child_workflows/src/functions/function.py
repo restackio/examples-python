@@ -7,5 +7,6 @@ async def welcome(function_input: str) -> str:
         log.info("welcome function started", function_input=function_input)
         return f"Hello, {function_input}!"
     except Exception as e:
-        log.error("welcome function failed", error=e)
-        raise NonRetryableError(f"Welcome function failed: {e}") from e
+        error_message = "Error during welcome function"
+        log.error(error_message, error=e)
+        raise NonRetryableError(message=error_message, error=e) from e

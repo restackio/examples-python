@@ -28,5 +28,5 @@ async def context_docs() -> str:
         return docs_content
 
     except Exception as e:
-        error_message = f"context_docs function failed: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during context_docs function"
+        raise NonRetryableError(message=error_message, error=e) from e

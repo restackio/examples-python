@@ -59,10 +59,8 @@ async def livekit_outbound_trunk() -> str:
         await livekit_api.aclose()
 
     except Exception as e:  # Consider catching a more specific exception if possible
-        error_message = (
-            f"livekit_outbound_trunk function failed: {e}"
-        )
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during livekit_outbound_trunk function"
+        raise NonRetryableError(message=error_message, error=e) from e
 
     else:
         return trunk.sip_trunk_id

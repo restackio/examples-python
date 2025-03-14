@@ -56,4 +56,5 @@ async def llm_logic(
         return response.choices[0].message.parsed
 
     except Exception as e:
-        raise NonRetryableError(f"llm_slow failed: {e}") from e
+        error_message = "Error during llm_logic function"
+        raise NonRetryableError(message=error_message, error=e) from e

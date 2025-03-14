@@ -49,5 +49,5 @@ async def llm_chat(function_input: LlmChatInput) -> str:
         return await stream_to_websocket(api_address=api_address, data=response)
 
     except Exception as e:
-        error_message = f"llm_chat function failed: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during llm_chat function"
+        raise NonRetryableError(message=error_message, error=e) from e

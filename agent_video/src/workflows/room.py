@@ -33,8 +33,8 @@ class RoomWorkflow:
                 parent_close_policy=ParentClosePolicy.ABANDON,
             )
         except Exception as e:
-            error_message = f"Error during child_start: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during child_start function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             log.info("Agent started", agent=agent)
 
@@ -49,8 +49,8 @@ class RoomWorkflow:
                     start_to_close_timeout=timedelta(minutes=20),
                 )
             except Exception as e:
-                error_message = f"Error during pipecat_pipeline: {e}"
-                raise NonRetryableError(error_message) from e
+                error_message = "Error during pipecat_pipeline function"
+                raise NonRetryableError(message=error_message, error=e) from e
             else:
                 log.info("Pipecat pipeline started")
 

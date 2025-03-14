@@ -50,7 +50,7 @@ async def livekit_call(
             participant=participant,
         )
     except Exception as e:
-        error_message = f"livekit_call function failed: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during livekit_call function"
+        raise NonRetryableError(message=error_message, error=e) from e
     else:
         return participant

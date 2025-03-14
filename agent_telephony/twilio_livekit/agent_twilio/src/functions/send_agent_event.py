@@ -26,6 +26,5 @@ async def send_agent_event(
         )
 
     except Exception as e:
-        raise NonRetryableError(
-            f"send_agent_event failed: {e}"
-        ) from e
+        error_message = "Error during send_agent_event function"
+        raise NonRetryableError(message=error_message, error=e) from e
