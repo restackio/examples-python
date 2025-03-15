@@ -58,8 +58,8 @@ class HeyGenVideoService(AIService):
 
     # Constants
     SAMPLE_RATE = 24000
-    BUFFER_DURATION_THRESHOLD_MS = 20
-    BUFFER_COMMIT_THRESHOLD_MS = 200
+    BUFFER_DURATION_THRESHOLD_MS = 2000
+    BUFFER_COMMIT_THRESHOLD_MS = 4000
 
     # AI Service class methods
     async def start(self, frame: StartFrame) -> None:

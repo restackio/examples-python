@@ -12,16 +12,17 @@ from pipecat.pipeline.task import PipelineParams, PipelineTask
 from pipecat.processors.aggregators.openai_llm_context import (
     OpenAILLMContext,
 )
+
 from pipecat.services.cartesia import CartesiaTTSService
 from pipecat.services.deepgram import DeepgramSTTService
 from pipecat.services.openai import OpenAILLMService
-from pipecat.services.tavus import TavusVideoService
 from pipecat.transports.services.daily import (
     DailyParams,
     DailyTransport,
 )
 from pydantic import BaseModel
 from restack_ai.function import NonRetryableError, function, log
+from src.functions.tavus_video_service import TavusVideoService
 
 load_dotenv(override=True)
 
@@ -30,12 +31,13 @@ class PipecatPipelineTavusInput(BaseModel):
     agent_name: str
     agent_id: str
     agent_run_id: str
+    daily_room_url: str
 
 
 @function.defn(name="pipecat_pipeline_tavus")
-async def pipecat_pipeline_tavus(  # noqa: PLR0915
+async def pipecat_pipeline_tavus(
     function_input: PipecatPipelineTavusInput,
-) -> str:
+) -> bool:
     try:
         async with aiohttp.ClientSession() as session:
             engine_api_address = os.environ.get(
@@ -62,19 +64,24 @@ async def pipecat_pipeline_tavus(  # noqa: PLR0915
                 api_key=os.getenv("TAVUS_API_KEY"),
                 replica_id=os.getenv("TAVUS_REPLICA_ID"),
                 session=session,
+                conversation_id=function_input.daily_room_url.split("/")[-1],
             )
 
-            persona_name = await tavus.get_persona_name()
-            room_url = await tavus.initialize()
 
+ 
+            persona_name = await tavus.get_persona_name()
+            
             transport = DailyTransport(
-                room_url=room_url,
+                room_url=function_input.daily_room_url,
                 token=None,
                 bot_name=persona_name,
                 params=DailyParams(
+                    audio_out_enabled=True,
+                    camera_out_enabled=True,
                     vad_enabled=True,
                     vad_analyzer=SileroVADAnalyzer(),
                     vad_audio_passthrough=True,
+                    audio_out_sample_rate=TavusVideoService.SAMPLE_RATE,
                 ),
             )
 
@@ -85,6 +92,7 @@ async def pipecat_pipeline_tavus(  # noqa: PLR0915
             tts = CartesiaTTSService(
                 api_key=os.getenv("CARTESIA_API_KEY"),
                 voice_id=os.getenv("CARTESIA_VOICE_ID"),
+                sample_rate=TavusVideoService.SAMPLE_RATE,
             )
 
             llm = OpenAILLMService(
@@ -96,7 +104,7 @@ async def pipecat_pipeline_tavus(  # noqa: PLR0915
                 {
                     "role": "system",
                     "content": (
-                        "You are Philippe Brule, CTO and co-founder of restack : the entreprise-grade backend framework to help develoeprs build reliable and accurate AI agents. You live in San Francisco, California."
+                        "You are Philippe Brule, CTO and co-founder of restack : the entreprise-grade backend framework to help developers build reliable and accurate AI agents. You live in San Francisco, California."
                     ),
                 },
             ]
@@ -122,13 +130,13 @@ async def pipecat_pipeline_tavus(  # noqa: PLR0915
             task = PipelineTask(
                 pipeline,
                 params=PipelineParams(
-                    audio_in_sample_rate=16000,
-                    audio_out_sample_rate=16000,
                     allow_interruptions=True,
                     enable_metrics=True,
                     enable_usage_metrics=True,
                     report_only_initial_ttfb=True,
+                    audio_out_sample_rate=TavusVideoService.SAMPLE_RATE,
                 ),
+                check_dangling_tasks=True,
             )
 
             @transport.event_handler("on_participant_joined")
@@ -177,34 +185,26 @@ async def pipecat_pipeline_tavus(  # noqa: PLR0915
                     )
 
             @transport.event_handler("on_participant_left")
-            async def on_participant_left() -> None:
+            async def on_participant_left(transport: DailyTransport,
+                participant: dict,
+                reason: str,) -> None:
+                log.info(
+                    "Participant left",
+                    participant=participant,
+                    reason=reason,
+                )
                 await task.cancel()
 
             runner = PipelineRunner()
 
-            async def run_pipeline() -> None:
-                try:
-                    await runner.run(task)
-                except Exception as e:
-                    error_message = "Pipeline runner error, cancelling pipeline"
-                    log.error(error_message, error=e)
-                    await task.cancel()
-                    raise NonRetryableError(error_message) from e
+            try:
+                await runner.run(task)
+            except Exception as e:
+                log.error("Pipeline runner error, cancelling pipeline", error=e)
+                await task.cancel()
+                raise NonRetryableError("Pipeline runner error, cancelling pipeline") from e
 
-            pipeline_task = asyncio.create_task(run_pipeline())
-            pipeline_task.add_done_callback(
-                lambda t: t.exception()
-                if t.exception() is not None
-                else None,
-            )
-
-            log.info(
-                "Pipecat pipeline started",
-                room_url=room_url,
-            )
-
-            # Return the room_url immediately.
-            return room_url
+            return True
     except Exception as e:
         error_message = "Pipecat pipeline failed"
         log.error(error_message, error=e)

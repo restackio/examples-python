@@ -18,72 +18,91 @@ with import_functions():
         PipecatPipelineTavusInput,
         pipecat_pipeline_tavus,
     )
-    from src.functions.daily_create_room import (
-        DailyRoomInput,
-        daily_create_room,
+    from src.functions.daily_delete_room import (
+        DailyDeleteRoomInput,
+        daily_delete_room,
     )
-
-
-class PipelineWorkflowOutput(BaseModel):
-    room_url: str
-
+    from src.functions.send_agent_event import (
+        SendAgentEventInput,
+        send_agent_event,
+    )
 
 class PipelineWorkflowInput(BaseModel):
     video_service: Literal["tavus", "heygen"]
     agent_name: str
     agent_id: str
     agent_run_id: str
-
+    daily_room_url: str | None = None
+    daily_room_token: str | None = None
 
 @workflow.defn()
 class PipelineWorkflow:
     @workflow.run
     async def run(
         self, workflow_input: PipelineWorkflowInput
-    ) -> PipelineWorkflowOutput:
+    ) -> bool:
         try:
             if workflow_input.video_service == "tavus":
-                room_url = await workflow.step(
+                await workflow.step(
                     task_queue="pipeline",
                     function=pipecat_pipeline_tavus,
                     function_input=PipecatPipelineTavusInput(
                         agent_name=workflow_input.agent_name,
                         agent_id=workflow_input.agent_id,
                         agent_run_id=workflow_input.agent_run_id,
+                        daily_room_url=workflow_input.daily_room_url,
                     ),
                     start_to_close_timeout=timedelta(minutes=20),
                 )
 
             elif workflow_input.video_service == "heygen":
-                
-                daily_room = await workflow.step(
+
+                try:
+                    await workflow.step(
+                        task_queue="pipeline",
+                        function=pipecat_pipeline_heygen,
+                        function_input=PipecatPipelineHeygenInput(
+                            agent_name=workflow_input.agent_name,
+                            agent_id=workflow_input.agent_id,
+                            agent_run_id=workflow_input.agent_run_id,
+                            daily_room_url=workflow_input.daily_room_url,
+                            daily_room_token=workflow_input.daily_room_token,
+                        ),
+                        start_to_close_timeout=timedelta(minutes=20),
+                    )
+
+                except Exception as e:
+                    log.error("Error creating heygen room", error=e)
+                    await workflow.step(
+                        task_queue="pipeline",
+                        function=daily_delete_room,
+                        function_input=DailyDeleteRoomInput(
+                            room_name=workflow_input.agent_run_id,
+                        ),
+                    )
+
+                await workflow.step(
                     task_queue="pipeline",
-                    function=daily_create_room,
-                    function_input=DailyRoomInput(
+                    function=daily_delete_room,
+                    function_input=DailyDeleteRoomInput(
                         room_name=workflow_input.agent_run_id,
                     ),
                 )
-                room_url = await workflow.step(
+
+                await workflow.step(
                     task_queue="pipeline",
-                    function=pipecat_pipeline_heygen,
-                    function_input=PipecatPipelineHeygenInput(
-                        agent_name=workflow_input.agent_name,
+                    function=send_agent_event,
+                    function_input=SendAgentEventInput(
+                        event_name="end",
                         agent_id=workflow_input.agent_id,
-                        agent_run_id=workflow_input.agent_run_id,
-                        daily_room_url=daily_room.room_url,
-                        daily_room_token=daily_room.token,
+                        run_id=workflow_input.agent_run_id,
                     ),
-                    start_to_close_timeout=timedelta(minutes=20),
                 )
 
         except Exception as e:
             error_message = f"Error during pipecat_pipeline: {e}"
             raise NonRetryableError(error_message) from e
         else:
-            log.info("Pipecat pipeline started")
+            log.info("Pipecat pipeline done")
 
-            log.info(
-                "PipelineWorkflow completed", room_url=room_url
-            )
-
-            return PipelineWorkflowOutput(room_url=room_url)
+            return True

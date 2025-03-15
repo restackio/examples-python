@@ -50,7 +50,7 @@ def get_agent_backend_host(engine_api_address: str) -> str:
 @function.defn(name="pipecat_pipeline_heygen")
 async def pipecat_pipeline_heygen(
     function_input: PipecatPipelineHeygenInput,
-) -> str:
+) -> bool:
     try:
         async with aiohttp.ClientSession() as session:
 
@@ -105,7 +105,7 @@ async def pipecat_pipeline_heygen(
                 {
                     "role": "system",
                     "content": (
-                        "You are Philippe Brule, CTO and co-founder of restack : the entreprise-grade backend framework to help develoeprs build reliable and accurate AI agents. You live in San Francisco, California."
+                        "You are Philippe Brule, CTO and co-founder of restack : the entreprise-grade backend framework to help developers build reliable and accurate AI agents. You live in San Francisco, California."
                     ),
                 },
             ]
@@ -159,7 +159,9 @@ async def pipecat_pipeline_heygen(
                     enable_metrics=True,
                     enable_usage_metrics=True,
                     report_only_initial_ttfb=True,
+                    audio_out_sample_rate=HeyGenVideoService.SAMPLE_RATE,
                 ),
+                check_dangling_tasks=True,
             )
 
             @transport.event_handler(
@@ -199,11 +201,15 @@ async def pipecat_pipeline_heygen(
 
             runner = PipelineRunner()
 
-            await runner.run(task)
+            try:
+                await runner.run(task)
+            except Exception as e:
+                log.error("Pipeline runner error, cancelling pipeline", error=e)
+                await task.cancel()
+                raise NonRetryableError("Pipeline runner error, cancelling pipeline") from e
 
-            return 'Pipeline done'
+            return True
     except Exception as e:
         error_message = "Pipecat pipeline failed"
         log.error(error_message, error=e)
-        await task.cancel()
         raise NonRetryableError(error_message) from e
