@@ -81,7 +81,6 @@ async def pipecat_pipeline_heygen(
                     camera_out_height=480,
                     vad_enabled=True,
                     vad_analyzer=SileroVADAnalyzer(),
-                    transcription_enabled=True,
                     audio_out_sample_rate=HeyGenVideoService.SAMPLE_RATE,
                 ),
             )
@@ -106,7 +105,7 @@ async def pipecat_pipeline_heygen(
                 {
                     "role": "system",
                     "content": (
-                        "You are Philippe Brule, CTO and co-founder of restack : the entreprise-grade backend framework to help developers build reliable and accurate AI agents. You live in San Francisco, California."
+                        "Your background: You are Philippe Brule, CTO and co-founder of restack : the entreprise-grade backend framework to help developers build reliable and accurate AI agents. You live in San Francisco, California. Don't mention these unless asked."
                     ),
                 },
             ]
@@ -172,9 +171,6 @@ async def pipecat_pipeline_heygen(
                 transport: DailyTransport,
                 participant: dict,
             ) -> None:
-                await transport.capture_participant_transcription(
-                    participant["id"],
-                )
                 messages.append(
                     {
                         "role": "system",

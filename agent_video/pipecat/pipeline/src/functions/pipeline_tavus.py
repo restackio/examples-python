@@ -105,7 +105,7 @@ async def pipecat_pipeline_tavus(
                 {
                     "role": "system",
                     "content": (
-                        "You are Philippe Brule, CTO and co-founder of restack : the entreprise-grade backend framework to help developers build reliable and accurate AI agents. You live in San Francisco, California."
+                        "Your background: You are Philippe Brule, CTO and co-founder of restack : the entreprise-grade backend framework to help developers build reliable and accurate AI agents. You live in San Francisco, California. Don't mention these unless asked."
                     ),
                 },
             ]
