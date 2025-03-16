@@ -1,5 +1,4 @@
 from datetime import timedelta
-from typing import Literal
 
 from pydantic import BaseModel
 from restack_ai.agent import (
@@ -7,8 +6,6 @@ from restack_ai.agent import (
     agent,
     import_functions,
     log,
-    agent_info,
-    ParentClosePolicy,
 )
 
 with import_functions():
@@ -18,6 +15,7 @@ with import_functions():
         Message,
         llm_chat,
     )
+    from src.functions.daily_send_data import daily_send_data, DailySendDataInput
 
 
 class MessagesEvent(BaseModel):
@@ -27,12 +25,20 @@ class MessagesEvent(BaseModel):
 class EndEvent(BaseModel):
     end: bool
 
+class AgentInput(BaseModel):
+    room_url: str
+
+class DailyMessageEvent(BaseModel):
+    message: str
+    recipient: str | None = None
+
 
 @agent.defn()
 class AgentVideo:
     def __init__(self) -> None:
         self.end = False
         self.messages: list[Message] = []
+        self.room_url = ""
 
     @agent.event
     async def messages(
@@ -68,9 +74,23 @@ class AgentVideo:
         self.end = True
         return end
 
+    @agent.event
+    async def daily_message(self, daily_message: DailyMessageEvent) -> bool:
+        log.info("Received message", daily_message=daily_message)
+        await agent.step(
+            function=daily_send_data,
+            function_input=DailySendDataInput(
+                room_url=self.room_url,
+                data={"text": daily_message.message, "author": "agent"},
+                recipient=daily_message.recipient,
+            ),
+        )
+        return True
+
     @agent.run
-    async def run(self) -> None:
+    async def run(self, agent_input: AgentInput) -> None:
         try:
+            self.room_url = agent_input.room_url
             docs = await agent.step(function=context_docs)
         except Exception as e:
             error_message = f"context_docs function failed: {e}"

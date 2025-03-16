@@ -28,6 +28,7 @@ from src.functions.heygen_client import (
     NewSessionRequest,
 )
 from src.functions.heygen_video_service import HeyGenVideoService
+# from pipecat.frames.frames import EndFrame, TTSSpeakFrame
 
 load_dotenv(override=True)
 
@@ -146,7 +147,7 @@ async def pipecat_pipeline_heygen(
                     context_aggregator.user(),  # User responses
                     llm,  # LLM
                     tts,  # TTS
-                    heygen_video_service,  # HeyGen output layer replacing Tavus
+                    heygen_video_service,  # HeyGen output layer
                     transport.output(),  # Transport bot output
                     context_aggregator.assistant(),  # Assistant spoken responses
                 ],
@@ -185,6 +186,25 @@ async def pipecat_pipeline_heygen(
                         context_aggregator.user().get_context_frame(),
                     ],
                 )
+
+            # @transport.event_handler("on_participant_joined")
+            # async def on_participant_joined(transport, participant):
+            #     participant_name = participant.get("info", {}).get("userName", "")
+            #     log.debug(f"Participant joined: {participant_name}")
+            #     await task.queue_frames(
+            #         [TTSSpeakFrame(f"Hello there, {participant_name}!"), EndFrame()]
+            #     )
+            #     # await llm.push_frame(TTSSpeakFrame(f"Hello there, {participant_name}!"))
+
+            # @transport.event_handler("on_app_message")
+            # async def on_app_message(transport, message, sender):
+            #     author = message.get("author")
+            #     text = message.get("text")
+            #     log.debug(f"Received {sender} message from {author}: {text}")
+            #     # await llm.push_frame(TTSSpeakFrame(text))
+            #     await task.queue_frames(
+            #         [TTSSpeakFrame(text), EndFrame()]
+            #     )
 
             @transport.event_handler("on_participant_left")
             async def on_participant_left(

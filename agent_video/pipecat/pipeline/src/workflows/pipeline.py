@@ -72,7 +72,7 @@ class PipelineWorkflow:
                     )
 
                 except Exception as e:
-                    log.error("Error creating heygen room", error=e)
+                    log.error("Error heygen pipeline", error=e)
                     await workflow.step(
                         task_queue="pipeline",
                         function=daily_delete_room,

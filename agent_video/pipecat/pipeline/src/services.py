@@ -23,7 +23,6 @@ async def main() -> None:
             send_agent_event,
         ],
         options=ServiceOptions(
-            # max_concurrent_workflow_runs=1,
             endpoint_group="agent_video",  # used to locally show both agent and pipeline endpoints in UI
         ),
     )

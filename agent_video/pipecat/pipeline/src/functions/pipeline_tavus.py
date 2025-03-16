@@ -23,6 +23,7 @@ from pipecat.transports.services.daily import (
 from pydantic import BaseModel
 from restack_ai.function import NonRetryableError, function, log
 from src.functions.tavus_video_service import TavusVideoService
+# from pipecat.frames.frames import EndFrame, TTSSpeakFrame
 
 load_dotenv(override=True)
 
@@ -183,6 +184,24 @@ async def pipecat_pipeline_tavus(
                             context_aggregator.user().get_context_frame(),
                         ],
                     )
+
+            # @transport.event_handler("on_participant_joined")
+            # async def on_participant_joined(transport, participant):
+            #     participant_name = participant.get("info", {}).get("userName", "")
+            #     await task.queue_frames(
+            #         [TTSSpeakFrame(f"Hello there, {participant_name}!"), EndFrame()]
+            #     )
+
+            # @transport.event_handler("on_app_message")
+            # async def on_app_message(transport, message, sender):
+            #     log.info(f"Received {sender} message: {message}")
+            #     # author = message.get("author")
+            #     # text = message.get("text")
+            #     # log.debug(f"Received {sender} message from {author}: {text}")
+            #     # await llm.push_frame(TTSSpeakFrame(text))
+            #     # await task.queue_frames(
+            #     #     [TTSSpeakFrame(text), EndFrame()]
+            #     # )
 
             @transport.event_handler("on_participant_left")
             async def on_participant_left(transport: DailyTransport,

@@ -13,6 +13,7 @@ from src.workflows.room import RoomWorkflow
 from restack_ai.restack import ServiceOptions
 from src.functions.daily_create_room import daily_create_room
 from src.functions.tavus_create_room import tavus_create_room
+from src.functions.daily_send_data import daily_send_data
 
 async def main() -> None:
     await client.start_service(
@@ -23,6 +24,7 @@ async def main() -> None:
             context_docs,
             daily_create_room,
             tavus_create_room,
+            daily_send_data,
         ],
         options=ServiceOptions(
             endpoint_group="agent_video",  # used to locally show both agent and pipeline endpoint in UI
