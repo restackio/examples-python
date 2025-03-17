@@ -9,12 +9,30 @@ For a complete documentation on how the agent works and how to setup the service
 
 - Docker (for running Restack)
 - Python 3.10 or higher
+- Livekit account (for live chat)
 - Deepgram account (For speech-to-text transcription)
 - ElevenLabs account (for text-to-speech and voice cloning)
 
 ## Configure environment variables
 
 In all subfolders, duplicate the `env.example` file and rename it to `.env`.
+
+### How to setup
+
+1. **Set up Deepgram**
+  - Sign up at [Deepgram](https://developers.deepgram.com/home/introduction)
+  - Get an API key
+
+2. **Set up Livekit**
+  - Sign up at [Livekit](https://docs.livekit.io/home/)
+  - In .env file:
+    - Set `LIVEKIT_URL` to `WEBSOCKET_URL` value
+    - Set `LIVEKIT_API_KEY` to `API_KEY` value
+    - Set `LIVEKIT_API_SECRET` to `API_SECRET` value
+
+3. **Set up ElevenLabs**
+  - Sign up at [ElevenLabs](https://elevenlabs.io/docs/overview)
+  - Add `ELEVENLABS_API_KEY` to .env file
 
 Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
 
