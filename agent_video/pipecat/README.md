@@ -11,7 +11,7 @@ For a complete documentation on how the agent works and how to setup the service
 - Python 3.10 or higher
 - Deepgram account (For speech-to-text transcription)
 - Cartesia account (for text-to-speech and voice cloning)
-- Tavus account (for video replica)
+- Tavus or Heygen account (for video replica)
 
 ## Start Restack
 
@@ -21,9 +21,17 @@ To start the Restack, use the following Docker command:
 docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 -p 9233:9233 ghcr.io/restackio/restack:main
 ```
 
-## Start python shell
+## Configure environment variables
 
-If using uv:
+In all subfolders, duplicate the `env.example` file and rename it to `.env`.
+
+Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
+
+## Start Restack Agent
+
+in /agent
+
+### Start python shell
 
 ```bash
 uv venv && source .venv/bin/activate
@@ -35,7 +43,7 @@ If using pip:
 python -m venv .venv && source .venv/bin/activate
 ```
 
-## Install dependencies
+### Install dependencies
 
 If using uv:
 
@@ -51,13 +59,37 @@ pip install -e .
 python -c "from src.services import watch_services; watch_services()"
 ```
 
-## Configure Your Environment Variables
+## Start Pipecat pipeline
 
-Duplicate the `env.example` file and rename it to `.env`.
+in /pipeline
 
-Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
+### Start python shell
 
-## Create Room and run Agent in parallel
+```bash
+uv venv && source .venv/bin/activate
+```
+
+If using pip:
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+```
+
+### Install dependencies
+
+If using uv:
+
+```bash
+uv sync
+uv run dev
+```
+
+If using pip:
+
+```bash
+pip install -e .
+python -c "from src.services import watch_services; watch_services()"
+```
 
 ### from UI
 
