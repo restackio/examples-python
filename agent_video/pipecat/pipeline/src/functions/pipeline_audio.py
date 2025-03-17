@@ -24,16 +24,11 @@ from restack_ai.function import (
     log,
 )
 
-from src.functions.heygen_client import (
-    HeyGenClient,
-    NewSessionRequest,
-)
-from src.functions.heygen_video_service import HeyGenVideoService
-
+from pipecat.frames.frames import EndFrame, TTSSpeakFrame
 load_dotenv(override=True)
 
 
-class PipecatPipelineHeygenInput(BaseModel):
+class PipecatPipelineAudioInput(BaseModel):
     agent_name: str
     agent_id: str
     agent_run_id: str
@@ -48,9 +43,9 @@ def get_agent_backend_host(engine_api_address: str) -> str:
         return "https://" + engine_api_address
     return engine_api_address
 
-@function.defn(name="pipecat_pipeline_heygen")
-async def pipecat_pipeline_heygen(
-    function_input: PipecatPipelineHeygenInput,
+@function.defn(name="pipecat_pipeline_audio")
+async def pipecat_pipeline_audio(
+    function_input: PipecatPipelineAudioInput,
 ) -> bool:
     try:
         async with aiohttp.ClientSession() as session:
@@ -76,12 +71,10 @@ async def pipecat_pipeline_heygen(
                 bot_name="HeyGen",
                 params=DailyParams(
                     audio_out_enabled=True,
-                    camera_out_enabled=True,
-                    camera_out_width=854,
-                    camera_out_height=480,
+                    camera_out_enabled=False,
                     vad_enabled=True,
                     vad_analyzer=SileroVADAnalyzer(),
-                    audio_out_sample_rate=HeyGenVideoService.SAMPLE_RATE,
+                    audio_out_sample_rate=24000,
                 ),
             )
 
@@ -92,7 +85,7 @@ async def pipecat_pipeline_heygen(
             tts = CartesiaTTSService(
                 api_key=os.getenv("CARTESIA_API_KEY"),
                 voice_id=os.getenv("CARTESIA_VOICE_ID"),
-                sample_rate=HeyGenVideoService.SAMPLE_RATE,
+                sample_rate=24000,
                 
             )
 
@@ -115,30 +108,6 @@ async def pipecat_pipeline_heygen(
                 context,
             )
 
-            heygen_client = HeyGenClient(
-                api_key=os.getenv("HEYGEN_API_KEY"),
-                session=session,
-            )
-
-            session_response = await heygen_client.new_session(
-                NewSessionRequest(
-                    avatarName="Bryan_IT_Sitting_public",
-                    version="v2",
-                ),
-            )
-
-            await heygen_client.start_session(
-                session_response.session_id,
-            )
-
-            heygen_video_service = HeyGenVideoService(
-                session_id=session_response.session_id,
-                session_token=session_response.access_token,
-                session=session,
-                realtime_endpoint=session_response.realtime_endpoint,
-                livekit_room_url=session_response.url,
-            )
-
             pipeline = Pipeline(
                 [
                     transport.input(),  # Transport user input
@@ -146,7 +115,6 @@ async def pipecat_pipeline_heygen(
                     context_aggregator.user(),  # User responses
                     llm,  # LLM
                     tts,  # TTS
-                    heygen_video_service,  # HeyGen output layer
                     transport.output(),  # Transport bot output
                     context_aggregator.assistant(),  # Assistant spoken responses
                 ],
@@ -159,7 +127,7 @@ async def pipecat_pipeline_heygen(
                     enable_metrics=True,
                     enable_usage_metrics=True,
                     report_only_initial_ttfb=True,
-                    audio_out_sample_rate=HeyGenVideoService.SAMPLE_RATE,
+                    audio_out_sample_rate=24000,
                 ),
                 check_dangling_tasks=True,
             )
@@ -185,6 +153,60 @@ async def pipecat_pipeline_heygen(
                         context_aggregator.user().get_context_frame(),
                     ],
                 )
+
+
+
+            
+            @transport.event_handler("on_app_message")
+            async def on_app_message(transport, message, sender):
+                author = message.get("author")
+                text = message.get("text")
+
+                log.debug(f"Received {sender} message from {author}: {text}")
+
+                try:
+
+                    await tts.say(f"I received a message from {author}.")
+                    
+
+                    await task.queue_frames([
+                        TTSSpeakFrame(f"I received a message from {author}."),
+                        EndFrame(),
+                    ])
+
+
+
+                    log.info("tts say")
+
+                    await tts.say(text)
+
+                    log.info("llm push frame")
+                
+                    await llm.push_frame(TTSSpeakFrame(text))
+
+                    log.info("task queue frames")
+
+                    await task.queue_frames([
+                        TTSSpeakFrame(text),
+                        EndFrame(),
+                    ])
+
+                    log.info("task queue frames context_aggregator")
+
+                    messages.append(
+                        {
+                            "role": "user",
+                            "content": f"Say {text}",
+                        },
+                    )
+                    await task.queue_frames(
+                        [
+                            context_aggregator.user().get_context_frame(),
+                        ],
+                    )
+
+                except Exception as e:
+                    log.error("Error processing message", error=e)
 
             @transport.event_handler("on_participant_left")
             async def on_participant_left(

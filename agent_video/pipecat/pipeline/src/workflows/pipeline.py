@@ -26,9 +26,13 @@ with import_functions():
         SendAgentEventInput,
         send_agent_event,
     )
+    from src.functions.pipeline_audio import (
+        PipecatPipelineAudioInput,
+        pipecat_pipeline_audio,
+    )
 
 class PipelineWorkflowInput(BaseModel):
-    video_service: Literal["tavus", "heygen"]
+    video_service: Literal["tavus", "heygen", "audio"]
     agent_name: str
     agent_id: str
     agent_run_id: str
@@ -42,6 +46,7 @@ class PipelineWorkflow:
         self, workflow_input: PipelineWorkflowInput
     ) -> bool:
         try:
+          
             if workflow_input.video_service == "tavus":
                 await workflow.step(
                     task_queue="pipeline",
@@ -98,6 +103,50 @@ class PipelineWorkflow:
                         run_id=workflow_input.agent_run_id,
                     ),
                 )
+
+            elif workflow_input.video_service == "audio":
+                
+                try:
+                    await workflow.step(
+                        task_queue="pipeline",
+                        function=pipecat_pipeline_audio,
+                        function_input=PipecatPipelineAudioInput(
+                            agent_name=workflow_input.agent_name,
+                            agent_id=workflow_input.agent_id,
+                            agent_run_id=workflow_input.agent_run_id,
+                            daily_room_url=workflow_input.daily_room_url,
+                            daily_room_token=workflow_input.daily_room_token,
+                        ),
+                    )
+
+                except Exception as e:
+                    log.error("Error audio pipeline", error=e)
+                    await workflow.step(
+                        task_queue="pipeline",
+                        function=daily_delete_room,
+                        function_input=DailyDeleteRoomInput(
+                            room_name=workflow_input.agent_run_id,
+                        ),
+                    )
+
+                await workflow.step(
+                    task_queue="pipeline",
+                    function=daily_delete_room,
+                    function_input=DailyDeleteRoomInput(
+                        room_name=workflow_input.agent_run_id,
+                    ),
+                )
+
+                await workflow.step(
+                    task_queue="pipeline",
+                    function=send_agent_event,
+                    function_input=SendAgentEventInput(
+                        event_name="end",
+                        agent_id=workflow_input.agent_id,
+                        run_id=workflow_input.agent_run_id,
+                    ),
+                )
+
 
         except Exception as e:
             error_message = f"Error during pipecat_pipeline: {e}"

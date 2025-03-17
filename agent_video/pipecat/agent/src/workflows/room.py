@@ -26,11 +26,11 @@ class RoomWorkflowOutput(BaseModel):
 
 
 class RoomWorkflowInput(BaseModel):
-    video_service: Literal["tavus", "heygen"]
+    video_service: Literal["tavus", "heygen", "audio"]
 
 
 class PipelineWorkflowInput(BaseModel):
-    video_service: Literal["tavus", "heygen"]
+    video_service: Literal["tavus", "heygen", "audio"]
     agent_name: str
     agent_id: str
     agent_run_id: str
@@ -55,6 +55,16 @@ class RoomWorkflow:
             pipeline_id = f"{workflow_info().workflow_id}-pipeline"
 
             if workflow_input.video_service == "heygen":
+                daily_room = await workflow.step(
+                    function=daily_create_room,
+                    function_input=DailyRoomInput(
+                        room_name=workflow_info().run_id,
+                    ),
+                )
+                room_url = daily_room.room_url
+                token = daily_room.token
+
+            if workflow_input.video_service == "audio":
                 daily_room = await workflow.step(
                     function=daily_create_room,
                     function_input=DailyRoomInput(

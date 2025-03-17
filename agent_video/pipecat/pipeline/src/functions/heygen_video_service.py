@@ -21,9 +21,7 @@ from pipecat.frames.frames import (
     TTSStartedFrame,
     TTSStoppedFrame,
     StartInterruptionFrame,
-    # TTSSpeakFrame
 )
-# from pipecat.transports.services.daily import DailyTransportMessageUrgentFrame
 from pipecat.processors.frame_processor import FrameDirection
 from pipecat.services.ai_services import AIService
 
@@ -550,15 +548,6 @@ class HeyGenVideoService(AIService):
         direction: FrameDirection,
     ) -> None:
 
-        # if isinstance(frame, DailyTransportMessageUrgentFrame):
-        #     logger.info(f"API message received: {frame.message} from {frame.participant_id}")
-        #     frame.participant_id = None
-
-        # logger.info(f"Processing frame: {type(frame)}")
-
-        # if isinstance(frame, TTSSpeakFrame):
-        #     logger.info(f"TTS say message: {frame.text}")
-            
         await super().process_frame(frame, direction)
         try:
             if isinstance(frame, TTSStartedFrame):

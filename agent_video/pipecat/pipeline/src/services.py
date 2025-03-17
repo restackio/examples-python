@@ -12,6 +12,7 @@ from src.workflows.pipeline import PipelineWorkflow
 from restack_ai.restack import ServiceOptions
 from src.functions.daily_delete_room import daily_delete_room
 from src.functions.send_agent_event import send_agent_event
+from src.functions.pipeline_audio import pipecat_pipeline_audio
 async def main() -> None:
     await client.start_service(
         task_queue="pipeline",
@@ -19,6 +20,7 @@ async def main() -> None:
         functions=[
             pipecat_pipeline_tavus,
             pipecat_pipeline_heygen,
+            pipecat_pipeline_audio,
             daily_delete_room,
             send_agent_event,
         ],
