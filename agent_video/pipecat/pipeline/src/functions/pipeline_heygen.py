@@ -29,6 +29,7 @@ from src.functions.heygen_client import (
     NewSessionRequest,
 )
 from src.functions.heygen_video_service import HeyGenVideoService
+# from pipecat.frames.frames import EndFrame, TTSSpeakFrame
 
 load_dotenv(override=True)
 
@@ -185,6 +186,58 @@ async def pipecat_pipeline_heygen(
                         context_aggregator.user().get_context_frame(),
                     ],
                 )
+
+            # @transport.event_handler("on_app_message")
+            # async def on_app_message(transport, message, sender):
+            #     author = message.get("author")
+            #     text = message.get("text")
+
+            #     log.debug(f"Received {sender} message from {author}: {text}")
+
+            #     try:
+
+            #         await tts.say(f"I received a message from {author}.")
+                    
+
+            #         await task.queue_frames([
+            #             TTSSpeakFrame(f"I received a message from {author}."),
+            #             EndFrame(),
+            #         ])
+
+
+
+            #         log.info("tts say")
+
+            #         await tts.say(text)
+
+            #         log.info("llm push frame")
+                
+            #         await llm.push_frame(TTSSpeakFrame(text))
+
+            #         log.info("task queue frames")
+
+            #         await task.queue_frames([
+            #             TTSSpeakFrame(text),
+            #             EndFrame(),
+            #         ])
+
+            #         log.info("task queue frames context_aggregator")
+
+            #         messages.append(
+            #             {
+            #                 "role": "user",
+            #                 "content": f"Say {text}",
+            #             },
+            #         )
+            #         await task.queue_frames(
+            #             [
+            #                 context_aggregator.user().get_context_frame(),
+            #             ],
+            #         )
+
+            #     except Exception as e:
+            #         log.error("Error processing message", error=e)
+
 
             @transport.event_handler("on_participant_left")
             async def on_participant_left(

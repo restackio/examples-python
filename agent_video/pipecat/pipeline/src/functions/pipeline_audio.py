@@ -25,6 +25,8 @@ from restack_ai.function import (
 )
 
 from pipecat.frames.frames import EndFrame, TTSSpeakFrame
+from pipecat.processors.transcript_processor import TranscriptProcessor
+
 load_dotenv(override=True)
 
 
@@ -68,13 +70,13 @@ async def pipecat_pipeline_audio(
             transport = DailyTransport(
                 room_url=function_input.daily_room_url,
                 token=function_input.daily_room_token,
-                bot_name="HeyGen",
+                bot_name="bot",
                 params=DailyParams(
                     audio_out_enabled=True,
+                    transcription_enabled=True,
                     camera_out_enabled=False,
                     vad_enabled=True,
                     vad_analyzer=SileroVADAnalyzer(),
-                    audio_out_sample_rate=24000,
                 ),
             )
 
@@ -85,8 +87,6 @@ async def pipecat_pipeline_audio(
             tts = CartesiaTTSService(
                 api_key=os.getenv("CARTESIA_API_KEY"),
                 voice_id=os.getenv("CARTESIA_VOICE_ID"),
-                sample_rate=24000,
-                
             )
 
             llm = OpenAILLMService(
@@ -108,14 +108,18 @@ async def pipecat_pipeline_audio(
                 context,
             )
 
+            transcript = TranscriptProcessor()
+
             pipeline = Pipeline(
                 [
                     transport.input(),  # Transport user input
                     stt,  # STT
+                    transcript.user(),  # User transcripts
                     context_aggregator.user(),  # User responses
                     llm,  # LLM
                     tts,  # TTS
                     transport.output(),  # Transport bot output
+                    transcript.assistant(),  # Assistant transcripts
                     context_aggregator.assistant(),  # Assistant spoken responses
                 ],
             )
@@ -127,7 +131,6 @@ async def pipecat_pipeline_audio(
                     enable_metrics=True,
                     enable_usage_metrics=True,
                     report_only_initial_ttfb=True,
-                    audio_out_sample_rate=24000,
                 ),
                 check_dangling_tasks=True,
             )
@@ -157,56 +160,56 @@ async def pipecat_pipeline_audio(
 
 
             
-            @transport.event_handler("on_app_message")
-            async def on_app_message(transport, message, sender):
-                author = message.get("author")
-                text = message.get("text")
+            # @transport.event_handler("on_app_message")
+            # async def on_app_message(transport, message, sender):
+            #     author = message.get("author")
+            #     text = message.get("text")
 
-                log.debug(f"Received {sender} message from {author}: {text}")
+            #     log.debug(f"Received {sender} message from {author}: {text}")
 
-                try:
+            #     try:
 
-                    await tts.say(f"I received a message from {author}.")
+            #         await tts.say(f"I received a message from {author}.")
                     
 
-                    await task.queue_frames([
-                        TTSSpeakFrame(f"I received a message from {author}."),
-                        EndFrame(),
-                    ])
+            #         await task.queue_frames([
+            #             TTSSpeakFrame(f"I received a message from {author}."),
+            #             EndFrame(),
+            #         ])
 
 
 
-                    log.info("tts say")
+            #         log.info("tts say")
 
-                    await tts.say(text)
+            #         await tts.say(text)
 
-                    log.info("llm push frame")
+            #         log.info("llm push frame")
                 
-                    await llm.push_frame(TTSSpeakFrame(text))
+            #         await llm.push_frame(TTSSpeakFrame(text))
 
-                    log.info("task queue frames")
+            #         log.info("task queue frames")
 
-                    await task.queue_frames([
-                        TTSSpeakFrame(text),
-                        EndFrame(),
-                    ])
+            #         await task.queue_frames([
+            #             TTSSpeakFrame(text),
+            #             EndFrame(),
+            #         ])
 
-                    log.info("task queue frames context_aggregator")
+            #         log.info("task queue frames context_aggregator")
 
-                    messages.append(
-                        {
-                            "role": "user",
-                            "content": f"Say {text}",
-                        },
-                    )
-                    await task.queue_frames(
-                        [
-                            context_aggregator.user().get_context_frame(),
-                        ],
-                    )
+            #         messages.append(
+            #             {
+            #                 "role": "user",
+            #                 "content": f"Say {text}",
+            #             },
+            #         )
+            #         await task.queue_frames(
+            #             [
+            #                 context_aggregator.user().get_context_frame(),
+            #             ],
+            #         )
 
-                except Exception as e:
-                    log.error("Error processing message", error=e)
+            #     except Exception as e:
+            #         log.error("Error processing message", error=e)
 
             @transport.event_handler("on_participant_left")
             async def on_participant_left(
