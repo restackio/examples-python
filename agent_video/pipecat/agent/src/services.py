@@ -14,17 +14,24 @@ from restack_ai.restack import ServiceOptions
 from src.functions.daily_create_room import daily_create_room
 from src.functions.tavus_create_room import tavus_create_room
 from src.functions.daily_send_data import daily_send_data
+from src.functions.send_agent_event import send_agent_event
+from src.workflows.logic import LogicWorkflow
+from src.functions.llm_talk import llm_talk
+from src.functions.llm_logic import llm_logic
 
 async def main() -> None:
     await client.start_service(
         agents=[AgentVideo],
-        workflows=[RoomWorkflow],
+        workflows=[RoomWorkflow, LogicWorkflow],
         functions=[
             llm_chat,
+            llm_logic,
+            llm_talk,
             context_docs,
             daily_create_room,
             tavus_create_room,
             daily_send_data,
+            send_agent_event,
         ],
         options=ServiceOptions(
             endpoint_group="agent_video",  # used to locally show both agent and pipeline endpoint in UI

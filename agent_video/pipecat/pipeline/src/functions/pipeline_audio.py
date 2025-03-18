@@ -24,9 +24,6 @@ from restack_ai.function import (
     log,
 )
 
-from pipecat.frames.frames import EndFrame, TTSSpeakFrame
-from pipecat.processors.transcript_processor import TranscriptProcessor
-
 load_dotenv(override=True)
 
 
@@ -72,11 +69,13 @@ async def pipecat_pipeline_audio(
                 token=function_input.daily_room_token,
                 bot_name="bot",
                 params=DailyParams(
+                    audio_in_enabled=True,
                     audio_out_enabled=True,
                     transcription_enabled=True,
                     camera_out_enabled=False,
                     vad_enabled=True,
                     vad_analyzer=SileroVADAnalyzer(),
+                    vad_audio_passthrough=True,
                 ),
             )
 
@@ -97,29 +96,22 @@ async def pipecat_pipeline_audio(
             messages = [
                 {
                     "role": "system",
-                    "content": (
-                        "Your background: You are Philippe Brule, CTO and co-founder of restack : the entreprise-grade backend framework to help developers build reliable and accurate AI agents. You live in San Francisco, California. Don't mention these unless asked."
-                    ),
+                    "content": "",
                 },
             ]
 
-            context = OpenAILLMContext(messages)
-            context_aggregator = llm.create_context_aggregator(
-                context,
-            )
 
-            transcript = TranscriptProcessor()
+            context = OpenAILLMContext(messages)
+            context_aggregator = llm.create_context_aggregator(context)
 
             pipeline = Pipeline(
                 [
                     transport.input(),  # Transport user input
                     stt,  # STT
-                    transcript.user(),  # User transcripts
                     context_aggregator.user(),  # User responses
                     llm,  # LLM
                     tts,  # TTS
-                    transport.output(),  # Transport bot output
-                    transcript.assistant(),  # Assistant transcripts
+                    transport.output(),  # Transport bot output,
                     context_aggregator.assistant(),  # Assistant spoken responses
                 ],
             )
@@ -144,72 +136,18 @@ async def pipecat_pipeline_audio(
             ) -> None:
                 log.info("First participant joined", participant=participant)
 
-                messages.append(
-                    {
-                        "role": "system",
-                        "content": "Please introduce yourself to the user. Keep it short and concise.",
-                    },
-                )
-                
-                await task.queue_frames(
-                    [
-                        context_aggregator.user().get_context_frame(),
-                    ],
-                )
-
-
-
+                messages.append({"role": "system", "content": "Please introduce yourself to the user."})
+                await task.queue_frames([context_aggregator.user().get_context_frame()])
             
-            # @transport.event_handler("on_app_message")
-            # async def on_app_message(transport, message, sender):
-            #     author = message.get("author")
-            #     text = message.get("text")
+            @transport.event_handler("on_app_message")
+            async def on_app_message(transport, message, sender):
+                text = message.get("text")
+                log.debug(f"Received {sender} message with {text}")
+                try:
+                    await tts.say(text)
+                except Exception as e:
+                    log.error("Error processing message", error=e)
 
-            #     log.debug(f"Received {sender} message from {author}: {text}")
-
-            #     try:
-
-            #         await tts.say(f"I received a message from {author}.")
-                    
-
-            #         await task.queue_frames([
-            #             TTSSpeakFrame(f"I received a message from {author}."),
-            #             EndFrame(),
-            #         ])
-
-
-
-            #         log.info("tts say")
-
-            #         await tts.say(text)
-
-            #         log.info("llm push frame")
-                
-            #         await llm.push_frame(TTSSpeakFrame(text))
-
-            #         log.info("task queue frames")
-
-            #         await task.queue_frames([
-            #             TTSSpeakFrame(text),
-            #             EndFrame(),
-            #         ])
-
-            #         log.info("task queue frames context_aggregator")
-
-            #         messages.append(
-            #             {
-            #                 "role": "user",
-            #                 "content": f"Say {text}",
-            #             },
-            #         )
-            #         await task.queue_frames(
-            #             [
-            #                 context_aggregator.user().get_context_frame(),
-            #             ],
-            #         )
-
-            #     except Exception as e:
-            #         log.error("Error processing message", error=e)
 
             @transport.event_handler("on_participant_left")
             async def on_participant_left(

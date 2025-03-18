@@ -19,13 +19,13 @@ if TYPE_CHECKING:
 
 
 class Message(BaseModel):
-    role: Literal["system", "user", "assistant"]
+    role: str
     content: str
 
 
 class LlmChatInput(BaseModel):
     system_content: str | None = None
-    model: str | None = None
+    model: Literal['gpt-4o-mini', 'gpt-4o']
     messages: list[Message] = Field(default_factory=list)
     stream: bool = True
 

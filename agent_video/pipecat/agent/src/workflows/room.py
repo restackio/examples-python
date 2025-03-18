@@ -24,9 +24,11 @@ class RoomWorkflowOutput(BaseModel):
     room_url: str
     token: str | None = None
 
-
 class RoomWorkflowInput(BaseModel):
     video_service: Literal["tavus", "heygen", "audio"]
+    model: Literal['restack', 'gpt-4o-mini', 'gpt-4o'] = 'restack'
+    interactive_prompt: str | None = None
+    reasoning_prompt: str | None = None
 
 
 class PipelineWorkflowInput(BaseModel):
@@ -85,6 +87,9 @@ class RoomWorkflow:
                 agent_id=agent_id,
                 agent_input=AgentInput(
                     room_url=room_url,
+                    model=workflow_input.model,
+                    interactive_prompt=workflow_input.interactive_prompt,
+                    reasoning_prompt=workflow_input.reasoning_prompt,
                 ),
                 start_to_close_timeout=timedelta(minutes=20),
                 parent_close_policy=ParentClosePolicy.ABANDON,
