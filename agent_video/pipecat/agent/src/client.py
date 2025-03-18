@@ -14,6 +14,9 @@ api_key = os.getenv("RESTACK_ENGINE_API_KEY")
 api_address = os.getenv("RESTACK_ENGINE_API_ADDRESS")
 
 connection_options = CloudConnectionOptions(
-    engine_id=engine_id, address=address, api_key=api_key, api_address=api_address
+    engine_id=engine_id,
+    address=address,
+    api_key=api_key,
+    api_address=api_address,
 )
 client = Restack(connection_options)
