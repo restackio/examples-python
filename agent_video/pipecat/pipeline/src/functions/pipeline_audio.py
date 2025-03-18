@@ -1,4 +1,3 @@
-import asyncio
 import os
 
 import aiohttp
@@ -47,131 +46,129 @@ async def pipecat_pipeline_audio(
     function_input: PipecatPipelineAudioInput,
 ) -> bool:
     try:
-        async with aiohttp.ClientSession() as session:
+        engine_api_address = os.environ.get(
+            "RESTACK_ENGINE_API_ADDRESS",
+        )
+        agent_backend_host = get_agent_backend_host(
+            engine_api_address,
+        )
 
-            engine_api_address = os.environ.get(
-                "RESTACK_ENGINE_API_ADDRESS",
-            )
-            agent_backend_host = get_agent_backend_host(
-                engine_api_address,
-            )
+        log.info(
+            "Using RESTACK_ENGINE_API_ADDRESS",
+            agent_backend_host=agent_backend_host,
+        )
 
-            log.info(
-                "Using RESTACK_ENGINE_API_ADDRESS",
-                agent_backend_host=agent_backend_host,
-            )
+        agent_url = f"{agent_backend_host}/stream/agents/{function_input.agent_name}/{function_input.agent_id}/{function_input.agent_run_id}"
+        log.info("Agent URL", agent_url=agent_url)
 
-            agent_url = f"{agent_backend_host}/stream/agents/{function_input.agent_name}/{function_input.agent_id}/{function_input.agent_run_id}"
-            log.info("Agent URL", agent_url=agent_url)
+        transport = DailyTransport(
+            room_url=function_input.daily_room_url,
+            token=function_input.daily_room_token,
+            bot_name="bot",
+            params=DailyParams(
+                audio_in_enabled=True,
+                audio_out_enabled=True,
+                transcription_enabled=True,
+                camera_out_enabled=False,
+                vad_enabled=True,
+                vad_analyzer=SileroVADAnalyzer(),
+                vad_audio_passthrough=True,
+            ),
+        )
 
-            transport = DailyTransport(
-                room_url=function_input.daily_room_url,
-                token=function_input.daily_room_token,
-                bot_name="bot",
-                params=DailyParams(
-                    audio_in_enabled=True,
-                    audio_out_enabled=True,
-                    transcription_enabled=True,
-                    camera_out_enabled=False,
-                    vad_enabled=True,
-                    vad_analyzer=SileroVADAnalyzer(),
-                    vad_audio_passthrough=True,
-                ),
-            )
+        stt = DeepgramSTTService(
+            api_key=os.getenv("DEEPGRAM_API_KEY"),
+        )
 
-            stt = DeepgramSTTService(
-                api_key=os.getenv("DEEPGRAM_API_KEY"),
-            )
+        tts = CartesiaTTSService(
+            api_key=os.getenv("CARTESIA_API_KEY"),
+            voice_id=os.getenv("CARTESIA_VOICE_ID"),
+        )
 
-            tts = CartesiaTTSService(
-                api_key=os.getenv("CARTESIA_API_KEY"),
-                voice_id=os.getenv("CARTESIA_VOICE_ID"),
-            )
+        llm = OpenAILLMService(
+            api_key="pipecat-pipeline",
+            base_url=agent_url,
+        )
 
-            llm = OpenAILLMService(
-                api_key="pipecat-pipeline",
-                base_url=agent_url,
-            )
-
-            messages = [
-                {
-                    "role": "system",
-                    "content": "",
-                },
-            ]
+        messages = [
+            {
+                "role": "system",
+                "content": "",
+            },
+        ]
 
 
-            context = OpenAILLMContext(messages)
-            context_aggregator = llm.create_context_aggregator(context)
+        context = OpenAILLMContext(messages)
+        context_aggregator = llm.create_context_aggregator(context)
 
-            pipeline = Pipeline(
-                [
-                    transport.input(),  # Transport user input
-                    stt,  # STT
-                    context_aggregator.user(),  # User responses
-                    llm,  # LLM
-                    tts,  # TTS
-                    transport.output(),  # Transport bot output,
-                    context_aggregator.assistant(),  # Assistant spoken responses
-                ],
-            )
+        pipeline = Pipeline(
+            [
+                transport.input(),  # Transport user input
+                stt,  # STT
+                context_aggregator.user(),  # User responses
+                llm,  # LLM
+                tts,  # TTS
+                transport.output(),  # Transport bot output,
+                context_aggregator.assistant(),  # Assistant spoken responses
+            ],
+        )
 
-            task = PipelineTask(
-                pipeline,
-                params=PipelineParams(
-                    allow_interruptions=True,
-                    enable_metrics=True,
-                    enable_usage_metrics=True,
-                    report_only_initial_ttfb=True,
-                ),
-                check_dangling_tasks=True,
-            )
+        task = PipelineTask(
+            pipeline,
+            params=PipelineParams(
+                allow_interruptions=True,
+                enable_metrics=True,
+                enable_usage_metrics=True,
+                report_only_initial_ttfb=True,
+            ),
+            check_dangling_tasks=True,
+        )
 
-            @transport.event_handler(
-                "on_first_participant_joined",
-            )
-            async def on_first_participant_joined(
-                transport: DailyTransport,
-                participant: dict,
-            ) -> None:
-                log.info("First participant joined", participant=participant)
+        @transport.event_handler(
+            "on_first_participant_joined",
+        )
+        async def on_first_participant_joined(
+            transport: DailyTransport,
+            participant: dict,
+        ) -> None:
+            log.info("First participant joined", participant=participant)
 
-                messages.append({"role": "system", "content": "Please introduce yourself to the user."})
-                await task.queue_frames([context_aggregator.user().get_context_frame()])
-            
-            @transport.event_handler("on_app_message")
-            async def on_app_message(transport, message, sender):
-                text = message.get("text")
-                log.debug(f"Received {sender} message with {text}")
-                try:
-                    await tts.say(text)
-                except Exception as e:
-                    log.error("Error processing message", error=e)
-
-
-            @transport.event_handler("on_participant_left")
-            async def on_participant_left(
-                transport: DailyTransport,
-                participant: dict,
-                reason: str,
-            ) -> None:
-                log.info(
-                    "Participant left",
-                    participant=participant,
-                    reason=reason,
-                )
-                await task.cancel()
-
-            runner = PipelineRunner()
-
+            messages.append({"role": "system", "content": "Please introduce yourself to the user."})
+            await task.queue_frames([context_aggregator.user().get_context_frame()])
+        
+        @transport.event_handler("on_app_message")
+        async def on_app_message(transport, message, sender):
+            text = message.get("text")
+            log.debug(f"Received {sender} message with {text}")
             try:
-                await runner.run(task)
+                await tts.say(text)
             except Exception as e:
-                log.error("Pipeline runner error, cancelling pipeline", error=e)
-                await task.cancel()
-                raise NonRetryableError("Pipeline runner error, cancelling pipeline") from e
+                log.error("Error processing message", error=e)
 
-            return True
+
+        @transport.event_handler("on_participant_left")
+        async def on_participant_left(
+            transport: DailyTransport,
+            participant: dict,
+            reason: str,
+        ) -> None:
+            log.info(
+                "Participant left",
+                participant=participant,
+                reason=reason,
+            )
+            await task.cancel()
+
+        runner = PipelineRunner()
+
+        try:
+            await runner.run(task)
+        except Exception as e:
+            log.error("Pipeline runner error, cancelling pipeline", error=e)
+            await task.cancel()
+            raise NonRetryableError("Pipeline runner error, cancelling pipeline") from e
+
+        return True
     except Exception as e:
         error_message = "Pipecat pipeline failed"
         log.error(error_message, error=e)
