@@ -32,7 +32,6 @@ async def daily_create_room(
     function_input: DailyRoomInput,
 ) -> DailyRoomOutput:
     try:
-        
         api_key = os.getenv("DAILYCO_API_KEY")
         if not api_key:
             raise ValueError(

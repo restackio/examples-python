@@ -25,7 +25,7 @@ class Message(BaseModel):
 
 class LlmChatInput(BaseModel):
     system_content: str | None = None
-    model: Literal['gpt-4o-mini', 'gpt-4o']
+    model: Literal["gpt-4o-mini", "gpt-4o"]
     messages: list[Message] = Field(default_factory=list)
     stream: bool = True
 

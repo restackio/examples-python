@@ -16,6 +16,7 @@ load_dotenv()
 class TavusRoomOutput(BaseModel):
     room_url: str
 
+
 @function.defn(name="tavus_create_room")
 async def tavus_create_room() -> TavusRoomOutput:
     try:
@@ -28,13 +29,18 @@ async def tavus_create_room() -> TavusRoomOutput:
 
         async with aiohttp.ClientSession() as session:
             url = "https://tavusapi.com/v2/conversations"
-            headers = {"Content-Type": "application/json", "x-api-key": api_key}
+            headers = {
+                "Content-Type": "application/json",
+                "x-api-key": api_key,
+            }
             payload = {
                 "replica_id": replica_id,
                 "persona_id": "pipecat0",
             }
 
-            async with session.post(url, headers=headers, json=payload) as r:
+            async with session.post(
+                url, headers=headers, json=payload
+            ) as r:
                 r.raise_for_status()
                 response_json = await r.json()
 

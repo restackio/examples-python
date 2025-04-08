@@ -3,6 +3,7 @@ import sys
 import time
 
 from restack_ai import Restack
+from restack_ai.event import AgentEvent
 from src.agents.agent import AgentStream
 
 
@@ -11,7 +12,12 @@ async def main() -> None:
 
     agent_id = f"{int(time.time() * 1000)}-{AgentStream.__name__}"
     run_id = await client.schedule_agent(
-        agent_name=AgentStream.__name__, agent_id=agent_id
+        agent_name=AgentStream.__name__,
+        agent_id=agent_id,
+        event=AgentEvent(
+            name="messages",
+            input={"messages": [{"role": "user", "content": "Tell me a joke"}]},
+        ),
     )
 
     await client.get_agent_result(agent_id=agent_id, run_id=run_id)

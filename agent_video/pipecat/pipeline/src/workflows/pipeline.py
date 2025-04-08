@@ -10,6 +10,14 @@ from restack_ai.workflow import (
 )
 
 with import_functions():
+    from src.functions.daily_delete_room import (
+        DailyDeleteRoomInput,
+        daily_delete_room,
+    )
+    from src.functions.pipeline_audio import (
+        PipecatPipelineAudioInput,
+        pipecat_pipeline_audio,
+    )
     from src.functions.pipeline_heygen import (
         PipecatPipelineHeygenInput,
         pipecat_pipeline_heygen,
@@ -18,18 +26,11 @@ with import_functions():
         PipecatPipelineTavusInput,
         pipecat_pipeline_tavus,
     )
-    from src.functions.daily_delete_room import (
-        DailyDeleteRoomInput,
-        daily_delete_room,
-    )
     from src.functions.send_agent_event import (
         SendAgentEventInput,
         send_agent_event,
     )
-    from src.functions.pipeline_audio import (
-        PipecatPipelineAudioInput,
-        pipecat_pipeline_audio,
-    )
+
 
 class PipelineWorkflowInput(BaseModel):
     video_service: Literal["tavus", "heygen", "audio"]
@@ -39,6 +40,7 @@ class PipelineWorkflowInput(BaseModel):
     daily_room_url: str | None = None
     daily_room_token: str | None = None
 
+
 @workflow.defn()
 class PipelineWorkflow:
     @workflow.run
@@ -46,7 +48,6 @@ class PipelineWorkflow:
         self, workflow_input: PipelineWorkflowInput
     ) -> bool:
         try:
-          
             if workflow_input.video_service == "tavus":
                 await workflow.step(
                     task_queue="pipeline",
@@ -61,7 +62,6 @@ class PipelineWorkflow:
                 )
 
             elif workflow_input.video_service == "heygen":
-
                 try:
                     await workflow.step(
                         task_queue="pipeline",
@@ -73,7 +73,9 @@ class PipelineWorkflow:
                             daily_room_url=workflow_input.daily_room_url,
                             daily_room_token=workflow_input.daily_room_token,
                         ),
-                        start_to_close_timeout=timedelta(minutes=20),
+                        start_to_close_timeout=timedelta(
+                            minutes=20
+                        ),
                     )
 
                 except Exception as e:
@@ -105,7 +107,6 @@ class PipelineWorkflow:
                 )
 
             elif workflow_input.video_service == "audio":
-                
                 try:
                     await workflow.step(
                         task_queue="pipeline",
@@ -146,7 +147,6 @@ class PipelineWorkflow:
                         run_id=workflow_input.agent_run_id,
                     ),
                 )
-
 
         except Exception as e:
             error_message = f"Error during pipecat_pipeline: {e}"

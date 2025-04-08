@@ -8,7 +8,6 @@ from restack_ai.function import (
     function_info,
     log,
 )
-
 from src.functions.aiohttp_session import get_aiohttp_session
 
 # Load environment variables from .env file

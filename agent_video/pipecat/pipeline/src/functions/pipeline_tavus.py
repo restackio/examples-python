@@ -1,4 +1,3 @@
-import asyncio
 import os
 from collections.abc import Mapping
 from typing import Any
@@ -12,7 +11,6 @@ from pipecat.pipeline.task import PipelineParams, PipelineTask
 from pipecat.processors.aggregators.openai_llm_context import (
     OpenAILLMContext,
 )
-
 from pipecat.services.cartesia import CartesiaTTSService
 from pipecat.services.deepgram import DeepgramSTTService
 from pipecat.services.openai import OpenAILLMService
@@ -22,7 +20,9 @@ from pipecat.transports.services.daily import (
 )
 from pydantic import BaseModel
 from restack_ai.function import NonRetryableError, function, log
+
 from src.functions.tavus_video_service import TavusVideoService
+
 # from pipecat.frames.frames import EndFrame, TTSSpeakFrame
 
 load_dotenv(override=True)
@@ -65,13 +65,13 @@ async def pipecat_pipeline_tavus(
                 api_key=os.getenv("TAVUS_API_KEY"),
                 replica_id=os.getenv("TAVUS_REPLICA_ID"),
                 session=session,
-                conversation_id=function_input.daily_room_url.split("/")[-1],
+                conversation_id=function_input.daily_room_url.split(
+                    "/"
+                )[-1],
             )
 
-
- 
             persona_name = await tavus.get_persona_name()
-            
+
             transport = DailyTransport(
                 room_url=function_input.daily_room_url,
                 token=None,
@@ -202,9 +202,11 @@ async def pipecat_pipeline_tavus(
             #     # )
 
             @transport.event_handler("on_participant_left")
-            async def on_participant_left(transport: DailyTransport,
+            async def on_participant_left(
+                transport: DailyTransport,
                 participant: dict,
-                reason: str,) -> None:
+                reason: str,
+            ) -> None:
                 log.info(
                     "Participant left",
                     participant=participant,
@@ -217,9 +219,14 @@ async def pipecat_pipeline_tavus(
             try:
                 await runner.run(task)
             except Exception as e:
-                log.error("Pipeline runner error, cancelling pipeline", error=e)
+                log.error(
+                    "Pipeline runner error, cancelling pipeline",
+                    error=e,
+                )
                 await task.cancel()
-                raise NonRetryableError("Pipeline runner error, cancelling pipeline") from e
+                raise NonRetryableError(
+                    "Pipeline runner error, cancelling pipeline"
+                ) from e
 
             return True
     except Exception as e:

@@ -1,6 +1,5 @@
 import os
 
-import aiohttp
 from dotenv import load_dotenv
 from pipecat.audio.vad.silero import SileroVADAnalyzer
 from pipecat.pipeline.pipeline import Pipeline
@@ -34,12 +33,21 @@ class PipecatPipelineAudioInput(BaseModel):
     daily_room_token: str
 
 
+VOICE_IDS = {
+    "system_1": os.getenv("CARTESIA_VOICE_ID"),  # Restack voice
+    "system_2": os.getenv(
+        "CARTESIA_VOICE_ID_SYSTEM_2"
+    ),  # Female voice
+}
+
+
 def get_agent_backend_host(engine_api_address: str) -> str:
     if not engine_api_address:
         return "http://localhost:9233"
     if not engine_api_address.startswith("https://"):
         return "https://" + engine_api_address
     return engine_api_address
+
 
 @function.defn(name="pipecat_pipeline_audio")
 async def pipecat_pipeline_audio(
@@ -82,7 +90,7 @@ async def pipecat_pipeline_audio(
 
         tts = CartesiaTTSService(
             api_key=os.getenv("CARTESIA_API_KEY"),
-            voice_id=os.getenv("CARTESIA_VOICE_ID"),
+            voice_id=VOICE_IDS["system_1"],
         )
 
         llm = OpenAILLMService(
@@ -97,9 +105,10 @@ async def pipecat_pipeline_audio(
             },
         ]
 
-
         context = OpenAILLMContext(messages)
-        context_aggregator = llm.create_context_aggregator(context)
+        context_aggregator = llm.create_context_aggregator(
+            context
+        )
 
         pipeline = Pipeline(
             [
@@ -131,20 +140,31 @@ async def pipecat_pipeline_audio(
             transport: DailyTransport,
             participant: dict,
         ) -> None:
-            log.info("First participant joined", participant=participant)
+            log.info(
+                "First participant joined",
+                participant=participant,
+            )
 
-            messages.append({"role": "system", "content": "Please introduce yourself to the user."})
-            await task.queue_frames([context_aggregator.user().get_context_frame()])
-        
+            messages.append(
+                {
+                    "role": "system",
+                    "content": "Please introduce yourself to the user.",
+                }
+            )
+            await task.queue_frames(
+                [context_aggregator.user().get_context_frame()]
+            )
+
         @transport.event_handler("on_app_message")
         async def on_app_message(transport, message, sender):
             text = message.get("text")
-            log.debug(f"Received {sender} message with {text}")
+            log.info(f"Received {sender} message with {text}")
             try:
-                await tts.say(text)
+                tts.set_voice(VOICE_IDS["system_2"])
+                await tts.say(f"SYSTEM TWO: {text}")
+                tts.set_voice(VOICE_IDS["system_1"])
             except Exception as e:
                 log.error("Error processing message", error=e)
-
 
         @transport.event_handler("on_participant_left")
         async def on_participant_left(
@@ -164,9 +184,14 @@ async def pipecat_pipeline_audio(
         try:
             await runner.run(task)
         except Exception as e:
-            log.error("Pipeline runner error, cancelling pipeline", error=e)
+            log.error(
+                "Pipeline runner error, cancelling pipeline",
+                error=e,
+            )
             await task.cancel()
-            raise NonRetryableError("Pipeline runner error, cancelling pipeline") from e
+            raise NonRetryableError(
+                "Pipeline runner error, cancelling pipeline"
+            ) from e
 
         return True
     except Exception as e:

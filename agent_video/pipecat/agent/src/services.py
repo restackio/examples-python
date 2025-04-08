@@ -3,21 +3,22 @@ import logging
 import webbrowser
 from pathlib import Path
 
+from restack_ai.restack import ServiceOptions
 from watchfiles import run_process
 
 from src.agents.agent import AgentVideo
 from src.client import client
 from src.functions.context_docs import context_docs
-from src.functions.llm_chat import llm_chat
-from src.workflows.room import RoomWorkflow
-from restack_ai.restack import ServiceOptions
 from src.functions.daily_create_room import daily_create_room
-from src.functions.tavus_create_room import tavus_create_room
 from src.functions.daily_send_data import daily_send_data
-from src.functions.send_agent_event import send_agent_event
-from src.workflows.logic import LogicWorkflow
-from src.functions.llm_talk import llm_talk
+from src.functions.llm_chat import llm_chat
 from src.functions.llm_logic import llm_logic
+from src.functions.llm_talk import llm_talk
+from src.functions.send_agent_event import send_agent_event
+from src.functions.tavus_create_room import tavus_create_room
+from src.workflows.logic import LogicWorkflow
+from src.workflows.room import RoomWorkflow
+
 
 async def main() -> None:
     await client.start_service(

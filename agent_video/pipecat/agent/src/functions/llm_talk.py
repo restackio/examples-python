@@ -12,13 +12,19 @@ from restack_ai.function import (
 from src.client import api_address
 from src.functions.llm_chat import Message
 
+
 class LlmTalkInput(BaseModel):
     messages: list[Message] = Field(default_factory=list)
     context: str | None = None  # Updated context from Slow AI
     mode: Literal["default", "interrupt"]
     stream: bool = True
-    model: Literal['gpt-4o-mini', 'gpt-4o']
+    model: Literal[
+        "gpt-4o-mini",
+        "gpt-4o",
+        "ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8",
+    ]
     interactive_prompt: str | None = None
+
 
 @function.defn()
 async def llm_talk(function_input: LlmTalkInput) -> str:
@@ -31,12 +37,13 @@ async def llm_talk(function_input: LlmTalkInput) -> str:
         if interactive_prompt:
             system_prompt = (
                 interactive_prompt
-                + "Current context: " + function_input.context
+                + "Current context: "
+                + function_input.context
             )
 
         else:
             common_prompt = (
-                    "Your are an AI assistant helping developers build with restack: the backend framework for accurate & reliable AI agents."
+                "Your are an AI assistant helping developers build with restack: the backend framework for accurate & reliable AI agents."
                 "Your interface with users will be voice. Be friendly, helpful and avoid usage of unpronouncable punctuation."
                 "Always try to bring back the conversation to restack if the user is talking about something else. "
                 "Current context: " + function_input.context

@@ -2,7 +2,6 @@ import base64
 
 import aiohttp
 from loguru import logger
-
 from pipecat.audio.utils import create_default_resampler
 from pipecat.frames.frames import (
     CancelFrame,
@@ -45,16 +44,23 @@ class TavusVideoService(AIService):
 
     async def initialize(self) -> str:
         url = "https://tavusapi.com/v2/conversations"
-        headers = {"Content-Type": "application/json", "x-api-key": self._api_key}
+        headers = {
+            "Content-Type": "application/json",
+            "x-api-key": self._api_key,
+        }
         payload = {
             "replica_id": self._replica_id,
             "persona_id": self._persona_id,
         }
-        async with self._session.post(url, headers=headers, json=payload) as r:
+        async with self._session.post(
+            url, headers=headers, json=payload
+        ) as r:
             r.raise_for_status()
             response_json = await r.json()
 
-        logger.debug(f"TavusVideoService joined {response_json['conversation_url']}")
+        logger.debug(
+            f"TavusVideoService joined {response_json['conversation_url']}"
+        )
         self._conversation_id = response_json["conversation_id"]
         return response_json["conversation_url"]
 
@@ -62,13 +68,20 @@ class TavusVideoService(AIService):
         return True
 
     async def get_persona_name(self) -> str:
-        url = f"https://tavusapi.com/v2/personas/{self._persona_id}"
-        headers = {"Content-Type": "application/json", "x-api-key": self._api_key}
+        url = (
+            f"https://tavusapi.com/v2/personas/{self._persona_id}"
+        )
+        headers = {
+            "Content-Type": "application/json",
+            "x-api-key": self._api_key,
+        }
         async with self._session.get(url, headers=headers) as r:
             r.raise_for_status()
             response_json = await r.json()
 
-        logger.debug(f"TavusVideoService persona grabbed {response_json}")
+        logger.debug(
+            f"TavusVideoService persona grabbed {response_json}"
+        )
         return response_json["persona_name"]
 
     async def stop(self, frame: EndFrame):
@@ -81,28 +94,41 @@ class TavusVideoService(AIService):
 
     async def _end_conversation(self) -> None:
         url = f"https://tavusapi.com/v2/conversations/{self._conversation_id}/end"
-        headers = {"Content-Type": "application/json", "x-api-key": self._api_key}
+        headers = {
+            "Content-Type": "application/json",
+            "x-api-key": self._api_key,
+        }
         async with self._session.post(url, headers=headers) as r:
             r.raise_for_status()
 
-    async def _encode_audio_and_send(self, audio: bytes, in_rate: int, done: bool) -> None:
+    async def _encode_audio_and_send(
+        self, audio: bytes, in_rate: int, done: bool
+    ) -> None:
         """Encodes audio to base64 and sends it to Tavus"""
         if not done:
-            audio = await self._resampler.resample(audio, in_rate, self.SAMPLE_RATE)
+            audio = await self._resampler.resample(
+                audio, in_rate, self.SAMPLE_RATE
+            )
         audio_base64 = base64.b64encode(audio).decode("utf-8")
         logger.trace(f"{self}: sending {len(audio)} bytes")
         await self._send_audio_message(audio_base64, done=done)
 
-    async def process_frame(self, frame: Frame, direction: FrameDirection):
+    async def process_frame(
+        self, frame: Frame, direction: FrameDirection
+    ):
         await super().process_frame(frame, direction)
         if isinstance(frame, TTSStartedFrame):
             await self.start_processing_metrics()
             await self.start_ttfb_metrics()
             self._current_idx_str = str(frame.id)
         elif isinstance(frame, TTSAudioRawFrame):
-            await self._encode_audio_and_send(frame.audio, frame.sample_rate, done=False)
+            await self._encode_audio_and_send(
+                frame.audio, frame.sample_rate, done=False
+            )
         elif isinstance(frame, TTSStoppedFrame):
-            await self._encode_audio_and_send(b"\x00", self.SAMPLE_RATE, done=True)
+            await self._encode_audio_and_send(
+                b"\x00", self.SAMPLE_RATE, done=True
+            )
             await self.stop_ttfb_metrics()
             await self.stop_processing_metrics()
         elif isinstance(frame, StartInterruptionFrame):
@@ -120,7 +146,9 @@ class TavusVideoService(AIService):
         )
         await self.push_frame(transport_frame)
 
-    async def _send_audio_message(self, audio_base64: str, done: bool) -> None:
+    async def _send_audio_message(
+        self, audio_base64: str, done: bool
+    ) -> None:
         transport_frame = TransportMessageUrgentFrame(
             message={
                 "message_type": "conversation",

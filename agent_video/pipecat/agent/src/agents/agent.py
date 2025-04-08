@@ -4,24 +4,26 @@ from typing import Literal
 from pydantic import BaseModel
 from restack_ai.agent import (
     NonRetryableError,
+    RetryPolicy,
     agent,
     import_functions,
     log,
-    RetryPolicy,
-    uuid
+    uuid,
 )
-
 
 from src.workflows.logic import LogicWorkflow, LogicWorkflowInput
 
 with import_functions():
     from src.functions.context_docs import context_docs
+    from src.functions.daily_send_data import (
+        DailySendDataInput,
+        daily_send_data,
+    )
     from src.functions.llm_chat import (
         LlmChatInput,
         Message,
         llm_chat,
     )
-    from src.functions.daily_send_data import daily_send_data, DailySendDataInput
     from src.functions.llm_talk import LlmTalkInput, llm_talk
 
 
@@ -32,14 +34,17 @@ class MessagesEvent(BaseModel):
 class EndEvent(BaseModel):
     end: bool
 
+
 class AgentInput(BaseModel):
     room_url: str
-    model: Literal['restack', 'gpt-4o-mini', 'gpt-4o'] = 'restack'
+    model: Literal["restack", "gpt-4o-mini", "gpt-4o"] = "restack"
     interactive_prompt: str | None = None
     reasoning_prompt: str | None = None
 
+
 class ContextEvent(BaseModel):
     context: str
+
 
 class DailyMessageEvent(BaseModel):
     message: str
@@ -52,7 +57,9 @@ class AgentVideo:
         self.end = False
         self.messages: list[Message] = []
         self.room_url = ""
-        self.model: Literal['restack', 'gpt-4o-mini', 'gpt-4o'] = "restack"
+        self.model: Literal[
+            "restack", "gpt-4o-mini", "gpt-4o"
+        ] = "restack"
         self.interactive_prompt = ""
         self.reasoning_prompt = ""
         self.context = ""
@@ -84,7 +91,7 @@ class AgentVideo:
                         messages=self.messages[-3:],
                         context=str(self.context),
                         mode="default",
-                        model='gpt-4o-mini',
+                        model="ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8",
                         interactive_prompt=self.interactive_prompt,
                     ),
                     start_to_close_timeout=timedelta(seconds=3),
@@ -104,7 +111,7 @@ class AgentVideo:
                     ),
                     start_to_close_timeout=timedelta(seconds=120),
                 )
-            
+
         except Exception as e:
             error_message = f"llm_chat function failed: {e}"
             raise NonRetryableError(error_message) from e
@@ -122,7 +129,7 @@ class AgentVideo:
         log.info("Received end")
         self.end = True
         return end
-    
+
     @agent.event
     async def context(self, context: ContextEvent) -> str:
         log.info("Received context")
@@ -130,13 +137,18 @@ class AgentVideo:
         return self.context
 
     @agent.event
-    async def daily_message(self, daily_message: DailyMessageEvent) -> bool:
+    async def daily_message(
+        self, daily_message: DailyMessageEvent
+    ) -> bool:
         log.info("Received message", daily_message=daily_message)
         await agent.step(
             function=daily_send_data,
             function_input=DailySendDataInput(
                 room_url=self.room_url,
-                data={"text": daily_message.message, "author": "agent"},
+                data={
+                    "text": daily_message.message,
+                    "author": "agent",
+                },
                 recipient=daily_message.recipient,
             ),
         )
@@ -147,7 +159,9 @@ class AgentVideo:
         try:
             self.room_url = agent_input.room_url
             self.model = agent_input.model
-            self.interactive_prompt = agent_input.interactive_prompt
+            self.interactive_prompt = (
+                agent_input.interactive_prompt
+            )
             self.reasoning_prompt = agent_input.reasoning_prompt
             docs = await agent.step(function=context_docs)
         except Exception as e:
@@ -155,7 +169,7 @@ class AgentVideo:
             raise NonRetryableError(error_message) from e
         else:
             system_prompt = f"""
-            You can answer questions about the following documentation:
+            You are an AI assistant for Restack. You can answer questions about the following documentation:
             {docs}
             {self.interactive_prompt}
             """

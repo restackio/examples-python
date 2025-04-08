@@ -5,17 +5,20 @@ from pydantic import BaseModel
 from restack_ai.workflow import (
     NonRetryableError,
     ParentClosePolicy,
+    import_functions,
     log,
     workflow,
     workflow_info,
-    import_functions
 )
-
 from src.agents.agent import AgentInput, AgentVideo
 
 with import_functions():
-    from src.functions.daily_create_room import DailyRoomInput, daily_create_room
+    from src.functions.daily_create_room import (
+        DailyRoomInput,
+        daily_create_room,
+    )
     from src.functions.tavus_create_room import tavus_create_room
+
 
 class RoomWorkflowOutput(BaseModel):
     agent_name: str
@@ -24,9 +27,10 @@ class RoomWorkflowOutput(BaseModel):
     room_url: str
     token: str | None = None
 
+
 class RoomWorkflowInput(BaseModel):
     video_service: Literal["tavus", "heygen", "audio"]
-    model: Literal['restack', 'gpt-4o-mini', 'gpt-4o'] = 'restack'
+    model: Literal["restack", "gpt-4o-mini", "gpt-4o"] = "restack"
     interactive_prompt: str | None = None
     reasoning_prompt: str | None = None
 
@@ -46,15 +50,15 @@ class RoomWorkflow:
     async def run(
         self, workflow_input: RoomWorkflowInput
     ) -> RoomWorkflowOutput:
-        
         try:
-            
             daily_room = None
             room_url = None
             token = None
 
             agent_id = f"{workflow_info().workflow_id}-agent"
-            pipeline_id = f"{workflow_info().workflow_id}-pipeline"
+            pipeline_id = (
+                f"{workflow_info().workflow_id}-pipeline"
+            )
 
             if workflow_input.video_service == "heygen":
                 daily_room = await workflow.step(
@@ -116,9 +120,7 @@ class RoomWorkflow:
             raise NonRetryableError(error_message) from e
 
         else:
-            log.info(
-                "RoomWorkflow completed", room_url=room_url
-            )
+            log.info("RoomWorkflow completed", room_url=room_url)
 
             return RoomWorkflowOutput(
                 agent_name=AgentVideo.__name__,

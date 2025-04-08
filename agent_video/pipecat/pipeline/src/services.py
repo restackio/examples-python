@@ -3,16 +3,18 @@ import logging
 import webbrowser
 from pathlib import Path
 
+from restack_ai.restack import ServiceOptions
 from watchfiles import run_process
 
 from src.client import client
+from src.functions.daily_delete_room import daily_delete_room
+from src.functions.pipeline_audio import pipecat_pipeline_audio
 from src.functions.pipeline_heygen import pipecat_pipeline_heygen
 from src.functions.pipeline_tavus import pipecat_pipeline_tavus
-from src.workflows.pipeline import PipelineWorkflow
-from restack_ai.restack import ServiceOptions
-from src.functions.daily_delete_room import daily_delete_room
 from src.functions.send_agent_event import send_agent_event
-from src.functions.pipeline_audio import pipecat_pipeline_audio
+from src.workflows.pipeline import PipelineWorkflow
+
+
 async def main() -> None:
     await client.start_service(
         task_queue="pipeline",

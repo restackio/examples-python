@@ -17,10 +17,10 @@ from pipecat.frames.frames import (
     Frame,
     OutputImageRawFrame,
     StartFrame,
+    StartInterruptionFrame,
     TTSAudioRawFrame,
     TTSStartedFrame,
     TTSStoppedFrame,
-    StartInterruptionFrame,
 )
 from pipecat.processors.frame_processor import FrameDirection
 from pipecat.services.ai_services import AIService
@@ -80,8 +80,10 @@ class HeyGenVideoService(AIService):
         await self._livekit_disconnect()
         await self.stop_ttfb_metrics()
         await self.stop_processing_metrics()
-      
-    async def interrupt(self, frame: StartInterruptionFrame) -> None:
+
+    async def interrupt(
+        self, frame: StartInterruptionFrame
+    ) -> None:
         logger.info("HeyGenVideoService interrupting")
         await super().interrupt(frame)
         await self._interrupt()
@@ -209,6 +211,7 @@ class HeyGenVideoService(AIService):
             json=body,
         ) as r:
             r.raise_for_status()
+
     # audio buffer methods
     async def _send_audio(
         self,
@@ -547,7 +550,6 @@ class HeyGenVideoService(AIService):
         frame: Frame,
         direction: FrameDirection,
     ) -> None:
-
         await super().process_frame(frame, direction)
         try:
             if isinstance(frame, TTSStartedFrame):

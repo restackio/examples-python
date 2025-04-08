@@ -1,4 +1,3 @@
-import asyncio
 import os
 
 import aiohttp
@@ -29,6 +28,7 @@ from src.functions.heygen_client import (
     NewSessionRequest,
 )
 from src.functions.heygen_video_service import HeyGenVideoService
+
 # from pipecat.frames.frames import EndFrame, TTSSpeakFrame
 
 load_dotenv(override=True)
@@ -49,13 +49,13 @@ def get_agent_backend_host(engine_api_address: str) -> str:
         return "https://" + engine_api_address
     return engine_api_address
 
+
 @function.defn(name="pipecat_pipeline_heygen")
 async def pipecat_pipeline_heygen(
     function_input: PipecatPipelineHeygenInput,
 ) -> bool:
     try:
         async with aiohttp.ClientSession() as session:
-
             engine_api_address = os.environ.get(
                 "RESTACK_ENGINE_API_ADDRESS",
             )
@@ -94,7 +94,6 @@ async def pipecat_pipeline_heygen(
                 api_key=os.getenv("CARTESIA_API_KEY"),
                 voice_id=os.getenv("CARTESIA_VOICE_ID"),
                 sample_rate=HeyGenVideoService.SAMPLE_RATE,
-                
             )
 
             llm = OpenAILLMService(
@@ -170,7 +169,10 @@ async def pipecat_pipeline_heygen(
                 transport: DailyTransport,
                 participant: dict,
             ) -> None:
-                log.info("First participant joined", participant=participant)
+                log.info(
+                    "First participant joined",
+                    participant=participant,
+                )
 
                 messages.append(
                     {
@@ -178,7 +180,7 @@ async def pipecat_pipeline_heygen(
                         "content": "Please introduce yourself to the user. Keep it short and concise.",
                     },
                 )
-                
+
                 await task.queue_frames(
                     [
                         context_aggregator.user().get_context_frame(),
@@ -195,21 +197,18 @@ async def pipecat_pipeline_heygen(
             #     try:
 
             #         await tts.say(f"I received a message from {author}.")
-                    
 
             #         await task.queue_frames([
             #             TTSSpeakFrame(f"I received a message from {author}."),
             #             EndFrame(),
             #         ])
 
-
-
             #         log.info("tts say")
 
             #         await tts.say(text)
 
             #         log.info("llm push frame")
-                
+
             #         await llm.push_frame(TTSSpeakFrame(text))
 
             #         log.info("task queue frames")
@@ -236,7 +235,6 @@ async def pipecat_pipeline_heygen(
             #     except Exception as e:
             #         log.error("Error processing message", error=e)
 
-
             @transport.event_handler("on_participant_left")
             async def on_participant_left(
                 transport: DailyTransport,
@@ -255,9 +253,14 @@ async def pipecat_pipeline_heygen(
             try:
                 await runner.run(task)
             except Exception as e:
-                log.error("Pipeline runner error, cancelling pipeline", error=e)
+                log.error(
+                    "Pipeline runner error, cancelling pipeline",
+                    error=e,
+                )
                 await task.cancel()
-                raise NonRetryableError("Pipeline runner error, cancelling pipeline") from e
+                raise NonRetryableError(
+                    "Pipeline runner error, cancelling pipeline"
+                ) from e
 
             return True
     except Exception as e:
