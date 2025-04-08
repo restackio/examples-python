@@ -10,19 +10,19 @@ from restack_ai.function import (
 )
 
 from src.client import api_address
-from src.functions.llm_chat import Message
 
+class Message(BaseModel):
+    role: str
+    content: str
+
+ModelType = Literal["gpt-4o-mini", "ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8", "openpipe:twenty-lions-fall"]
 
 class LlmTalkInput(BaseModel):
     messages: list[Message] = Field(default_factory=list)
     context: str | None = None  # Updated context from Slow AI
     mode: Literal["default", "interrupt"]
     stream: bool = True
-    model: Literal[
-        "gpt-4o-mini",
-        "ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8",
-        "openpipe:twenty-lions-fall"
-    ]
+    model: ModelType = "gpt-4o-mini"
     interactive_prompt: str | None = None
 
 

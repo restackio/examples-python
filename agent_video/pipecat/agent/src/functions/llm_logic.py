@@ -5,7 +5,7 @@ from openai import AsyncOpenAI
 from pydantic import BaseModel
 from restack_ai.function import NonRetryableError, function
 
-from src.functions.llm_chat import Message
+from src.functions.llm_talk import Message
 
 
 class LlmLogicResponse(BaseModel):

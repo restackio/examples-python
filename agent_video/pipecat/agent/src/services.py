@@ -11,7 +11,6 @@ from src.client import client
 from src.functions.context_docs import context_docs
 from src.functions.daily_create_room import daily_create_room
 from src.functions.daily_send_data import daily_send_data
-from src.functions.llm_chat import llm_chat
 from src.functions.llm_logic import llm_logic
 from src.functions.llm_talk import llm_talk
 from src.functions.send_agent_event import send_agent_event
@@ -25,7 +24,6 @@ async def main() -> None:
         agents=[AgentVideo],
         workflows=[RoomWorkflow, LogicWorkflow],
         functions=[
-            llm_chat,
             llm_logic,
             llm_talk,
             context_docs,

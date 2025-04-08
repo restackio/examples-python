@@ -25,6 +25,8 @@ with import_functions():
         LlmTalkInput,
         Message,
         llm_talk,
+        LlmTalkInput,
+        ModelType
     )
     from src.functions.send_agent_event import (
         SendAgentEventInput,
@@ -38,7 +40,7 @@ class LogicWorkflowInput(BaseModel):
     room_url: str
     interactive_prompt: str | None = None
     reasoning_prompt: str | None = None
-    model: Literal["gpt-4o-mini", "openpipe:twenty-lions-fall", "ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8"] = "gpt-4o-mini"
+    model: ModelType
 
 
 class LogicWorkflowOutput(BaseModel):

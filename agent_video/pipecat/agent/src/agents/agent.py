@@ -19,12 +19,7 @@ with import_functions():
         DailySendDataInput,
         daily_send_data,
     )
-    from src.functions.llm_chat import (
-        LlmChatInput,
-        Message,
-        llm_chat,
-    )
-    from src.functions.llm_talk import LlmTalkInput, llm_talk
+    from src.functions.llm_talk import LlmTalkInput, llm_talk, Message, ModelType
 
 
 class MessagesEvent(BaseModel):
@@ -34,10 +29,9 @@ class MessagesEvent(BaseModel):
 class EndEvent(BaseModel):
     end: bool
 
-
 class AgentInput(BaseModel):
     room_url: str
-    model: Literal["restack", "gpt-4o-mini", "gpt-4o", "openpipe:twenty-lions-fall"] = "restack"
+    model: ModelType
     interactive_prompt: str | None = None
     reasoning_prompt: str | None = None
 
