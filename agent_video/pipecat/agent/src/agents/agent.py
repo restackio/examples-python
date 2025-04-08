@@ -37,7 +37,7 @@ class EndEvent(BaseModel):
 
 class AgentInput(BaseModel):
     room_url: str
-    model: Literal["restack", "gpt-4o-mini", "gpt-4o"] = "restack"
+    model: Literal["restack", "gpt-4o-mini", "gpt-4o", "openpipe:twenty-lions-fall"] = "restack"
     interactive_prompt: str | None = None
     reasoning_prompt: str | None = None
 
@@ -58,7 +58,7 @@ class AgentVideo:
         self.messages: list[Message] = []
         self.room_url = ""
         self.model: Literal[
-            "restack", "gpt-4o-mini", "gpt-4o"
+            "restack", "gpt-4o-mini", "gpt-4o", "openpipe:twenty-lions-fall", "ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8"
         ] = "restack"
         self.interactive_prompt = ""
         self.reasoning_prompt = ""
@@ -72,45 +72,35 @@ class AgentVideo:
         log.info(f"Received message: {messages_event.messages}")
         self.messages.extend(messages_event.messages)
         try:
-            if self.model == "restack":
-                await agent.child_start(
-                    workflow=LogicWorkflow,
-                    workflow_id=f"{uuid()}-logic",
-                    workflow_input=LogicWorkflowInput(
-                        messages=self.messages,
-                        room_url=self.room_url,
-                        context=str(self.context),
-                        interactive_prompt=self.interactive_prompt,
-                        reasoning_prompt=self.reasoning_prompt,
-                    ),
-                )
+            await agent.child_start(
+                workflow=LogicWorkflow,
+                workflow_id=f"{uuid()}-logic",
+                workflow_input=LogicWorkflowInput(
+                    messages=self.messages,
+                    room_url=self.room_url,
+                    context=str(self.context),
+                    interactive_prompt=self.interactive_prompt,
+                    reasoning_prompt=self.reasoning_prompt,
+                    model=self.model,
+                ),
+            )
 
-                assistant_message = await agent.step(
-                    function=llm_talk,
-                    function_input=LlmTalkInput(
-                        messages=self.messages[-3:],
-                        context=str(self.context),
-                        mode="default",
-                        model="ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8",
-                        interactive_prompt=self.interactive_prompt,
-                    ),
-                    start_to_close_timeout=timedelta(seconds=3),
-                    retry_policy=RetryPolicy(
-                        initial_interval=timedelta(seconds=1),
-                        maximum_attempts=1,
-                        maximum_interval=timedelta(seconds=5),
-                    ),
-                )
-
-            else:
-                assistant_message = await agent.step(
-                    function=llm_chat,
-                    function_input=LlmChatInput(
-                        messages=self.messages,
-                        model=self.model,
-                    ),
-                    start_to_close_timeout=timedelta(seconds=120),
-                )
+            assistant_message = await agent.step(
+                function=llm_talk,
+                function_input=LlmTalkInput(
+                    messages=self.messages[-3:],
+                    context=str(self.context),
+                    mode="default",
+                    model=self.model,
+                    interactive_prompt=self.interactive_prompt,
+                ),
+                start_to_close_timeout=timedelta(seconds=3),
+                retry_policy=RetryPolicy(
+                    initial_interval=timedelta(seconds=1),
+                    maximum_attempts=1,
+                    maximum_interval=timedelta(seconds=5),
+                ),
+            )
 
         except Exception as e:
             error_message = f"llm_chat function failed: {e}"

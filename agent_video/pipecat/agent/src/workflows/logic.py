@@ -1,4 +1,5 @@
 from datetime import timedelta
+from typing import Literal
 
 from pydantic import BaseModel
 from restack_ai.workflow import (
@@ -37,6 +38,7 @@ class LogicWorkflowInput(BaseModel):
     room_url: str
     interactive_prompt: str | None = None
     reasoning_prompt: str | None = None
+    model: Literal["gpt-4o-mini", "openpipe:twenty-lions-fall", "ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8"] = "gpt-4o-mini"
 
 
 class LogicWorkflowOutput(BaseModel):
@@ -102,7 +104,7 @@ class LogicWorkflow:
                         context=str(context),
                         mode="interrupt",
                         stream=False,
-                        model="ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8",
+                        model=workflow_input.model,
                         interactive_prompt=workflow_input.interactive_prompt,
                     ),
                     start_to_close_timeout=timedelta(seconds=3),
@@ -128,7 +130,7 @@ class LogicWorkflow:
                         ],
                         context=str(context),
                         mode="interrupt",
-                        model="ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8",
+                        model=workflow_input.model,
                         stream=False,
                     ),
                     start_to_close_timeout=timedelta(seconds=3),

@@ -20,8 +20,8 @@ class LlmTalkInput(BaseModel):
     stream: bool = True
     model: Literal[
         "gpt-4o-mini",
-        "gpt-4o",
         "ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8",
+        "openpipe:twenty-lions-fall"
     ]
     interactive_prompt: str | None = None
 
@@ -30,7 +30,14 @@ class LlmTalkInput(BaseModel):
 async def llm_talk(function_input: LlmTalkInput) -> str:
     """Fast AI generates responses while checking for memory updates."""
     try:
-        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+        # if model starts with openpipe use base_url
+        if function_input.model.startswith("openpipe:"):
+            client = OpenAI(
+                api_key=os.environ.get("OPENPIPE_API_KEY"),
+                base_url=f"https://app.openpipe.ai/api/v1/",
+            )
+        else:
+            client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
         interactive_prompt = function_input.interactive_prompt
 

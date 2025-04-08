@@ -30,7 +30,7 @@ class RoomWorkflowOutput(BaseModel):
 
 class RoomWorkflowInput(BaseModel):
     video_service: Literal["tavus", "heygen", "audio"]
-    model: Literal["restack", "gpt-4o-mini", "gpt-4o"] = "restack"
+    model: Literal["gpt-4o-mini", "openpipe:twenty-lions-fall", "ft:gpt-4o-mini-2024-07-18:restack::BJymdMm8"] = "gpt-4o-mini"
     interactive_prompt: str | None = None
     reasoning_prompt: str | None = None
 
