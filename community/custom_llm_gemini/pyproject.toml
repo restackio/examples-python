@@ -16,7 +16,7 @@ dependencies = [
     "flask-cors==5.0.0",
     "rich==13.9.2",
     "google-generativeai==0.8.3",
-    "h11==0.14.0",
+    "h11==0.16.0",
 ]
 
 [project.scripts]
