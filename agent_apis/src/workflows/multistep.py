@@ -35,7 +35,7 @@ class MultistepWorkflow:
                     function_input=FunctionInputParams(
                         system_content=f"You are a personal assitant and have access to weather data {weather_data}. Always greet person with relevant info from weather data",
                         user_content=user_content,
-                        model="gpt-4o-mini",
+                        model="gpt-4.1-mini",
                     ),
                     start_to_close_timeout=timedelta(seconds=120),
                 )

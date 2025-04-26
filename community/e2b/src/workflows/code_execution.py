@@ -21,7 +21,7 @@ class CodeExecutionWorkflow:
         messages = []
         while True:
             llm_response = await workflow.step(openai_tool_call, input=OpenaiToolCallInput(
-                model="gpt-4o-mini",
+                model="gpt-4.1-mini",
                 user_content=input.user_content if not messages else None,
                 system_content=input.system_content if not messages else None,
                 messages=messages,

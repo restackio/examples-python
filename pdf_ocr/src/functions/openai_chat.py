@@ -28,7 +28,7 @@ async def openai_chat(input: OpenAiChatInput) -> str:
         messages.append({"role": "user", "content": input.user_content})
 
         response = client.chat.completions.create(
-            model=input.model or "gpt-4o-mini",
+            model=input.model or "gpt-4.1-mini",
             messages=messages
         )
         log.info("openai_chat function completed", response=response)

@@ -41,7 +41,7 @@ async def llm(function_input: FunctionInputParams) -> str:
         messages.append({"role": "user", "content": function_input.user_content})
 
         response = client.chat.completions.create(
-            model=function_input.model or "gpt-4o-mini", messages=messages
+            model=function_input.model or "gpt-4.1-mini", messages=messages
         )
         log.info("llm function completed", response=response)
         return response.choices[0].message.content

@@ -34,7 +34,7 @@ class PdfWorkflow:
                     function=openai_chat,
                     function_input=OpenAiChatInput(
                         user_content=f"Make a summary of that PDF. Here is the OCR result: {ocr_result}",
-                        model="gpt-4o-mini"
+                        model="gpt-4.1-mini"
                     ),
                     start_to_close_timeout=timedelta(seconds=120)
                 )

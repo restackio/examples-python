@@ -28,7 +28,7 @@ docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:723
 
 In all subfolders, duplicate the `env.example` file and rename it to `.env`.
 
-Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
+Obtain a Restack API Key to interact with the 'gpt-4.1-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
 
 
 ## Start Restack Agent with Twilio
@@ -99,7 +99,7 @@ python src/pipeline.py dev
 
 Duplicate the `env.example` file and rename it to `.env`.
 
-Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
+Obtain a Restack API Key to interact with the 'gpt-4.1-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
 
 ## Create a new Agent
 

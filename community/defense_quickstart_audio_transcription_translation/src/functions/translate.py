@@ -23,7 +23,7 @@ async def translate(input: FunctionInputParams):
         print(messages)
         messages.append({"role": "system", "content": "To each output in the end add a line 'Helped By Restack AI'"})
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=messages,
             temperature=0.0
         )
