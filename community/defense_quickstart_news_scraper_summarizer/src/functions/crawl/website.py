@@ -1,12 +1,16 @@
 from restack_ai.function import function, log
 import requests
 from bs4 import BeautifulSoup
+from pydantic import BaseModel
+
+class CrawlInput(BaseModel):
+    url: str
 
 @function.defn()
-async def crawl_website(url):
+async def crawl_website(input: CrawlInput):
     try:
         # Send a GET request to the URL
-        response = requests.get(url)
+        response = requests.get(input.url)
         response.raise_for_status()  # Raise an error for bad responses
 
         # Parse the content with BeautifulSoup
