@@ -55,7 +55,7 @@ async def llm_chat(function_input: LlmChatInput) -> ChatCompletion:
             )
 
         result = client.chat.completions.create(
-            model=function_input.model or "gpt-4o-mini",
+            model=function_input.model or "gpt-4.1-mini",
             messages=function_input.messages,
             tools=function_input.tools,
         )

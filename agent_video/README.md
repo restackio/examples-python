@@ -55,7 +55,7 @@ python -c "from src.services import watch_services; watch_services()"
 
 Duplicate the `env.example` file and rename it to `.env`.
 
-Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
+Obtain a Restack API Key to interact with the 'gpt-4.1-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
 
 ## Create Room and run Agent in parallel
 

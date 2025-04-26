@@ -34,7 +34,7 @@ In all subfolders, duplicate the `env.example` file and rename it to `.env`.
   - Sign up at [ElevenLabs](https://elevenlabs.io/docs/overview)
   - Add `ELEVENLABS_API_KEY` to .env file
 
-Obtain a Restack API Key to interact with the 'gpt-4o-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
+Obtain a Restack API Key to interact with the 'gpt-4.1-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
 
 ## Start Restack
 

@@ -112,7 +112,7 @@ async def entrypoint(ctx: JobContext) -> None:
         vad=ctx.proc.userdata["vad"],
         stt=deepgram.STT(),
         llm=openai.LLM(
-            # model="gpt-4o-mini",
+            # model="gpt-4.1-mini",
             # api_key=os.environ.get("OPENAI_API_KEY"),
             api_key=f"{agent_id}-livekit",
             base_url=agent_url,

@@ -24,7 +24,7 @@ async def openai_greet(input: FunctionInputParams) -> str:
         messages.append({"role": "user", "content": input.user_content})
 
         response = client.chat.completions.create(
-            model=input.model or "gpt-4o-mini",
+            model=input.model or "gpt-4.1-mini",
             messages=messages,
             response_format={
                 "json_schema": {

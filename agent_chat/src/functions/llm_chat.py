@@ -44,7 +44,7 @@ async def llm_chat(agent_input: LlmChatInput) -> dict[str, str]:
             )
 
         assistant_raw_response = client.chat.completions.create(
-            model=agent_input.model or "gpt-4o-mini",
+            model=agent_input.model or "gpt-4.1-mini",
             messages=agent_input.messages,
         )
     except Exception as e:
