@@ -54,10 +54,8 @@ async def livekit_start_recording(
         await lkapi.aclose()
 
     except Exception as e:
-        error_message = (
-            f"livekit_start_recording function failed: {e}"
-        )
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during livekit_start_recording function"
+        raise NonRetryableError(message=error_message, error=e) from e
 
     else:
         return recording

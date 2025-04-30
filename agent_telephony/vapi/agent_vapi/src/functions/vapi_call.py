@@ -26,7 +26,7 @@ async def vapi_call(function_input: VapiCallInput) -> Call:
         log.info("vapi_call: ", call=call)
 
     except Exception as e:
-        error_message = f"vapi_call function failed: {e}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during vapi_call function"
+        raise NonRetryableError(message=error_message, error=e) from e
     else:
         return call

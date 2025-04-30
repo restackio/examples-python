@@ -25,8 +25,8 @@ class PdfWorkflow:
                 start_to_close_timeout=timedelta(seconds=120)
             )
         except Exception as e:
-            error_message = f"torch_ocr function failed: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during torch_ocr function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
 
             try:
@@ -39,8 +39,8 @@ class PdfWorkflow:
                     start_to_close_timeout=timedelta(seconds=120)
                 )
             except Exception as e:
-                error_message = f"openai_chat function failed: {e}"
-                raise NonRetryableError(error_message) from e
+                error_message = "Error during openai_chat function"
+                raise NonRetryableError(message=error_message, error=e) from e
             else:
                 log.info("PdfWorkflow completed")
                 return llm_result

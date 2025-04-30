@@ -36,8 +36,8 @@ class AgentVoice:
                 start_to_close_timeout=timedelta(minutes=2),
             )
         except Exception as e:
-            error_message = f"Error during llm_chat: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during llm_chat function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             self.messages.append(Message(role="assistant", content=str(assistant_message)))
             return self.messages
@@ -58,7 +58,7 @@ class AgentVoice:
                 function_input=LivekitDispatchInput(room_id=room_id),
             )
         except Exception as e:
-            error_message = f"Error during livekit_dispatch: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during livekit_dispatch function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             await agent.condition(lambda: self.end)

@@ -48,8 +48,8 @@ async def torch_ocr(input: OcrInput) -> str:
         json_output = OCRPrediction.model_validate(result.export())
         return service._process_predictions(json_output)
     except Exception as e:
-        error_message = f"Failed to process file: {e!s}"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during torch_ocr function"
+        raise NonRetryableError(message=error_message, error=e) from e
 
 class DocumentExtractionService:
     def __init__(self) -> None:

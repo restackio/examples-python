@@ -71,4 +71,5 @@ async def llm_talk(function_input: LlmTalkInput) -> str:
         return response.choices[0].message.content
 
     except Exception as e:
-        raise NonRetryableError(f"llm_talk failed: {e}") from e
+        error_message = "Error during llm_talk function"
+        raise NonRetryableError(message=error_message, error=e) from e

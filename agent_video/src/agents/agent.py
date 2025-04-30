@@ -33,8 +33,8 @@ class AgentVideo:
                 start_to_close_timeout=timedelta(seconds=120),
             )
         except Exception as e:
-            error_message = f"llm_chat function failed: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during llm_chat function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             self.messages.append(Message(role="assistant", content=str(assistant_message)))
             return self.messages
@@ -50,8 +50,8 @@ class AgentVideo:
         try:
             docs = await agent.step(function=context_docs)
         except Exception as e:
-            error_message = f"context_docs function failed: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during context_docs function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             system_prompt=f"""
             You are an interactive video assistant, your answers will be used in text to speech so try to keep answers short and concise so that interaction is seamless.

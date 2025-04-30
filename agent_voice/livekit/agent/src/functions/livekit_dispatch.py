@@ -37,8 +37,8 @@ async def livekit_dispatch(function_input: LivekitDispatchInput) -> AgentDispatc
         await lkapi.aclose()
 
     except Exception as e:
-        error_message = "Livekit dispatch failed"
-        raise NonRetryableError(error_message) from e
+        error_message = "Error during livekit_dispatch function"
+        raise NonRetryableError(message=error_message, error=e) from e
 
     else:
         return dispatch

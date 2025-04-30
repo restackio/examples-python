@@ -37,8 +37,8 @@ class TodoExecute:
                 start_to_close_timeout=timedelta(seconds=120),
             )
         except Exception as e:
-            error_message = f"Error during get_random: {e}"
-            raise NonRetryableError(error_message) from e
+            error_message = "Error during get_random function"
+            raise NonRetryableError(message=error_message, error=e) from e
         else:
             log.info("get_random done", random=random)
 
@@ -54,8 +54,8 @@ class TodoExecute:
                     start_to_close_timeout=timedelta(seconds=120),
                 )
             except Exception as e:
-                error_message = f"Error during get_result: {e}"
-                raise NonRetryableError(error_message) from e
+                error_message = "Error during get_result function"
+                raise NonRetryableError(message=error_message, error=e) from e
             else:
                 todo_details = TodoExecuteResponse(
                     todo_id=workflow_input.todo_id,
