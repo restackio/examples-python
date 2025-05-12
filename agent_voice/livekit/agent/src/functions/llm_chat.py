@@ -26,9 +26,7 @@ class LlmChatInput(BaseModel):
 @function.defn()
 async def llm_chat(function_input: LlmChatInput) -> str:
     try:
-        client = OpenAI(
-            base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY")
-        )
+        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
         if function_input.system_content:
             # Insert the system message at the beginning

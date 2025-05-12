@@ -25,13 +25,11 @@ async def llm(function_input: FunctionInputParams) -> str:
     try:
         log.info("llm function started", input=function_input)
 
-        if os.environ.get("RESTACK_API_KEY") is None:
-            error_message = "RESTACK_API_KEY is not set"
+        if os.environ.get("OPENAI_API_KEY") is None:
+            error_message = "OPENAI_API_KEY is not set"
             raise_exception(error_message)
 
-        client = OpenAI(
-            base_url="https://ai.restack.io", api_key=os.environ.get("RESTACK_API_KEY")
-        )
+        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
         messages = []
         if function_input.system_content:
