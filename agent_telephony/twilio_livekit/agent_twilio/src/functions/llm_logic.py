@@ -36,7 +36,7 @@ async def llm_logic(
             voice_mail_detection = ""
 
         response = client.beta.chat.completions.parse(
-            model="gpt-4o",
+            model="gpt-4.1-mini",
             messages=[
                 {
                     "role": "system",
