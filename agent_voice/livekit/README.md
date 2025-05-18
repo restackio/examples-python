@@ -20,19 +20,22 @@ In all subfolders, duplicate the `env.example` file and rename it to `.env`.
 ### How to setup
 
 1. **Set up Deepgram**
-  - Sign up at [Deepgram](https://developers.deepgram.com/home/introduction)
-  - Get an API key
+
+- Sign up at [Deepgram](https://developers.deepgram.com/home/introduction)
+- Get an API key
 
 2. **Set up Livekit**
-  - Sign up at [Livekit](https://docs.livekit.io/home/)
-  - In .env file:
-    - Set `LIVEKIT_URL` to `WEBSOCKET_URL` value
-    - Set `LIVEKIT_API_KEY` to `API_KEY` value
-    - Set `LIVEKIT_API_SECRET` to `API_SECRET` value
+
+- Sign up at [Livekit](https://docs.livekit.io/home/)
+- In .env file:
+  - Set `LIVEKIT_URL` to `WEBSOCKET_URL` value
+  - Set `LIVEKIT_API_KEY` to `API_KEY` value
+  - Set `LIVEKIT_API_SECRET` to `API_SECRET` value
 
 3. **Set up ElevenLabs**
-  - Sign up at [ElevenLabs](https://elevenlabs.io/docs/overview)
-  - Add `ELEVENLABS_API_KEY` to .env file
+
+- Sign up at [ElevenLabs](https://elevenlabs.io/docs/overview)
+- Add `ELEVENLABS_API_KEY` to .env file
 
 Obtain a Restack API Key to interact with the 'gpt-4.1-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
 
@@ -41,7 +44,7 @@ Obtain a Restack API Key to interact with the 'gpt-4.1-mini' model at no cost fr
 To start the Restack, use the following Docker command:
 
 ```bash
-docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 -p 9233:9233 ghcr.io/restackio/restack:main
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 -p 9233:9233 -p 10233:10233 ghcr.io/restackio/restack:main
 ```
 
 ## Start Restack Agent with Voice
@@ -117,6 +120,7 @@ https://github.com/livekit/agents-playground
 Modify your .env in https://github.com/livekit/agents-playground/blob/main/.env.example
 
 Run the following commands:
+
 ```bash
 npm run install
 ```
@@ -164,7 +168,6 @@ with input:
 The Livekit pipleine worker will connect to the room and you can start talking to the agent.
 
 ![Talk to the agent](./agent_voice_livekit.png)
-
 
 ## Follow the agent run
 
