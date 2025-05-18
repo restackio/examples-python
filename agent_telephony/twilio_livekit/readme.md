@@ -1,4 +1,3 @@
-
 # Restack AI - Agent with telephony - Twilio
 
 Build an AI agent that do an outbound call with Twilio and can interact with in realtime with voice.
@@ -24,7 +23,7 @@ In /livekit-trunk-setup you can find a script to create automaticlaly trunk setu
 To start the Restack, use the following Docker command:
 
 ```bash
-docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 -p 9233:9233 ghcr.io/restackio/restack:main
+docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:7233 -p 9233:9233 -p 10233:10233 ghcr.io/restackio/restack:main
 ```
 
 ## Configure environment variables
@@ -32,7 +31,6 @@ docker run -d --pull always --name restack -p 5233:5233 -p 6233:6233 -p 7233:723
 In all subfolders, duplicate the `env.example` file and rename it to `.env`.
 
 Obtain a Restack API Key to interact with the 'gpt-4.1-mini' model at no cost from [Restack Cloud](https://console.restack.io/starter)
-
 
 ## Start Restack Agent with Twilio
 
