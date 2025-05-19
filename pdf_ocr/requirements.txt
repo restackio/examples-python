@@ -140,7 +140,7 @@ restack-ai==0.0.81
     # via pdf-ocr (pyproject.toml)
 scipy==1.15.1
     # via python-doctr
-setuptools==75.8.0
+setuptools==78.1.1
     # via torch
 shapely==2.0.7
     # via python-doctr
