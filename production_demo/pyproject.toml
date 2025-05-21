@@ -7,7 +7,7 @@ requires-python = ">=3.10,<3.14"
 readme = "README.md"
 dependencies = [
     "pydantic>=2.10.6",
-    "restack-ai==0.0.81",
+    "restack-ai==0.0.91",
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
     "openai>=1.61.0",

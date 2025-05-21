@@ -9,7 +9,10 @@ dependencies = [
     "pydantic>=2.10.6",
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
-    "restack-ai>=0.0.81",]
+    "restack-ai>=0.0.89",
+    "temporalio[opentelemetry]>=1.11.1",
+    "opentelemetry-exporter-otlp-proto-grpc==1.18.0",
+]
 
 [project.scripts]
 dev = "src.services:watch_services"
