@@ -69,7 +69,7 @@ python-dotenv==1.0.1
     # via
     #   openai-greet (pyproject.toml)
     #   restack-ai
-restack-ai==0.0.81
+restack-ai==0.0.91
     # via openai-greet (pyproject.toml)
 sniffio==1.3.1
     # via
