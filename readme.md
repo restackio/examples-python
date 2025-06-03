@@ -12,7 +12,7 @@ This repository is organized into two sections:
 - Python 3.12 or higher
 - Uv (for dependency management)
 
-## Getting Started
+## Getting Starteds
 
 1. Clone this repository:
 
