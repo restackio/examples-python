@@ -1,4 +1,4 @@
-# Restack AI Python Examples
+# Restack AI Python Exampless
 
 This repository contains various examples demonstrating how to use the Restack AI Python SDK. These examples are designed to help you get started with Restack AI and showcase different features and use cases.
 
