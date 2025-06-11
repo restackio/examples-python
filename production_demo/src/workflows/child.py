@@ -15,7 +15,7 @@ class ChildWorkflow:
     @workflow.run
     async def run(self, input: ChildWorkflowInput):
         log.info("ChildWorkflow started")
-        await workflow.step(example_function, input=ExampleFunctionInput(name='John Doe'), start_to_close_timeout=timedelta(minutes=2))
+        await workflow.step(function=example_function, function_input=ExampleFunctionInput(name='John Doe'), start_to_close_timeout=timedelta(minutes=2))
 
         await workflow.sleep(1)
 

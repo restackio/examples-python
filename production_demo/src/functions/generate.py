@@ -1,4 +1,4 @@
-from restack_ai.function import function, FunctionFailure, log
+from restack_ai.function import function, NonRetryableError, log
 from openai import OpenAI
 
 from pydantic import BaseModel
@@ -13,7 +13,7 @@ async def llm_generate(input: GenerateInput) -> str:
         client = OpenAI(base_url="http://192.168.205.1:1234/v1/",api_key="llmstudio")
     except Exception as e:
         log.error(f"Failed to create LLM client {e}")
-        raise FunctionFailure(f"Failed to create OpenAI client {e}", non_retryable=True) from e
+        raise NonRetryableError(message=f"Failed to create OpenAI client {e}") from e
 
     try:
         response = client.chat.completions.create(
