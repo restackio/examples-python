@@ -1,6 +1,6 @@
 from datetime import timedelta
 from pydantic import BaseModel, Field
-from restack_ai.workflow import workflow, import_functions, log
+from restack_ai.workflow import workflow, import_functions, log, NonRetryableError, RetryPolicy
 
 with import_functions():
     from src.functions.function import example_function, ExampleFunctionInput
@@ -14,28 +14,34 @@ class ChildWorkflowInput(BaseModel):
 class ChildWorkflow:
     @workflow.run
     async def run(self, input: ChildWorkflowInput):
+        
         log.info("ChildWorkflow started")
-        await workflow.step(function=example_function, function_input=ExampleFunctionInput(name='John Doe'), start_to_close_timeout=timedelta(minutes=2))
 
-        await workflow.sleep(1)
+        try:
+            await workflow.step(function=example_function, function_input=ExampleFunctionInput(name='John Doe'), start_to_close_timeout=timedelta(minutes=2), retry_policy=RetryPolicy(maximum_attempts=3))
 
-        generated_text = await workflow.step(
-            function=llm_generate,
-            function_input=GenerateInput(prompt=input.prompt),
-            task_queue="llm",
-            start_to_close_timeout=timedelta(minutes=2)
-        )
+            await workflow.sleep(1)
 
-        evaluation = await workflow.step(
-            function=llm_evaluate,
-            function_input=EvaluateInput(generated_text=generated_text),
-            task_queue="llm",
-            start_to_close_timeout=timedelta(minutes=5)
-        )
+            generated_text = await workflow.step(
+                function=llm_generate,
+                function_input=GenerateInput(prompt=input.prompt),
+                task_queue="llm",
+                start_to_close_timeout=timedelta(minutes=2)
+            )
 
-        return {
-            "generated_text": generated_text,
-            "evaluation": evaluation
-        }
+            evaluation = await workflow.step(
+                function=llm_evaluate,
+                function_input=EvaluateInput(generated_text=generated_text),
+                task_queue="llm",
+                start_to_close_timeout=timedelta(minutes=5)
+            )
+
+            return {
+                "generated_text": generated_text,
+                "evaluation": evaluation
+            }
+        except Exception as e:
+            log.error(f"ChildWorkflow failed {e}")
+            raise NonRetryableError(message=f"ChildWorkflow failed {e}") from e
 
 
