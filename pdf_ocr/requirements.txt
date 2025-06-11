@@ -154,7 +154,7 @@ sympy==1.13.1
     # via torch
 temporalio==1.10.0
     # via restack-ai
-torch==2.6.0
+torch==2.7.1
     # via
     #   python-doctr
     #   torchvision
