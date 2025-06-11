@@ -40,7 +40,7 @@ pydantic-core==2.27.2
     # via pydantic
 python-dotenv==1.0.1
     # via restack-ai
-restack-ai==0.0.91
+restack-ai==0.0.94
     # via encryption (pyproject.toml)
 temporalio==1.10.0
     # via restack-ai
