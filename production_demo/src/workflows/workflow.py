@@ -23,7 +23,7 @@ class ExampleWorkflow:
             task = workflow.child_execute(
                 workflow=ChildWorkflow, 
                 workflow_id=f"{parent_workflow_id}-child-execute-{i+1}",
-                input=ChildWorkflowInput(name=f"child workflow {i+1}")
+                input=ChildWorkflowInput()
             )
             tasks.append(task)
 
