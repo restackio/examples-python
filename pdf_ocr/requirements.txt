@@ -177,7 +177,7 @@ typing-extensions==4.12.2
     #   restack-ai
     #   temporalio
     #   torch
-urllib3==2.3.0
+urllib3==2.5.0
     # via requests
 watchfiles==1.0.4
     # via pdf-ocr (pyproject.toml)
