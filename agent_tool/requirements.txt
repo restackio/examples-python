@@ -93,7 +93,7 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   restack-ai
     #   temporalio
-urllib3==2.3.0
+urllib3==2.5.0
     # via requests
 watchfiles==1.0.4
     # via agent-tool (pyproject.toml)
