@@ -187,7 +187,7 @@ tqdm==4.67.1
     #   huggingface-hub
     #   openai
     #   transformers
-transformers==4.49.0
+transformers==4.51.0
     # via livekit-plugins-turn-detector
 types-protobuf==4.25.0.20240417
     # via
