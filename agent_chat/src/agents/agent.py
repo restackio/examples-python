@@ -49,4 +49,10 @@ class AgentChat:
     @agent.run
     async def run(self, function_input: dict) -> None:
         log.info("AgentChat function_input", function_input=function_input)
-        await agent.condition(lambda: self.end)
+        await agent.condition(lambda: self.end or agent.should_continue_as_new())
+
+        if self.end is True:
+            log.info("AgentChat end")
+            return
+
+        await agent.agent_continue_as_new()
