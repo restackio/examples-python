@@ -10,7 +10,8 @@ dependencies = [
     "watchfiles>=1.0.4",
     "python-dotenv==1.0.1",
     "openai>=1.61.0",
-    "restack-ai>=0.0.94",]
+    "restack-ai>=0.0.100",
+]
 
 [project.scripts]
 dev = "src.services:watch_services"
