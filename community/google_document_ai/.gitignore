@@ -1,0 +1,4 @@
+.DS_Store
+.env
+poetry.lock
+service_account.json
