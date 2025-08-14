@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "livekit-agents>=0.12.15",
+    "livekit-agents==0.12.20",
     "livekit-plugins-deepgram>=0.6.19",
     "livekit-plugins-elevenlabs>=0.7.13",
     "livekit-plugins-openai>=0.11.0",

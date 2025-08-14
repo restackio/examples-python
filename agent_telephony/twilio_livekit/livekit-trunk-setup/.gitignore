@@ -3,3 +3,4 @@
 .env
 uv.lock
 inbound_trunk.json
+dispatch_rule.json

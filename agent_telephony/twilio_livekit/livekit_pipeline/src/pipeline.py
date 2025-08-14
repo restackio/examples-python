@@ -42,20 +42,7 @@ def create_livekit_pipeline(
                 api_key=f"{agent_id}-livekit",
                 base_url=agent_url,
             ),
-            tts=elevenlabs.TTS(
-                voice=elevenlabs.tts.Voice(
-                    id="UgBBYS2sOqTuMpoF3BR0",
-                    name="Mark",
-                    category="premade",
-                    settings=elevenlabs.tts.VoiceSettings(
-                        stability=0,
-                        similarity_boost=0,
-                        style=0,
-                        speed=1.01,
-                        use_speaker_boost=False
-                    ),
-                ),
-            ),
+            tts=elevenlabs.TTS(),
             turn_detector=turn_detector.EOUModel(),
         )
     except Exception as e:
