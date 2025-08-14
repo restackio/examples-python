@@ -9,7 +9,7 @@ dependencies = [
     "openai>=1.61.0",
     "pydantic>=2.10.6",
     "watchfiles>=1.0.4",
-    "requests==2.32.3",
+    "requests==2.32.4",
     "python-dotenv==1.0.1",
     "restack-ai>=0.0.94",]
 

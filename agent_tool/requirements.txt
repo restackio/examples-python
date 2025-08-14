@@ -71,7 +71,7 @@ python-dotenv==1.0.1
     # via
     #   agent-tool (pyproject.toml)
     #   restack-ai
-requests==2.32.3
+requests==2.32.4
     # via agent-tool (pyproject.toml)
 restack-ai==0.0.94
     # via agent-tool (pyproject.toml)
