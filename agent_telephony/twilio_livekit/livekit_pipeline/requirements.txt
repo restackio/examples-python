@@ -206,7 +206,7 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   restack-ai
     #   temporalio
-urllib3==2.3.0
+urllib3==2.6.0
     # via requests
 watchfiles==0.24.0
     # via livekit-agents
