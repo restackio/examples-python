@@ -2,7 +2,7 @@
 #    uv pip compile pyproject.toml -o requirements.txt
 aiohappyeyeballs==2.5.0
     # via aiohttp
-aiohttp==3.11.13
+aiohttp==3.13.3
     # via
     #   livekit-api
     #   restack-ai
