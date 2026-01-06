@@ -4,7 +4,7 @@ aiofiles==24.1.0
     # via livekit
 aiohappyeyeballs==2.5.0
     # via aiohttp
-aiohttp==3.11.13
+aiohttp==3.13.3
     # via
     #   livekit-agents
     #   livekit-api
