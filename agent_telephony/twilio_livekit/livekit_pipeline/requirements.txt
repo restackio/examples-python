@@ -134,7 +134,7 @@ propcache==0.3.0
     # via
     #   aiohttp
     #   yarl
-protobuf==6.30.0
+protobuf==7.34.0rc1
     # via
     #   livekit
     #   livekit-agents
