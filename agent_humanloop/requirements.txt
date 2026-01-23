@@ -34,7 +34,7 @@ propcache==0.2.1
     # via
     #   aiohttp
     #   yarl
-protobuf==5.29.3
+protobuf==7.34.0rc1
     # via temporalio
 pydantic==2.10.6
     # via
