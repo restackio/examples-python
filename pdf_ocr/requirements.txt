@@ -126,7 +126,7 @@ python-dotenv==1.0.1
     # via
     #   pdf-ocr (pyproject.toml)
     #   restack-ai
-python-multipart==0.0.19
+python-multipart==0.0.22
     # via pdf-ocr (pyproject.toml)
 pyyaml==6.0.2
     # via huggingface-hub
