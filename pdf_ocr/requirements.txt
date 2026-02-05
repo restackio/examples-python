@@ -105,7 +105,7 @@ propcache==0.2.1
     # via
     #   aiohttp
     #   yarl
-protobuf==5.29.3
+protobuf==5.29.6
     # via
     #   onnx
     #   temporalio
