@@ -128,7 +128,7 @@ packaging==24.2
     #   huggingface-hub
     #   onnxruntime
     #   transformers
-pillow==11.1.0
+pillow==12.1.1
     # via livekit-agents
 propcache==0.3.0
     # via
