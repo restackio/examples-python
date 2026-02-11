@@ -12,7 +12,7 @@ dependencies = [
     "openai>=1.61.0",
     "python-multipart==0.0.19",
     "numpy==2.2.0",
-    "pillow==11.0.0",
+    "pillow==12.1.1",
     "python-doctr[torch]==0.10.0",
     "requests==2.32.3",
     "restack-ai>=0.0.94",]
